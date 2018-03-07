@@ -15,7 +15,7 @@
 #include "LoadBMP.h"
 #include "LoadDDS.h"
 #include "LoadDTX.h"
-#include "FreeImage\FreeImage.h"
+//#include "FreeImage\FreeImage.h"
 
 GLuint GL_LoadTexture(const char *szPath, int *pwidth, int *pheight)
 {
@@ -235,7 +235,7 @@ GLuint GL_LoadTexture(const char *szPath, int *pwidth, int *pheight)
 			*pheight = h;
 		return iTexIndex;
 	}
-	else
+	/*else
 	{
 		do
 		{
@@ -274,7 +274,7 @@ GLuint GL_LoadTexture(const char *szPath, int *pwidth, int *pheight)
 				*pheight = h;
 			return iTexIndex;
 		} while (0); // EASY TO JUMP OUT
-	}
+	}*/
 	LogToFile("GL_LoadTexture() : Fail Load %s (Unsupported format)", szPath);
 	return 0;
 }
