@@ -1,0 +1,18 @@
+#pragma once
+
+#include <gl/gl.h>
+#include <gl/glext.h>
+
+extern PFNGLBINDBUFFERARBPROC glBindBufferARB;
+extern PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB;
+extern PFNGLGENBUFFERSARBPROC glGenBuffersARB;
+extern PFNGLGENBUFFERSARBPROC glIsBufferARB;
+extern PFNGLBUFFERDATAARBPROC glBufferDataARB;
+extern PFNGLBUFFERSUBDATAARBPROC glBufferSubDataARB;
+extern PFNGLGETBUFFERSUBDATAARBPROC glGetBufferSubDataARB;
+extern PFNGLMAPBUFFERARBPROC glMapBufferARB;
+extern PFNGLUNMAPBUFFERARBPROC glUnmapBufferARB;
+extern PFNGLGETBUFFERPARAMETERIVARBPROC glGetBufferParameterivARB;
+extern PFNGLGETBUFFERPOINTERVARBPROC glGetBufferPointervARB;
+
+void PBO_Init(void);

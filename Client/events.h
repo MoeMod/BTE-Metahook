@@ -1,0 +1,1 @@
+void EV_HookEvents();

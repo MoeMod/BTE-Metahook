@@ -1,0 +1,2593 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="资源文件\BugReport">
+      <UniqueIdentifier>{62d8dab0-38f7-4534-856f-b5ce621abce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client">
+      <UniqueIdentifier>{24332588-00a5-4a37-8f4e-633e457b182e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\HUD">
+      <UniqueIdentifier>{ef0bc8eb-32dd-49f9-a864-45968f8dd666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameUI">
+      <UniqueIdentifier>{c249f4d9-bbf1-4275-90b1-864cca187b01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameUI\OptionsDialog">
+      <UniqueIdentifier>{7f517086-bbf3-44e7-8d69-eeb91b4cfbe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameUI\Controls">
+      <UniqueIdentifier>{62b90b44-8afa-4f5b-b5a1-68f53edb8824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameUI\CreateMultiPlayerGameDialog">
+      <UniqueIdentifier>{4df6191e-363d-4ecd-9934-33872ac8525b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{616b683b-a5bb-4fc8-9d2f-5af2828f9183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\VGUI">
+      <UniqueIdentifier>{2dbca2ef-2242-410d-8915-5308a7c1df7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BugReport">
+      <UniqueIdentifier>{267d3aea-a336-485b-8aee-9a54478b941a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSDK">
+      <UniqueIdentifier>{d4557f97-72b5-485a-9270-becf3445271f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSDK\common">
+      <UniqueIdentifier>{f54cd1fe-3b02-4fa5-8eb4-d0905a085104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerBrowser">
+      <UniqueIdentifier>{293591a3-7f9b-4a21-b505-a0bdd6c2135b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK">
+      <UniqueIdentifier>{dfbb591e-fc90-44ba-bfb9-7e36bb21e9ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK\appframework">
+      <UniqueIdentifier>{468a52ef-4e81-4b61-be52-896e97e0a754}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK\common">
+      <UniqueIdentifier>{1a86a3f8-db95-468d-a7aa-07c50588d4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK\common\xbox">
+      <UniqueIdentifier>{e0ed8680-5da9-4a5a-9ed7-c07b1f0163b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK\inputsystem">
+      <UniqueIdentifier>{a7bfcec2-7c33-45f3-aed5-73b1483a0d97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK\mathlib">
+      <UniqueIdentifier>{c0257434-4844-412c-9837-d8ed0995ef1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK\tier0">
+      <UniqueIdentifier>{571767d7-236a-4c82-ae26-d9374dec0606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK\tier1">
+      <UniqueIdentifier>{bb3b67f8-3712-4429-b568-6671cb7b1cbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceSDK\vstdlib">
+      <UniqueIdentifier>{47e7c880-7cd6-4273-9415-b82a7912e81b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vgui_controls">
+      <UniqueIdentifier>{cc06d56e-095a-4843-8deb-2f97c990c28c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Library">
+      <UniqueIdentifier>{5944a37f-4720-4d9a-ab41-352d61c49c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\gl">
+      <UniqueIdentifier>{f9e29d01-9232-4549-80ef-62cf4c96b21a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\bink">
+      <UniqueIdentifier>{aecbefbf-2584-4031-b912-c8c86d57feda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\freetype">
+      <UniqueIdentifier>{caf222fa-481d-42a0-90b1-0a7f4155a1eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\freetype\freetype">
+      <UniqueIdentifier>{1e5250c0-b4d6-4a2b-bc01-3b83ab9ced05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\freetype\freetype\config">
+      <UniqueIdentifier>{5c2e0d2d-854d-4217-83b2-5ebd6beb1dba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\freetype\freetype\internal">
+      <UniqueIdentifier>{80b317df-7ca5-451b-9999-aa316a6e0a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\freetype\freetype\internal\services">
+      <UniqueIdentifier>{e70d6c96-d43f-41fd-b810-9711de3d1f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\openssl">
+      <UniqueIdentifier>{c7a6a030-4a66-45b4-bf3a-b91dd17abee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\shcore">
+      <UniqueIdentifier>{13f49f88-62e1-4b6c-9c26-7902cc1d786d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\MGUI">
+      <UniqueIdentifier>{22d32e75-5b91-466f-800b-5b0936c5757a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\LoadTexture">
+      <UniqueIdentifier>{c8c474de-a21e-422e-9010-6ce0c224a596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\FreeImage">
+      <UniqueIdentifier>{02037dd7-a950-4c6c-8a67-3bd14588a0af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{90827f2b-d57f-49db-8935-22e1abe053ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{8876f510-fd06-4c4c-aa03-763d26b834b8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="client.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="display.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="engfuncs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="exportfuncs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Fonts.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="imagelib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="texdraw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TriAPI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="msghook.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="playaudio.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="configs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sys.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="msg_util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\mathlib\3dnow.cpp">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\mathlib\mathlib_base.cpp">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\mathlib\sse.cpp">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\assert_dialog.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\cpu.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\dbg.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\fasttimer.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\mem.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\mem_helpers.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\memstd.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\minidump.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\platform.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\threadtools.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\vcrmode.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\characterset.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\generichash.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\KeyValues.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\mempool.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\memstack.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\stringpool.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\strtools.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\utlbuffer.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\utlstring.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\utlsymbol.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\vstdlib\KeyValuesSystem.cpp">
+      <Filter>SourceSDK\vstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\vstdlib\random.cpp">
+      <Filter>SourceSDK\vstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\border.cpp">
+      <Filter>SourceSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\filesystem_helpers.cpp">
+      <Filter>SourceSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="FontAmalgam.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FontTextureCache.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32Font.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\deadscheme.cpp">
+      <Filter>SourceSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\deadsurface.cpp">
+      <Filter>SourceSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\deadinput.cpp">
+      <Filter>SourceSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\deadipanel.cpp">
+      <Filter>SourceSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="engfunchook.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEModeSelection.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEMyWpnEditor.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEAboutDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEMapLoading.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEEscPanel.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\BuildFactoryHelper.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\BuildGroup.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\BuildModeDialog.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Button.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\CheckButton.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\CheckButtonList.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\CircularProgressBar.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ComboBox.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\consoledialog.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ControllerMap.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Controls.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\DirectorySelectDialog.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Divider.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\EditablePanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ExpandButton.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\FileOpenDialog.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\FocusNavGroup.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Frame.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\GraphPanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\HTML.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Image.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ImageList.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ImagePanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\InputDialog.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\KeyRepeat.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Label.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ListPanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ListViewPanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Menu.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\MenuBar.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\MenuButton.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\MenuItem.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\MessageBox.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\MessageDialog.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Panel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\PanelListPanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ProgressBar.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ProgressBox.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\PropertyDialog.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\PropertyPage.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\PropertySheet.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\QueryBox.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\RadioButton.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\RichText.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\RotatingProgressBar.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\savedocumentquery.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ScrollableEditablePanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ScrollBar.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ScrollBarSlider.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\SectionedListPanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Slider.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Splitter.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\subrectimage.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\TextEntry.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\TextImage.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ToggleButton.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\Tooltip.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\ToolWindow.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\TreeView.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\TreeViewListControl.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\URLLabel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\vgui_controls.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\WizardPanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\WizardSubPanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\AnalogBar.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\AnimatingImagePanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\AnimationController.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\ModInfo.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\OptionsSubVoice.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CvarSlider.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CvarToggleCheckButton.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\OptionsSubAdvanced.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="plugins.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\OptionsSubMouse.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\KeyToggleCheckButton.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CvarNegateCheckButton.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\OptionsSubAudio.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\LabeledCommandComboBox.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\OptionsSubMultiplayer.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CvarTextEntry.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\BitmapImagePanel.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\LogoFile.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui_controls\BitmapImagePanel.cpp">
+      <Filter>vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\MultiplayerAdvancedDialog.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\PanelListPanel.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\OptionsSubVideo.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\URLButton.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\OptionsSubKeyboard.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\VControlsListPanel.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\ScriptObject.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\filesystem.cpp">
+      <Filter>SourceSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\OptionsDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\GameConsoleDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\GameConsole.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\LoadingDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CreateMultiplayerGameDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CreateMultiplayerGameBotPage.cpp">
+      <Filter>GameUI\CreateMultiPlayerGameDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CreateMultiplayerGameGameplayPage.cpp">
+      <Filter>GameUI\CreateMultiPlayerGameDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CreateMultiplayerGameServerPage.cpp">
+      <Filter>GameUI\CreateMultiPlayerGameDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="msgbuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\SkillKeyPopupDlg.cpp">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\BackgroundMenuButton.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\ToolBar.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\BasePanel.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\GameUI_Interface.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEZombieDNA.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\BinkPanel.cpp">
+      <Filter>GameUI\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\ViewPort_Interface.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\model.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier1\NetAdr.cpp">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\HistoryGames.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\InternetGames.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\LanBroadcastMsgHandler.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\LanGames.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\MasterMsgHandler.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\playerinfo.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\PlayerInfoMsgHandler.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\ServerBrowser.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\ServerBrowserDialog.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\ServerContextMenu.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\serverinfo.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\ServerInfoMsgHandler.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\ServerList.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\ServerListCompare.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\SpectateGames.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\BaseGamesPage.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\DialogAddServer.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\DialogGameInfo.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\DialogServerPassword.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\FavoriteGames.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\getchallenge.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\GetChallengeMsgHandler.cpp">
+      <Filter>ServerBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceSDK\tier0\memdbg.cpp">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEWelcomeDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\hud.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\buffawp.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\BuffClassDamage.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\deathmsg.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\DeathRun.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\destroyer.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\drawimage.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\DrawRetina.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\DrawTABPanel.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\followicon.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\FontText.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\gdboard.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\health.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\hud_saytext.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\hudmenu.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\MVPBoard.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\nvg.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\overview.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\playbink.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\Quest.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\respawnbar.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\roundtimer.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\scoreboard.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\sfsniper.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\Statistics.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\WeaponSelect.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\zb3ui.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\zb4ui.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\zbsboard.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\ZombieCountDown.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\zombieescape.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\ZombieSelect.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\zse.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\alarm.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\ammo.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawTargaImage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\DrawTga.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="BinkPlayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\WeaponManager.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\TextureManager.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\EButtonManager.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\PlayerClassManager.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\DeathInfo.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Retina.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\muzzleflash.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD3D.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD3D_ZB.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="BugReport\CrashHandle.cpp">
+      <Filter>BugReport</Filter>
+    </ClCompile>
+    <ClCompile Include="BugReport\BugReport.cpp">
+      <Filter>BugReport</Filter>
+    </ClCompile>
+    <ClCompile Include="util\md5.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\calcbody.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\calcscreen.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\util.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\bits32.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="HLSDK\common\interface.cpp">
+      <Filter>HLSDK\common</Filter>
+    </ClCompile>
+    <ClCompile Include="util\studio_util.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="netapi.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\weapons.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\svc_hook.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\ev_common.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\events.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\ev_hldm.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\message.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\MGUI\NormalZombieMenu.cpp">
+      <Filter>Client\MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\MGUI\TeamMenu.cpp">
+      <Filter>Client\MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\MGUI\BTEPanel.cpp">
+      <Filter>Client\MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\MGUI\mgui.cpp">
+      <Filter>Client\MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="util\perf_counter.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="BugReport\base64.cpp">
+      <Filter>BugReport</Filter>
+    </ClCompile>
+    <ClCompile Include="R.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HLSDK\common\parsemsg.cpp">
+      <Filter>HLSDK\common</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadBMP.cpp">
+      <Filter>源文件\LoadTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadDDS.cpp">
+      <Filter>源文件\LoadTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadDTX.cpp">
+      <Filter>源文件\LoadTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadTGA.cpp">
+      <Filter>源文件\LoadTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\shader.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\screen.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\qgl.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\pbo.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="GL_BinkTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
+      <Filter>SourceSDK\appframework</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\common\xbox\xbox_console.h">
+      <Filter>SourceSDK\common\xbox</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\inputsystem\ButtonCode.h">
+      <Filter>SourceSDK\inputsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\inputsystem\InputEnums.h">
+      <Filter>SourceSDK\inputsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\3dnow.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\amd3dx.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\math_pfns.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\mathlib.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\sse.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\ssemath.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\ssequaternion.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\vector.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\mathlib\vector2d.h">
+      <Filter>SourceSDK\mathlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\basetypes.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\commonmacros.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\dbg.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\dbgflag.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\fasttimer.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\l2cache.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\mem.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\mem_helpers.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\memalloc.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\memdbgoff.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\memdbgon.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\memstd.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\minidump.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\pch_tier0.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\platform.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\protected_things.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\resource.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\threadtools.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\tslist.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\validator.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\valobject.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\valve_off.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\valve_on.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\vcr_shared.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\vcrmode.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\vprof.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\wchartypes.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\xbox_codeline_defines.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\byteswap.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\characterset.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\generichash.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\KeyValues.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\mempool.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\memstack.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\stringpool.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\strtools.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlblockmemory.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlbuffer.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utldict.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlfixedmemory.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlflags.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlhandletable.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utllinkedlist.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlmap.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlmemory.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlqueue.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlrbtree.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlstring.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\UtlStringMap.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlsymbol.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlvector.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\vstdlib\IKeyValuesSystem.h">
+      <Filter>SourceSDK\vstdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\vstdlib\random.h">
+      <Filter>SourceSDK\vstdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\vstdlib\vstdlib.h">
+      <Filter>SourceSDK\vstdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\Color.h">
+      <Filter>SourceSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\datamap.h">
+      <Filter>SourceSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\filesystem_helpers.h">
+      <Filter>SourceSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\OfflineMode.h">
+      <Filter>SourceSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\winlite.h">
+      <Filter>SourceSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEModeSelection.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEMyWpnEditor.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEAboutDialog.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEMapLoading.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEEscPanel.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\tier1.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\icommandline.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\convar.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\convar_serverbounded.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\iconvar.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\icvar.h">
+      <Filter>SourceSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\interface.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\BuildGroup.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\BuildModeDialog.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Button.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\CheckButton.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\CheckButtonList.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\CircularProgressBar.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ComboBox.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\consoledialog.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ControllerMap.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Controls.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\DialogManager.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\DirectorySelectDialog.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Divider.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\EditablePanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ExpandButton.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\FileOpenDialog.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\FocusNavGroup.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Frame.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\GraphPanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\HTML.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Image.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ImageList.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ImagePanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\InputDialog.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\KeyBindingMap.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\KeyRepeat.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Label.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ListPanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ListViewPanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Menu.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\MenuBar.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\MenuButton.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\MenuItem.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\MessageBox.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\MessageDialog.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\MessageMap.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Panel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\PanelAnimationVar.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\PanelListPanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\pch_vgui_controls.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\PHandle.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ProgressBar.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ProgressBox.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\PropertyDialog.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\PropertyPage.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\PropertySheet.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\QueryBox.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\RadioButton.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\RichText.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\RotatingProgressBar.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\savedocumentquery.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ScrollableEditablePanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ScrollBar.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ScrollBarSlider.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\SectionedListPanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Slider.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Splitter.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\subrectimage.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\TextEntry.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\TextImage.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ToggleButton.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\Tooltip.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\ToolWindow.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\TreeView.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\TreeViewListControl.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\URLLabel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\WizardPanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\WizardSubPanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\AnalogBar.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\AnimatingImagePanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\AnimationController.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\ModInfo.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\OptionsSubVoice.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CvarSlider.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CvarToggleCheckButton.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\OptionsSubAdvanced.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\OptionsSubMouse.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\KeyToggleCheckButton.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CvarNegateCheckButton.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\OptionsSubAudio.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\LabeledCommandComboBox.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\OptionsSubMultiplayer.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CvarTextEntry.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\BitmapImagePanel.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\LogoFile.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui_controls\BitmapImagePanel.h">
+      <Filter>vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\MultiplayerAdvancedDialog.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\PanelListPanel.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\OptionsSubVideo.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\URLButton.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\OptionsSubKeyboard.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\VControlsListPanel.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\ScriptObject.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\filesystem.h">
+      <Filter>SourceSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\OptionsDialog.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\GameConsole.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\GameConsoleDialog.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\LoadingDialog.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CreateMultiplayerGameDialog.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CreateMultiplayerGameBotPage.h">
+      <Filter>GameUI\CreateMultiPlayerGameDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CreateMultiplayerGameGameplayPage.h">
+      <Filter>GameUI\CreateMultiPlayerGameDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CreateMultiplayerGameServerPage.h">
+      <Filter>GameUI\CreateMultiPlayerGameDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="msgbuffer.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\SkillKeyPopupDlg.h">
+      <Filter>GameUI\OptionsDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\BackgroundMenuButton.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\ToolBar.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\BasePanel.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\GameUI_Interface.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEZombieDNA.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\BinkPanel.h">
+      <Filter>GameUI\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ICareerUI.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IClientVGUI.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ICommandLine.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IEngine.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IEngineSurface.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IFileSystem.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IGameConsole.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IGameList.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IGameUI.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IGameUIFuncs.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IKeyValuesSystem.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\INetAPI.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IPlugins.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IPluginsV1.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IRegistry.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IResponse.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IServerBrowser.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IServerGetChallengeResponse.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IServerPlayersResponse.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IServerRefreshResponse.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IVGuiModule.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IBaseUI.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IInputInternal.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\ILocalize.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IPanel.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IScheme.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\ISurface.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\ISystem.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IVGUI.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\KeyCode.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\MouseCode.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\VGUI.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\Cursor.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\Dar.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IBorder.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IClientPanel.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IEngineVGui.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IHTML.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IImage.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\IInput.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\BaseViewport.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\ViewPort_Interface.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="plugins.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\model.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\netadr.h">
+      <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\BaseGamesPage.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\DialogAddServer.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\DialogGameInfo.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\DialogServerPassword.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\EngineInterface.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\FavoriteGames.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\getchallenge.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\GetChallengeMsgHandler.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\HistoryGames.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\InternetGames.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\LanBroadcastMsgHandler.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\LanGames.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\MasterMsgHandler.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\playerinfo.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\PlayerInfoMsgHandler.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\server.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\ServerBrowser.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\ServerBrowserDialog.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\ServerContextMenu.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\serverinfo.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\ServerInfoMsgHandler.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\ServerList.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\ServerListCompare.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\SpectateGames.h">
+      <Filter>ServerBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier0\memdbg.h">
+      <Filter>SourceSDK\tier0</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEWelcomeDialog.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\hud.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\buffawp.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\BuffClassDamage.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\deathmsg.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\DeathRun.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\destroyer.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\drawimage.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\DrawRetina.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\DrawTABPanel.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\followicon.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\FontText.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\gdboard.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\health.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\hud_saytext.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\hudmenu.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\MVPBoard.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\nvg.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\overview.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\playbink.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\Quest.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\respawnbar.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\roundtimer.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\scoreboard.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\sfsniper.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\Statistics.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\WeaponSelect.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\zb3ui.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\zb4ui.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\zbsboard.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\ZombieCountDown.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\zombieescape.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\ZombieSelect.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\zse.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\alarm.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\ammo.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawTargaImage.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\DrawTga.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="BinkPlayer.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="client.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="exportfuncs.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\TextureManager.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\WeaponManager.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\EButtonManager.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\PlayerClassManager.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\DeathInfo.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="configs.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Retina.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\muzzleflash.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD3D_ZB.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD3D.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="msghook.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseUI.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="display.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="engfunchook.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="engfuncs.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="engineinterface.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FontAmalgam.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FontTextureCache.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="imagelib.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="playaudio.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="texdraw.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32Font.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BugReport\CrashHandle.h">
+      <Filter>BugReport</Filter>
+    </ClInclude>
+    <ClInclude Include="BugReport\BugReport.h">
+      <Filter>BugReport</Filter>
+    </ClInclude>
+    <ClInclude Include="util\md5.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\calcbody.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\calcscreen.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\util.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\bits32.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="msg_util.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="util\studio_util.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\weapons.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\gl\glext.h">
+      <Filter>Library\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\gl\gl.h">
+      <Filter>Library\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\bink\rad3d.h">
+      <Filter>Library\bink</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\bink\radbase.h">
+      <Filter>Library\bink</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\bink\bink.h">
+      <Filter>Library\bink</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\ft2build.h">
+      <Filter>Library\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftpfr.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftrender.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftsizes.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftsnames.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftstroke.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftsynth.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftsystem.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\fttrigon.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\fttypes.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftwinfnt.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftxf86.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\t1tables.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ttnameid.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\tttables.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\tttags.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ttunpat.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\freetype.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftadvanc.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftbbox.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftbdf.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftbitmap.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftbzip2.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftcache.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftchapters.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftcid.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\fterrdef.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\fterrors.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftgasp.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftglyph.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftgxval.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftgzip.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftimage.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftincrem.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftlcdfil.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftlist.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftlzw.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftmac.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftmm.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftmodapi.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftmoderr.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftotval.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\ftoutln.h">
+      <Filter>Library\freetype\freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\config\ftmodule.h">
+      <Filter>Library\freetype\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\config\ftoption.h">
+      <Filter>Library\freetype\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\config\ftstdlib.h">
+      <Filter>Library\freetype\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\config\ftconfig.h">
+      <Filter>Library\freetype\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\config\ftheader.h">
+      <Filter>Library\freetype\freetype\config</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftdebug.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftdriver.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftgloadr.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftmemory.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftobjs.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftpic.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftrfork.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftserv.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftstream.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\fttrace.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftvalid.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\internal.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\psaux.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\pshints.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\sfnt.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\t1types.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\tttypes.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\autohint.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\ftcalc.h">
+      <Filter>Library\freetype\freetype\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svgxval.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svkern.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svmm.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svotval.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svpfr.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svpostnm.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svpscmap.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svpsinfo.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svsfnt.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svttcmap.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svtteng.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svttglyf.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svwinfnt.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svxf86nm.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svbdf.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svcid.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\freetype\freetype\internal\services\svgldict.h">
+      <Filter>Library\freetype\freetype\internal\services</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\blowfish.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\bn.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\buffer.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\cast.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\comp.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\conf.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\conf_api.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\crypto.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\des.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\des_old.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\dh.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\dsa.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\dso.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\dtls1.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\e_os2.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ebcdic.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ec.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ecdh.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ecdsa.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\engine.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\err.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\evp.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\hmac.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\idea.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\krb5_asn.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\kssl.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\lhash.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\md2.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\md4.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\md5.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\obj_mac.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\objects.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ocsp.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\opensslconf.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\opensslv.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ossl_typ.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\pem.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\pem2.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\pkcs7.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\pkcs12.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\pq_compat.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\pqueue.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\rand.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\rc2.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\rc4.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ripemd.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\rsa.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\safestack.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\sha.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ssl.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ssl2.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ssl3.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ssl23.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\stack.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\store.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\symhacks.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\tls1.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\tmdiff.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\txt_db.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ui.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\ui_compat.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\x509.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\x509_vfy.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\x509v3.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\aes.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\asn1.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\asn1_mac.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\asn1t.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\openssl\bio.h">
+      <Filter>Library\openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\gl\glut.h">
+      <Filter>Library\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\svc_hook.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\shcore\shcore.h">
+      <Filter>Library\shcore</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\events.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\eventscripts.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\ev_hldm.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\message.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\MGUI\mgui.h">
+      <Filter>Client\MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\MGUI\NormalZombieMenu.h">
+      <Filter>Client\MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\MGUI\TeamMenu.h">
+      <Filter>Client\MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\MGUI\BTEPanel.h">
+      <Filter>Client\MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="util\perf_counter.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="BugReport\base64.h">
+      <Filter>BugReport</Filter>
+    </ClInclude>
+    <ClInclude Include="R.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadTGA.h">
+      <Filter>源文件\LoadTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadBMP.h">
+      <Filter>源文件\LoadTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadDDS.h">
+      <Filter>源文件\LoadTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadDTX.h">
+      <Filter>源文件\LoadTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadTexture.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\FreeImage\FreeImage.h">
+      <Filter>Library\FreeImage</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\shader.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\screen.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="TriAPI.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\qgl.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\pbo.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GL_BinkTexture.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="BugReport\BugReport.rc">
+      <Filter>资源文件\BugReport</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CSBTE.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="BugReport\BugReport.aps">
+      <Filter>资源文件\BugReport</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Library\bink\binkw32.lib">
+      <Filter>Library\bink</Filter>
+    </Library>
+    <Library Include="Library\freetype\freetype249.lib">
+      <Filter>Library\freetype</Filter>
+    </Library>
+    <Library Include="Library\openssl\ssleay32.lib">
+      <Filter>Library\openssl</Filter>
+    </Library>
+    <Library Include="Library\gl\glut32.lib">
+      <Filter>Library\gl</Filter>
+    </Library>
+    <Library Include="Library\openssl\libeay32.lib">
+      <Filter>Library\openssl</Filter>
+    </Library>
+    <Library Include="Library\shcore\shcore.lib">
+      <Filter>Library\shcore</Filter>
+    </Library>
+    <Library Include="Library\FreeImage\FreeImage.lib">
+      <Filter>Library\FreeImage</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="BugReport\CSBTE.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

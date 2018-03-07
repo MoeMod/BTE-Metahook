@@ -1,0 +1,155 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (Simplified, PRC) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_BUGREPORTICON       ICON                    "CSBTE.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BUGREPORT DIALOGEX 0, 0, 245, 130
+STYLE DS_SYSMODAL | DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "错误报告"
+FONT 9, "宋体", 0, 0, 0x1
+BEGIN
+    ICON            IDI_BUGREPORTICON,IDC_BUGREPORTICON,9,11,20,20
+    CONTROL         "重启游戏(&R)",IDC_RESTARTGAME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,56,60,10
+    CONTROL         "保存错误报告(&A)",IDC_DELETEMDMP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,70,76,10
+    LTEXT           "CS:BTE遇到未知错误。我们对此的不便表示抱歉。我们希望用户可以点击下面的按钮来发送邮件并且把详细的信息提供给我们。",IDC_BUGSTATIC,40,9,196,35
+    LTEXT           "官方BTE信箱\ncsbte_bugreport@qq.com\ncsbte_bugreport@foxmail.com",IDC_BUGRECEIVER,13,93,149,24,WS_DISABLED
+    PUSHBUTTON      "确定",IDC_OK,179,98,54,17
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_BUGREPORT, DIALOG
+    BEGIN
+        RIGHTMARGIN, 244
+        BOTTOMMARGIN, 126
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Chinese (Simplified, PRC) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BUGREPORT DIALOGEX 0, 0, 235, 131
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Bug Report"
+FONT 9, "System", 0, 0, 0x1
+BEGIN
+    ICON            IDI_BUGREPORTICON,IDC_BUGREPORTICON,7,9,20,20
+    CONTROL         "&Restart Game",IDC_RESTARTGAME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,60,103,8
+    CONTROL         "S&ave Bug Report",IDC_DELETEMDMP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,72,103,8
+    LTEXT           "CS:BTE Has Encountered Unknown Error, We're So Sorry About This. Hope User Can Click Ok Button To Write A Report How It Happens and Sent To Our Official Mail.",IDC_BUGSTATIC,38,7,190,35
+    LTEXT           "Official BTE Team Mail\ncsbte_bugreport@qq.com\ncsbte_bugreport@foxmail.com",IDC_BUGRECEIVER,7,95,111,35,WS_DISABLED
+    PUSHBUTTON      "OK",IDC_OK,174,92,54,15
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_BUGREPORT, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
