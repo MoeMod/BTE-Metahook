@@ -114,9 +114,6 @@
     <Filter Include="源文件\LoadTexture">
       <UniqueIdentifier>{c8c474de-a21e-422e-9010-6ce0c224a596}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Library\FreeImage">
-      <UniqueIdentifier>{02037dd7-a950-4c6c-8a67-3bd14588a0af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Renderer">
       <UniqueIdentifier>{90827f2b-d57f-49db-8935-22e1abe053ee}</UniqueIdentifier>
     </Filter>
@@ -2524,9 +2521,6 @@
     <ClInclude Include="LoadTexture.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="Library\FreeImage\FreeImage.h">
-      <Filter>Library\FreeImage</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\shader.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -2580,9 +2574,6 @@
     </Library>
     <Library Include="Library\shcore\shcore.lib">
       <Filter>Library\shcore</Filter>
-    </Library>
-    <Library Include="Library\FreeImage\FreeImage.lib">
-      <Filter>Library\FreeImage</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>

@@ -569,7 +569,6 @@
     <ClInclude Include="Library\bink\bink.h" />
     <ClInclude Include="Library\bink\rad3d.h" />
     <ClInclude Include="Library\bink\radbase.h" />
-    <ClInclude Include="Library\FreeImage\FreeImage.h" />
     <ClInclude Include="Library\freetype\freetype\config\ftconfig.h" />
     <ClInclude Include="Library\freetype\freetype\config\ftheader.h" />
     <ClInclude Include="Library\freetype\freetype\config\ftmodule.h" />
@@ -945,7 +944,6 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="Library\bink\binkw32.lib" />
-    <Library Include="Library\FreeImage\FreeImage.lib" />
     <Library Include="Library\freetype\freetype249.lib" />
     <Library Include="Library\gl\glut32.lib" />
     <Library Include="Library\openssl\libeay32.lib" />
