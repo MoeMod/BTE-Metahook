@@ -63,7 +63,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>Renderer;Library\freetype;Library;util;Client;.\;common;Interface;..\;HLSDK\cl_dll;HLSDK\common;HLSDK\dlls;HLSDK\engine;HLSDK\pm_shared;HLSDK\public;common\freetype\config;common\freetype\internal;SourceSDK;SourceSDK\public;SourceSDK\common;SourceSDK\tier1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vgui2;Renderer;Library\freetype;Library;util;Client;.\;common;Interface;..\;HLSDK\cl_dll;HLSDK\common;HLSDK\dlls;HLSDK\engine;HLSDK\pm_shared;HLSDK\public;common\freetype\config;common\freetype\internal;SourceSDK;SourceSDK\public;SourceSDK\common;SourceSDK\tier1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FUCKWORLD_EXPORTS;_ITERATOR_DEBUG_LEVEL=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -91,7 +91,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>Renderer;Library\freetype;Library;util;Client;.\;common;Interface;..\;HLSDK\cl_dll;HLSDK\common;HLSDK\dlls;HLSDK\engine;HLSDK\pm_shared;HLSDK\public;common\freetype\config;common\freetype\internal;SourceSDK;SourceSDK\public;SourceSDK\common;SourceSDK\tier1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vgui2;Renderer;Library\freetype;Library;util;Client;.\;common;Interface;..\;HLSDK\cl_dll;HLSDK\common;HLSDK\dlls;HLSDK\engine;HLSDK\pm_shared;HLSDK\public;common\freetype\config;common\freetype\internal;SourceSDK;SourceSDK\public;SourceSDK\common;SourceSDK\tier1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FUCKWORLD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -247,6 +247,7 @@
     <ClCompile Include="HLSDK\common\parsemsg.cpp" />
     <ClCompile Include="imagelib.cpp" />
     <ClCompile Include="HLSDK\common\interface.cpp" />
+    <ClCompile Include="IMEInput.cpp" />
     <ClCompile Include="LoadBMP.cpp" />
     <ClCompile Include="LoadDDS.cpp" />
     <ClCompile Include="LoadDTX.cpp" />
@@ -291,7 +292,6 @@
     <ClCompile Include="SourceSDK\border.cpp" />
     <ClCompile Include="SourceSDK\filesystem.cpp" />
     <ClCompile Include="SourceSDK\filesystem_helpers.cpp" />
-    <ClCompile Include="SourceSDK\deadinput.cpp" />
     <ClCompile Include="SourceSDK\deadipanel.cpp" />
     <ClCompile Include="SourceSDK\mathlib\3dnow.cpp" />
     <ClCompile Include="SourceSDK\mathlib\mathlib_base.cpp" />
@@ -334,6 +334,7 @@
     <ClCompile Include="util\perf_counter.cpp" />
     <ClCompile Include="util\studio_util.cpp" />
     <ClCompile Include="util\util.cpp" />
+    <ClCompile Include="vgui2\Input.cpp" />
     <ClCompile Include="vgui_controls\AnalogBar.cpp" />
     <ClCompile Include="vgui_controls\AnimatingImagePanel.cpp" />
     <ClCompile Include="vgui_controls\AnimationController.cpp" />
@@ -526,6 +527,7 @@
     <ClInclude Include="GameUI\VControlsListPanel.h" />
     <ClInclude Include="GL_BinkTexture.h" />
     <ClInclude Include="imagelib.h" />
+    <ClInclude Include="IMEInput.h" />
     <ClInclude Include="Interface\IBaseUI.h" />
     <ClInclude Include="Interface\ICareerUI.h" />
     <ClInclude Include="Interface\IClientVGUI.h" />
@@ -860,6 +862,7 @@
     <ClInclude Include="util\perf_counter.h" />
     <ClInclude Include="util\studio_util.h" />
     <ClInclude Include="util\util.h" />
+    <ClInclude Include="vgui2\Input.h" />
     <ClInclude Include="vgui_controls\AnalogBar.h" />
     <ClInclude Include="vgui_controls\AnimatingImagePanel.h" />
     <ClInclude Include="vgui_controls\AnimationController.h" />

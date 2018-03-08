@@ -120,6 +120,9 @@
     <Filter Include="util">
       <UniqueIdentifier>{8876f510-fd06-4c4c-aa03-763d26b834b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vgui2">
+      <UniqueIdentifier>{d2be8376-7133-44fa-8c4a-b27cbd4f2a33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base.cpp">
@@ -270,9 +273,6 @@
       <Filter>SourceSDK</Filter>
     </ClCompile>
     <ClCompile Include="SourceSDK\deadsurface.cpp">
-      <Filter>SourceSDK</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceSDK\deadinput.cpp">
       <Filter>SourceSDK</Filter>
     </ClCompile>
     <ClCompile Include="SourceSDK\deadipanel.cpp">
@@ -952,6 +952,12 @@
     </ClCompile>
     <ClCompile Include="GL_BinkTexture.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IMEInput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\Input.cpp">
+      <Filter>vgui2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2538,6 +2544,12 @@
     </ClInclude>
     <ClInclude Include="GL_BinkTexture.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IMEInput.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\Input.h">
+      <Filter>vgui2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

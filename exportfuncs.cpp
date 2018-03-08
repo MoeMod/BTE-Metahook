@@ -17,6 +17,7 @@
 #include "Fonts.h"
 #include "common.h"
 #include "R.h"
+#include "IMEInput.h"
 
 #include "TriAPI.h"
 #include "display.h"
@@ -385,7 +386,7 @@ int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 	memcpy(&gEfxAPI, pEnginefuncs->pEfxAPI, sizeof(efx_api_s));
 
 	InitCrashHandle();
-
+	INEIN_InstallHook();
 	SVC_Init();
 	PBO_Init();
 
