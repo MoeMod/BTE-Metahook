@@ -36,7 +36,7 @@ CHudSfsniperScope::~CHudSfsniperScope()
 void CHudSfsniperScope::VidInit(void)
 {
 	m_iSniperScopeBinkTextureIndex = vgui::surface()->CreateNewTextureID();
-	m_hSniperScopeBinkHandle = BinkOpen("metahook\\bik\\sfscope.bik", 135266304);
+	m_hSniperScopeBinkHandle = BinkOpen("cstrike\\sprites\\sfscope.bik", 135266304);
 	m_flSniperScopePlayStartTime = 0.0;
 	m_pSniperScopeBinkMem = (BYTE *)malloc(m_hSniperScopeBinkHandle->Width * m_hSniperScopeBinkHandle->Height * 4);
 }
