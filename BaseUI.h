@@ -10,11 +10,13 @@
 #include <Interface\IBaseUI.h>
 #include <Interface\IGameConsole.h>
 #include <Interface\IEngineSurface.h>
+#include <VGUI\IPanel.h>
 //#include <r_studioint.h>
 //#include <custom.h>
 
 using namespace vgui;
 
+extern vgui::IPanel *g_pPanel;
 void BaseUI_InstallHook(void);
 
 class CBaseUI : public IBaseUI

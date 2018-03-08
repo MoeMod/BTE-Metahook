@@ -4,6 +4,8 @@
 #include "BaseUI.h"
 #include "PlayAudio.h"
 
+#include "Input.h"
+
 #include "DrawTargaImage.h"
 #include "util.h"
 #include "common.h"
@@ -11,6 +13,7 @@
 #include "GameUI/ModInfo.h"
 #include "GameUI/GameUI_Interface.h"
 #include "MGUI/BTEPanel.h"
+
 /*
 #define CBASEPANEL_CREATEGAMEMENU_SIG "\x56\x57\x6A\x2A\x8B\xF9\xE8\x35\x7F\x02\x00\x83\xC4\x04\x85\xC0"
 #define CBASEPANEL_RECURSIVELOADGAMEMENU_SIG "\x51\x55\x56\x57\x8B\xF9\x68\xF4\x00\x00\x00\x89\x7C\x24\x2A\xE8"
@@ -53,6 +56,8 @@ IEngineSurface *staticSurface;
 ISurface *enginesurfacefuncs;
 IGameUIFuncs *gameuifuncs;
 IBaseUI *baseuifuncs = NULL;
+
+vgui::IPanel *g_pPanel;
 
 void *staticPanel = NULL;
 
@@ -154,9 +159,13 @@ void CBaseUI::Initialize(CreateInterfaceFn *factories, int count)
 		g_pVGuiSurface = (ISurface *)fnEngineCreateInterface(VGUI_SURFACE_INTERFACE_VERSION, NULL);
 		staticSurface = (IEngineSurface *)fnEngineCreateInterface(ENGINE_SURFACE_VERSION, NULL);
 		gameuifuncs = (IGameUIFuncs *)fnEngineCreateInterface(VENGINE_GAMEUIFUNCS_VERSION, NULL);
+		vgui::IInputInternal *pInput = (vgui::IInputInternal *)fnVGUI2CreateInterface(VGUI_INPUT_INTERFACE_VERSION, NULL);
 		//serverbrowser = (IServerBrowser *)CreateInterface(SERVERBROWSER_INTERFACE_VERSION, NULL);
 
+		Input_InstallHook(pInput);
 		Surface_InstallHook(g_pVGuiSurface);
+
+		g_pPanel = (vgui::IPanel *)fnVGUI2CreateInterface(VGUI_PANEL_INTERFACE_VERSION, NULL);
 
 		/* Check if the interfaces are valid */
 		//if (g_pGameConsole)
