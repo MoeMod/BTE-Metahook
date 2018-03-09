@@ -108,8 +108,8 @@ public:
 	}
 
 private:
-	std::shared_ptr<CTextureDetail> FactoryTexture(char *szPath);
-	std::shared_ptr<CTextureDetail> GetTexturePtrByName(char *szPath);
+	std::shared_ptr<CTextureDetail> FactoryTexture(const std::string &szPath);
+	std::shared_ptr<CTextureDetail> GetTexturePtrByName(const std::string &szPath);
 	std::shared_ptr<CTextureDetail> GetTexturePtrById(int id);
 	std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<CTextureDetail>>> m_TexturesReplaceList;
 	std::unordered_map<std::string, std::shared_ptr<CTextureDetail>> m_TexturesNameList;

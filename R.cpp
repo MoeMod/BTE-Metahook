@@ -182,13 +182,13 @@ void R_DrawSpriteModel(cl_entity_t *pEntity)
 	}
 	*/
 
-	if (pEntity == &(g_pPetrolboomerFlame->entity))
+	if (g_pPetrolboomerFlame && pEntity == &(g_pPetrolboomerFlame->entity))
 		return;
-	if (pEntity == &(g_pRunebladeEffect->entity))
+	if (g_pRunebladeEffect && pEntity == &(g_pRunebladeEffect->entity))
 		return;
-	if (pEntity == &(g_pDualSwordEffect1->entity))
+	if (g_pDualSwordEffect1 && pEntity == &(g_pDualSwordEffect1->entity))
 		return;
-	if (pEntity == &(g_pDualSwordEffect2->entity))
+	if (g_pDualSwordEffect2 && pEntity == &(g_pDualSwordEffect2->entity))
 		return;
 
 	return g_pfnR_DrawSpriteModel(pEntity);
