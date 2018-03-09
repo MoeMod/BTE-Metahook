@@ -965,6 +965,12 @@
     <ClCompile Include="GameUI\CSBTEUpdateDialog.cpp">
       <Filter>GameUI</Filter>
     </ClCompile>
+    <ClCompile Include="util\iniparser.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\STLHelper.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2562,6 +2568,12 @@
     </ClInclude>
     <ClInclude Include="GameUI\CSBTEUpdateDialog.h">
       <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="util\iniparser.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\STLHelper.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

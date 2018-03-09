@@ -18,6 +18,8 @@
 #include <qgl.h>
 #include <LoadTexture.h>
 #include "TextureManager.h"
+#include "iniparser.h"
+#include "STLHelper.h"
 
 // !!
 //#define ZOMBIE_UP_ENABLED
@@ -73,7 +75,7 @@ CTextureManager::~CTextureManager(void)
 
 void CTextureManager::LoadTextureReplaceList()
 {
-	char strAppNameTemp[4096], strKeyNameTemp[4096];
+	/*char strAppNameTemp[4096], strKeyNameTemp[4096];
 
 	g_pFileSystem->GetLocalPath("textures.ini", m_szConfigPath, sizeof(m_szConfigPath));
 
@@ -125,10 +127,32 @@ void CTextureManager::LoadTextureReplaceList()
 			}
 		}
 		delete[] pAppName;
+	}*/
+
+	for (auto &app : CIniParser("textures.ini"))
+	{
+		std::unordered_map<std::string, std::shared_ptr<CTextureDetail>> KeyList;
+
+		std::string szLowerAppName = ToLower(app.first);
+
+		for (auto &kv : app.second)
+		{
+			std::string szLowerKey = ToLower(kv.first);
+			std::string szLowerValue = ToLower(kv.second);
+
+			auto ptr = GetTexturePtrByName(szLowerValue);
+			if (ptr)
+			{
+				KeyList[szLowerKey] = ptr;
+			}
+		}
+
+		if (!KeyList.empty())
+			m_TexturesReplaceList[szLowerAppName] = KeyList;
 	}
 }
 
-auto CTextureManager::GetTexturePtrByName(char *szPath) -> std::shared_ptr<CTextureDetail>
+auto CTextureManager::GetTexturePtrByName(const std::string &szPath) -> std::shared_ptr<CTextureDetail>
 {
 	std::string strName = szPath;
 	std::transform(strName.begin(), strName.end(), strName.begin(), ::tolower);
@@ -146,9 +170,9 @@ auto CTextureManager::GetTexturePtrByName(char *szPath) -> std::shared_ptr<CText
 	return std::move(ptr);
 }
 
-auto CTextureManager::FactoryTexture(char *szPath) -> std::shared_ptr<CTextureDetail>
+auto CTextureManager::FactoryTexture(const std::string &szPath) -> std::shared_ptr<CTextureDetail>
 {
-	const char *szExt = FileExtension(szPath);
+	const char *szExt = FileExtension(szPath.c_str());
 	if (!stricmp(szExt, "bik"))
 	{
 		auto ptr = std::shared_ptr<CBinkDetail>(new CBinkDetail(szPath));
@@ -165,7 +189,7 @@ auto CTextureManager::FactoryTexture(char *szPath) -> std::shared_ptr<CTextureDe
 	else
 	{
 		int w, h;
-		GLuint iTexIndex = GL_LoadTexture(szPath, &w, &h);
+		GLuint iTexIndex = GL_LoadTexture(szPath.c_str(), &w, &h);
 		if (!iTexIndex)
 		{
 			return nullptr;
