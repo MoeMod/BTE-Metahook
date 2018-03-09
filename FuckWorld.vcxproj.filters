@@ -959,6 +959,9 @@
     <ClCompile Include="vgui2\Input.cpp">
       <Filter>vgui2</Filter>
     </ClCompile>
+    <ClCompile Include="CVARs.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2550,6 +2553,9 @@
     </ClInclude>
     <ClInclude Include="vgui2\Input.h">
       <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="CVARs.h">
+      <Filter>Client</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -184,6 +184,7 @@
     <ClCompile Include="Client\weapons.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="configs.cpp" />
+    <ClCompile Include="CVARs.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="DrawTargaImage.cpp" />
     <ClCompile Include="engfunchook.cpp" />
@@ -473,6 +474,7 @@
     <ClInclude Include="Client\weapons.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="configs.h" />
+    <ClInclude Include="CVARs.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="DrawTargaImage.h" />
     <ClInclude Include="engfunchook.h" />
