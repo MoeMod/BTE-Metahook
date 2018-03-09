@@ -52,7 +52,7 @@ CIniParser::CIniParser(const std::string &filename, size_t iBufferSize)
 						}
 					}
 					//delete[] pKeyName;
-					m_DataMap[strAppName] = KeyList;
+					m_DataMap[strAppName] = std::move(KeyList);
 				}
 
 				//pAppName[0] = '\0';

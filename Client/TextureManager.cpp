@@ -148,7 +148,7 @@ void CTextureManager::LoadTextureReplaceList()
 		}
 
 		if (!KeyList.empty())
-			m_TexturesReplaceList[szLowerAppName] = KeyList;
+			m_TexturesReplaceList[szLowerAppName] = std::move(KeyList);
 	}
 }
 
