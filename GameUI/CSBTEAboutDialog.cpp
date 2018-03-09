@@ -7,7 +7,7 @@
 
 #include "Client/HUD/hud_saytext.h"
 
-void(*pfnUnknown)() = (void(*)())0x1960870;
+static void(*pfnUnknown)() = (void(*)())0x1960870;
 
 /*
 enum BTEVERSION

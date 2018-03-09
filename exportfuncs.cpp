@@ -1974,6 +1974,7 @@ void HUD_StudioEvent(const struct mstudioevent_s *pEvent, const struct cl_entity
 			if (pModel == NULL)
 			{
 				gEngfuncs.pfnConsolePrint(va("[BTE] MuzzleFlash: %s NOT FOUND", muzz));
+				return;
 			}
 			int frameCount = ModelFrameCount(pModel);
 
@@ -2071,12 +2072,15 @@ void HUD_StudioEvent(const struct mstudioevent_s *pEvent, const struct cl_entity
 					}
 				}
 
-				char muzz[32];
+				static char muzz[32];
 				sprintf(muzz, "sprites/muzzleflash%d.spr", index + 1);
 
-				struct model_s *pModel;
-				pModel = IEngineStudio.Mod_ForName(muzz, 0);
-
+				struct model_s *pModel = IEngineStudio.Mod_ForName(muzz, 0);
+				if (pModel == NULL)
+				{
+					gEngfuncs.pfnConsolePrint(va("[BTE] MuzzleFlash: %s NOT FOUND", muzz));
+					return;
+				}
 				float pos[3];
 				pos[0] = pEntity->attachment[iAttachment][0];
 				pos[1] = pEntity->attachment[iAttachment][1];
@@ -2109,6 +2113,7 @@ void HUD_StudioEvent(const struct mstudioevent_s *pEvent, const struct cl_entity
 					pTemp->entity.angles[2] = gEngfuncs.pfnRandomLong(0, index ? 359 : 20);
 
 				Engfunc_Call_AddVisibleEntity(&(pTemp->entity));
+				
 			}
 			return;
 		}

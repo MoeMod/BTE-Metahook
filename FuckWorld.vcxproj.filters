@@ -962,6 +962,9 @@
     <ClCompile Include="CVARs.cpp">
       <Filter>Client</Filter>
     </ClCompile>
+    <ClCompile Include="GameUI\CSBTEUpdateDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2556,6 +2559,9 @@
     </ClInclude>
     <ClInclude Include="CVARs.h">
       <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEUpdateDialog.h">
+      <Filter>GameUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

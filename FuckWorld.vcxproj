@@ -211,6 +211,7 @@
     <ClCompile Include="GameUI\CSBTEMapLoading.cpp" />
     <ClCompile Include="GameUI\CSBTEModeSelection.cpp" />
     <ClCompile Include="GameUI\CSBTEMyWpnEditor.cpp" />
+    <ClCompile Include="GameUI\CSBTEUpdateDialog.cpp" />
     <ClCompile Include="GameUI\CSBTEWelcomeDialog.cpp" />
     <ClCompile Include="GameUI\CSBTEZombieDNA.cpp" />
     <ClCompile Include="GameUI\CvarNegateCheckButton.cpp" />
@@ -498,6 +499,7 @@
     <ClInclude Include="GameUI\CSBTEMapLoading.h" />
     <ClInclude Include="GameUI\CSBTEModeSelection.h" />
     <ClInclude Include="GameUI\CSBTEMyWpnEditor.h" />
+    <ClInclude Include="GameUI\CSBTEUpdateDialog.h" />
     <ClInclude Include="GameUI\CSBTEWelcomeDialog.h" />
     <ClInclude Include="GameUI\CSBTEZombieDNA.h" />
     <ClInclude Include="GameUI\CvarNegateCheckButton.h" />

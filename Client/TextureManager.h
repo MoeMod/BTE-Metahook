@@ -101,7 +101,7 @@ public:
 			return ErrorTexture; 
 		return *ptr;
 	}
-	const void UpdateAll()
+	void UpdateAll() const
 	{
 		for (auto &i : m_TexturesIdList)
 			i.second->Update();
