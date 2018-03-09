@@ -97,6 +97,7 @@ CCreateMultiplayerGameServerPage::CCreateMultiplayerGameServerPage(vgui::Panel *
 //-----------------------------------------------------------------------------
 CCreateMultiplayerGameServerPage::~CCreateMultiplayerGameServerPage()
 {
+
 }
 
 //-----------------------------------------------------------------------------

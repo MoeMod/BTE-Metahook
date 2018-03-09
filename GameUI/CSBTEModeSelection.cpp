@@ -131,7 +131,6 @@ void CCSBTEModeSelection::OnCommand(const char *command)
 		sprintf(szPath, "cstrike\\addons\\amxmodx\\configs\\disabled-%s.ini", szPlugin);
 		sprintf(szFilename2, "cstrike\\addons\\amxmodx\\configs\\plugins-%s.ini", szPlugin);
 
-
 		if (!szPlugin[0] || rename(szPath, szFilename2) != 0)
 		{
 			MessageBox *msgbox;
@@ -142,11 +141,7 @@ void CCSBTEModeSelection::OnCommand(const char *command)
 
 			msgbox->Activate();
 		}
-
 		UpdateCurrentMode();
-
-
-
 	}
 	else
 		BaseClass::OnCommand(command);

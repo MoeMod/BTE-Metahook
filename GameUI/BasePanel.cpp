@@ -1,5 +1,3 @@
-
-
 #include "EngineInterface.h"
 #include "common.h"
 #include "BasePanel.h"
@@ -833,6 +831,7 @@ void CBasePanel::CreateBinkPanel(void)
 
 void CBasePanel::CreateBackGround(void)
 {
+
 }
 
 void CBasePanel::CreateToolbar(void)
@@ -1064,6 +1063,7 @@ void CBasePanel::ApplySchemeSettings(IScheme *pScheme)
 
 void CBasePanel::OnActivateModule(int moduleIndex)
 {
+
 }
 
 void CBasePanel::OnGameUIActivated(void)
@@ -1117,6 +1117,10 @@ void CBasePanel::RunMenuCommand(const char *command)
 	else if (!Q_stricmp(command, "OpenCSBTEAboutDialog"))
 	{
 		OnOpenCSBTEAboutDialog();
+	}
+	else if (!Q_stricmp(command, "OpenCSBTEUpdateDialog"))
+	{
+		OnOpenCSBTEUpdateDialog();
 	}
 	else if (!Q_stricmp(command, "OpenCSBTEModeSelection"))
 	{
@@ -1254,6 +1258,18 @@ void CBasePanel::OnOpenCSBTEAboutDialog(void)
 	}
 
 	m_hCSBTEAboutDialog->Activate();
+}
+
+void CBasePanel::OnOpenCSBTEUpdateDialog(void)
+{
+	if (!m_hCSBTEUpdateDialog.Get())
+	{
+		m_hCSBTEUpdateDialog = new CCSBTEUpdateDialog(this, "CSBTEUpdateDialog");
+		PositionDialog(m_hCSBTEUpdateDialog);
+	}
+
+	m_hCSBTEUpdateDialog->Activate();
+
 }
 
 void CBasePanel::OnOpenCSBTEModeSelection(void)
