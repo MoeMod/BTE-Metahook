@@ -14,6 +14,7 @@
 //#include "tier1/CommandBuffer.h"
 
 #include "GameUI/CSBTEAboutDialog.h"
+#include "GameUI/CSBTEUpdateDialog.h"
 #include "GameUI/CSBTEModeSelection.h"
 #include "GameUI/CSBTEMyWpnEditor.h"
 #include "GameUI/CSBTEMapLoading.h"
@@ -150,6 +151,7 @@ public:
 	void OnOpenQuitConfirmationDialog(void);
 	void OnOpenOptionsDialog(void);
 	void OnOpenCSBTEAboutDialog(void);
+	void OnOpenCSBTEUpdateDialog(void);
 	void OnOpenCSBTEModeSelection(void);
 	void OnOpenCSBTEMyWpnEditor(void);
 	void OnOpenCSBTEZombieDNA(void);
@@ -232,6 +234,7 @@ private:
 	vgui::DHANDLE<vgui::Frame> m_hCreateMultiplayerGameDialog;
 	vgui::DHANDLE<vgui::QueryBox> m_hQuitQueryBox;
 	vgui::DHANDLE<CCSBTEAboutDialog> m_hCSBTEAboutDialog;
+	vgui::DHANDLE<CCSBTEUpdateDialog> m_hCSBTEUpdateDialog;
 	vgui::DHANDLE<CCSBTEModeSelection> m_hCSBTEModeSelection;
 	vgui::DHANDLE<CCSBTEMyWpnEditor> m_hCSBTEMyWpnEditor;
 	vgui::DHANDLE<CCSBTEZombieDNA> m_hCSBTEZombieDNA;
