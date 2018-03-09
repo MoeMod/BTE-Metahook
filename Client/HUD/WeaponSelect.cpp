@@ -22,7 +22,7 @@ void CHudWeaponSelect::Init(void)
 	memset(m_rcIcon, NULL, sizeof(wrect_t));
 	memset(m_szTimeRemaining, 0, sizeof(m_szTimeRemaining));
 
-	m_Bink.Init("cstrike//resource//hud//zombie//zbselectbg.bik");
+	m_Bink.Init("cstrike//resource//zombie//zbselectbg.bik");
 }
 
 void CHudWeaponSelect::VidInit(void)

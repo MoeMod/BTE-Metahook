@@ -18,6 +18,7 @@
 #include "common.h"
 #include "R.h"
 #include "IMEInput.h"
+#include "CVARs.h"
 
 #include "TriAPI.h"
 #include "display.h"
@@ -1663,6 +1664,7 @@ int HUD_GetStudioModelInterface(int iVersion, struct r_studio_interface_s **ppSt
 	}
 	//DrawTgaLoadList(); !!!
 	MGUI_Init();
+	CVAR_Init();
 
 	g_Font.Init("font.ttf");
 	g_FontBold.Init("font_bold.ttf");

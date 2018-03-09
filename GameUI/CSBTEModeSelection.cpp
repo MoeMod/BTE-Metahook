@@ -22,9 +22,9 @@ CCSBTEModeSelection::CCSBTEModeSelection(Panel *parent, const char *panelName, b
 
 	for (int i = 0; i < MAX_GAMEMODES; i++)
 	{
-		GetPrivateProfileString(va("GameMode%d", i + 1), "Plugin", "", szPlugin, 127, "cstrike\\gamemodes.ini");
-		GetPrivateProfileString(va("GameMode%d", i + 1), "Image", "", szTGA, 127, "cstrike\\gamemodes.ini");
-		GetPrivateProfileString(va("GameMode%d", i + 1), "Name", "", szName, 127, "cstrike\\gamemodes.ini");
+		GetPrivateProfileString(va("GameMode%d", i), "Plugin", "", szPlugin, 127, "cstrike\\gamemodes.ini");
+		GetPrivateProfileString(va("GameMode%d", i), "Image", "", szTGA, 127, "cstrike\\gamemodes.ini");
+		GetPrivateProfileString(va("GameMode%d", i), "Name", "", szName, 127, "cstrike\\gamemodes.ini");
 
 		if (!szPlugin[0])
 			continue;
@@ -63,7 +63,7 @@ void CCSBTEModeSelection::UpdateCurrentMode()
 	char szFilename[128];
 	for (int i = 0; i < MAX_GAMEMODES; i++)
 	{
-		GetPrivateProfileString(va("GameMode%d", i + 1), "Plugin", "", szPlugin, 127, "cstrike\\gamemodes.ini");
+		GetPrivateProfileString(va("GameMode%d", i), "Plugin", "", szPlugin, 127, "cstrike\\gamemodes.ini");
 		if (!szPlugin[0])
 			continue;
 		sprintf(szFilename, "cstrike\\addons\\amxmodx\\configs\\plugins-%s.ini", szPlugin);
@@ -126,7 +126,7 @@ void CCSBTEModeSelection::OnCommand(const char *command)
 		_findclose(lfDir);
 
 		char szPlugin[128];
-		GetPrivateProfileString(va("GameMode%d", i + 1), "Plugin", "", szPlugin, 127, "cstrike\\gamemodes.ini");
+		GetPrivateProfileString(va("GameMode%d", i), "Plugin", "", szPlugin, 127, "cstrike\\gamemodes.ini");
 
 		sprintf(szPath, "cstrike\\addons\\amxmodx\\configs\\disabled-%s.ini", szPlugin);
 		sprintf(szFilename2, "cstrike\\addons\\amxmodx\\configs\\plugins-%s.ini", szPlugin);

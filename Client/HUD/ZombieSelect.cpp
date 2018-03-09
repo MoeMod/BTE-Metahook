@@ -48,7 +48,7 @@ void CHudZBSelect::Init()
 	memset(m_rcIcon, 0, sizeof(m_rcIcon));
 	memset(m_szTimeRemaining, 0, sizeof(m_szTimeRemaining));
 
-	m_Bink.Init("cstrike//resource//hud//zombie//zbselectbg.bik");
+	m_Bink.Init("cstrike//resource//zombie//zbselectbg.bik");
 }
 
 void CHudZBSelect::VidInit()
@@ -78,7 +78,7 @@ void CHudZBSelect::SetCount(int count)
 void CHudZBSelect::SetIcon(int slot, const char *name)
 {
 	char szFilename[128];
-	sprintf(szFilename,"resource\\hud\\zombie\\zombietype_%s", name);
+	sprintf(szFilename,"resource\\zombie\\zombietype_%s", name);
 
 	vgui::surface()->DrawSetTextureFile(m_iIcon[slot], szFilename, true, false);
 	vgui::surface()->DrawGetTextureSize(m_iIcon[slot], m_rcIcon[slot].right, m_rcIcon[slot].bottom);
