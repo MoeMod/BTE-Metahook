@@ -12,7 +12,7 @@ CIniParser::CIniParser(const std::string &filename, size_t iBufferSize)
 	auto pAppNameTemp = std::make_unique<TCHAR[]>(iBufferSize);
 	auto pKeyNameTemp = std::make_unique<TCHAR[]>(iBufferSize);
 	char szConfigPath[256];
-	g_pFileSystem->GetLocalPath("textures.ini", szConfigPath, sizeof(szConfigPath));
+	g_pFileSystem->GetLocalPath(filename.c_str(), szConfigPath, sizeof(szConfigPath));
 
 	DWORD dwAppNameSize = GetPrivateProfileString(nullptr, nullptr, nullptr, pAppNameTemp.get(), iBufferSize, szConfigPath);
 	DWORD dwKeyNameSize;
