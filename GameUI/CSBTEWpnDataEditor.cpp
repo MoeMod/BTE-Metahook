@@ -71,7 +71,6 @@ void CCSBTEWpnDataEditor::NextWpn()
 
 		// reset iterator to begin
 		m_iniDataIterator = m_iniData.begin();
-		return;
 	}
 
 	UpdateCurrentWeapon();
