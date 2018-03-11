@@ -34,8 +34,23 @@ CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, b
 	m_pNextWpn->SetVisible(true);
 
 	m_pName = new Label(this, "WeaponName", "#CSBTE_WpnDataEditor_WpnName");
-	m_pName->SetBounds(25, 30, 100, 20);
+	m_pName->SetBounds(25, 30, 200, 20);
 	m_pName->SetPaintBackgroundEnabled(false);
+
+	UpdateCurrentWeapon();
+}
+
+void CCSBTEWpnDataEditor::UpdateCurrentWeapon()
+{
+	//Read Weapons Data//
+	auto &kv = *m_iniDataIterator; // dereference iterator to get weapon data
+
+	auto &wpnName = kv.first;
+	auto &wpnData = kv.second;
+
+	m_pName->SetText(GetWeaponNameFormat(wpnName));
+
+	//m_pDamage = new Label(this, "WeaponsDamage", wpnData.c_str());
 }
 
 void CCSBTEWpnDataEditor::NextWpn()
@@ -59,15 +74,7 @@ void CCSBTEWpnDataEditor::NextWpn()
 		return;
 	}
 
-	//Read Weapons Data//
-	auto &kv = *m_iniDataIterator; // dereference iterator to get weapon data
-
-	auto &wpnName = kv.first;
-	auto &wpnData = kv.second;
-
-	m_pName->SetText(GetWeaponNameFormat(wpnName));
-
-	//m_pDamage = new Label(this, "WeaponsDamage", wpnData.c_str());
+	UpdateCurrentWeapon();
 
 }
 

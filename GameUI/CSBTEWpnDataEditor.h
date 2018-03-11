@@ -34,7 +34,7 @@ class CCSBTEWpnDataEditor : public Frame
 
 public:
 	CCSBTEWpnDataEditor(Panel *parent, const char *panelName, bool showTaskbarIcon = true);
-	void LoadWeaponsData();
+	void UpdateCurrentWeapon();
 	void NextWpn();
 
 protected:
