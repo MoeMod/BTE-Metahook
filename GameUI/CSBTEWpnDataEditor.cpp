@@ -8,7 +8,8 @@
 
 //char WEAPON_TYPE[8][32] = { "#CSO_Whole", "#CSO_Inventory_Pistol", "#CSO_Inventory_ShotGun", "#CSO_Inventory_SubMachineGun", "#CSO_Inventory_Rifle", "#CSO_Inventory_MachineGun", "#CSO_Inventory_Knife", "#CSO_Inventory_Equipment" };
 extern wchar_t *GetWeaponNameFormat(const std::string &name);
-CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, bool showTaskbarIcon) : Frame(parent, panelName, showTaskbarIcon)
+CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, bool showTaskbarIcon)
+	: Frame(parent, panelName, showTaskbarIcon), m_iniData("weapons.ini"), m_iniDataIterator(m_iniData.begin())
 {
 	int sw, sh;
 	surface()->GetScreenSize(sw, sh);
@@ -32,39 +33,17 @@ CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, b
 	m_pNextWpn->SetCommand("nextwpn");
 	m_pNextWpn->SetVisible(true);
 
-	for (auto &kv : CIniParser("weapons.ini"))
-	{
-		auto &wpnName = kv.first;
-
-		m_pName->SetText(GetWeaponNameFormat(wpnName));
-		m_pName->SetPaintBackgroundEnabled(false);
-		m_pName->SetBounds(25, 30, 100, 20);
-	}
-
-	//LoadWeaponsData();
-}
-
-void CCSBTEWpnDataEditor::LoadWeaponsData()
-{
-	//NextWpn();
-	for (auto &kv : CIniParser("weapons.ini"))
-	{
-		auto &wpnName = kv.first;
-
-		m_pName->SetText(GetWeaponNameFormat(wpnName));
-		m_pName->SetBounds(25, 30, 100, 20);
-	}
+	m_pName = new Label(this, "WeaponName", "#CSBTE_WpnDataEditor_WpnName");
+	m_pName->SetBounds(25, 30, 100, 20);
+	m_pName->SetPaintBackgroundEnabled(false);
 }
 
 void CCSBTEWpnDataEditor::NextWpn()
 {
 	//Read Next Weapons//
-	auto wpnini = CIniParser("weapons.ini");
-	auto iterator = wpnini.begin();
-	auto kv1 = iterator;
-	++iterator;
+	++m_iniDataIterator;
 
-	if (iterator == wpnini.end())
+	if (m_iniDataIterator == m_iniData.end())
 	{
 		CCSBTEWpnDataEditorMessageBox *msgbox;
 		msgbox = new CCSBTEWpnDataEditorMessageBox(L"#CSBTE_WpnDataEditor_Warning", L"#CSBTE_WpnDataEditor_WarningMsg", this);
@@ -74,21 +53,22 @@ void CCSBTEWpnDataEditor::NextWpn()
 		msgbox->SetCancelButtonVisible(true);
 		msgbox->SetBounds(GetWide() / 2 - 150, GetTall() / 2 - 100, 300, 200);
 		msgbox->Activate();
-		--iterator;
+
+		// reset iterator to begin
+		m_iniDataIterator = m_iniData.begin();
+		return;
 	}
 
 	//Read Weapons Data//
-	for (auto &kv : CIniParser("weapons.ini"))
-	{
-		auto &wpnName = kv.first;
-		auto &wpnData = kv.second;
+	auto &kv = *m_iniDataIterator; // dereference iterator to get weapon data
 
-		m_pName->SetText(GetWeaponNameFormat(wpnName));
-		m_pName->SetBounds(25, 60, 100, 20);
+	auto &wpnName = kv.first;
+	auto &wpnData = kv.second;
 
-		//m_pDamage = new Label(this, "WeaponsDamage", wpnData.c_str());
-	}
-	
+	m_pName->SetText(GetWeaponNameFormat(wpnName));
+
+	//m_pDamage = new Label(this, "WeaponsDamage", wpnData.c_str());
+
 }
 
 void CCSBTEWpnDataEditor::OnCommand(const char *command)

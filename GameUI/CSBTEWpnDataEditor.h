@@ -41,6 +41,8 @@ protected:
 	void OnCommand(const char *command);
 
 private:
+	CIniParser m_iniData;
+	CIniParser::iterator m_iniDataIterator;
 	Button * m_pCancelButton, *m_pNextWpn, *m_pPreviousWpn;
 	Label *m_pName, *m_pDamage, *m_pDamageZombie, *m_pAttackInterval, *m_pMaxClip, *m_pMaxAmmo, *m_pMaxSpeed, *m_pReloadTime, *m_pDeployTime, *m_pKnockback, *m_pVelocityModifier, *m_pCost;
 	

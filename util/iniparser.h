@@ -13,6 +13,7 @@ public:
 	using KeyType = std::string;
 	using ValueType = std::string;
 	using DataMapType = std::unordered_map<AppNameType, std::unordered_map<KeyType, ValueType>>;
+	using iterator = DataMapType::iterator;
 
 	auto operator[](const std::string &szAppName) -> std::unordered_map<KeyType, ValueType> &
 	{
