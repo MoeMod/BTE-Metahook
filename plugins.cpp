@@ -30,7 +30,7 @@ DWORD g_dwEngineBuildnum;
 bool g_bIsUseSteam;
 bool g_bWindowed;
 int g_iVideoWidth, g_iVideoHeight, g_iBPP;
-HWND g_hWnd;
+extern HWND g_hWnd;
 
 #define GetEngfuncsAddress(addr) (g_dwEngineBase+addr-0x1D01000)
 
