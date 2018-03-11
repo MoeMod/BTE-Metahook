@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "modules.h"
 #include "perf_counter.h"
+#include "Window.h"
 #include "R.h"
 #include "util.h"
 
@@ -107,13 +108,6 @@ void MemPatch_WideScreenLimit(void);
 
 void HUD_Frame(double flHostFrameTime);
 
-typedef enum PROCESS_DPI_AWARENESS {
-	PROCESS_DPI_UNAWARE = 0,
-	PROCESS_SYSTEM_DPI_AWARE = 1,
-	PROCESS_PER_MONITOR_DPI_AWARE = 2
-} PROCESS_DPI_AWARENESS;
-bool SetProcessDpiAwarenessWrapper(PROCESS_DPI_AWARENESS value);
-
 cvar_t *developer;
 
 void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_enginesave_t *pSave)
@@ -131,7 +125,7 @@ void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_engines
 
 	gPerformanceCounter.InitializePerformanceCounter();
 
-	SendMessageA(g_hWnd, WM_SETTEXT, 0, (LPARAM)"Counter-Strike: BreakThrough Edition - Loading");
+	Window_Init();
 
 
 	/*
@@ -163,7 +157,6 @@ void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_engines
 	}
 	LogToFile("BTE≤Âº˛“—º”‘ÿ[2014/11/22]");
 
-	SetProcessDpiAwarenessWrapper(PROCESS_PER_MONITOR_DPI_AWARE);
 }
 
 void IPlugins::Shutdown()
@@ -313,27 +306,6 @@ void IPlugins::ExitGame(int iResult)
 	HudStatistics().Save();
 	
 	RemoveFontResource(g_szFontPath);
-}
-
-// Win8.1 supports monitor-specific DPI scaling.
-bool SetProcessDpiAwarenessWrapper(PROCESS_DPI_AWARENESS value) {
-	typedef BOOL(WINAPI *SetProcessDpiAwarenessPtr)(PROCESS_DPI_AWARENESS);
-	SetProcessDpiAwarenessPtr set_process_dpi_awareness_func =
-		reinterpret_cast<SetProcessDpiAwarenessPtr>(
-		GetProcAddress(GetModuleHandleA("user32.dll"),
-		"SetProcessDpiAwarenessInternal"));
-	if (set_process_dpi_awareness_func) {
-		HRESULT hr = set_process_dpi_awareness_func(value);
-		if (SUCCEEDED(hr)) {
-			//VLOG(1) << "SetProcessDpiAwareness succeeded.";
-			return true;
-		}
-		else if (hr == E_ACCESSDENIED) {
-			//LOG(ERROR) << "Access denied error from SetProcessDpiAwareness. "
-			//	"Function called twice, or manifest was used.";
-		}
-	}
-	return false;
 }
 
 void HUD_Frame(double flHostFrameTime)
