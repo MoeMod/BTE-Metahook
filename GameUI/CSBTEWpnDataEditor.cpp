@@ -7,7 +7,7 @@
 #include <fstream>
 
 //char WEAPON_TYPE[8][32] = { "#CSO_Whole", "#CSO_Inventory_Pistol", "#CSO_Inventory_ShotGun", "#CSO_Inventory_SubMachineGun", "#CSO_Inventory_Rifle", "#CSO_Inventory_MachineGun", "#CSO_Inventory_Knife", "#CSO_Inventory_Equipment" };
-extern wchar_t *GetWeaponNameFormat(char *name);
+extern wchar_t *GetWeaponNameFormat(const std::string &name);
 CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, bool showTaskbarIcon) : Frame(parent, panelName, showTaskbarIcon)
 {
 	int sw, sh;
@@ -36,7 +36,7 @@ CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, b
 	{
 		auto &wpnName = kv.first;
 
-		m_pName->SetText(GetWeaponNameFormat(const_cast<char *>(wpnName.c_str())));
+		m_pName->SetText(GetWeaponNameFormat(wpnName));
 		m_pName->SetPaintBackgroundEnabled(false);
 		m_pName->SetBounds(25, 30, 100, 20);
 	}
@@ -51,7 +51,7 @@ void CCSBTEWpnDataEditor::LoadWeaponsData()
 	{
 		auto &wpnName = kv.first;
 
-		m_pName->SetText(GetWeaponNameFormat(const_cast<char *>(wpnName.c_str())));
+		m_pName->SetText(GetWeaponNameFormat(wpnName));
 		m_pName->SetBounds(25, 30, 100, 20);
 	}
 }
@@ -83,7 +83,7 @@ void CCSBTEWpnDataEditor::NextWpn()
 		auto &wpnName = kv.first;
 		auto &wpnData = kv.second;
 
-		m_pName->SetText(GetWeaponNameFormat(const_cast<char *>(wpnName.c_str())));
+		m_pName->SetText(GetWeaponNameFormat(wpnName));
 		m_pName->SetBounds(25, 60, 100, 20);
 
 		//m_pDamage = new Label(this, "WeaponsDamage", wpnData.c_str());

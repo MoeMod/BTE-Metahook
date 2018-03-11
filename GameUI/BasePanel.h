@@ -22,6 +22,7 @@
 #include "GameUI/CSBTEGameMenu.h"
 #include "GameUI/CSBTEZombieDNA.h"
 #include "GameUI/CSBTEWelcomeDialog.h"
+#include "GameUI/CSBTEWpnDataEditor.h"
 
 #include "GL_BinkTexture.h"
 
@@ -150,6 +151,7 @@ public:
 	void OnOpenCreateMultiplayerGameDialog(void);
 	void OnOpenQuitConfirmationDialog(void);
 	void OnOpenOptionsDialog(void);
+	void OnOpenCSBTEWpnDataEditor(void);
 	void OnOpenCSBTEAboutDialog(void);
 	void OnOpenCSBTEUpdateDialog(void);
 	void OnOpenCSBTEModeSelection(void);
@@ -233,6 +235,7 @@ private:
 	vgui::DHANDLE<vgui::PropertyDialog> m_hOptionsDialog;
 	vgui::DHANDLE<vgui::Frame> m_hCreateMultiplayerGameDialog;
 	vgui::DHANDLE<vgui::QueryBox> m_hQuitQueryBox;
+	vgui::DHANDLE<CCSBTEWpnDataEditor> m_hCSBTEWpnDataEditor;
 	vgui::DHANDLE<CCSBTEAboutDialog> m_hCSBTEAboutDialog;
 	vgui::DHANDLE<CCSBTEUpdateDialog> m_hCSBTEUpdateDialog;
 	vgui::DHANDLE<CCSBTEModeSelection> m_hCSBTEModeSelection;
