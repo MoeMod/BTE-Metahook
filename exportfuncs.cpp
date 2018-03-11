@@ -19,6 +19,7 @@
 #include "R.h"
 #include "IMEInput.h"
 #include "CVARs.h"
+#include "Window.h"
 
 #include "TriAPI.h"
 #include "display.h"
@@ -1596,22 +1597,15 @@ int HUD_GetStudioModelInterface(int iVersion, struct r_studio_interface_s **ppSt
 	gStudioFuncs.R_StudioCheckBBox = pEngineStudio->StudioCheckBBox;
 	gStudioFuncs.R_StudioSetupLighting = pEngineStudio->StudioSetupLighting;
 	StudioFuncs_InstallHook();
+
+	Window_VidInit();
 	
 	//Hud().m_scrinfo.iSize = sizeof(Hud().m_scrinfo);
 	//gEngfuncs.pfnGetScreenInfo(&Hud().m_scrinfo);
 	
 	//char *value;
 
-	if (gEngfuncs.CheckParm("-noborder", NULL))
-	{
-		int width = ScreenInfo().iWidth;
-		int height = ScreenInfo().iHeight;
-		int x = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
-		int y = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
-		
-		SetWindowLong(g_hWnd, GWL_STYLE, WS_CLIPSIBLINGS | WS_POPUP | WS_VISIBLE);
-		MoveWindow(g_hWnd, x, y, width, height, FALSE);
-	}
+	
 	/*
 	if (ScreenInfo().iHeight <= 600 && ScreenInfo().iWidth <= 800)
 		if (!strcmp(gConfigs.szLanguage, "schinese"))
@@ -1665,6 +1659,7 @@ int HUD_GetStudioModelInterface(int iVersion, struct r_studio_interface_s **ppSt
 	//DrawTgaLoadList(); !!!
 	MGUI_Init();
 	CVAR_Init();
+	
 
 	g_Font.Init("font.ttf");
 	g_FontBold.Init("font_bold.ttf");

@@ -185,6 +185,7 @@
     <ClCompile Include="common.cpp" />
     <ClCompile Include="configs.cpp" />
     <ClCompile Include="CVARs.cpp" />
+    <ClCompile Include="dGPU.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="DrawTargaImage.cpp" />
     <ClCompile Include="engfunchook.cpp" />
@@ -408,6 +409,7 @@
     <ClCompile Include="vgui_controls\WizardPanel.cpp" />
     <ClCompile Include="vgui_controls\WizardSubPanel.cpp" />
     <ClCompile Include="Win32Font.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
@@ -944,6 +946,7 @@
     <ClInclude Include="vgui_controls\WizardPanel.h" />
     <ClInclude Include="vgui_controls\WizardSubPanel.h" />
     <ClInclude Include="Win32Font.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BugReport\BugReport.rc" />

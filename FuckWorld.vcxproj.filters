@@ -971,6 +971,12 @@
     <ClCompile Include="util\STLHelper.cpp">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="dGPU.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2574,6 +2580,9 @@
     </ClInclude>
     <ClInclude Include="util\STLHelper.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

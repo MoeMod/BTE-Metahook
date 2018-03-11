@@ -1265,9 +1265,6 @@ void MGUI_Init()
 	g_OldProc = (WNDPROC)GetWindowLong(g_hWnd, GWL_WNDPROC);
 
 	SetWindowLong(g_hWnd, GWL_WNDPROC, (LONG)g_NewProc);
-	char title[64];
-	sprintf(title, "%s [%s]", "Counter-Strike: BreakThrough Edition", __DATE__, "Build 01");
-	SendMessageA(g_hWnd, WM_SETTEXT, 0, (LPARAM)title);
 }
 bool MGUI_IsInRect(int x, int w, int y, int h)
 {
