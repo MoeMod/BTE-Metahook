@@ -30,7 +30,7 @@ DWORD g_dwEngineBuildnum;
 bool g_bIsUseSteam;
 bool g_bWindowed;
 int g_iVideoWidth, g_iVideoHeight, g_iBPP;
-extern HWND g_hWnd;
+// HWND g_hWnd; // moved to window.cpp
 
 #define GetEngfuncsAddress(addr) (g_dwEngineBase+addr-0x1D01000)
 
@@ -258,7 +258,8 @@ void IPlugins::LoadEngine(void)
 
 void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 {
-	g_hWnd = FindWindow("Valve001", NULL);
+	//g_hWnd = FindWindow("Valve001", NULL);
+	Window_LoadClient();
 
 	//LogToFile("MGUI°æ±¾[2013/8/17]");
 	memcpy(&gExportfuncs, pExportFunc, sizeof(gExportfuncs));

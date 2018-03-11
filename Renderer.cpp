@@ -2,7 +2,7 @@
 #include "Renderer.h"
 
 IRenderer *g_pRenderer = NULL;
-HINTERFACEMODULE g_hRenderer;
+HINTERFACEMODULE g_hRenderer = NULL;
 
 void Renderer_Init(void)
 {
