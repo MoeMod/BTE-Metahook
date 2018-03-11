@@ -31,6 +31,7 @@
 #include "BackgroundMenuButton.h"
 #include "OptionsDialog.h"
 #include "CreateMultiplayerGameDialog.h"
+#include "CSBTEWpnDataEditor.h"
 
 #include "ToolBar.h"
 #include "plugins.h"
@@ -1094,6 +1095,10 @@ void CBasePanel::RunMenuCommand(const char *command)
 	{
 		OnOpenServerBrowser();
 	}
+	else if (!Q_stricmp(command, "OpenCSBTEWpnDataEditor"))
+	{
+		OnOpenCSBTEWpnDataEditor();
+	}
 	else if (!Q_stricmp(command, "OpenCreateMultiplayerGameDialog"))
 	{
 		OnOpenCreateMultiplayerGameDialog();
@@ -1236,6 +1241,17 @@ void CBasePanel::OnOpenOptionsDialog(void)
 	}
 
 	m_hOptionsDialog->Activate();
+}
+
+void CBasePanel::OnOpenCSBTEWpnDataEditor(void)
+{
+	if (!m_hCSBTEWpnDataEditor.Get())
+	{
+		m_hCSBTEWpnDataEditor = new CCSBTEWpnDataEditor(this, "CSBTEWpnDataEditor");
+		PositionDialog(m_hCSBTEWpnDataEditor);
+	}
+
+	m_hCSBTEWpnDataEditor->Activate();
 }
 
 void CBasePanel::OnOpenCreateMultiplayerGameDialog(void)
