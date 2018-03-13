@@ -6,8 +6,13 @@
 #include <Windows.h>
 #include <memory>
 
-CIniParser::CIniParser(const std::string &filename, size_t iBufferSize)
+#include <fstream>
+#include <sstream>
+#include <iterator>
+
+void CIniParser::OpenFile2(const std::string &filename, size_t iBufferSize)
 {
+	CloseFile();
 	//char strAppNameTemp[4096], strKeyNameTemp[4096];
 	auto pAppNameTemp = std::make_unique<TCHAR[]>(iBufferSize);
 	auto pKeyNameTemp = std::make_unique<TCHAR[]>(iBufferSize);
@@ -15,7 +20,6 @@ CIniParser::CIniParser(const std::string &filename, size_t iBufferSize)
 	g_pFileSystem->GetLocalPath(filename.c_str(), szConfigPath, sizeof(szConfigPath));
 
 	DWORD dwAppNameSize = GetPrivateProfileString(nullptr, nullptr, nullptr, pAppNameTemp.get(), iBufferSize, szConfigPath);
-	DWORD dwKeyNameSize;
 	if (dwAppNameSize > 0)
 	{
 		//TCHAR *pAppName = new char[dwAppNameSize];
@@ -27,11 +31,10 @@ CIniParser::CIniParser(const std::string &filename, size_t iBufferSize)
 			if (!pAppNameTemp[i])
 			{
 				std::string strAppName(pAppName.get());
-				dwKeyNameSize = GetPrivateProfileString(pAppName.get(), nullptr, nullptr, pKeyNameTemp.get(), iBufferSize, szConfigPath);
-				std::unordered_map<std::string, std::string> KeyList;
+				DWORD dwKeyNameSize = GetPrivateProfileString(pAppName.get(), nullptr, nullptr, pKeyNameTemp.get(), iBufferSize, szConfigPath);
+				std::map<std::string, std::string> KeyList;
 				if (dwKeyNameSize > 0)
 				{
-					//TCHAR *pKeyName = new TCHAR[dwKeyNameSize];
 					auto pKeyName = std::make_unique<TCHAR[]>(dwKeyNameSize);
 					int nKeyNameLen = 0;
 					for (DWORD j = 0; j < dwKeyNameSize; j++)
@@ -51,14 +54,46 @@ CIniParser::CIniParser(const std::string &filename, size_t iBufferSize)
 							nKeyNameLen = 0;
 						}
 					}
-					//delete[] pKeyName;
 					m_DataMap[strAppName] = std::move(KeyList);
 				}
-
-				//pAppName[0] = '\0';
 				nAppNameLen = 0;
 			}
 		}
-		//delete[] pAppName;
+	}
+}
+
+void CIniParser::OpenFile(const std::string &filename)
+{
+	char szConfigPath[256];
+	g_pFileSystem->GetLocalPath(filename.c_str(), szConfigPath, sizeof(szConfigPath));
+
+	std::ifstream fs(szConfigPath);
+	std::string line;
+
+	std::string strAppName;
+	std::map<std::string, std::string> KeyList;
+
+	while (!std::getline(fs, line, '\n').eof())
+	{
+		if (line.empty())
+			continue;
+		if (line.front() == '[' && line.back() == ']')
+		{
+			// insert prev app
+			if (!strAppName.empty())
+				m_DataMap.emplace(std::move(strAppName), std::move(KeyList));
+			// copy new appname
+			strAppName.clear();
+			KeyList.clear();
+			strAppName = line.substr(1, line.size() - 2);
+		}
+		else
+		{
+			std::string::size_type n = line.find('=');
+			if (n != std::string::npos)
+			{
+				KeyList.emplace(line.substr(0, n), line.substr(n + 1));
+			}
+		}
 	}
 }
