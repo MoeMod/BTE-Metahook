@@ -2,7 +2,7 @@
 
 #include <vgui_controls/Frame.h>
 #include <vgui_controls/Button.h>
-#include <vgui_controls/RichText.h>
+#include <vgui_controls/TextEntry.h>
 #include <vgui_controls/PropertyPage.h>
 #include <vgui_controls/PropertySheet.h>
 #include <vgui_controls/ScrollBar.h>
@@ -19,7 +19,6 @@ class CCSBTEWpnDataEditorMessageBox : public MessageBox
 
 public:
 	CCSBTEWpnDataEditorMessageBox(const char *title, const char *text, Panel *parent = NULL) : MessageBox(title, text, parent) { ; }
-	CCSBTEWpnDataEditorMessageBox(const wchar_t *wszTitle, const wchar_t *wszText, Panel *parent = NULL) : MessageBox(wszTitle, wszText, parent) { ; }
 
 	virtual void OnCommand(const char *pCommand)
 	{
@@ -34,38 +33,20 @@ class CCSBTEWpnDataEditor : public Frame
 
 public:
 	CCSBTEWpnDataEditor(Panel *parent, const char *panelName, bool showTaskbarIcon = true);
-	void LoadWeaponsData();
+	void SetLayout();
+	void UpdateCurrentWeapons();
+	void SaveData();
 	void NextWpn();
+	void PrevWpn();
 
 protected:
 	void OnCommand(const char *command);
 
 private:
-	Button * m_pCancelButton, *m_pNextWpn, *m_pPreviousWpn;
-	Label *m_pName, *m_pDamage, *m_pDamageZombie, *m_pAttackInterval, *m_pMaxClip, *m_pMaxAmmo, *m_pMaxSpeed, *m_pReloadTime, *m_pDeployTime, *m_pKnockback, *m_pVelocityModifier, *m_pCost;
-	
-	char m_szConfigPath[256];
-
-	enum WeaponType
-	{
-		NONE = 0,
-		PISTOL,
-		SHOTGUN,
-		SMG,
-		RIFLE,
-		MG,
-		KNIFE,
-		EQUIP
-	};
-
-	struct WeaponInfo
-	{
-		char szName[32];
-		WeaponType iMenu;
-		bool isMyWpn;
-	};
-
-	std::vector<WeaponInfo> m_WeaponInfoList;
-
-	std::vector<int> m_WeaponInfoDisplayId;
+	CIniParser m_iniData;
+	CIniParser::iterator m_iniDataIterator;
+	Button * m_pCancelButton, *m_pNextWpn, *m_pPrevWpn, *bSaveData;
+	TextEntry *m_pDamage, *m_pDamageZombie, *m_pAttackInterval, *m_pMaxClip, *m_pMaxAmmo, *m_pMaxSpeed, *m_pReloadTime, *m_pDeployTime, *m_pKnockback, *m_pVelocityModifier, *m_pCost;
+	Label *m_pName, *m_plDamage, *m_plDamageZombie, *m_plAttackInterval, *m_plMaxClip, *m_plMaxAmmo, *m_plMaxSpeed, *m_plReloadTime, *m_plDeployTime, *m_plKnockback, *m_plVelocityModifier, *m_plCost;
+	CCSBTEWpnDataEditorMessageBox *msgbox;
 };

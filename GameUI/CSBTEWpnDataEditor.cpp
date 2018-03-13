@@ -6,89 +6,127 @@
 #include <string>
 #include <fstream>
 
-//char WEAPON_TYPE[8][32] = { "#CSO_Whole", "#CSO_Inventory_Pistol", "#CSO_Inventory_ShotGun", "#CSO_Inventory_SubMachineGun", "#CSO_Inventory_Rifle", "#CSO_Inventory_MachineGun", "#CSO_Inventory_Knife", "#CSO_Inventory_Equipment" };
-extern wchar_t *GetWeaponNameFormat(char *name);
-CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, bool showTaskbarIcon) : Frame(parent, panelName, showTaskbarIcon)
+extern wchar_t *GetWeaponNameFormat(const std::string &);
+
+CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, bool showTaskbarIcon) 
+	: Frame(parent, panelName, showTaskbarIcon), m_iniData("weapons.ini"), m_iniDataIterator(m_iniData.begin())
 {
 	int sw, sh;
 	surface()->GetScreenSize(sw, sh);
 
-	SetTitle("#CSBTE_WpnDataEditor_Title", false);
-
-	SetSize(740, 700);
+	SetSize(720, 500);
 	MoveToCenterOfScreen();
+	SetTitle("#CSBTE_WpnDataEditor_Title", false);
 	SetSizeable(false);
 	SetVisible(true);
 
+	SetLayout();
+}
+
+void CCSBTEWpnDataEditor::SetLayout()
+{
+	msgbox = new CCSBTEWpnDataEditorMessageBox("#CSBTE_WpnDataEditor_Warning", "#CSBTE_WpnDataEditor_WarningMsg", this);
+	msgbox->SetOKButtonText("#CSBTE_WpnDataEditor_Yes");
+	msgbox->SetOKButtonVisible(true);
+	msgbox->SetBounds(GetWide() / 2 - 150, GetTall() / 2 - 100, 300, 200);
+
 	m_pCancelButton = new Button(this, "CancelButton", "#GameUI_Close");
 	m_pCancelButton->SetContentAlignment(Label::a_center);
-	m_pCancelButton->SetBounds(260, 625, 200, 50);
+	m_pCancelButton->SetBounds(275, 425, 200, 50);
 	m_pCancelButton->SetCommand("vguicancel");
 	m_pCancelButton->SetVisible(true);
 
 	m_pNextWpn = new Button(this, "NextWeapon", "#CSBTE_WpnDataEditor_Next");
 	m_pNextWpn->SetContentAlignment(Label::a_center);
-	m_pNextWpn->SetBounds(500, 625, 200, 50);
+	m_pNextWpn->SetBounds(500, 425, 200, 50);
 	m_pNextWpn->SetCommand("nextwpn");
 	m_pNextWpn->SetVisible(true);
 
-	for (auto &kv : CIniParser("weapons.ini"))
-	{
-		auto &wpnName = kv.first;
+	m_pPrevWpn = new Button(this, "PreviousWeapon", "#CSBTE_WpnDataEditor_Previous");
+	m_pPrevWpn->SetContentAlignment(Label::a_center);
+	m_pPrevWpn->SetBounds(50, 425, 200, 50);
+	m_pPrevWpn->SetCommand("prevwpn");
+	m_pPrevWpn->SetVisible(true);
 
-		m_pName->SetText(GetWeaponNameFormat(const_cast<char *>(wpnName.c_str())));
-		m_pName->SetPaintBackgroundEnabled(false);
-		m_pName->SetBounds(25, 30, 100, 20);
-	}
+	bSaveData = new Button(this, "CancelButton", "#CSBTE_WpnDataEditor_SaveData");
+	bSaveData->SetContentAlignment(Label::a_center);
+	bSaveData->SetBounds(275, 225, 100, 50);
+	bSaveData->SetCommand("savedata");
+	bSaveData->SetVisible(true);
 
-	//LoadWeaponsData();
+	//Weapons Data Label//
+	m_pName = new Label(this, "WeaponName", "#CSBTE_WpnDataEditor_WpnName");
+	m_plDamage = new Label(this, "WeaponDmgLbl", "#CSBTE_WpnDataEditor_Damage");
+	m_plDamageZombie = new Label(this, "WeaponDmgZbLbl", "#CSBTE_WpnDataEditor_DamageZombie");
+
+	m_pName->SetBounds(20, 30, 200, 20);
+	m_plDamage->SetBounds(20, 60, 80, 20);
+	m_plDamageZombie->SetBounds(300, 60, 80, 20);
+
+	//Weapons Data TextBox//
+	m_pDamage = new TextEntry(this, "WeaponDamage");
+	m_pDamageZombie = new TextEntry(this, "WeaponDamageZombie");
+
+	m_pDamage->SetBounds(100, 60, 100, 20);
+	m_pDamageZombie->SetBounds(400, 60, 100, 20);
+
+	UpdateCurrentWeapons();
 }
 
-void CCSBTEWpnDataEditor::LoadWeaponsData()
+void CCSBTEWpnDataEditor::UpdateCurrentWeapons()
 {
-	//NextWpn();
-	for (auto &kv : CIniParser("weapons.ini"))
-	{
-		auto &wpnName = kv.first;
+	//Read Weapons Data//
+	auto &kv = *m_iniDataIterator;
+	auto &wpnName = kv.first;
+	auto &wpnDmg = kv.second["Damage"];
+	auto &wpnDmgZb = kv.second["DamageZombie"];
 
-		m_pName->SetText(GetWeaponNameFormat(const_cast<char *>(wpnName.c_str())));
-		m_pName->SetBounds(25, 30, 100, 20);
-	}
+	//Set Data To Labels & TextBox//
+	m_pName->SetText(GetWeaponNameFormat(wpnName));
+	m_pDamage->SetText(wpnDmg.c_str());
+	m_pDamageZombie->SetText(wpnDmgZb.c_str());
+}
+
+void CCSBTEWpnDataEditor::SaveData()
+{
+	//m_iniData
+	m_iniData.SaveFile();
 }
 
 void CCSBTEWpnDataEditor::NextWpn()
 {
 	//Read Next Weapons//
-	auto wpnini = CIniParser("weapons.ini");
-	auto iterator = wpnini.begin();
-	auto kv1 = iterator;
-	++iterator;
+	++m_iniDataIterator;
 
-	if (iterator == wpnini.end())
+	if (m_iniDataIterator == m_iniData.end())
 	{
-		CCSBTEWpnDataEditorMessageBox *msgbox;
-		msgbox = new CCSBTEWpnDataEditorMessageBox(L"#CSBTE_WpnDataEditor_Warning", L"#CSBTE_WpnDataEditor_WarningMsg", this);
-		msgbox->SetOKButtonText(L"Yes");
-		msgbox->SetCancelButtonText(L"Cancel");
-		msgbox->SetOKButtonVisible(true);
-		msgbox->SetCancelButtonVisible(true);
-		msgbox->SetBounds(GetWide() / 2 - 150, GetTall() / 2 - 100, 300, 200);
+		//msgbox
+
+		//Spawn MessageBox Tells User End Of The Config, Reset To First Weapons?//
 		msgbox->Activate();
-		--iterator;
+
+		//Reset Weapons To Starting//
+		m_iniDataIterator = m_iniData.begin();
 	}
 
-	//Read Weapons Data//
-	for (auto &kv : CIniParser("weapons.ini"))
+	UpdateCurrentWeapons();
+}
+
+void CCSBTEWpnDataEditor::PrevWpn()
+{
+	if (m_iniDataIterator == m_iniData.begin())
 	{
-		auto &wpnName = kv.first;
-		auto &wpnData = kv.second;
+		//Spawn MessageBox Tells User First Of The Config, No More Wpn Lol?//
+		msgbox->Activate();
 
-		m_pName->SetText(GetWeaponNameFormat(const_cast<char *>(wpnName.c_str())));
-		m_pName->SetBounds(25, 60, 100, 20);
-
-		//m_pDamage = new Label(this, "WeaponsDamage", wpnData.c_str());
+		//Prevent Bug Exploit, So Reset To First Again//
+		m_iniDataIterator = m_iniData.end();
 	}
-	
+
+	//Read Prev Weapons//
+	--m_iniDataIterator;
+
+	UpdateCurrentWeapons();
 }
 
 void CCSBTEWpnDataEditor::OnCommand(const char *command)
@@ -97,8 +135,16 @@ void CCSBTEWpnDataEditor::OnCommand(const char *command)
 	{
 		Close();
 	}
+	else if (!Q_stricmp(command, "savedata"))
+	{
+		SaveData();
+	}
 	else if (!Q_stricmp(command, "nextwpn"))
 	{
 		NextWpn();
+	}
+	else if (!Q_stricmp(command, "prevwpn"))
+	{
+		PrevWpn();
 	}
 }

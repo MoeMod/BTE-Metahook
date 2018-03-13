@@ -15,13 +15,13 @@
 
 #include "GameUI/CSBTEAboutDialog.h"
 #include "GameUI/CSBTEUpdateDialog.h"
-#include "GameUI/CSBTEModeSelection.h"
 #include "GameUI/CSBTEMyWpnEditor.h"
 #include "GameUI/CSBTEMapLoading.h"
 #include "GameUI/CSBTEEscPanel.h"
 #include "GameUI/CSBTEGameMenu.h"
 #include "GameUI/CSBTEZombieDNA.h"
 #include "GameUI/CSBTEWelcomeDialog.h"
+#include "GameUI/CSBTEWpnDataEditor.h"
 
 #include "GL_BinkTexture.h"
 
@@ -154,6 +154,7 @@ public:
 	void OnOpenCSBTEUpdateDialog(void);
 	void OnOpenCSBTEModeSelection(void);
 	void OnOpenCSBTEMyWpnEditor(void);
+	void OnOpenCSBTEWpnDataEditor(void);
 	void OnOpenCSBTEZombieDNA(void);
 	void OnSizeChanged(int newWide, int newTall);
 	void OnGameUIHidden(void);
@@ -235,8 +236,8 @@ private:
 	vgui::DHANDLE<vgui::QueryBox> m_hQuitQueryBox;
 	vgui::DHANDLE<CCSBTEAboutDialog> m_hCSBTEAboutDialog;
 	vgui::DHANDLE<CCSBTEUpdateDialog> m_hCSBTEUpdateDialog;
-	vgui::DHANDLE<CCSBTEModeSelection> m_hCSBTEModeSelection;
 	vgui::DHANDLE<CCSBTEMyWpnEditor> m_hCSBTEMyWpnEditor;
+	vgui::DHANDLE<CCSBTEWpnDataEditor> m_hCSBTEWpnDataEditor;
 	vgui::DHANDLE<CCSBTEZombieDNA> m_hCSBTEZombieDNA;
 	vgui::DHANDLE<CCSBTEEscPanel>m_hCSBTEEscPanel;
 	vgui::DHANDLE<CCSBTEWelcomeDialog> m_hCSBTEWelcomeDialog;

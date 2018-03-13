@@ -1127,10 +1127,6 @@ void CBasePanel::RunMenuCommand(const char *command)
 	{
 		OnOpenCSBTEUpdateDialog();
 	}
-	else if (!Q_stricmp(command, "OpenCSBTEModeSelection"))
-	{
-		OnOpenCSBTEModeSelection();
-	}
 	else if (!Q_stricmp(command, "OpenCSBTEMyWpnEditor"))
 	{
 		OnOpenCSBTEMyWpnEditor();
@@ -1286,17 +1282,6 @@ void CBasePanel::OnOpenCSBTEUpdateDialog(void)
 
 	m_hCSBTEUpdateDialog->Activate();
 
-}
-
-void CBasePanel::OnOpenCSBTEModeSelection(void)
-{
-	if (!m_hCSBTEModeSelection.Get())
-	{
-		m_hCSBTEModeSelection = new CCSBTEModeSelection(this, "CSBTEAboutDialog");
-		PositionDialog(m_hCSBTEModeSelection);
-	}
-
-	m_hCSBTEModeSelection->Activate();
 }
 
 void CBasePanel::OnOpenCSBTEMyWpnEditor(void)
