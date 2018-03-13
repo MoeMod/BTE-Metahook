@@ -66,7 +66,7 @@ CGameMenuItem::CGameMenuItem(vgui::Menu *parent, const char *name) : BaseClass(p
 void CGameMenuItem::ApplySchemeSettings(IScheme *pScheme)
 {
 	BaseClass::ApplySchemeSettings(pScheme);
-	
+
 	SetFgColor(GetSchemeColor("MainMenu.TextColor", pScheme));
 	SetBgColor(Color(0, 0, 0, 0));
 	SetDefaultColor(GetSchemeColor("MainMenu.TextColor", pScheme), Color(255, 255, 255, 255));
@@ -77,7 +77,7 @@ void CGameMenuItem::ApplySchemeSettings(IScheme *pScheme)
 	SetDefaultBorder(NULL);
 	SetDepressedBorder(NULL);
 	SetKeyFocusBorder(NULL);
-	
+
 	vgui::HFont hMainMenuFont = pScheme->GetFont("MainMenuFont", IsProportional());
 
 	if (hMainMenuFont)
@@ -99,30 +99,30 @@ void CGameMenuItem::ApplySchemeSettings(IScheme *pScheme)
 template<class T = int, int... Args>
 struct CPointerArray
 {
-	inline CPointerArray(T *&p) : m_p(x) {}
-	inline auto operator[](size_t x) -> CPointerArray<T, Args>
-	{
-		return CPointerArray<T, Args>(m_p);
-	}
-	T *& m_p;
+inline CPointerArray(T *&p) : m_p(x) {}
+inline auto operator[](size_t x) -> CPointerArray<T, Args>
+{
+return CPointerArray<T, Args>(m_p);
+}
+T *& m_p;
 };
 
 template<class T>
 struct FakeArray
 {
-	inline explicit FakeArray(T *&p, size_t size, size_t...Args) :m_p(p), m_size(size), m_next(p, Args), bLast(false) {  }
-	inline explicit FakeArray(T *&p, size_t size) :m_p(p), m_size(size), bLast(true){}
+inline explicit FakeArray(T *&p, size_t size, size_t...Args) :m_p(p), m_size(size), m_next(p, Args), bLast(false) {  }
+inline explicit FakeArray(T *&p, size_t size) :m_p(p), m_size(size), bLast(true){}
 
-	inline T operator[](size_t x) { 
-		if (bLast)
-			return m_p[x]; 
-		return m_next[x];
-	}
-	T *&m_p;
-	size_t m_size;
+inline T operator[](size_t x) {
+if (bLast)
+return m_p[x];
+return m_next[x];
+}
+T *&m_p;
+size_t m_size;
 
-	FakeArray m_next;
-	bool bLast;
+FakeArray m_next;
+bool bLast;
 };
 */
 
@@ -160,7 +160,7 @@ void CGameMenuItem::PaintBackground(void)
 			else
 				GetAnimationController()->RunAnimationCommand(this, "fgcolor", Color(200, 200, 200, 255), 0.0f, 0.5, AnimationController::INTERPOLATOR_LINEAR);
 		}
-		
+
 	}
 	BaseClass::PaintBackground();
 }
@@ -276,17 +276,17 @@ public:
 		{
 			switch (code)
 			{
-				case KEY_F1:
-				{
-					engine->pfnClientCmd("connect 127.1:27015\n");
-					break;
-				}
+			case KEY_F1:
+			{
+				engine->pfnClientCmd("connect 127.1:27015\n");
+				break;
+			}
 
-				case KEY_F2:
-				{
-					engine->pfnClientCmd("connect 127.1:4242\n");
-					break;
-				}
+			case KEY_F2:
+			{
+				engine->pfnClientCmd("connect 127.1:4242\n");
+				break;
+			}
 			}
 		}
 #else
@@ -361,7 +361,7 @@ public:
 					shouldBeVisible = false;
 
 				menuItem->SetVisible(shouldBeVisible);
-				
+
 				int w, h;
 				menuItem->GetTextImageSize(w, h);
 				menuItem->SetMouseInputEnabled(w);
@@ -752,7 +752,7 @@ void CBasePanel::DrawBackgroundImage(void)
 		surface()->DrawSetTexture(bimage.imageID);
 		surface()->DrawTexturedRect(dx, dy, dw, dt);
 	}
-	
+
 
 	if (IsPC() && (m_bRenderingBackgroundTransition || m_eBackgroundState == BACKGROUND_LOADING))
 	{
@@ -771,7 +771,7 @@ void CBasePanel::DrawBackgroundImage(void)
 	{
 		m_pBinkTexture->Draw(0, 0, wide, tall);
 	}
-	
+
 	if (m_bFadingInMenus)
 	{
 		alpha = (frametime - m_flFadeMenuStartTime) / (m_flFadeMenuEndTime - m_flFadeMenuStartTime) * 255;
@@ -851,7 +851,7 @@ void CBasePanel::UpdateGameMenus(void)
 	bool isInGame = GameUI().IsInLevel();
 	// Miao : Fix here
 	if (isInGame)
-	{ 
+	{
 		m_pGameMenu->Menu::SetVisible(false);
 		for (int i = 0; i < m_pGameMenuButtons.Count(); ++i)
 			m_pGameMenuButtons[i]->SetVisible(false);
@@ -859,7 +859,7 @@ void CBasePanel::UpdateGameMenus(void)
 			m_hCSBTEEscPanel->SetVisible(true);
 	}
 	else
-	{ 
+	{
 		bool isMulti = isInGame && (engine->GetMaxClients() > 1);
 		m_pGameMenu->UpdateMenuItemState(isInGame, isMulti);
 		m_pGameMenu->SetVisible(true);
@@ -990,27 +990,27 @@ void CBasePanel::ApplySchemeSettings(IScheme *pScheme)
 	int screenWide, screenTall;
 	surface()->GetScreenSize(screenWide, screenTall);
 
-	float aspectRatio = (float)screenWide/(float)screenTall;
+	float aspectRatio = (float)screenWide / (float)screenTall;
 	bool bIsWidescreen = aspectRatio >= 1.5999f;
 	/*
 	for (int y = 0; y < BACKGROUND_ROWS; y++)
 	{
-		for (int x = 0; x < BACKGROUND_COLUMNS; x++)
-		{
-			bimage_t &bimage = m_ImageID[y][x];
-			bimage.imageID = surface()->CreateNewTextureID();
+	for (int x = 0; x < BACKGROUND_COLUMNS; x++)
+	{
+	bimage_t &bimage = m_ImageID[y][x];
+	bimage.imageID = surface()->CreateNewTextureID();
 
-			char filename[MAX_PATH];
-			sprintf(filename, "resource/background/1024_%d_%c_BTE", y + 1, 'a' + x);
-			surface()->DrawSetTextureFile(bimage.imageID, filename, false, false);
-			surface()->DrawGetTextureSize(bimage.imageID, bimage.width, bimage.height);
-		}
+	char filename[MAX_PATH];
+	sprintf(filename, "resource/background/1024_%d_%c_BTE", y + 1, 'a' + x);
+	surface()->DrawSetTextureFile(bimage.imageID, filename, false, false);
+	surface()->DrawGetTextureSize(bimage.imageID, bimage.width, bimage.height);
+	}
 	}
 
 	if (IsPC())
 	{
-		m_iLoadingImageID = surface()->CreateNewTextureID();
-		surface()->DrawSetTextureFile(m_iLoadingImageID, "gfx/vgui/console/startup_loading", false, false);
+	m_iLoadingImageID = surface()->CreateNewTextureID();
+	surface()->DrawSetTextureFile(m_iLoadingImageID, "gfx/vgui/console/startup_loading", false, false);
 	}*/
 
 	FileHandle_t file = g_pFullFileSystem->Open("resource/BackgroundLayout.txt", "rt");
@@ -1126,10 +1126,6 @@ void CBasePanel::RunMenuCommand(const char *command)
 	else if (!Q_stricmp(command, "OpenCSBTEUpdateDialog"))
 	{
 		OnOpenCSBTEUpdateDialog();
-	}
-	else if (!Q_stricmp(command, "OpenCSBTEModeSelection"))
-	{
-		OnOpenCSBTEModeSelection();
 	}
 	else if (!Q_stricmp(command, "OpenCSBTEMyWpnEditor"))
 	{
@@ -1286,17 +1282,6 @@ void CBasePanel::OnOpenCSBTEUpdateDialog(void)
 
 	m_hCSBTEUpdateDialog->Activate();
 
-}
-
-void CBasePanel::OnOpenCSBTEModeSelection(void)
-{
-	if (!m_hCSBTEModeSelection.Get())
-	{
-		m_hCSBTEModeSelection = new CCSBTEModeSelection(this, "CSBTEAboutDialog");
-		PositionDialog(m_hCSBTEModeSelection);
-	}
-
-	m_hCSBTEModeSelection->Activate();
 }
 
 void CBasePanel::OnOpenCSBTEMyWpnEditor(void)

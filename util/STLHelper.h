@@ -15,6 +15,14 @@ inline std::string ToUpper(std::string sz)
 	return sz;
 }
 
+inline std::string Trim(std::string sz)
+{
+	const char *delim = " \t";
+	sz.erase(0, sz.find_first_not_of(delim));
+	sz.erase(sz.find_last_not_of(delim) + 1);
+	return sz;
+}
+
 template<class T>
 class IEnumerableProxy
 {

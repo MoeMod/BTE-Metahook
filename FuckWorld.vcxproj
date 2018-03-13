@@ -210,7 +210,6 @@
     <ClCompile Include="GameUI\CSBTEAboutDialog.cpp" />
     <ClCompile Include="GameUI\CSBTEEscPanel.cpp" />
     <ClCompile Include="GameUI\CSBTEMapLoading.cpp" />
-    <ClCompile Include="GameUI\CSBTEModeSelection.cpp" />
     <ClCompile Include="GameUI\CSBTEMyWpnEditor.cpp" />
     <ClCompile Include="GameUI\CSBTEUpdateDialog.cpp" />
     <ClCompile Include="GameUI\CSBTEWelcomeDialog.cpp" />
@@ -502,7 +501,6 @@
     <ClInclude Include="GameUI\CSBTEAboutDialog.h" />
     <ClInclude Include="GameUI\CSBTEEscPanel.h" />
     <ClInclude Include="GameUI\CSBTEMapLoading.h" />
-    <ClInclude Include="GameUI\CSBTEModeSelection.h" />
     <ClInclude Include="GameUI\CSBTEMyWpnEditor.h" />
     <ClInclude Include="GameUI\CSBTEUpdateDialog.h" />
     <ClInclude Include="GameUI\CSBTEWelcomeDialog.h" />

@@ -26,6 +26,7 @@ void CIniParser::OpenFile(const std::string &filename)
 		if (line.front() == '[' && line.back() == ']')
 		{
 			// insert prev app
+			if (!strAppName.empty())
 			m_DataMap.emplace(std::move(strAppName), std::move(KeyList));
 			// copy new appname
 			KeyList.clear();
@@ -33,10 +34,13 @@ void CIniParser::OpenFile(const std::string &filename)
 		}
 		else if (line.front() != ';')
 		{
+			
 			std::string::size_type n = line.find('=');
 			if (n != std::string::npos)
 			{
-				KeyList.emplace(line.substr(0, n), line.substr(n + 1));
+				std::string left = line.substr(0, n);
+				std::string right = line.substr(n + 1);
+				KeyList.emplace(Trim(left), Trim(right));
 			}
 		}
 	}

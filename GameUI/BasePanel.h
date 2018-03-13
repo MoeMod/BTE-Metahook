@@ -15,7 +15,6 @@
 
 #include "GameUI/CSBTEAboutDialog.h"
 #include "GameUI/CSBTEUpdateDialog.h"
-#include "GameUI/CSBTEModeSelection.h"
 #include "GameUI/CSBTEMyWpnEditor.h"
 #include "GameUI/CSBTEMapLoading.h"
 #include "GameUI/CSBTEEscPanel.h"
@@ -151,11 +150,11 @@ public:
 	void OnOpenCreateMultiplayerGameDialog(void);
 	void OnOpenQuitConfirmationDialog(void);
 	void OnOpenOptionsDialog(void);
-	void OnOpenCSBTEWpnDataEditor(void);
 	void OnOpenCSBTEAboutDialog(void);
 	void OnOpenCSBTEUpdateDialog(void);
 	void OnOpenCSBTEModeSelection(void);
 	void OnOpenCSBTEMyWpnEditor(void);
+	void OnOpenCSBTEWpnDataEditor(void);
 	void OnOpenCSBTEZombieDNA(void);
 	void OnSizeChanged(int newWide, int newTall);
 	void OnGameUIHidden(void);
@@ -235,15 +234,14 @@ private:
 	vgui::DHANDLE<vgui::PropertyDialog> m_hOptionsDialog;
 	vgui::DHANDLE<vgui::Frame> m_hCreateMultiplayerGameDialog;
 	vgui::DHANDLE<vgui::QueryBox> m_hQuitQueryBox;
-	vgui::DHANDLE<CCSBTEWpnDataEditor> m_hCSBTEWpnDataEditor;
 	vgui::DHANDLE<CCSBTEAboutDialog> m_hCSBTEAboutDialog;
 	vgui::DHANDLE<CCSBTEUpdateDialog> m_hCSBTEUpdateDialog;
-	vgui::DHANDLE<CCSBTEModeSelection> m_hCSBTEModeSelection;
 	vgui::DHANDLE<CCSBTEMyWpnEditor> m_hCSBTEMyWpnEditor;
+	vgui::DHANDLE<CCSBTEWpnDataEditor> m_hCSBTEWpnDataEditor;
 	vgui::DHANDLE<CCSBTEZombieDNA> m_hCSBTEZombieDNA;
 	vgui::DHANDLE<CCSBTEEscPanel>m_hCSBTEEscPanel;
 	vgui::DHANDLE<CCSBTEWelcomeDialog> m_hCSBTEWelcomeDialog;
-	
+
 	vgui::AnimationController *m_pConsoleAnimationController;
 	KeyValues *m_pConsoleControlSettings;
 	int m_iLoadingImageID;

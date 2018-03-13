@@ -284,9 +284,6 @@
     <ClCompile Include="engfunchook.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameUI\CSBTEModeSelection.cpp">
-      <Filter>GameUI</Filter>
-    </ClCompile>
     <ClCompile Include="GameUI\CSBTEMyWpnEditor.cpp">
       <Filter>GameUI</Filter>
     </ClCompile>
@@ -1200,9 +1197,6 @@
     </ClInclude>
     <ClInclude Include="SourceSDK\winlite.h">
       <Filter>SourceSDK</Filter>
-    </ClInclude>
-    <ClInclude Include="GameUI\CSBTEModeSelection.h">
-      <Filter>GameUI</Filter>
     </ClInclude>
     <ClInclude Include="GameUI\CSBTEMyWpnEditor.h">
       <Filter>GameUI</Filter>
