@@ -3,62 +3,53 @@
 #include <Interface/IFileSystem.h>
 
 #include "iniparser.h"
-#include <Windows.h>
 #include <memory>
 
-CIniParser::CIniParser(const std::string &filename, size_t iBufferSize)
+#include <fstream>
+#include <sstream>
+#include <iterator>
+
+void CIniParser::OpenFile(const std::string &filename)
 {
-	//char strAppNameTemp[4096], strKeyNameTemp[4096];
-	auto pAppNameTemp = std::make_unique<TCHAR[]>(iBufferSize);
-	auto pKeyNameTemp = std::make_unique<TCHAR[]>(iBufferSize);
-	char szConfigPath[256];
-	g_pFileSystem->GetLocalPath(filename.c_str(), szConfigPath, sizeof(szConfigPath));
+	if (m_pszConfigPath)
+		m_pszConfigPath = std::make_unique<char[]>(128);
+	g_pFileSystem->GetLocalPath(filename.c_str(), m_pszConfigPath.get(), 127);
+	std::ifstream fs(m_pszConfigPath.get());
+	std::string line, strAppName;
+	std::unordered_map<std::string, std::string> KeyList;
 
-	DWORD dwAppNameSize = GetPrivateProfileString(nullptr, nullptr, nullptr, pAppNameTemp.get(), iBufferSize, szConfigPath);
-	DWORD dwKeyNameSize;
-	if (dwAppNameSize > 0)
+	while (!std::getline(fs, line, '\n').eof())
 	{
-		//TCHAR *pAppName = new char[dwAppNameSize];
-		auto pAppName = std::make_unique<TCHAR[]>(dwAppNameSize);
-		int nAppNameLen = 0;
-		for (DWORD i = 0; i < dwAppNameSize; i++)
+		if (line.empty())
+			continue;
+		if (line.front() == '[' && line.back() == ']')
 		{
-			pAppName[nAppNameLen++] = pAppNameTemp[i];
-			if (!pAppNameTemp[i])
+			// insert prev app
+			m_DataMap.emplace(std::move(strAppName), std::move(KeyList));
+			// copy new appname
+			KeyList.clear();
+			strAppName = line.substr(1, line.size() - 2);
+		}
+		else if (line.front() != ';')
+		{
+			std::string::size_type n = line.find('=');
+			if (n != std::string::npos)
 			{
-				std::string strAppName(pAppName.get());
-				dwKeyNameSize = GetPrivateProfileString(pAppName.get(), nullptr, nullptr, pKeyNameTemp.get(), iBufferSize, szConfigPath);
-				std::unordered_map<std::string, std::string> KeyList;
-				if (dwKeyNameSize > 0)
-				{
-					//TCHAR *pKeyName = new TCHAR[dwKeyNameSize];
-					auto pKeyName = std::make_unique<TCHAR[]>(dwKeyNameSize);
-					int nKeyNameLen = 0;
-					for (DWORD j = 0; j < dwKeyNameSize; j++)
-					{
-						pKeyName[nKeyNameLen++] = pKeyNameTemp[j];
-						if (!pKeyNameTemp[j])
-						{
-							char pValue[128]; // pKeyName = pValue
-							if (GetPrivateProfileString(pAppName.get(), pKeyName.get(), nullptr, pValue, 127, szConfigPath))
-							{
-								std::string strKey(pKeyName.get());
-								std::string strValue(pValue);
-
-								KeyList[strKey] = strValue;
-							}
-							pKeyName[0] = '\0';
-							nKeyNameLen = 0;
-						}
-					}
-					//delete[] pKeyName;
-					m_DataMap[strAppName] = std::move(KeyList);
-				}
-
-				//pAppName[0] = '\0';
-				nAppNameLen = 0;
+				KeyList.emplace(line.substr(0, n), line.substr(n + 1));
 			}
 		}
-		//delete[] pAppName;
+	}
+}
+
+void CIniParser::SaveFile() const
+{
+	std::ofstream fs(m_pszConfigPath.get());
+	for (auto &app : m_DataMap)
+	{
+		fs << '[' << app.first << ']' << std::endl;
+		for (auto &kv : app.second)
+		{
+			fs << kv.first << " = " << kv.second << std::endl;
+		}
 	}
 }
