@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <utility>
+#include <map>
 #include <unordered_map>
 #include <memory>
 
@@ -10,11 +11,8 @@
 #include <Interface/IFileSystem.h>
 #include "STLHelper.h"
 
-template<
-	template<class, class> class SectionMap, 
-	template<class, class> class KeyValueMap
->
-class CBasicIniParser : public IEnumerableProxy<SectionMap<std::string, KeyValueMap<std::string, std::string>>>
+template<class MapType>
+class CBasicIniParser : public IEnumerableProxy<MapType>
 {
 public:
 	CBasicIniParser() :IEnumerableProxy(m_DataMap){}
@@ -30,10 +28,9 @@ public:
 	}
 	void SaveFile() const;
 
-	using DataMapType = SectionMap<std::string, KeyValueMap<std::string, std::string>>;
-	using iterator = typename DataMapType::iterator;
-
-	auto operator[](const std::string &szAppName) -> KeyValueMap<std::string, std::string > &
+	using iterator = typename MapType::iterator;
+	using KeyListType = typename Template_GetArg<1, MapType>::type;
+	auto operator[](const std::string &szAppName) -> KeyListType &
 	{
 		return m_DataMap[szAppName];
 	}
@@ -43,15 +40,12 @@ public:
 	}
 
 private:
-	DataMapType m_DataMap;
+	MapType m_DataMap;
 	std::unique_ptr<char[]> m_pszConfigPath;
 };
 
-template<
-	template<class, class> class SectionMap,
-	template<class, class> class KeyValueMap
->
-void CBasicIniParser<SectionMap, KeyValueMap>::OpenFile(const std::string &filename)
+template<class MapType>
+void CBasicIniParser<MapType>::OpenFile(const std::string &filename)
 {
 	CloseFile();
 	if (!m_pszConfigPath)
@@ -60,7 +54,7 @@ void CBasicIniParser<SectionMap, KeyValueMap>::OpenFile(const std::string &filen
 
 	std::ifstream fs(m_pszConfigPath.get());
 	std::string line, strAppName;
-	KeyValueMap<std::string, std::string> KeyList;
+	KeyListType KeyList;
 
 	while (!std::getline(fs, line, '\n').eof())
 	{
@@ -88,11 +82,8 @@ void CBasicIniParser<SectionMap, KeyValueMap>::OpenFile(const std::string &filen
 	}
 }
 
-template<
-	template<class, class> class SectionMap,
-	template<class, class> class KeyValueMap
->
-void CBasicIniParser<SectionMap, KeyValueMap>::SaveFile() const
+template<class MapType>
+void CBasicIniParser<MapType>::SaveFile() const
 {
 	std::ofstream fs(m_pszConfigPath.get());
 	for (auto &app : m_DataMap)
@@ -102,10 +93,9 @@ void CBasicIniParser<SectionMap, KeyValueMap>::SaveFile() const
 		{
 			fs << kv.first << " = " << kv.second << std::endl;
 		}
+		fs << std::endl;
 	}
 }
 
-template<class Key, class Value>
-using DefaultHashMap = std::unordered_map<Key, Value>;
-using CIniParser = CBasicIniParser<DefaultHashMap, DefaultHashMap>;
+using CIniParser = CBasicIniParser<std::unordered_map<std::string, std::unordered_map<std::string, std::string>>>;
 

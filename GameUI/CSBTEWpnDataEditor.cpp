@@ -18,7 +18,8 @@ extern wchar_t *GetWeaponNameFormat(const std::string &);
 
 // defines Keys' sequence and its object type
 // !! ComboBox TBD
-static std::pair<const std::string, objtype_t> WeaponKeyInfo[] = {
+using WeaponKeyInfoType = std::pair<const std::string, objtype_t>;
+static WeaponKeyInfoType WeaponKeyInfo[] = {
 	{ "WeaponID", O_NUMBER },
 	{ "Special", O_NUMBER },
 	{ "Type", O_NUMBER },
@@ -80,7 +81,7 @@ static std::pair<const std::string, objtype_t> WeaponKeyInfo[] = {
 	{ "Event", O_STRING }
 };
 // UnaryFunction: Compares a fixed string with pair
-struct KeyEquals
+/*struct KeyEquals
 {
 	using pair_type = std::remove_all_extents_t<decltype(WeaponKeyInfo)>;
 	const std::string &sz;
@@ -88,12 +89,16 @@ struct KeyEquals
 	{
 		return pair.first == sz;
 	}
-};
-// is lhs < rhs? (for sorting)
-bool CCSBTEWpnDataEditor::WeaponInfoKey_Less::operator()(const std::string &lhs, const std::string &rhs)
+};*/
+inline std::function<bool(const WeaponKeyInfoType &)> KeyEquals(const std::string &sz)
 {
-	auto pl = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals{ lhs });
-	auto pr = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals{ rhs });
+	return std::bind(IsKeyEqualsToTupleElement<0, WeaponKeyInfoType>, std::cref(sz), std::placeholders::_1);
+}
+// is lhs < rhs? (for sorting)
+bool CCSBTEWpnDataEditor::WeaponInfoKey_Less::operator()(const std::string &lhs, const std::string &rhs) const
+{
+	auto pl = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals(lhs));
+	auto pr = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals(rhs));
 	return (pl != pr) ? (pl < pr) : (lhs < rhs);
 }
 
@@ -180,14 +185,14 @@ void CCSBTEWpnDataEditor::CreateControls()
 	
 	//std::list<ControlPair *> CtrlList;
 	// dont know why there bugs using list::sort, so build a map to fixit
-	std::map<std::string, ControlPair *, WeaponInfoKey_Less> CtrlMap;
+	//std::map<std::string, ControlPair *, WeaponInfoKey_Less> CtrlMap;
 	for (const auto &kv : wpnDataMap)
 	{
 		ControlPair *pCtrl = new ControlPair(m_pListPanel, "CSBTEWpnDataEditor::ControlPair");
 		
 		pCtrl->key = kv.first;
 
-		auto p = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals{ pCtrl->key });
+		auto p = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals(pCtrl->key));
 		pCtrl->type = p == std::end(WeaponKeyInfo) ? O_STRING : p->second;
 		
 		std::string desc = "#CSBTE_WpnDataEditor_";
@@ -240,16 +245,16 @@ void CCSBTEWpnDataEditor::CreateControls()
 		}
 
 		pCtrl->SetSize(100, 28);
-		//m_pListPanel->AddItem(pCtrl);
-		CtrlMap.emplace(kv.first, pCtrl);
+		m_pListPanel->AddItem(pCtrl);
+		//CtrlMap.emplace(kv.first, pCtrl);
 	}
 	
 	//CtrlList.sort([](ControlPair * lhs, ControlPair *rhs) {return WeaponInfoKey_Less()(lhs->key, rhs->key); });
 	//std::for_each(CtrlList.begin(), CtrlList.end(), std::bind(&CPanelListPanel::AddItem, m_pListPanel, std::placeholders::_1));
-	for (auto &prprpr : CtrlMap)
-	{
-		m_pListPanel->AddItem(prprpr.second);
-	}
+	//for (auto &prprpr : CtrlMap)
+	//{
+	//	m_pListPanel->AddItem(prprpr.second);
+	//}
 }
 
 void CCSBTEWpnDataEditor::DestroyControls()

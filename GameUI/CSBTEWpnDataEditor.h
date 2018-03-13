@@ -53,11 +53,12 @@ protected:
 private:
 	struct WeaponInfoKey_Less
 	{
-		bool operator()(const std::string &lhs, const std::string &rhs);
+		bool operator()(const std::string &lhs, const std::string &rhs) const;
 	};
 
-	CIniParser m_iniData;
-	CIniParser::iterator m_iniDataIterator;
+	using MyIni = CBasicIniParser<std::unordered_map<std::string, std::map<std::string, std::string, WeaponInfoKey_Less>>>;
+	MyIni m_iniData;
+	MyIni::iterator m_iniDataIterator;
 
 	Button *m_pNextWpn, *m_pPrevWpn, *m_pSaveButton;
 	TextEntry *m_pDamage, *m_pDamageZombie, *m_pAttackInterval, *m_pMaxClip, *m_pMaxAmmo, *m_pMaxSpeed, *m_pReloadTime, *m_pDeployTime, *m_pKnockback, *m_pVelocityModifier, *m_pCost;

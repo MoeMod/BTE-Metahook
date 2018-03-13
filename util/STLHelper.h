@@ -2,6 +2,7 @@
 
 #include <string>
 #include <algorithm>
+#include <tuple>
 
 inline std::string ToLower(std::string sz)
 {
@@ -41,3 +42,27 @@ public:
 private:
 	T &m_Iterable;
 };
+
+template<size_t n, class First, class...Args>
+struct VA_GetArg
+{
+	using type = typename VA_GetArg<n - 1, Args...>::type;
+};
+template<class First, class...Args>
+struct VA_GetArg<0, First, Args...>
+{
+	using type = First;
+};
+template<size_t n, class T>
+struct Template_GetArg{};
+template<template<class...> class T, size_t n, class...Args>
+struct Template_GetArg<n, T<Args...>>
+{
+	using type = typename VA_GetArg<n, Args...>::type;
+};
+
+template<size_t n, class Tuple>
+inline bool IsKeyEqualsToTupleElement(const std::string &sz, const Tuple &pair)
+{
+	return sz == std::get<n>(pair);
+}
