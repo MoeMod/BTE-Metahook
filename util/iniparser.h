@@ -2,6 +2,7 @@
 #include <string>
 #include <utility>
 #include <unordered_map>
+#include <memory>
 #include "STLHelper.h"
 
 class CIniParser : public IEnumerableProxy<std::unordered_map<std::string, std::unordered_map<std::string, std::string>>>
@@ -12,12 +13,13 @@ public:
 	{
 		OpenFile(filename);
 	}
-	void OpenFile2(const std::string &filename, size_t iBufferSize = 4096);
 	void OpenFile(const std::string &filename);
 	void CloseFile()
 	{
 		m_DataMap.clear();
+		m_pszConfigPath.reset();
 	}
+	void SaveFile() const;
 
 	using AppNameType = std::string;
 	using KeyType = std::string;
@@ -36,4 +38,5 @@ public:
 
 private:
 	DataMapType m_DataMap;
+	std::unique_ptr<char[]> m_pszConfigPath;
 };
