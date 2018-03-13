@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
 #include <utility>
-#include <map>
+#include <unordered_map>
 #include "STLHelper.h"
 
-class CIniParser : public IEnumerableProxy<std::map<std::string, std::map<std::string, std::string>>>
+class CIniParser : public IEnumerableProxy<std::unordered_map<std::string, std::unordered_map<std::string, std::string>>>
 {
 public:
 	CIniParser() :IEnumerableProxy(m_DataMap){}
@@ -22,10 +22,10 @@ public:
 	using AppNameType = std::string;
 	using KeyType = std::string;
 	using ValueType = std::string;
-	using DataMapType = std::map<AppNameType, std::map<KeyType, ValueType>>;
+	using DataMapType = std::unordered_map<AppNameType, std::unordered_map<KeyType, ValueType>>;
 	using iterator = DataMapType::iterator;
 
-	auto operator[](const std::string &szAppName) -> std::map<KeyType, ValueType> &
+	auto operator[](const std::string &szAppName) -> std::unordered_map<KeyType, ValueType> &
 	{
 		return m_DataMap[szAppName];
 	}

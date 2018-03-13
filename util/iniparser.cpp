@@ -32,7 +32,7 @@ void CIniParser::OpenFile2(const std::string &filename, size_t iBufferSize)
 			{
 				std::string strAppName(pAppName.get());
 				DWORD dwKeyNameSize = GetPrivateProfileString(pAppName.get(), nullptr, nullptr, pKeyNameTemp.get(), iBufferSize, szConfigPath);
-				std::map<std::string, std::string> KeyList;
+				std::unordered_map<std::string, std::string> KeyList;
 				if (dwKeyNameSize > 0)
 				{
 					auto pKeyName = std::make_unique<TCHAR[]>(dwKeyNameSize);
@@ -69,7 +69,7 @@ void CIniParser::OpenFile(const std::string &filename)
 
 	std::ifstream fs(szConfigPath);
 	std::string line, strAppName;
-	std::map<std::string, std::string> KeyList;
+	std::unordered_map<std::string, std::string> KeyList;
 
 	while (!std::getline(fs, line, '\n').eof())
 	{
