@@ -5,6 +5,7 @@
 #include <io.h>
 #include <string>
 #include <fstream>
+#include <functional>
 
 #include <vgui_controls/Label.h>
 #include <vgui_controls/Button.h>
@@ -15,8 +16,89 @@
 
 extern wchar_t *GetWeaponNameFormat(const std::string &);
 
+// defines Keys' sequence and its object type
+// !! ComboBox TBD
+static std::pair<const std::string, objtype_t> WeaponKeyInfo[] = {
+	{ "WeaponID", O_NUMBER },
+	{ "Special", O_NUMBER },
+	{ "Type", O_NUMBER },
+	{ "Menu", O_STRING },
+	{ "BulletType", O_STRING },
+	{ "Damage", O_STRING },
+	{ "DamageZombie", O_STRING },
+	{ "AttackInterval", O_STRING },
+	{ "Delay", O_STRING },
+	{ "MaxClip", O_STRING },
+	{ "MaxAmmo", O_STRING },
+	{ "AmmoCost", O_STRING },
+	{ "Ammo", O_STRING },
+	{ "Distance", O_STRING },
+	{ "Angle", O_STRING },
+	{ "MaxSpeed", O_NUMBER },
+	{ "ReloadTime", O_STRING },
+	{ "DeployTime", O_STRING },
+	{ "KnockBack", O_STRING },
+	{ "VelocityModifier", O_STRING },
+	{ "Zoom", O_STRING },
+	{ "AnimExtention", O_STRING },
+	{ "Cost", O_STRING },
+	{ "CanBuy", O_BOOL },
+	{ "Team", O_STRING },
+	{ "GameModeLimit", O_NUMBER },
+	{ "BurstSpeed", O_STRING },
+	{ "BurstTimes", O_STRING },
+	{ "WorldModel", O_STRING },
+
+	{ "EntitySpawnOrigin", O_STRING },
+	{ "EntityKnockBack", O_STRING },
+	{ "EntityDamage", O_STRING },
+	{ "EntityDamageZombie", O_STRING },
+	{ "EntityRange", O_STRING },
+	{ "EntitySpeed", O_STRING },
+	{ "EntityGravity", O_STRING },
+	{ "EntityAngle", O_STRING },
+
+	{ "AccuracyCalculate", O_NUMBER },
+	{ "AccuracyDefault", O_NUMBER },
+	{ "Accuracy", O_STRING },
+	{ "AccuracyRange", O_STRING },
+	{ "Spread", O_STRING },
+	{ "SpreadRun", O_STRING },
+	{ "AccuracyMul", O_STRING },
+
+	{ "Punchangle", O_STRING },
+	{ "Penetration", O_STRING },
+	{ "Distance", O_STRING },
+	{ "ArmorRatio", O_STRING },
+	{ "RangeModifier", O_STRING },
+
+	{ "KickBackWalking", O_STRING },
+	{ "KickBackNotOnGround", O_STRING },
+	{ "KickBackDucking", O_STRING },
+	{ "KickBack", O_STRING },
+
+	{ "Event", O_STRING }
+};
+// UnaryFunction: Compares a fixed string with pair
+struct KeyEquals
+{
+	using pair_type = std::remove_all_extents_t<decltype(WeaponKeyInfo)>;
+	const std::string &sz;
+	bool operator()(const pair_type &pair)
+	{
+		return pair.first == sz;
+	}
+};
+// is lhs < rhs? (for sorting)
+bool CCSBTEWpnDataEditor::WeaponInfoKey_Less::operator()(const std::string &lhs, const std::string &rhs)
+{
+	auto pl = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals{ lhs });
+	auto pr = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals{ rhs });
+	return (pl != pr) ? (pl < pr) : (lhs < rhs);
+}
+
 CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, bool showTaskbarIcon)
-	: Frame(parent, panelName, showTaskbarIcon), m_iniData("weapons.ini"), m_iniDataIterator(m_iniData.begin())
+	: Frame(parent, panelName, showTaskbarIcon), m_iniData("weapons.ini")
 {
 	int sw, sh;
 	surface()->GetScreenSize(sw, sh);
@@ -26,6 +108,8 @@ CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, b
 	SetTitle("#CSBTE_WpnDataEditor_Title", false);
 	SetSizeable(false);
 	SetVisible(true);
+
+	m_iniDataIterator = m_iniData.begin();
 
 	SetLayout();
 }
@@ -93,17 +177,19 @@ void CCSBTEWpnDataEditor::CreateControls()
 
 	auto &wpnName = m_iniDataIterator->first;
 	auto &wpnDataMap = m_iniDataIterator->second;
-
-	ControlPair *pCtrl;
-
-	Panel *objParent = m_pListPanel;
-
-	for (auto &kv : wpnDataMap)
+	
+	//std::list<ControlPair *> CtrlList;
+	// dont know why there bugs using list::sort, so build a map to fixit
+	std::map<std::string, ControlPair *, WeaponInfoKey_Less> CtrlMap;
+	for (const auto &kv : wpnDataMap)
 	{
-		pCtrl = new ControlPair(objParent, "CSBTEWpnDataEditor::ControlPair");
-		pCtrl->type = O_STRING;
+		ControlPair *pCtrl = new ControlPair(m_pListPanel, "CSBTEWpnDataEditor::ControlPair");
+		
 		pCtrl->key = kv.first;
 
+		auto p = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals{ pCtrl->key });
+		pCtrl->type = p == std::end(WeaponKeyInfo) ? O_STRING : p->second;
+		
 		std::string desc = "#CSBTE_WpnDataEditor_";
 		desc += kv.first;
 
@@ -154,8 +240,15 @@ void CCSBTEWpnDataEditor::CreateControls()
 		}
 
 		pCtrl->SetSize(100, 28);
-		m_pListPanel->AddItem(pCtrl);
-
+		//m_pListPanel->AddItem(pCtrl);
+		CtrlMap.emplace(kv.first, pCtrl);
+	}
+	
+	//CtrlList.sort([](ControlPair * lhs, ControlPair *rhs) {return WeaponInfoKey_Less()(lhs->key, rhs->key); });
+	//std::for_each(CtrlList.begin(), CtrlList.end(), std::bind(&CPanelListPanel::AddItem, m_pListPanel, std::placeholders::_1));
+	for (auto &prprpr : CtrlMap)
+	{
+		m_pListPanel->AddItem(prprpr.second);
 	}
 }
 
@@ -176,6 +269,9 @@ void CCSBTEWpnDataEditor::SaveData()
 		char szValue[256];
 		char strValue[256];
 
+		// ugly switch in cpp
+		// dont know if dynamic_cast required
+		// using virtual functions to fix that?
 		switch (pList->type)
 		{
 		case O_BOOL:

@@ -13,6 +13,7 @@
 
 #include <vector>
 #include <forward_list>
+#include <map>
 #include <util/iniparser.h>
 
 using namespace vgui;
@@ -50,8 +51,14 @@ protected:
 	virtual void OnClose() override;
 
 private:
+	struct WeaponInfoKey_Less
+	{
+		bool operator()(const std::string &lhs, const std::string &rhs);
+	};
+
 	CIniParser m_iniData;
 	CIniParser::iterator m_iniDataIterator;
+
 	Button *m_pNextWpn, *m_pPrevWpn, *m_pSaveButton;
 	TextEntry *m_pDamage, *m_pDamageZombie, *m_pAttackInterval, *m_pMaxClip, *m_pMaxAmmo, *m_pMaxSpeed, *m_pReloadTime, *m_pDeployTime, *m_pKnockback, *m_pVelocityModifier, *m_pCost;
 	Label *m_pName, *m_plDamage, *m_plDamageZombie, *m_plAttackInterval, *m_plMaxClip, *m_plMaxAmmo, *m_plMaxSpeed, *m_plReloadTime, *m_plDeployTime, *m_plKnockback, *m_plVelocityModifier, *m_plCost;
