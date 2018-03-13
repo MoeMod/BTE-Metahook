@@ -64,13 +64,11 @@ void CIniParser::OpenFile2(const std::string &filename, size_t iBufferSize)
 
 void CIniParser::OpenFile(const std::string &filename)
 {
-	char szConfigPath[256];
+	static char szConfigPath[256];
 	g_pFileSystem->GetLocalPath(filename.c_str(), szConfigPath, sizeof(szConfigPath));
 
 	std::ifstream fs(szConfigPath);
-	std::string line;
-
-	std::string strAppName;
+	std::string line, strAppName;
 	std::map<std::string, std::string> KeyList;
 
 	while (!std::getline(fs, line, '\n').eof())
@@ -87,7 +85,7 @@ void CIniParser::OpenFile(const std::string &filename)
 			KeyList.clear();
 			strAppName = line.substr(1, line.size() - 2);
 		}
-		else
+		else if (line.front() != ';')
 		{
 			std::string::size_type n = line.find('=');
 			if (n != std::string::npos)
