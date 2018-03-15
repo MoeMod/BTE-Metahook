@@ -25,20 +25,7 @@ public:
 		GetParent()->OnCommand(pCommand);
 	}
 };
-/*
-class CCSBTEAboutDialogComboBox : public ComboBox
-{
-	DECLARE_CLASS_SIMPLE(CCSBTEAboutDialogComboBox, ComboBox);
 
-public:
-	CCSBTEAboutDialogComboBox(Panel *parent, RichText *pInsert, const char *panelName, int numLines, bool allowEdit) : ComboBox(parent, panelName, numLines, allowEdit) { m_pText = pInsert; }
-
-	virtual void OnMenuItemSelected();
-
-private:
-	RichText *m_pText;
-};
-*/
 class CCSBTEAboutDialog : public Frame
 {
 	DECLARE_CLASS_SIMPLE(CCSBTEAboutDialog, Frame);

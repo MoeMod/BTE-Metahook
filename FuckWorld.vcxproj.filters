@@ -123,6 +123,9 @@
     <Filter Include="vgui2">
       <UniqueIdentifier>{d2be8376-7133-44fa-8c4a-b27cbd4f2a33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameUI\WpnDataEditor">
+      <UniqueIdentifier>{a29e38b5-12a5-473f-9cd5-9078365955be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base.cpp">
@@ -964,6 +967,9 @@
     </ClCompile>
     <ClCompile Include="GameUI\CSBTEUpdateDialog.cpp">
       <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEWpnDataEditor.cpp">
+      <Filter>GameUI\WpnDataEditor</Filter>
     </ClCompile>
     <ClCompile Include="util\iniparser.cpp">
       <Filter>util</Filter>
@@ -2574,6 +2580,9 @@
     </ClInclude>
     <ClInclude Include="GameUI\CSBTEUpdateDialog.h">
       <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEWpnDataEditor.h">
+      <Filter>GameUI\WpnDataEditor</Filter>
     </ClInclude>
     <ClInclude Include="util\iniparser.h">
       <Filter>util</Filter>

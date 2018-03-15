@@ -2,29 +2,34 @@
 #include <string>
 #include <utility>
 #include <unordered_map>
+#include <memory>
+#include "STLHelper.h"
 
-class CIniParser
+class CIniParser : public IEnumerableProxy<std::unordered_map<std::string, std::unordered_map<std::string, std::string>>>
 {
 public:
-	CIniParser(){}
-	CIniParser(const std::string &filename, size_t iBufferSize = 4096);
+	CIniParser() :IEnumerableProxy(m_DataMap) {}
+	CIniParser(const std::string &filename) :IEnumerableProxy(m_DataMap)
+	{
+		OpenFile(filename);
+	}
+	void OpenFile(const std::string &filename);
+	void CloseFile()
+	{
+		m_DataMap.clear();
+		m_pszConfigPath.reset();
+	}
+	void SaveFile() const;
 
 	using AppNameType = std::string;
 	using KeyType = std::string;
 	using ValueType = std::string;
 	using DataMapType = std::unordered_map<AppNameType, std::unordered_map<KeyType, ValueType>>;
+	using iterator = DataMapType::iterator;
 
 	auto operator[](const std::string &szAppName) -> std::unordered_map<KeyType, ValueType> &
 	{
 		return m_DataMap[szAppName];
-	}
-	auto begin() -> DataMapType::iterator
-	{
-		return m_DataMap.begin();
-	}
-	auto end() -> DataMapType::iterator
-	{
-		return m_DataMap.end();
 	}
 	operator bool() const
 	{
@@ -33,4 +38,5 @@ public:
 
 private:
 	DataMapType m_DataMap;
+	std::unique_ptr<char[]> m_pszConfigPath;
 };
