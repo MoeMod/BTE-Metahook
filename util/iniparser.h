@@ -38,6 +38,10 @@ public:
 	{
 		return m_DataMap.empty();
 	}
+	size_t size() const
+	{
+		return m_DataMap.size();
+	}
 
 private:
 	MapType m_DataMap;

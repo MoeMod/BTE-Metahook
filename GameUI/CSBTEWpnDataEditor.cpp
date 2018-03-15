@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include <functional>
+#include <string>
 
 #include <vgui_controls/Label.h>
 #include <vgui_controls/Button.h>
@@ -83,12 +84,12 @@ static WeaponKeyInfoType WeaponKeyInfo[] = {
 // UnaryFunction: Compares a fixed string with pair
 /*struct KeyEquals
 {
-	using pair_type = std::remove_all_extents_t<decltype(WeaponKeyInfo)>;
-	const std::string &sz;
-	bool operator()(const pair_type &pair)
-	{
-		return pair.first == sz;
-	}
+using pair_type = std::remove_all_extents_t<decltype(WeaponKeyInfo)>;
+const std::string &sz;
+bool operator()(const pair_type &pair)
+{
+return pair.first == sz;
+}
 };*/
 inline std::function<bool(const WeaponKeyInfoType &)> KeyEquals(const std::string &sz)
 {
@@ -143,22 +144,34 @@ void CCSBTEWpnDataEditor::SetLayout()
 	m_pName = new Label(this, "WeaponName", "#CSBTE_WpnDataEditor_WpnName");
 	m_pName->SetBounds(20, 30, 200, 20);
 
-	/*m_plDamage = new Label(this, "WeaponDmgLbl", "#CSBTE_WpnDataEditor_Damage");
-	m_plDamageZombie = new Label(this, "WeaponDmgZbLbl", "#CSBTE_WpnDataEditor_DamageZombie");
-	m_plDamage->SetBounds(20, 60, 80, 20);
-	m_plDamageZombie->SetBounds(300, 60, 80, 20);
+	curWpnID = new Label(this, "CurrentWpnID", "");
+	curWpnID->SetBounds(590, 30, 50, 20);
 
-	//Weapons Data TextBox//
-	m_pDamage = new TextEntry(this, "WeaponDamage");
-	m_pDamageZombie = new TextEntry(this, "WeaponDamageZombie");
+	totalWpnID = new Label(this, "TotalInGameWpnID", "");
+	totalWpnID->SetBounds(650, 30, 50, 20);
 
-	m_pDamage->SetBounds(100, 60, 100, 20);
-	m_pDamageZombie->SetBounds(400, 60, 100, 20);
-	*/
+	Divider = new Label(this, "Divider1", "|");
+	Divider->SetBounds(625, 30, 50, 20);
+
 	m_pListPanel = new CPanelListPanel(this, "PanelListPanel");
 	m_pListPanel->SetBounds(50, 50, 620, 350);
 
+	CountWpn();
 	UpdateCurrentWeapons();
+}
+
+void CCSBTEWpnDataEditor::CountWpn()
+{
+	//int totalwpn = std::distance(m_iniData.begin(), m_iniData.end());
+	int totalwpn = m_iniData.size();
+	int wpnID = std::distance(m_iniData.begin(), m_iniDataIterator) + 1;
+	gEngfuncs.Con_Printf("Readed %d Weapons.\n", totalwpn);
+
+	std::string ID = std::to_string(totalwpn);
+	totalWpnID->SetText(ID.c_str());
+
+	std::string curID = std::to_string(wpnID);
+	curWpnID->SetText(curID.c_str());
 }
 
 void CCSBTEWpnDataEditor::UpdateCurrentWeapons()
@@ -174,6 +187,7 @@ void CCSBTEWpnDataEditor::UpdateCurrentWeapons()
 	//m_pDamageZombie->SetText(wpnDmgZb.c_str());
 
 	CreateControls();
+	CountWpn();
 }
 
 void CCSBTEWpnDataEditor::CreateControls()
@@ -182,19 +196,19 @@ void CCSBTEWpnDataEditor::CreateControls()
 
 	auto &wpnName = m_iniDataIterator->first;
 	auto &wpnDataMap = m_iniDataIterator->second;
-	
+
 	//std::list<ControlPair *> CtrlList;
 	// dont know why there bugs using list::sort, so build a map to fixit
 	//std::map<std::string, ControlPair *, WeaponInfoKey_Less> CtrlMap;
 	for (const auto &kv : wpnDataMap)
 	{
 		ControlPair *pCtrl = new ControlPair(m_pListPanel, "CSBTEWpnDataEditor::ControlPair");
-		
+
 		pCtrl->key = kv.first;
 
 		auto p = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals(pCtrl->key));
 		pCtrl->type = p == std::end(WeaponKeyInfo) ? O_STRING : p->second;
-		
+
 		std::string desc = "#CSBTE_WpnDataEditor_";
 		desc += kv.first;
 
@@ -219,18 +233,18 @@ void CCSBTEWpnDataEditor::CreateControls()
 
 		/*case O_LIST:
 		{
-			ComboBox *pCombo = new ComboBox(pCtrl, "DescComboBox", 5, false);
-			pListItem = pObj->pListItems;
+		ComboBox *pCombo = new ComboBox(pCtrl, "DescComboBox", 5, false);
+		pListItem = pObj->pListItems;
 
-			while (pListItem)
-			{
-				pCombo->AddItem(pListItem->szItemText, NULL);
-				pListItem = pListItem->pNext;
-			}
+		while (pListItem)
+		{
+		pCombo->AddItem(pListItem->szItemText, NULL);
+		pListItem = pListItem->pNext;
+		}
 
-			pCombo->ActivateItemByRow((int)pObj->fdefValue);
-			pCtrl->pControl = (Panel *)pCombo;
-			break;
+		pCombo->ActivateItemByRow((int)pObj->fdefValue);
+		pCtrl->pControl = (Panel *)pCombo;
+		break;
 		}*/
 
 		default: break;
@@ -248,7 +262,7 @@ void CCSBTEWpnDataEditor::CreateControls()
 		m_pListPanel->AddItem(pCtrl);
 		//CtrlMap.emplace(kv.first, pCtrl);
 	}
-	
+
 	//CtrlList.sort([](ControlPair * lhs, ControlPair *rhs) {return WeaponInfoKey_Less()(lhs->key, rhs->key); });
 	//std::for_each(CtrlList.begin(), CtrlList.end(), std::bind(&CPanelListPanel::AddItem, m_pListPanel, std::placeholders::_1));
 	//for (auto &prprpr : CtrlMap)
@@ -301,30 +315,30 @@ void CCSBTEWpnDataEditor::SaveData()
 		}
 		/*case O_LIST:
 		{
-			pCombo = (ComboBox *)pList->pControl;
-			int activeItem = pCombo->GetActiveItem();
-			pItem = pObj->pListItems;
-			int n = (int)pObj->fdefValue;
+		pCombo = (ComboBox *)pList->pControl;
+		int activeItem = pCombo->GetActiveItem();
+		pItem = pObj->pListItems;
+		int n = (int)pObj->fdefValue;
 
-			while (pItem)
-			{
-				if (!activeItem--)
-					break;
+		while (pItem)
+		{
+		if (!activeItem--)
+		break;
 
-				pItem = pItem->pNext;
-			}
+		pItem = pItem->pNext;
+		}
 
-			if (pItem)
-			{
-				sprintf(szValue, "%s", pItem->szValue);
-			}
-			else
-			{
-				assert(!("Couldn't find string in list, using default value"));
-				sprintf(szValue, "%s", pObj->defValue);
-			}
+		if (pItem)
+		{
+		sprintf(szValue, "%s", pItem->szValue);
+		}
+		else
+		{
+		assert(!("Couldn't find string in list, using default value"));
+		sprintf(szValue, "%s", pObj->defValue);
+		}
 
-			break;
+		break;
 		}*/
 		} // switch ends
 		wpnDataMap[key] = szValue;
@@ -339,8 +353,6 @@ void CCSBTEWpnDataEditor::NextWpn()
 
 	if (m_iniDataIterator == m_iniData.end())
 	{
-		//msgbox
-
 		//Spawn MessageBox Tells User End Of The Config, Reset To First Weapons?//
 		auto msgbox = new CCSBTEWpnDataEditorMessageBox("#CSBTE_WpnDataEditor_Warning", "#CSBTE_WpnDataEditor_WarningMsg", this);
 		msgbox->SetOKButtonText("#CSBTE_WpnDataEditor_Yes");

@@ -45,6 +45,7 @@ public:
 	void PrevWpn();
 	void CreateControls();
 	void DestroyControls();
+	void CountWpn();
 
 protected:
 	virtual void OnCommand(const char *command) override;
@@ -61,8 +62,8 @@ private:
 	MyIni::iterator m_iniDataIterator;
 
 	Button *m_pNextWpn, *m_pPrevWpn, *m_pSaveButton;
-	TextEntry *m_pDamage, *m_pDamageZombie, *m_pAttackInterval, *m_pMaxClip, *m_pMaxAmmo, *m_pMaxSpeed, *m_pReloadTime, *m_pDeployTime, *m_pKnockback, *m_pVelocityModifier, *m_pCost;
-	Label *m_pName, *m_plDamage, *m_plDamageZombie, *m_plAttackInterval, *m_plMaxClip, *m_plMaxAmmo, *m_plMaxSpeed, *m_plReloadTime, *m_plDeployTime, *m_plKnockback, *m_plVelocityModifier, *m_plCost;
+	//TextEntry *m_pDamage, *m_pDamageZombie, *m_pAttackInterval, *m_pMaxClip, *m_pMaxAmmo, *m_pMaxSpeed, *m_pReloadTime, *m_pDeployTime, *m_pKnockback, *m_pVelocityModifier, *m_pCost;
+	Label *m_pName, *curWpnID, *totalWpnID, *Divider;
 	CPanelListPanel *m_pListPanel;
 
 	class ControlPair : public vgui::Panel
@@ -90,7 +91,7 @@ private:
 					pControl->SetBounds(0, inset, wide, tall - 2 * inset);
 			}
 		}
-		virtual ~ControlPair(){}
+		virtual ~ControlPair() {}
 
 	public:
 		objtype_t type;
