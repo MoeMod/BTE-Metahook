@@ -159,7 +159,7 @@ void CCreateMultiplayerGameServerPage::LoadModeList()
 	char szPlugin[128];
 	char szName[128];
 
-	for (int i = 1; i < MAX_GAMEMODES; i++)
+	for (int i = 0; i < MAX_GAMEMODES; i++)
 	{
 		GetPrivateProfileString(va("GameMode%d", i), "Plugin", "", szPlugin, 127, "cstrike\\gamemodes.ini");
 		GetPrivateProfileString(va("GameMode%d", i), "Name", "", szName, 127, "cstrike\\gamemodes.ini");

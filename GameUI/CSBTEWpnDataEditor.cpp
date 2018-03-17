@@ -16,8 +16,9 @@
 #include <vgui_controls/TextEntry.h>
 
 extern wchar_t *GetWeaponNameFormat(const std::string &);
+
 int totalwpn;
-int wpnID;
+
 // defines Keys' sequence and its object type
 // !! ComboBox TBD
 using WeaponKeyInfoType = std::pair<const std::string, objtype_t>;
@@ -157,15 +158,37 @@ void CCSBTEWpnDataEditor::SetLayout()
 	m_pListPanel = new CPanelListPanel(this, "PanelListPanel");
 	m_pListPanel->SetBounds(50, 50, 620, 350);
 
+	//Search Weapons//
+	searchWpn = new TextEntry(this, "Search Weapons");
+	searchWpn->SetBounds(480, 30, 100, 20);
+
+	m_pSearchWpn = new Button(this, "Search Weapons", "Search");
+	m_pSearchWpn->SetContentAlignment(Label::a_center);
+	m_pSearchWpn->SetBounds(420, 30, 100, 20);
+	m_pSearchWpn->SetCommand("searchwpnname");
+	m_pSearchWpn->SetVisible(true);
+
+	totalwpn = m_iniData.size();
+	gEngfuncs.Con_Printf("Readed %d Weapons.\n", totalwpn);
+
 	CountWpn();
 	UpdateCurrentWeapons();
 }
 
+void CCSBTEWpnDataEditor::SearchWeapons()
+{
+	//const std::string getWpnName = searchWpn->GetText;
+
+	//auto &wpnName = m_iniDataIterator->first[getWpnName];
+
+	//m_pName->SetText(GetWeaponNameFormat(wpnName));
+	CreateControls();
+}
+
 void CCSBTEWpnDataEditor::CountWpn()
 {
-	totalwpn = std::distance(m_iniData.begin(), m_iniData.end());
-	wpnID = totalwpn - totalwpn + 1;
-	gEngfuncs.Con_Printf("Readed %d Weapons.\n", totalwpn);
+	//int totalwpn = std::distance(m_iniData.begin(), m_iniData.end());
+	int wpnID = std::distance(m_iniData.begin(), m_iniDataIterator) + 1;
 
 	std::string ID = std::to_string(totalwpn);
 	totalWpnID->SetText(ID.c_str());
@@ -187,6 +210,7 @@ void CCSBTEWpnDataEditor::UpdateCurrentWeapons()
 	//m_pDamageZombie->SetText(wpnDmgZb.c_str());
 
 	CreateControls();
+	CountWpn();
 }
 
 void CCSBTEWpnDataEditor::CreateControls()
@@ -349,7 +373,6 @@ void CCSBTEWpnDataEditor::NextWpn()
 {
 	//Read Next Weapons//
 	++m_iniDataIterator;
-	++wpnID;
 
 	if (m_iniDataIterator == m_iniData.end())
 	{
@@ -364,9 +387,6 @@ void CCSBTEWpnDataEditor::NextWpn()
 		//Reset Weapons To Starting//
 		m_iniDataIterator = m_iniData.begin();
 	}
-
-	std::string curID = std::to_string(wpnID);
-	curWpnID->SetText(curID.c_str());
 
 	UpdateCurrentWeapons();
 }
@@ -389,10 +409,6 @@ void CCSBTEWpnDataEditor::PrevWpn()
 
 	//Read Prev Weapons//
 	--m_iniDataIterator;
-	--wpnID;
-
-	std::string curID = std::to_string(wpnID);
-	curWpnID->SetText(curID.c_str());
 
 	UpdateCurrentWeapons();
 }
@@ -414,6 +430,10 @@ void CCSBTEWpnDataEditor::OnCommand(const char *command)
 	else if (!Q_stricmp(command, "prevwpn"))
 	{
 		PrevWpn();
+	}
+	else if (!Q_stricmp(command, "searchwpnname"))
+	{
+		SearchWeapons();
 	}
 	else
 		BaseClass::OnCommand(command);

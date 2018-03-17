@@ -93,6 +93,13 @@ wchar_t *GetWeaponNameFormat(char *name)
 	return wstrResult ? wstrResult : UTF8ToUnicode(va("#CSBTE_%s", pTemp));
 }
 
+wchar_t *GetWeaponNameFormat(const std::string &name)
+{
+	static char buffer[128];
+	strcpy(buffer, name.c_str());
+	return GetWeaponNameFormat(buffer);
+}
+
 wchar_t *GetWeaponDescription(char *pItem)
 {
 	char *pName = AliasWeaponName(pItem);
