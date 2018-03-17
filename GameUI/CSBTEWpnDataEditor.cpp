@@ -17,69 +17,71 @@
 
 extern wchar_t *GetWeaponNameFormat(const std::string &);
 
+int totalwpn;
+
 // defines Keys' sequence and its object type
 // !! ComboBox TBD
 using WeaponKeyInfoType = std::pair<const std::string, objtype_t>;
 static WeaponKeyInfoType WeaponKeyInfo[] = {
 	{ "WeaponID", O_NUMBER },
-	{ "Special", O_NUMBER },
-	{ "Type", O_NUMBER },
-	{ "Menu", O_STRING },
-	{ "BulletType", O_STRING },
-	{ "Damage", O_STRING },
-	{ "DamageZombie", O_STRING },
-	{ "AttackInterval", O_STRING },
-	{ "Delay", O_STRING },
-	{ "MaxClip", O_STRING },
-	{ "MaxAmmo", O_STRING },
-	{ "AmmoCost", O_STRING },
-	{ "Ammo", O_STRING },
-	{ "Distance", O_STRING },
-	{ "Angle", O_STRING },
-	{ "MaxSpeed", O_NUMBER },
-	{ "ReloadTime", O_STRING },
-	{ "DeployTime", O_STRING },
-	{ "KnockBack", O_STRING },
-	{ "VelocityModifier", O_STRING },
-	{ "Zoom", O_STRING },
-	{ "AnimExtention", O_STRING },
-	{ "Cost", O_STRING },
-	{ "CanBuy", O_BOOL },
-	{ "Team", O_STRING },
-	{ "GameModeLimit", O_NUMBER },
-	{ "BurstSpeed", O_STRING },
-	{ "BurstTimes", O_STRING },
-	{ "WorldModel", O_STRING },
+{ "Special", O_NUMBER },
+{ "Type", O_NUMBER },
+{ "Menu", O_STRING },
+{ "BulletType", O_STRING },
+{ "Damage", O_STRING },
+{ "DamageZombie", O_STRING },
+{ "AttackInterval", O_STRING },
+{ "Delay", O_STRING },
+{ "MaxClip", O_STRING },
+{ "MaxAmmo", O_STRING },
+{ "AmmoCost", O_STRING },
+{ "Ammo", O_STRING },
+{ "Distance", O_STRING },
+{ "Angle", O_STRING },
+{ "MaxSpeed", O_NUMBER },
+{ "ReloadTime", O_STRING },
+{ "DeployTime", O_STRING },
+{ "KnockBack", O_STRING },
+{ "VelocityModifier", O_STRING },
+{ "Zoom", O_STRING },
+{ "AnimExtention", O_STRING },
+{ "Cost", O_STRING },
+{ "CanBuy", O_BOOL },
+{ "Team", O_STRING },
+{ "GameModeLimit", O_NUMBER },
+{ "BurstSpeed", O_STRING },
+{ "BurstTimes", O_STRING },
+{ "WorldModel", O_STRING },
 
-	{ "EntitySpawnOrigin", O_STRING },
-	{ "EntityKnockBack", O_STRING },
-	{ "EntityDamage", O_STRING },
-	{ "EntityDamageZombie", O_STRING },
-	{ "EntityRange", O_STRING },
-	{ "EntitySpeed", O_STRING },
-	{ "EntityGravity", O_STRING },
-	{ "EntityAngle", O_STRING },
+{ "EntitySpawnOrigin", O_STRING },
+{ "EntityKnockBack", O_STRING },
+{ "EntityDamage", O_STRING },
+{ "EntityDamageZombie", O_STRING },
+{ "EntityRange", O_STRING },
+{ "EntitySpeed", O_STRING },
+{ "EntityGravity", O_STRING },
+{ "EntityAngle", O_STRING },
 
-	{ "AccuracyCalculate", O_NUMBER },
-	{ "AccuracyDefault", O_NUMBER },
-	{ "Accuracy", O_STRING },
-	{ "AccuracyRange", O_STRING },
-	{ "Spread", O_STRING },
-	{ "SpreadRun", O_STRING },
-	{ "AccuracyMul", O_STRING },
+{ "AccuracyCalculate", O_NUMBER },
+{ "AccuracyDefault", O_NUMBER },
+{ "Accuracy", O_STRING },
+{ "AccuracyRange", O_STRING },
+{ "Spread", O_STRING },
+{ "SpreadRun", O_STRING },
+{ "AccuracyMul", O_STRING },
 
-	{ "Punchangle", O_STRING },
-	{ "Penetration", O_STRING },
-	{ "Distance", O_STRING },
-	{ "ArmorRatio", O_STRING },
-	{ "RangeModifier", O_STRING },
+{ "Punchangle", O_STRING },
+{ "Penetration", O_STRING },
+{ "Distance", O_STRING },
+{ "ArmorRatio", O_STRING },
+{ "RangeModifier", O_STRING },
 
-	{ "KickBackWalking", O_STRING },
-	{ "KickBackNotOnGround", O_STRING },
-	{ "KickBackDucking", O_STRING },
-	{ "KickBack", O_STRING },
+{ "KickBackWalking", O_STRING },
+{ "KickBackNotOnGround", O_STRING },
+{ "KickBackDucking", O_STRING },
+{ "KickBack", O_STRING },
 
-	{ "Event", O_STRING }
+{ "Event", O_STRING }
 };
 // UnaryFunction: Compares a fixed string with pair
 /*struct KeyEquals
@@ -156,16 +158,37 @@ void CCSBTEWpnDataEditor::SetLayout()
 	m_pListPanel = new CPanelListPanel(this, "PanelListPanel");
 	m_pListPanel->SetBounds(50, 50, 620, 350);
 
+	//Search Weapons//
+	searchWpn = new TextEntry(this, "Search Weapons");
+	searchWpn->SetBounds(480, 30, 100, 20);
+
+	m_pSearchWpn = new Button(this, "Search Weapons", "Search");
+	m_pSearchWpn->SetContentAlignment(Label::a_center);
+	m_pSearchWpn->SetBounds(420, 30, 100, 20);
+	m_pSearchWpn->SetCommand("searchwpnname");
+	m_pSearchWpn->SetVisible(true);
+
+	totalwpn = m_iniData.size();
+	gEngfuncs.Con_Printf("Readed %d Weapons.\n", totalwpn);
+
 	CountWpn();
 	UpdateCurrentWeapons();
+}
+
+void CCSBTEWpnDataEditor::SearchWeapons()
+{
+	//const std::string getWpnName = searchWpn->GetText;
+
+	//auto &wpnName = m_iniDataIterator->first[getWpnName];
+
+	//m_pName->SetText(GetWeaponNameFormat(wpnName));
+	CreateControls();
 }
 
 void CCSBTEWpnDataEditor::CountWpn()
 {
 	//int totalwpn = std::distance(m_iniData.begin(), m_iniData.end());
-	int totalwpn = m_iniData.size();
 	int wpnID = std::distance(m_iniData.begin(), m_iniDataIterator) + 1;
-	gEngfuncs.Con_Printf("Readed %d Weapons.\n", totalwpn);
 
 	std::string ID = std::to_string(totalwpn);
 	totalWpnID->SetText(ID.c_str());
@@ -407,6 +430,10 @@ void CCSBTEWpnDataEditor::OnCommand(const char *command)
 	else if (!Q_stricmp(command, "prevwpn"))
 	{
 		PrevWpn();
+	}
+	else if (!Q_stricmp(command, "searchwpnname"))
+	{
+		SearchWeapons();
 	}
 	else
 		BaseClass::OnCommand(command);

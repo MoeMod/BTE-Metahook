@@ -26,50 +26,50 @@ using namespace vgui;
 
 #define RANDOM_MAP "< Random Map >"
 
-bool CaselessStringLessThan(const CUtlSymbol &lhs, const CUtlSymbol &rhs)
+bool CaselessStringLessThan( const CUtlSymbol &lhs, const CUtlSymbol &rhs )
 {
-	if (!lhs.IsValid())
+	if ( !lhs.IsValid() )
 		return false;
 
-	if (!rhs.IsValid())
+	if ( !rhs.IsValid() )
 		return true;
 
-	return stricmp(lhs.String(), rhs.String()) < 0;
+	return stricmp( lhs.String(), rhs.String() ) < 0;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-CCreateMultiplayerGameServerPage::CCreateMultiplayerGameServerPage(vgui::Panel *parent, const char *name) : PropertyPage(parent, name), m_MapNames(0, 0, CaselessStringLessThan)
+CCreateMultiplayerGameServerPage::CCreateMultiplayerGameServerPage(vgui::Panel *parent, const char *name) : PropertyPage(parent, name), m_MapNames( 0, 0, CaselessStringLessThan )
 {
 	// we can use this if we decide we want to put "listen server" at the end of the game name
-	//	static char szHostName[256];
-	//	_snprintf( szHostName, sizeof( szHostName ) - 1, "%s %s", ModInfo().GetGameDescription(), "Listen Server" );
-	//	szHostName[sizeof( szHostName ) - 1] = '\0';
+//	static char szHostName[256];
+//	_snprintf( szHostName, sizeof( szHostName ) - 1, "%s %s", ModInfo().GetGameDescription(), "Listen Server" );
+//	szHostName[sizeof( szHostName ) - 1] = '\0';
 
 	// we can use this if we decide we want to put "listen server" at the end of the game name
 	m_pMapList = new ComboBox(this, "MapList", 12, false);
 	m_pModeList = new ComboBox(this, "ModeList", 12, false);
 
-	m_pBotQuotaCombo = new TextEntry(this, "BotQuotaCombo");
-	m_pEnableTutorCheck = new CCvarToggleCheckButton(this, "CheckButtonTutor", "#CStrike_Tutor_Enabled", "tutor_enable");
-	m_pEnableBotsCheck = new CheckButton(this, "EnableBotsCheck", "Enable bots");
+	m_pBotQuotaCombo = new TextEntry( this, "BotQuotaCombo" );
+	m_pEnableTutorCheck = new CCvarToggleCheckButton( this, "CheckButtonTutor", "#CStrike_Tutor_Enabled", "tutor_enable" );
+	m_pEnableBotsCheck = new CheckButton( this, "EnableBotsCheck", "Enable bots" );
 
 	LoadControlSettings("Resource/CreateMultiplayerGameServerPage.res");
 
 	LoadModeList();
 	LoadMapList();
 
-	if (stricmp(ModInfo().GetGameDescription(), "Condition Zero"))
-		m_pEnableTutorCheck->SetVisible(false);
+	if ( stricmp( ModInfo().GetGameDescription(), "Condition Zero" ) )
+		m_pEnableTutorCheck->SetVisible( false );
 
-	m_szMapName[0] = 0;
+	m_szMapName[0]  = 0;
 	m_szHostName[0] = 0;
 	m_szPassword[0] = 0;
 	m_iMaxPlayers = engine->GetMaxClients();
 
 	// make sure this will be a multiplayer game
-	if (m_iMaxPlayers <= 1)
+	if ( m_iMaxPlayers <= 1 )
 	{
 		m_iMaxPlayers = 20; // this was the default for the old launcher
 	}
@@ -81,13 +81,13 @@ CCreateMultiplayerGameServerPage::CCreateMultiplayerGameServerPage(vgui::Panel *
 	SetControlString("PasswordEdit", engine->pfnGetCvarString("sv_password"));
 
 
-	//	int maxPlayersEdit = atoi( GetControlString( "MaxPlayersEdit", "-1" ) );
-	//	if ( maxPlayersEdit <= 1 )
+//	int maxPlayersEdit = atoi( GetControlString( "MaxPlayersEdit", "-1" ) );
+//	if ( maxPlayersEdit <= 1 )
 	{
 		// initialize maxplayers
 		char szBuffer[4];
-		_snprintf(szBuffer, sizeof(szBuffer) - 1, "%d", m_iMaxPlayers);
-		szBuffer[sizeof(szBuffer) - 1] = '\0';
+		_snprintf(szBuffer, sizeof(szBuffer)-1, "%d", m_iMaxPlayers);
+		szBuffer[sizeof(szBuffer)-1] = '\0';
 		SetControlString("MaxPlayersEdit", szBuffer);
 	}
 }
@@ -116,35 +116,35 @@ void CCreateMultiplayerGameServerPage::OnApplyChanges()
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CCreateMultiplayerGameServerPage::SetBotQuota(int quota)
+void CCreateMultiplayerGameServerPage::SetBotQuota( int quota )
 {
 	char buf[32];
-	sprintf(buf, "%d", quota);
-	m_pBotQuotaCombo->SetText(buf);
+	sprintf( buf, "%d", quota );
+	m_pBotQuotaCombo->SetText( buf );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CCreateMultiplayerGameServerPage::SetBotsEnabled(bool enabled)
+void CCreateMultiplayerGameServerPage::SetBotsEnabled( bool enabled )
 {
-	m_pEnableBotsCheck->SetSelected(enabled);
+	m_pEnableBotsCheck->SetSelected( enabled );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-int CCreateMultiplayerGameServerPage::GetBotQuota(void)
+int CCreateMultiplayerGameServerPage::GetBotQuota( void )
 {
 	char buf[32];
-	m_pBotQuotaCombo->GetText(buf, sizeof(buf));
-	return atoi(buf);
+	m_pBotQuotaCombo->GetText( buf, sizeof( buf ) );
+	return atoi( buf );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-bool CCreateMultiplayerGameServerPage::GetBotsEnabled(void)
+bool CCreateMultiplayerGameServerPage::GetBotsEnabled( void )
 {
 	return m_pEnableBotsCheck->IsSelected();
 }
@@ -159,12 +159,12 @@ void CCreateMultiplayerGameServerPage::LoadModeList()
 	char szPlugin[128];
 	char szName[128];
 
-	for (int i = 1; i < MAX_GAMEMODES; i++)
+	for (int i = 0; i < MAX_GAMEMODES; i++)
 	{
 		GetPrivateProfileString(va("GameMode%d", i), "Plugin", "", szPlugin, 127, "cstrike\\gamemodes.ini");
 		GetPrivateProfileString(va("GameMode%d", i), "Name", "", szName, 127, "cstrike\\gamemodes.ini");
 
-		if (!szPlugin[0] || !szName[0])
+		if (!szPlugin[0]|| !szName[0])
 			continue;
 
 		m_pModeList->AddItem(szName, NULL);
@@ -208,13 +208,13 @@ void CCreateMultiplayerGameServerPage::UpdateCurrentMode(int i)
 	/*
 	if (!szPlugin[0] || rename(szPath, szFilename2) != 0)
 	{
-	vgui::MessageBox *msgbox;
-	msgbox = new vgui::MessageBox("", "#CSBTE_ModeSelection_Error", this);
-	msgbox->SetOKButtonText("#GameUI_OK");
-	msgbox->SetOKButtonVisible(true);
-	msgbox->SetBounds(GetWide() / 2 - 150, GetTall() / 2 - 100, 300, 200);
+		vgui::MessageBox *msgbox;
+		msgbox = new vgui::MessageBox("", "#CSBTE_ModeSelection_Error", this);
+		msgbox->SetOKButtonText("#GameUI_OK");
+		msgbox->SetOKButtonVisible(true);
+		msgbox->SetBounds(GetWide() / 2 - 150, GetTall() / 2 - 100, 300, 200);
 
-	msgbox->Activate();
+		msgbox->Activate();
 	}*/
 }
 
@@ -231,11 +231,11 @@ void CCreateMultiplayerGameServerPage::SetMode(const int id)
 //-----------------------------------------------------------------------------
 // Purpose: loads the list of available maps into the map list
 //-----------------------------------------------------------------------------
-void CCreateMultiplayerGameServerPage::LoadMaps(const char *pszPathID)
+void CCreateMultiplayerGameServerPage::LoadMaps( const char *pszPathID )
 {
 	FileFindHandle_t findHandle = NULL;
 	const char *pszMPFilter = ModInfo().GetMPFilter();
-	if (pszMPFilter && pszMPFilter[0] == 0)
+	if ( pszMPFilter && pszMPFilter[0] == 0 )
 		pszMPFilter = NULL;
 
 	const char *pszFilename = g_pFullFileSystem->FindFirst("maps/*.bsp", &findHandle, pszPathID);
@@ -243,7 +243,7 @@ void CCreateMultiplayerGameServerPage::LoadMaps(const char *pszPathID)
 	{
 		// remove the text 'maps/' and '.bsp' from the file name to get the map name
 		char mapname[256];
-
+		
 		char *str = (char *)strstr(pszFilename, "maps");
 		if (str)
 		{
@@ -261,25 +261,25 @@ void CCreateMultiplayerGameServerPage::LoadMaps(const char *pszPathID)
 
 		//!! hack: strip out single player HL maps
 		// this needs to be specified in a seperate file
-		if (!stricmp(ModInfo().GetGameDescription(), "Half-Life") && (mapname[0] == 'c' || mapname[0] == 't') && mapname[2] == 'a' && mapname[1] >= '0' && mapname[1] <= '5')
+		if (!stricmp(ModInfo().GetGameDescription(), "Half-Life" ) && (mapname[0] == 'c' || mapname[0] == 't') && mapname[2] == 'a' && mapname[1] >= '0' && mapname[1] <= '5')
 		{
 			goto nextFile;
 		}
 
-		if (!stricmp(ModInfo().GetGameDescription(), "Opposing Force") && mapname[0] == 'o' && mapname[1] == 'f')
+		if (!stricmp(ModInfo().GetGameDescription(), "Opposing Force" ) && mapname[0] == 'o' && mapname[1] == 'f')
 		{
 			goto nextFile;
 		}
 
-		if (pszMPFilter && strstr(mapname, pszMPFilter))
+		if ( pszMPFilter && strstr( mapname, pszMPFilter ) )
 		{
 			goto nextFile;
 		}
 
 		// add to the map list
-		if (m_MapNames.Find(mapname) == m_MapNames.InvalidIndex())
+		if ( m_MapNames.Find( mapname ) == m_MapNames.InvalidIndex() )
 		{
-			m_MapNames.Insert(mapname);
+			m_MapNames.Insert( mapname );
 		}
 
 		// get the next file
@@ -301,53 +301,53 @@ void CCreateMultiplayerGameServerPage::LoadMapList()
 	m_pMapList->DeleteAllItems();
 
 	// add special "name" to represent loading a randomly selected map
-	m_pMapList->AddItem("#GameUI_RandomMap", new KeyValues("data", "mapname", RANDOM_MAP));
+	m_pMapList->AddItem( "#GameUI_RandomMap", new KeyValues( "data", "mapname", RANDOM_MAP ) );
 
 	// iterate the filesystem getting the list of all the files
 	// UNDONE: steam wants this done in a special way, need to support that
 	const char *pathID = "GAME";
-	if (!stricmp(ModInfo().GetGameDescription(), "Half-Life"))
+	if ( !stricmp(ModInfo().GetGameDescription(), "Half-Life" ) ) 
 	{
 		pathID = NULL; // hl is the base dir
 	}
 
 	// Load the GameDir maps
-	LoadMaps(pathID);
+	LoadMaps( pathID ); 
 
 	// If we're not the Valve directory and we're using a "fallback_dir" in gameinfo.txt then include those maps...
 	// (pathID is NULL if we're "Half-Life")
 	const char *pszFallback = ModInfo().GetFallbackDir();
-	if (pathID && pszFallback[0])
+	if ( pathID && pszFallback[0] )
 	{
-		LoadMaps("GAME_FALLBACK");
+		LoadMaps( "GAME_FALLBACK" );
 	}
 
-	LoadMaps("GAMEDOWNLOAD");
+	LoadMaps( "GAMEDOWNLOAD" );
 
-	for (int i = m_MapNames.FirstInorder(); i != m_MapNames.InvalidIndex(); i = m_MapNames.NextInorder(i))
+	for ( int i = m_MapNames.FirstInorder(); i != m_MapNames.InvalidIndex(); i = m_MapNames.NextInorder( i ) )
 	{
 		//m_pMapList->AddItem( m_MapNames[i].String(), new KeyValues( "data", "mapname", m_MapNames[i].String() ) );
 		const char *p_ = strchr(m_MapNames[i].String(), '_');
 		wchar_t *wstrResult = nullptr;
 		if (p_)
-			wstrResult = vgui::localize()->Find(va("#CSO_%s_kr", p_ + 1));
+			wstrResult = vgui::localize()->Find(va("#CSO_%s_kr", p_+1));
 		if (!wstrResult)
 			wstrResult = vgui::localize()->Find(va("#MapName_%s", m_MapNames[i].String()));
 		if (!wstrResult)
 			wstrResult = UTF8ToUnicode(m_MapNames[i].String());
-
+		
 		m_pMapList->AddItem(wstrResult, new KeyValues("data", "mapname", m_MapNames[i].String()));
 	}
 	m_MapNames.RemoveAll();
 
 	// set the first item to be selected
-	m_pMapList->ActivateItem(0);
+	m_pMapList->ActivateItem( 0 );
 }
 
 bool CCreateMultiplayerGameServerPage::IsRandomMapSelected()
 {
 	const char *mapname = m_pMapList->GetActiveItemUserData()->GetString("mapname");
-	if (!stricmp(mapname, RANDOM_MAP))
+	if (!stricmp( mapname, RANDOM_MAP ))
 	{
 		return true;
 	}
@@ -359,14 +359,14 @@ const char *CCreateMultiplayerGameServerPage::GetMapName()
 	int count = m_pMapList->GetItemCount();
 
 	// if there is only one entry it's the special "select random map" entry
-	if (count <= 1)
+	if( count <= 1 )
 		return NULL;
 
 	const char *mapname = m_pMapList->GetActiveItemUserData()->GetString("mapname");
-	if (!strcmp(mapname, RANDOM_MAP))
+	if (!strcmp( mapname, RANDOM_MAP ))
 	{
 		int which = engine->pfnRandomLong(1, count - 1);
-		mapname = m_pMapList->GetItemUserData(which)->GetString("mapname");
+		mapname = m_pMapList->GetItemUserData( which )->GetString("mapname");
 	}
 
 	return mapname;

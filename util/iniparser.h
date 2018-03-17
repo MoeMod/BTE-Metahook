@@ -68,9 +68,8 @@ void CBasicIniParser<MapType>::OpenFile(const std::string &filename)
 		{
 			// insert prev app
 			if (!strAppName.empty())
-				m_DataMap.emplace(std::move(strAppName), KeyList);
+				m_DataMap.emplace(std::move(strAppName), std::move(KeyList));
 			// copy new appname
-			KeyList.clear();
 			strAppName = line.substr(1, line.size() - 2);
 		}
 		else if (line.front() != ';')

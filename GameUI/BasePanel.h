@@ -241,7 +241,7 @@ private:
 	vgui::DHANDLE<CCSBTEZombieDNA> m_hCSBTEZombieDNA;
 	vgui::DHANDLE<CCSBTEEscPanel>m_hCSBTEEscPanel;
 	vgui::DHANDLE<CCSBTEWelcomeDialog> m_hCSBTEWelcomeDialog;
-
+	
 	vgui::AnimationController *m_pConsoleAnimationController;
 	KeyValues *m_pConsoleControlSettings;
 	int m_iLoadingImageID;
