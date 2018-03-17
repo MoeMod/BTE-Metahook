@@ -46,6 +46,7 @@ public:
 	void CreateControls();
 	void DestroyControls();
 	void CountWpn();
+	void SearchWeapons();
 
 protected:
 	virtual void OnCommand(const char *command) override;
@@ -61,7 +62,8 @@ private:
 	MyIni m_iniData;
 	MyIni::iterator m_iniDataIterator;
 
-	Button *m_pNextWpn, *m_pPrevWpn, *m_pSaveButton;
+	Button *m_pNextWpn, *m_pPrevWpn, *m_pSaveButton, *m_pSearchWpn;
+	TextEntry *searchWpn;
 	//TextEntry *m_pDamage, *m_pDamageZombie, *m_pAttackInterval, *m_pMaxClip, *m_pMaxAmmo, *m_pMaxSpeed, *m_pReloadTime, *m_pDeployTime, *m_pKnockback, *m_pVelocityModifier, *m_pCost;
 	Label *m_pName, *curWpnID, *totalWpnID, *Divider;
 	CPanelListPanel *m_pListPanel;
