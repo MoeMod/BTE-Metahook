@@ -11,6 +11,8 @@
 #include <Interface/IFileSystem.h>
 #include "STLHelper.h"
 
+extern IFileSystem *&g_pFileSystem;
+
 template<class MapType>
 class CBasicIniParser : public IEnumerableProxy<MapType>
 {
@@ -41,6 +43,10 @@ public:
 	size_t size() const
 	{
 		return m_DataMap.size();
+	}
+	MapType &GetMap()
+	{
+		return m_DataMap;
 	}
 
 private:

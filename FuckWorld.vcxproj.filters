@@ -980,6 +980,9 @@
     <ClCompile Include="Window.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2585,6 +2588,9 @@
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

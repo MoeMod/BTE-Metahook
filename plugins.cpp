@@ -10,6 +10,7 @@
 #include "Window.h"
 #include "R.h"
 #include "util.h"
+#include "Console.h"
 
 #include "Renderer/qgl.h"
 
@@ -126,6 +127,7 @@ void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_engines
 	gPerformanceCounter.InitializePerformanceCounter();
 
 	Window_Init();
+	Console_Init();
 
 
 	/*
@@ -166,6 +168,7 @@ void IPlugins::Shutdown()
 
 	Renderer_Shutdown();
 	Module_Shutdown();
+	Console_Shutdown();
 
 	//if (g_pViewPort)
 	//delete g_pViewPort;

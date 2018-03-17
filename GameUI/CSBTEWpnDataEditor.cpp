@@ -1,12 +1,18 @@
-#include "base.h"
+
 #include "CSBTEWpnDataEditor.h"
 #include <vgui_controls\PHandle.h>
 #include "common.h"
-#include <io.h>
+#include "metahook.h"
+#include "util.h"
+
+#include <iostream>
 #include <string>
 #include <fstream>
 #include <functional>
 #include <string>
+
+#include "tier1/KeyValues.h"
+#include <vgui/IVGui.h>
 
 #include <vgui_controls/Label.h>
 #include <vgui_controls/Button.h>
@@ -14,6 +20,9 @@
 #include <vgui_controls/CheckButton.h>
 #include <vgui_controls/ComboBox.h>
 #include <vgui_controls/TextEntry.h>
+
+using std::cout;
+using std::endl;
 
 extern wchar_t *GetWeaponNameFormat(const std::string &);
 
@@ -118,6 +127,11 @@ CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, b
 	SetVisible(true);
 
 	m_iniDataIterator = m_iniData.begin();
+	for (auto app : m_iniData)
+	{
+		auto &&name = app.first.c_str();
+		m_wpnNames.emplace_back(name, GetWeaponNameFormat(name));
+	}
 
 	SetLayout();
 }
@@ -159,30 +173,20 @@ void CCSBTEWpnDataEditor::SetLayout()
 	m_pListPanel->SetBounds(50, 50, 620, 350);
 
 	//Search Weapons//
-	searchWpn = new TextEntry(this, "Search Weapons");
-	searchWpn->SetBounds(480, 30, 100, 20);
+	m_pWeaponSearch = new CCSBTEWpnDataEditorSearchBar(this, "Search Weapons");
+	m_pWeaponSearch->SetBounds(480, 30, 100, 20);
 
-	m_pSearchWpn = new Button(this, "Search Weapons", "Search");
+	/*m_pSearchWpn = new Button(this, "Search Weapons", "Search");
 	m_pSearchWpn->SetContentAlignment(Label::a_center);
 	m_pSearchWpn->SetBounds(420, 30, 100, 20);
 	m_pSearchWpn->SetCommand("searchwpnname");
-	m_pSearchWpn->SetVisible(true);
+	m_pSearchWpn->SetVisible(true);*/
 
 	totalwpn = m_iniData.size();
-	gEngfuncs.Con_Printf("Readed %d Weapons.\n", totalwpn);
+	//gEngfuncs.Con_Printf("Readed %d Weapons.\n", totalwpn);
+	std::cout << "Readed " << totalwpn << " Weapons." << std::endl;
 
-	CountWpn();
 	UpdateCurrentWeapons();
-}
-
-void CCSBTEWpnDataEditor::SearchWeapons()
-{
-	//const std::string getWpnName = searchWpn->GetText;
-
-	//auto &wpnName = m_iniDataIterator->first[getWpnName];
-
-	//m_pName->SetText(GetWeaponNameFormat(wpnName));
-	CreateControls();
 }
 
 void CCSBTEWpnDataEditor::CountWpn()
@@ -431,10 +435,6 @@ void CCSBTEWpnDataEditor::OnCommand(const char *command)
 	{
 		PrevWpn();
 	}
-	else if (!Q_stricmp(command, "searchwpnname"))
-	{
-		SearchWeapons();
-	}
 	else
 		BaseClass::OnCommand(command);
 }
@@ -443,4 +443,57 @@ void CCSBTEWpnDataEditor::OnClose()
 {
 	MarkForDeletion();
 	BaseClass::OnClose();
+}
+
+void CCSBTEWpnDataEditor::OnTextChanged(void)
+{
+	const size_t buffersize = 64;
+	static wchar_t wszBuffer[buffersize];
+	m_pWeaponSearch->GetText(wszBuffer, buffersize);
+	std::string input = ToUpper(UnicodeToANSI(wszBuffer));
+
+	m_pWeaponSearch->GetMenu()->ClearCurrentlyHighlightedItem();
+	m_pWeaponSearch->RemoveAll();
+
+	//std::string::size_type(std::string::*pfn)(const std::string &, std::string::size_type) const = &std::string::find;
+	// to be optimized
+	
+	auto iter = m_wpnNames.begin();
+	auto ends = m_wpnNames.end();
+	auto fnCanFind = [&input](const std::pair<std::string, std::wstring> &to_find){
+		return (strstr(to_find.first.c_str(), input.c_str()) != NULL) || (wcsstr(to_find.second.c_str(), wszBuffer) != NULL);
+	};
+
+	while ((iter = std::find_if(iter, ends, fnCanFind)) != ends)
+	{
+		const char *szRealWpnName = iter->first.c_str();
+		m_pWeaponSearch->AddItem(szRealWpnName, new KeyValues(szRealWpnName));
+		++iter;
+	}
+	
+	m_pWeaponSearch->GetMenu()->Panel::SetVisible(true);
+	m_pWeaponSearch->GetMenu()->MoveToFront();
+	m_pWeaponSearch->GetMenu()->PerformLayout();
+	m_pWeaponSearch->MoveToFront();
+}
+
+#ifdef PostMessage
+#undef PostMessage
+#endif
+
+void CCSBTEWpnDataEditorSearchBar::OnMenuItemSelected()
+{
+	KeyValues *msg = new KeyValues("MenuItemSelected");
+	msg->SetString("weapon", GetActiveItemUserData()->GetName());
+	PostActionSignal(msg);
+
+	BaseClass::OnMenuItemSelected();
+	HideMenu();
+}
+
+void CCSBTEWpnDataEditor::OnMenuItemSelected(const char * weapon)
+{
+	m_iniDataIterator = m_iniData.GetMap().find(weapon);
+	Assert(m_iniDataIterator != m_iniData.end());
+	UpdateCurrentWeapons();
 }
