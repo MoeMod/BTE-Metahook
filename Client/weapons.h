@@ -62,7 +62,8 @@ extern WEAPONDATA g_iWeaponData[MAX_WEAPONS];
 
 extern int g_iCurrentWeapon; // weapon id
 
-void WeaponInitialize(void);
+void Weapon_Init(void);
+void Weapon_VidInit(void);
 client_sprite_t *LoadWeaponSprite(char *psz, int *piCount);
 
 int FindWeaponId(const char *str);

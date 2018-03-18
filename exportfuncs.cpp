@@ -109,27 +109,6 @@ int g_iWeaponAnim = 0;
 
 int(__fastcall *g_pfnHudSniperScope_Draw)(void *, int, float flTime) = (int(__fastcall *)(void *, int, float))0x1961AD0;
 int __fastcall HudSniperScope_Draw(void *p, int i, float f);
-
-void(__fastcall *g_pfnAWP_Idle)(void *) = (void(__fastcall *)(void *))0x1910B20;
-void(__fastcall *g_pfnAWP_Reload)(void *) = (void(__fastcall *)(void *))0x1910AA0;
-void(__fastcall *g_pfnM3_Reload)(void *) = (void(__fastcall *)(void *))0x19175E0;
-void(__fastcall *g_pfnM3_Idle)(void *) = (void(__fastcall *)(void *))0x1917750;
-void(__fastcall *g_pfnXM1014_Reload)(void *) = (void(__fastcall *)(void *))0x191D590;
-void(__fastcall *g_pfnXM1014_Idle)(void *) = (void(__fastcall *)(void *))0x191D780;
-void(__fastcall *g_pfnGlock_Reload)(void *) = (void(__fastcall *)(void *))0x19150D0;
-void(__fastcall *g_pfnGlock_Idle)(void *) = (void(__fastcall *)(void *))0x1915140;
-void(__fastcall *g_pfnGlock_Deploy)(void *) = (void(__fastcall *)(void *))0x1914AF0;
-void(__fastcall *g_pfnScout_Reload)(void *) = (void(__fastcall *)(void *))0x191A1C0;
-void(__fastcall *g_pfnScout_Idle)(void *) = (void(__fastcall *)(void *))0x191A220;
-void(__fastcall *g_pfnScout_Deploy)(void *) = (void(__fastcall *)(void *))0x1919D70;
-void(__fastcall *g_pfnKnife_Deploy)(void *) = (void(__fastcall *)(void *))0x1915D90;
-void(__fastcall *g_pfnKnife_PrimaryAttack)(void *) = (void(__fastcall *)(void *))0x19160D0;
-void(__fastcall *g_pfnKnife_SecondaryAttack)(void *) = (void(__fastcall *)(void *))0x19162A0;
-void(__fastcall *g_pfnKnife_Idle)(void *) = (void(__fastcall *)(void *))0x1916300;
-void(__fastcall *g_pfnM4A1_SecondaryAttack)(void *) = (void(__fastcall *)(void *))0x1917B00;
-void(__fastcall *g_pfnUSP_SecondaryAttack)(void *) = (void(__fastcall *)(void *))0x191CAB0;
-
-void __fastcall WeaponBlock(void *p);
 void(__fastcall *g_pfnCHudSayText_Draw)(void *, int, float) = (void(__fastcall *)(void *, int, float))0x1960A10;
 
 cl_entity_t **r_currententity;
@@ -606,11 +585,6 @@ void Cmd_ShowIcon()
 		gEngfuncs.Cvar_SetValue("mh_showtipicon", 1);
 }
 
-void __fastcall WeaponBlock(void *p)
-{
-	return;
-}
-
 void HUD_Init(void)
 {
 	//CL_VisEdicts_Patch();
@@ -674,29 +648,11 @@ void HUD_Init(void)
 	g_pMetaHookAPI->InlineHook(g_pfnCHudAmmo_DrawCrosshair, CHudAmmo_DrawCrosshair, (void *&)g_pfnCHudAmmo_DrawCrosshair);
 	g_pMetaHookAPI->InlineHook(g_pfnHudSniperScope_Draw, HudSniperScope_Draw, (void *&)g_pfnHudSniperScope_Draw);
 
-	g_pMetaHookAPI->InlineHook(g_pfnAWP_Idle, WeaponBlock, (void *&)g_pfnAWP_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnAWP_Reload, WeaponBlock, (void *&)g_pfnAWP_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnM3_Reload, WeaponBlock, (void *&)g_pfnM3_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnM3_Idle, WeaponBlock, (void *&)g_pfnM3_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnXM1014_Reload, WeaponBlock, (void *&)g_pfnXM1014_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnXM1014_Idle, WeaponBlock, (void *&)g_pfnXM1014_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnGlock_Reload, WeaponBlock, (void *&)g_pfnGlock_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnGlock_Idle, WeaponBlock, (void *&)g_pfnGlock_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnGlock_Deploy, WeaponBlock, (void *&)g_pfnGlock_Deploy);
-	g_pMetaHookAPI->InlineHook(g_pfnScout_Reload, WeaponBlock, (void *&)g_pfnScout_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnScout_Idle, WeaponBlock, (void *&)g_pfnScout_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnScout_Deploy, WeaponBlock, (void *&)g_pfnScout_Deploy);
-	g_pMetaHookAPI->InlineHook(g_pfnKnife_Deploy, WeaponBlock, (void *&)g_pfnKnife_Deploy);
-	g_pMetaHookAPI->InlineHook(g_pfnKnife_PrimaryAttack, WeaponBlock, (void *&)g_pfnKnife_PrimaryAttack);
-	g_pMetaHookAPI->InlineHook(g_pfnKnife_SecondaryAttack, WeaponBlock, (void *&)g_pfnKnife_SecondaryAttack);
-	g_pMetaHookAPI->InlineHook(g_pfnKnife_Idle, WeaponBlock, (void *&)g_pfnKnife_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnM4A1_SecondaryAttack, WeaponBlock, (void *&)g_pfnM4A1_SecondaryAttack);
-	g_pMetaHookAPI->InlineHook(g_pfnUSP_SecondaryAttack, WeaponBlock, (void *&)g_pfnUSP_SecondaryAttack);
+	Weapon_Init();
 
 	g_pMetaHookAPI->InlineHook(g_pfnCHudSayText_Draw, CHudSayText_Draw, (void *&)g_pfnCHudSayText_Draw);
 
 
-	//gEngfuncs.pfnAddCommand("weapondata_reload", WeaponInitialize);
 
 	/*g_hCurrentFont = vgui::surface()->CreateFont();
 	vgui::surface()->AddCustomFontFile("df_gb_y9.ttf");
@@ -780,7 +736,7 @@ int HUD_VidInit(void)
 
 	gEngfuncs.pfnClientCmd("-duck;");
 
-	WeaponInitialize();
+	Weapon_VidInit();
 
 	return gExportfuncs.HUD_VidInit();
 }

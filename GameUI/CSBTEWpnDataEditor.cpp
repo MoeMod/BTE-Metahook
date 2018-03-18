@@ -175,6 +175,7 @@ void CCSBTEWpnDataEditor::SetLayout()
 	//Search Weapons//
 	m_pWeaponSearch = new CCSBTEWpnDataEditorSearchBar(this, "Search Weapons");
 	m_pWeaponSearch->SetBounds(480, 30, 100, 20);
+	m_pWeaponSearch->SetAllowNonAsciiCharacters(true);
 
 	/*m_pSearchWpn = new Button(this, "Search Weapons", "Search");
 	m_pSearchWpn->SetContentAlignment(Label::a_center);
@@ -455,20 +456,16 @@ void CCSBTEWpnDataEditor::OnTextChanged(void)
 	m_pWeaponSearch->GetMenu()->ClearCurrentlyHighlightedItem();
 	m_pWeaponSearch->RemoveAll();
 
-	//std::string::size_type(std::string::*pfn)(const std::string &, std::string::size_type) const = &std::string::find;
 	// to be optimized
-	
-	auto iter = m_wpnNames.begin();
 	auto ends = m_wpnNames.end();
 	auto fnCanFind = [&input](const std::pair<std::string, std::wstring> &to_find){
 		return (strstr(to_find.first.c_str(), input.c_str()) != NULL) || (wcsstr(to_find.second.c_str(), wszBuffer) != NULL);
 	};
-
-	while ((iter = std::find_if(iter, ends, fnCanFind)) != ends)
+	for (auto iter = m_wpnNames.begin(); (iter = std::find_if(iter, ends, fnCanFind)) != ends; ++iter)
 	{
-		const char *szRealWpnName = iter->first.c_str();
-		m_pWeaponSearch->AddItem(szRealWpnName, new KeyValues(szRealWpnName));
-		++iter;
+		const char *&&szRealWpnName = iter->first.c_str();
+		const wchar_t *&&szWeaponDisplayName = iter->second.c_str();
+		m_pWeaponSearch->AddItem(szWeaponDisplayName, new KeyValues(szRealWpnName));
 	}
 	
 	m_pWeaponSearch->GetMenu()->Panel::SetVisible(true);
@@ -476,10 +473,6 @@ void CCSBTEWpnDataEditor::OnTextChanged(void)
 	m_pWeaponSearch->GetMenu()->PerformLayout();
 	m_pWeaponSearch->MoveToFront();
 }
-
-#ifdef PostMessage
-#undef PostMessage
-#endif
 
 void CCSBTEWpnDataEditorSearchBar::OnMenuItemSelected()
 {

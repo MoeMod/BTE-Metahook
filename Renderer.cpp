@@ -22,6 +22,7 @@ void Renderer_Init(void)
 void Renderer_Shutdown(void)
 {
 	if (g_pRenderer)
+		g_pRenderer->Shutdown();
 		Sys_FreeModule(g_hRenderer);
 }
 

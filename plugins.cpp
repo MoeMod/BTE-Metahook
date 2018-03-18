@@ -163,15 +163,9 @@ void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_engines
 
 void IPlugins::Shutdown()
 {
-	if (g_pRenderer)
-		g_pRenderer->Shutdown();
-
 	Renderer_Shutdown();
 	Module_Shutdown();
 	Console_Shutdown();
-
-	//if (g_pViewPort)
-	//delete g_pViewPort;
 }
 
 void IPlugins::LoadEngine(void)

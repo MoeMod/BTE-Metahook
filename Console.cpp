@@ -1,10 +1,21 @@
 #include <metahook.h>
 
 #include <io.h>
+#include <memory>
 
 static HANDLE g_hChildStdoutRd;
 static HANDLE g_hChildStdoutWr;
-static HANDLE g_hThread;
+
+struct ThreadDeleter
+{
+	void operator()(HANDLE thread)
+	{
+		TerminateThread(thread, 0);
+	}
+	using pointer = HANDLE;
+};
+
+std::unique_ptr<HANDLE, ThreadDeleter> g_phThread;
 
 DWORD WINAPI Console_Thread_Out(LPVOID lpThreadParameter)
 {
@@ -33,17 +44,17 @@ void Console_Init()
 	*stdout = *hf;
 	setvbuf(stdout, NULL, _IONBF, 0);
 	// 创建一个线程，从管道的另一头截获数据
-	g_hThread = CreateThread(NULL,
+	auto &&hThread = CreateThread(NULL,
 		1024,
 		(LPTHREAD_START_ROUTINE)Console_Thread_Out,
 		(LPVOID)NULL,
 		0,
 		NULL);
+	g_phThread.reset(hThread);
 }
 
 void Console_Shutdown()
 {
-	TerminateThread(g_hThread, 0);
 	//CloseHandle(g_hChildStdoutRd);
 	//CloseHandle(g_hChildStdoutWr);
 }
