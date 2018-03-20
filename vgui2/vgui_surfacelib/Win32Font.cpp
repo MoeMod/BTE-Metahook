@@ -24,7 +24,7 @@ bool CWin32Font::ExtendedABCWidthsCacheLessFunc(const abc_cache_t &lhs, const ab
 	return lhs.wch < rhs.wch;
 }
 
-CWin32Font::CWin32Font(void): m_ExtendedABCWidthsCache(256, 0, &ExtendedABCWidthsCacheLessFunc)
+CWin32Font::CWin32Font(void) : m_ExtendedABCWidthsCache(256, 0, &ExtendedABCWidthsCacheLessFunc)
 {
 	m_szName[0] = 0;
 	m_iTall = 0;
@@ -175,7 +175,7 @@ bool CWin32Font::Create(const char *windowsFontName, int tall, int weight, int b
 	assert(ABCWIDTHS_CACHE_SIZE <= 256);
 
 	if (::GetCharABCWidthsW(m_hDC, 0, ABCWIDTHS_CACHE_SIZE - 1, &abc[0]) || ::GetCharABCWidthsA(m_hDC, 0, ABCWIDTHS_CACHE_SIZE - 1, &abc[0]))
-	{	
+	{
 		for (int i = 0; i < ABCWIDTHS_CACHE_SIZE; i++)
 		{
 			m_ABCWidthsCache[i].a = abc[i].abcA - m_iBlur - m_iOutlineSize;
@@ -281,7 +281,7 @@ void CWin32Font::GetCharRGBA(int ch, int rgbaX, int rgbaY, int rgbaWide, int rgb
 					if (ch == '\t')
 						r = g = b = 0;
 
-					unsigned char *dst = &rgba[(y*rgbaWide+x)*4];
+					unsigned char *dst = &rgba[(y*rgbaWide + x) * 4];
 					dst[0] = (unsigned char)(r * 255.0f);
 					dst[1] = (unsigned char)(g * 255.0f);
 					dst[2] = (unsigned char)(b * 255.0f);
@@ -309,7 +309,7 @@ void CWin32Font::GetCharRGBA(int ch, int rgbaX, int rgbaY, int rgbaWide, int rgb
 		}
 		else
 		{
-			RECT rect = { 0, 0, wide, tall};
+			RECT rect = { 0, 0, wide, tall };
 			::ExtTextOut(m_hDC, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
 
 			char mbcs[6] = { 0 };
@@ -331,8 +331,8 @@ void CWin32Font::GetCharRGBA(int ch, int rgbaX, int rgbaY, int rgbaWide, int rgb
 			{
 				if ((i < rgbaWide) && (j < rgbaTall))
 				{
-					unsigned char *src = &m_pBuf[(i + j*m_rgiBitmapSize[0])*4];
-					unsigned char *dst = &rgba[(i + j*rgbaWide)*4];
+					unsigned char *src = &m_pBuf[(i + j*m_rgiBitmapSize[0]) * 4];
+					unsigned char *dst = &rgba[(i + j*rgbaWide) * 4];
 					unsigned char r, g, b;
 
 					if (ch == '\t')
@@ -639,7 +639,7 @@ int CWin32Font::GetAscent(void)
 	return m_iAscent;
 }
 
-extern void (__fastcall *g_pfnCWin32Font_GetCharRGBA)(void *pthis, int, int ch, int rgbaX, int rgbaY, int rgbaWide, int rgbaTall, unsigned char *rgba);
+extern void(__fastcall *g_pfnCWin32Font_GetCharRGBA)(void *pthis, int, int ch, int rgbaX, int rgbaY, int rgbaWide, int rgbaTall, unsigned char *rgba);
 
 void __fastcall CWin32Font_GetCharRGBA(void *pthis, int, int ch, int rgbaX, int rgbaY, int rgbaWide, int rgbaTall, unsigned char *rgba)
 {

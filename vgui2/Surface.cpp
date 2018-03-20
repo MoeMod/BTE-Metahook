@@ -1618,9 +1618,10 @@ bool CSurface::AddGlyphSetToFont(HFont font, const char *windowsFontName, int ta
 
 bool CSurface::AddCustomFontFile(const char *fontFileName)
 {
-	char fullPath[MAX_PATH];
+	/*char fullPath[MAX_PATH];
 	g_pFullFileSystem->GetLocalPath(fontFileName, fullPath, sizeof(fullPath));
-	return FontManager().AddCustomFontFile(fullPath);
+	return FontManager().AddCustomFontFile(fullPath);*/
+	return g_pfnAddCustomFontFile(this, 0, fontFileName);
 }
 
 int CSurface::GetFontTall(HFont font)

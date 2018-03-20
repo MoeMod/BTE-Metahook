@@ -1,6 +1,5 @@
 #include <vgui/VGUI.h>
 #include "Win32Font.h"
-#include "FreeTypeFont.h"
 #include "tier1/utlvector.h"
 
 using vgui::HFont;

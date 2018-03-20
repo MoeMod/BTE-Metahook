@@ -743,9 +743,6 @@
     <ClCompile Include="vgui2\MemoryBitmap.cpp">
       <Filter>vgui2</Filter>
     </ClCompile>
-    <ClCompile Include="vgui2\vgui_surfacelib\FreeTypeFont.cpp">
-      <Filter>vgui2\vgui_surfacelib</Filter>
-    </ClCompile>
     <ClCompile Include="vguimatsurface\FontTextureCache.cpp">
       <Filter>vguimatsurface</Filter>
     </ClCompile>
@@ -2388,9 +2385,6 @@
     </ClInclude>
     <ClInclude Include="vgui2\Memorybitmap.h">
       <Filter>vgui2</Filter>
-    </ClInclude>
-    <ClInclude Include="vgui2\vgui_surfacelib\FreeTypeFont.h">
-      <Filter>vgui2\vgui_surfacelib</Filter>
     </ClInclude>
     <ClInclude Include="util\IDA.h">
       <Filter>util</Filter>

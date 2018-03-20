@@ -2,11 +2,8 @@
 #include "FontManager.h"
 #include <tier0/dbg.h>
 #include <vgui/ISurface.h>
-#include "vgui_internal.h"
 #include "Encode.h"
-
-typedef BOOL(WINAPI *fnGetFontResourceInfoW)(LPCWSTR, DWORD *, LPWSTR, DWORD);
-static fnGetFontResourceInfoW GetFontResourceInfo;
+#include "configs.h"
 
 static CFontManager s_FontManager;
 
@@ -15,57 +12,21 @@ CFontManager &FontManager(void)
 	return s_FontManager;
 }
 
-#include <shlobj.h>
-
-char *CrnGetSpecialFolder(int nFolder)
-{
-	LPITEMIDLIST pidl;
-	LPMALLOC pShellMalloc;
-	static char szDir[MAX_PATH];
-
-	if (SUCCEEDED(SHGetMalloc(&pShellMalloc)))
-	{
-		if (SUCCEEDED(SHGetSpecialFolderLocation(NULL, nFolder, &pidl)))
-		{
-			if (SHGetPathFromIDList(pidl, szDir))
-				strcat(szDir, "\\");
-
-			pShellMalloc->Free(pidl);
-		}
-
-		pShellMalloc->Release();
-	}
-
-	return szDir;
-}
-
 CFontManager::CFontManager(void)
 {
-	GetFontResourceInfo = (fnGetFontResourceInfoW)GetProcAddress(LoadLibrary("GDI32.DLL"), "GetFontResourceInfoW");
-
 	m_FontAmalgams.EnsureCapacity(100);
 	m_FontAmalgams.AddToTail();
 	m_Win32Fonts.EnsureCapacity(100);
-
-	m_BaseFontCache.RemoveAll();
-	m_GetFontFileCache.RemoveAll();
-	m_CustomFontCache.RemoveAll();
-
-	strcpy(m_szDefaultFont, GetIconTitleFontName());
-	wcscpy(m_szFontPath, ANSIToUnicode(CrnGetSpecialFolder(CSIDL_FONTS)));
 
 	setlocale(LC_CTYPE, "");
 	setlocale(LC_TIME, "");
 	setlocale(LC_COLLATE, "");
 	setlocale(LC_MONETARY, "");
-
-	FT_Init_FreeType(&m_Library);
 }
 
 CFontManager::~CFontManager(void)
 {
 	ClearAllFonts();
-	FT_Done_FreeType(m_Library);
 }
 
 void CFontManager::SetLanguage(const char *lang)
@@ -82,12 +43,9 @@ void CFontManager::ClearAllFonts(void)
 	m_Win32Fonts.RemoveAll();
 }
 
-extern vgui::HFont(__fastcall *g_pfnCreateFont)(void *pthis, int);
-
 vgui::HFont CFontManager::CreateFont(void)
 {
-	int i = m_FontAmalgams.AddToTail();
-	return i;
+	return m_FontAmalgams.AddToTail();
 }
 
 bool CFontManager::AddGlyphSetToFont(HFont font, const char *windowsFontName, int tall, int weight, int blur, int scanlines, int flags, int lowRange, int highRange)
@@ -97,51 +55,49 @@ bool CFontManager::AddGlyphSetToFont(HFont font, const char *windowsFontName, in
 
 	CWin32Font *winFont = CreateOrFindWin32Font(windowsFontName, tall, weight, blur, scanlines, flags);
 
-	if (!(flags & vgui::ISurface::FONTFLAG_UNLIMITED))
-	{
-		do
-		{
-			if (IsFontForeignLanguageCapable(windowsFontName))
-			{
-				if (winFont)
-				{
-					m_FontAmalgams[font].AddFont(winFont, 0x0, 0xFFFF);
-					return true;
-				}
-			}
-			else
-			{
-				const char *localizedFontName = GetForeignFallbackFontName();
-
-				if (winFont && !stricmp(localizedFontName, windowsFontName))
-				{
-					m_FontAmalgams[font].AddFont(winFont, 0x0, 0xFFFF);
-					return true;
-				}
-
-				CWin32Font *asianFont = CreateOrFindWin32Font(localizedFontName, tall, weight, blur, scanlines, flags);
-
-				if (winFont && asianFont)
-				{
-					m_FontAmalgams[font].AddFont(winFont, 0x0, 0xFF);
-					m_FontAmalgams[font].AddFont(asianFont, 0x100, 0xFFFF);
-					return true;
-				}
-				else if (asianFont)
-				{
-					m_FontAmalgams[font].AddFont(asianFont, 0x0, 0xFFFF);
-					return true;
-				}
-			}
-		} while (NULL != (windowsFontName = GetFallbackFontName(windowsFontName)));
-	}
-	else
+	if (!Q_stricmp(windowsFontName, gConfigs.szCustomFontName))
 	{
 		if (winFont)
 			m_FontAmalgams[font].AddFont(winFont, 0x0, 0xFFFF);
 
 		return true;
 	}
+
+	do
+	{
+		if (IsFontForeignLanguageCapable(windowsFontName))
+		{
+			if (winFont)
+			{
+				m_FontAmalgams[font].AddFont(winFont, 0x0, 0xFFFF);
+				return true;
+			}
+		}
+		else
+		{
+			const char *localizedFontName = GetForeignFallbackFontName();
+
+			if (winFont && !stricmp(localizedFontName, windowsFontName))
+			{
+				m_FontAmalgams[font].AddFont(winFont, 0x0, 0xFFFF);
+				return true;
+			}
+
+			CWin32Font *asianFont = CreateOrFindWin32Font(localizedFontName, tall, weight, blur, scanlines, flags);
+
+			if (winFont && asianFont)
+			{
+				m_FontAmalgams[font].AddFont(winFont, 0x0, 0xFF);
+				m_FontAmalgams[font].AddFont(asianFont, 0x100, 0xFFFF);
+				return true;
+			}
+			else if (asianFont)
+			{
+				m_FontAmalgams[font].AddFont(asianFont, 0x0, 0xFFFF);
+				return true;
+			}
+		}
+	} while (NULL != (windowsFontName = GetFallbackFontName(windowsFontName)));
 
 	return false;
 }
@@ -343,11 +299,7 @@ CWin32Font *CFontManager::CreateOrFindWin32Font(const char *windowsFontName, int
 	if (!winFont)
 	{
 		int i = m_Win32Fonts.AddToTail();
-
-		if (flags & vgui::ISurface::FONTFLAG_FREETYPE)
-			m_Win32Fonts[i] = new CFreeTypeFont();
-		else
-			m_Win32Fonts[i] = new CWin32Font();
+		m_Win32Fonts[i] = new CWin32Font();
 
 		if (m_Win32Fonts[i]->Create(windowsFontName, tall, weight, blur, scanlines, flags))
 		{
@@ -362,200 +314,4 @@ CWin32Font *CFontManager::CreateOrFindWin32Font(const char *windowsFontName, int
 	}
 
 	return winFont;
-}
-
-static LOGFONTW logFont[128];
-
-bool CFontManager::AddCustomFontFile(const char *fontFileName)
-{
-	for (int i = 0; i < m_CustomFontCache.Size(); i++)
-	{
-		if (!strcmp(m_CustomFontCache[i].fontFilePath, fontFileName))
-			return true;
-	}
-
-	if (!(::AddFontResource(fontFileName) > 0))
-		return false;
-
-	const char *facename = GetFontFaceName(fontFileName);
-
-	if (!facename)
-		return false;
-
-	int i = m_CustomFontCache.AddToTail();
-	strcpy(m_CustomFontCache[i].fontName, facename);
-	strcpy(m_CustomFontCache[i].fontFilePath, fontFileName);
-	return true;
-}
-
-const char *CFontManager::GetCustomFontFilePath(const char *fontName)
-{
-	for (int i = 0; i < m_CustomFontCache.Size(); i++)
-	{
-		if (!strcmp(m_CustomFontCache[i].fontName, fontName))
-			return m_CustomFontCache[i].fontFilePath;
-	}
-
-	return NULL;
-}
-
-const char *CFontManager::GetIconTitleFontName(void)
-{
-	LOGFONT lf;
-	SystemParametersInfo(SPI_GETICONTITLELOGFONT, sizeof(LOGFONT), &lf, 0);
-	return lf.lfFaceName;
-}
-
-const char *CFontManager::GetFontFilePath(const char *fontName, BOOL isBold, BOOL isItalic)
-{
-	const char *fontPath = FontManager().GetCustomFontFilePath(fontName);
-
-	if (fontPath)
-		return fontPath;
-
-	wchar_t wFontName[64];
-	wcscpy(wFontName, ANSIToUnicode(fontName));
-
-	for (int i = 0; i < m_GetFontFileCache.Count(); i++)
-	{
-		if (!strcmp(m_GetFontFileCache[i].fontName, fontName) && m_GetFontFileCache[i].isBold == isBold && m_GetFontFileCache[i].isItalic == isItalic)
-			return m_GetFontFileCache[i].fontFilePath;
-	}
-
-	if (!stricmp(fontName, "Marlett"))
-		fontName = "Marlett.ttf";
-
-	wchar_t fontFileName[MAX_PATH];
-	swprintf(fontFileName, L"%s*", m_szFontPath);
-
-	wchar_t foundName[MAX_PATH];
-	BOOL fontFound = FALSE;
-	static wchar_t fullPath[MAX_PATH];
-	DWORD dwDummy;
-
-	WIN32_FIND_DATAW findData;
-	HANDLE searchHandle = FindFirstFileW(fontFileName, &findData);
-
-	if (searchHandle != INVALID_HANDLE_VALUE)
-	{
-		do
-		{
-			if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-				continue;
-
-			if (findData.cFileName[0] == '.')
-				continue;
-
-			DWORD dwSize = 0;
-			DWORD dwCount;
-			swprintf(fontFileName, L"%s%s", m_szFontPath, findData.cFileName);
-
-			if (GetFontResourceInfo(fontFileName, &dwSize, NULL, 2) == FALSE)
-				continue;
-
-			dwCount = dwSize / sizeof(LOGFONTW);
-			memset(logFont, 0, dwSize);
-
-			if (GetFontResourceInfo(findData.cFileName, &dwSize, (LPWSTR)logFont, 2) == FALSE)
-				continue;
-
-			for (DWORD i = 0; i < dwCount; i++)
-			{
-				BOOL isThis = !wcscmp(logFont[i].lfFaceName, wFontName);
-
-				if (isThis)
-				{
-					if (!fontFound)
-					{
-						wcscpy(foundName, findData.cFileName);
-						fontFound = TRUE;
-					}
-				}
-
-				if ((isBold == -1 || (isBold != -1 && logFont[i].lfWeight == 700)) && (isItalic == -1 || (isItalic != -1 && logFont[i].lfItalic)) && isThis)
-				{
-					wcscpy(foundName, findData.cFileName);
-					goto done;
-				}
-			}
-		} while (FindNextFileW(searchHandle, &findData));
-	}
-
-	if (fontFound)
-	{
-	done:
-		GetFontResourceInfo(foundName, &dwDummy, fullPath, 4);
-		int j = m_GetFontFileCache.AddToTail();
-		strcpy(m_GetFontFileCache[j].fontName, fontName);
-		m_GetFontFileCache[j].isBold = isBold;
-		m_GetFontFileCache[j].isItalic = isItalic;
-		strcpy(m_GetFontFileCache[j].fontFilePath, UnicodeToANSI(fullPath));
-		FindClose(searchHandle);
-		return m_GetFontFileCache[j].fontFilePath;
-	}
-
-	FindClose(searchHandle);
-	return NULL;
-}
-
-const char *CFontManager::GetFontFaceName(const char *fontPath)
-{
-	static wchar_t _fontPath[MAX_PATH];
-	wcscpy(_fontPath, ANSIToUnicode(fontPath));
-
-	DWORD dwSize = 0;
-	DWORD dwCount;
-	DWORD dwError = 0;
-
-	if (GetFontResourceInfo(_fontPath, &dwSize, NULL, 2) == FALSE)
-	{
-		Assert((dwError = GetLastError()) == 0);
-		return NULL;
-	}
-
-	dwCount = dwSize / sizeof(LOGFONTW);
-	memset(logFont, 0, dwSize);
-
-	if (GetFontResourceInfo(_fontPath, &dwSize, (LPWSTR)logFont, 2) == FALSE)
-	{
-		Assert((dwError = GetLastError()) == 0);
-		return NULL;
-	}
-
-	return UnicodeToANSI(logFont[0].lfFaceName);
-}
-
-void CFontManager::AddBaseFont(CWin32Font *font, int tall, int weight, int blur, int scanlines, int flags)
-{
-	int i = m_BaseFontCache.AddToTail();
-
-	m_BaseFontCache[i].font = font;
-	m_BaseFontCache[i].tall = tall;
-	m_BaseFontCache[i].weight = weight;
-	m_BaseFontCache[i].blur = blur;
-	m_BaseFontCache[i].scanlines = scanlines;
-	m_BaseFontCache[i].flags = flags;
-}
-
-CWin32Font *CFontManager::GetBaseFont(int tall, int weight, int blur, int scanlines, int flags)
-{
-	for (int i = 0; i < m_BaseFontCache.Count(); i++)
-	{
-		baseFont_t *font = &m_BaseFontCache[i];
-
-		if (font->tall == tall && font->weight == weight && font->blur == blur && font->scanlines == scanlines && font->flags == flags)
-			return m_BaseFontCache[i].font;
-	}
-
-	return NULL;
-}
-
-const char *CFontManager::GetDefaultFontName(void)
-{
-	return m_szDefaultFont;
-}
-
-FT_Library CFontManager::GetFreeTypeLibrary(void)
-{
-	return m_Library;
 }
