@@ -1,4 +1,4 @@
-#include "FontManager.h"
+#include "vgui_surfacelib/FontManager.h"
 #include "tier1/utlrbtree.h"
 #include <vgui/ISurface.h>
 
@@ -12,6 +12,7 @@ public:
 	bool GetTextureForChar(HFont font, wchar_t wch, int *textureID, float **texCoords);
 	bool AllocatePageForChar(int charWide, int charTall, int &pageIndex, int &drawX, int &drawY, int &twide, int &ttall);
 	int ComputePageType(int charTall) const;
+	void DumpPageTextures(void);
 
 public:
 	enum

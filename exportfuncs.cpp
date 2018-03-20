@@ -59,7 +59,6 @@ cvar_t *gl_fxaa;
 cvar_t *g_pcvarEnableConsole = NULL;
 
 cl_enginefunc_t gEngfuncs;
-cl_enginefunc_t *engine = &gEngfuncs;
 
 engine_studio_api_t IEngineStudio;
 event_api_s gEventAPI;
@@ -350,7 +349,7 @@ void CL_VisEdicts_Patch(void)
 #endif
 
 void SVC_Init(void);
-void GameUI_Init();
+//void GameUI_Init();
 void EngFunc_SPR_Set(HSPRITE hSPR, int r, int g, int b);
 
 TEMPENTITY *g_pPetrolboomerFlame = nullptr;
@@ -360,6 +359,7 @@ TEMPENTITY *g_pDualSwordEffect2 = nullptr;
 
 int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 {
+	engine = pEnginefuncs;
 	//	pEnginefuncs->pfnDrawCharacter = &DrawCharacter;
 
 	memcpy(&gEngfuncs, pEnginefuncs, sizeof(gEngfuncs));

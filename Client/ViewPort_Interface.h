@@ -20,3 +20,5 @@ public:
 };
 
 extern IClientVGUI *g_pClientVGUI;
+
+void ViewPort_InstallHook(cl_exportfuncs_t *pExportfuncs);

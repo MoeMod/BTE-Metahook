@@ -58,7 +58,7 @@
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,8 +84,7 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy "$(OutDir)$(ProjectName).dll" "D:\CSBTE\cstrike\MetaHook\Plugins\CSBTE.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -192,10 +191,7 @@
     <ClCompile Include="engfunchook.cpp" />
     <ClCompile Include="engfuncs.cpp" />
     <ClCompile Include="exportfuncs.cpp" />
-    <ClCompile Include="FontAmalgam.cpp" />
-    <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Fonts.cpp" />
-    <ClCompile Include="FontTextureCache.cpp" />
     <ClCompile Include="GameUI\BackgroundMenuButton.cpp" />
     <ClCompile Include="GameUI\BasePanel.cpp" />
     <ClCompile Include="GameUI\BinkPanel.cpp" />
@@ -249,6 +245,9 @@
     <ClCompile Include="GameUI\VControlsListPanel.cpp" />
     <ClCompile Include="GL_BinkTexture.cpp" />
     <ClCompile Include="HLSDK\common\parsemsg.cpp" />
+    <ClCompile Include="Hook_KeyValuesSystem.cpp" />
+    <ClCompile Include="Hook_Scheme.cpp" />
+    <ClCompile Include="Hook_Surface.cpp" />
     <ClCompile Include="imagelib.cpp" />
     <ClCompile Include="HLSDK\common\interface.cpp" />
     <ClCompile Include="IMEInput.cpp" />
@@ -293,15 +292,12 @@
     <ClCompile Include="ServerBrowser\ServerListCompare.cpp" />
     <ClCompile Include="ServerBrowser\SpectateGames.cpp" />
     <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="SourceSDK\border.cpp" />
     <ClCompile Include="SourceSDK\filesystem.cpp" />
     <ClCompile Include="SourceSDK\filesystem_helpers.cpp" />
-    <ClCompile Include="SourceSDK\deadipanel.cpp" />
     <ClCompile Include="SourceSDK\mathlib\3dnow.cpp" />
     <ClCompile Include="SourceSDK\mathlib\mathlib_base.cpp" />
     <ClCompile Include="SourceSDK\mathlib\sse.cpp" />
     <ClCompile Include="SourceSDK\deadscheme.cpp" />
-    <ClCompile Include="SourceSDK\deadsurface.cpp" />
     <ClCompile Include="SourceSDK\tier0\assert_dialog.cpp" />
     <ClCompile Include="SourceSDK\tier0\cpu.cpp" />
     <ClCompile Include="SourceSDK\tier0\dbg.cpp" />
@@ -325,9 +321,7 @@
     <ClCompile Include="SourceSDK\tier1\utlbuffer.cpp" />
     <ClCompile Include="SourceSDK\tier1\utlstring.cpp" />
     <ClCompile Include="SourceSDK\tier1\utlsymbol.cpp" />
-    <ClCompile Include="SourceSDK\vstdlib\KeyValuesSystem.cpp" />
     <ClCompile Include="SourceSDK\vstdlib\random.cpp" />
-    <ClCompile Include="Surface.cpp" />
     <ClCompile Include="sys.cpp" />
     <ClCompile Include="texdraw.cpp" />
     <ClCompile Include="TriAPI.cpp" />
@@ -340,7 +334,23 @@
     <ClCompile Include="util\STLHelper.cpp" />
     <ClCompile Include="util\studio_util.cpp" />
     <ClCompile Include="util\util.cpp" />
-    <ClCompile Include="vgui2\Input.cpp" />
+    <ClCompile Include="vgui2\Bitmap.cpp" />
+    <ClCompile Include="vgui2\Border.cpp" />
+    <ClCompile Include="vgui2\HtmlWindow.cpp" />
+    <ClCompile Include="vgui2\MemoryBitmap.cpp" />
+    <ClCompile Include="vgui2\Scheme.cpp" />
+    <ClCompile Include="vgui2\Surface.cpp" />
+    <ClCompile Include="vgui2\vgui2.cpp" />
+    <ClCompile Include="vgui2\vgui_key_translation.cpp" />
+    <ClCompile Include="vgui2\vgui_surfacelib\FontAmalgam.cpp" />
+    <ClCompile Include="vgui2\vgui_surfacelib\FontManager.cpp" />
+    <ClCompile Include="vgui2\vgui_surfacelib\FreeTypeFont.cpp" />
+    <ClCompile Include="vgui2\vgui_surfacelib\Win32Font.cpp" />
+    <ClCompile Include="vgui2\VPanel.cpp" />
+    <ClCompile Include="vgui2\VPanelWrapper.cpp" />
+    <ClCompile Include="vguimatsurface\Clip2D.cpp" />
+    <ClCompile Include="vguimatsurface\FontTextureCache.cpp" />
+    <ClCompile Include="vguimatsurface\Input.cpp" />
     <ClCompile Include="vgui_controls\AnalogBar.cpp" />
     <ClCompile Include="vgui_controls\AnimatingImagePanel.cpp" />
     <ClCompile Include="vgui_controls\AnimationController.cpp" />
@@ -409,7 +419,6 @@
     <ClCompile Include="vgui_controls\vgui_controls.cpp" />
     <ClCompile Include="vgui_controls\WizardPanel.cpp" />
     <ClCompile Include="vgui_controls\WizardSubPanel.cpp" />
-    <ClCompile Include="Win32Font.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -488,10 +497,7 @@
     <ClInclude Include="engfuncs.h" />
     <ClInclude Include="engineinterface.h" />
     <ClInclude Include="exportfuncs.h" />
-    <ClInclude Include="FontAmalgam.h" />
-    <ClInclude Include="FontManager.h" />
     <ClInclude Include="Fonts.h" />
-    <ClInclude Include="FontTextureCache.h" />
     <ClInclude Include="GameUI\BackgroundMenuButton.h" />
     <ClInclude Include="GameUI\BasePanel.h" />
     <ClInclude Include="GameUI\BinkPanel.h" />
@@ -536,6 +542,9 @@
     <ClInclude Include="GameUI\URLButton.h" />
     <ClInclude Include="GameUI\VControlsListPanel.h" />
     <ClInclude Include="GL_BinkTexture.h" />
+    <ClInclude Include="Hook_KeyValuesSystem.h" />
+    <ClInclude Include="Hook_Scheme.h" />
+    <ClInclude Include="Hook_Surface.h" />
     <ClInclude Include="imagelib.h" />
     <ClInclude Include="IMEInput.h" />
     <ClInclude Include="Interface\IBaseUI.h" />
@@ -862,19 +871,33 @@
     <ClInclude Include="SourceSDK\vstdlib\random.h" />
     <ClInclude Include="SourceSDK\vstdlib\vstdlib.h" />
     <ClInclude Include="SourceSDK\winlite.h" />
-    <ClInclude Include="Surface.h" />
     <ClInclude Include="texdraw.h" />
     <ClInclude Include="TriAPI.h" />
     <ClInclude Include="util\bits32.h" />
     <ClInclude Include="util\calcbody.h" />
     <ClInclude Include="util\calcscreen.h" />
+    <ClInclude Include="util\IDA.h" />
     <ClInclude Include="util\iniparser.h" />
     <ClInclude Include="util\md5.h" />
     <ClInclude Include="util\perf_counter.h" />
     <ClInclude Include="util\STLHelper.h" />
     <ClInclude Include="util\studio_util.h" />
     <ClInclude Include="util\util.h" />
-    <ClInclude Include="vgui2\Input.h" />
+    <ClInclude Include="vgui2\bitmap.h" />
+    <ClInclude Include="vgui2\HtmlWindow.h" />
+    <ClInclude Include="vgui2\Memorybitmap.h" />
+    <ClInclude Include="vgui2\vgui2.h" />
+    <ClInclude Include="vgui2\VGUI_Border.h" />
+    <ClInclude Include="vgui2\vgui_internal.h" />
+    <ClInclude Include="vgui2\vgui_key_translation.h" />
+    <ClInclude Include="vgui2\vgui_surfacelib\FontAmalgam.h" />
+    <ClInclude Include="vgui2\vgui_surfacelib\FontManager.h" />
+    <ClInclude Include="vgui2\vgui_surfacelib\FreeTypeFont.h" />
+    <ClInclude Include="vgui2\vgui_surfacelib\Win32Font.h" />
+    <ClInclude Include="vgui2\VPanel.h" />
+    <ClInclude Include="vguimatsurface\Clip2D.h" />
+    <ClInclude Include="vguimatsurface\FontTextureCache.h" />
+    <ClInclude Include="vguimatsurface\Input.h" />
     <ClInclude Include="vgui_controls\AnalogBar.h" />
     <ClInclude Include="vgui_controls\AnimatingImagePanel.h" />
     <ClInclude Include="vgui_controls\AnimationController.h" />
@@ -947,7 +970,6 @@
     <ClInclude Include="vgui_controls\URLLabel.h" />
     <ClInclude Include="vgui_controls\WizardPanel.h" />
     <ClInclude Include="vgui_controls\WizardSubPanel.h" />
-    <ClInclude Include="Win32Font.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

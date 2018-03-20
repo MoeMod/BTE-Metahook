@@ -44,9 +44,7 @@ public:
 	virtual void ParseSideSettings(int side_index, KeyValues *inResourceData, IScheme *pScheme) = 0;
 	virtual const char *GetName(void) = 0;
 	virtual void SetName(const char *name) = 0;
-
-public:
-	backgroundtype_e GetBackgroundType(void);
+	virtual backgroundtype_e GetBackgroundType(void) = 0;
 };
 
 }

@@ -112,3 +112,22 @@ void CClientVGUI::HidePanel(const char *name)
 		vgui::ipanel()->SetParent(p, NULL);
 	}
 }
+
+void ViewPort_InstallHook(cl_exportfuncs_t *pExportfuncs)
+{
+	CreateInterfaceFn fnCreateInterfaceClient = (CreateInterfaceFn)pExportfuncs->ClientFactory();
+	g_pClientVGUI = (IClientVGUI *)fnCreateInterfaceClient(CLIENTVGUI_INTERFACE_VERSION, NULL);
+
+	CClientVGUI ClientVGUI;
+
+	DWORD *pTable = *(DWORD **)&ClientVGUI;
+
+	g_pMetaHookAPI->VFTHook(g_pClientVGUI, 0, 1, (void *)pTable[1], (void *&)g_pfnCClientVGUI_Initialize);
+	g_pMetaHookAPI->VFTHook(g_pClientVGUI, 0, 2, (void *)pTable[2], (void *&)g_pfnCClientVGUI_Start);
+	g_pMetaHookAPI->VFTHook(g_pClientVGUI, 0, 3, (void *)pTable[3], (void *&)g_pfnCClientVGUI_SetParent);
+	g_pMetaHookAPI->VFTHook(g_pClientVGUI, 0, 4, (void *)pTable[4], (void *&)g_pfnCClientVGUI_UseVGUI1);
+	g_pMetaHookAPI->VFTHook(g_pClientVGUI, 0, 5, (void *)pTable[5], (void *&)g_pfnCClientVGUI_HideScoreBoard);
+	g_pMetaHookAPI->VFTHook(g_pClientVGUI, 0, 6, (void *)pTable[6], (void *&)g_pfnCClientVGUI_HideAllVGUIMenu);
+	g_pMetaHookAPI->VFTHook(g_pClientVGUI, 0, 7, (void *)pTable[7], (void *&)g_pfnCClientVGUI_ActivateClientUI);
+	g_pMetaHookAPI->VFTHook(g_pClientVGUI, 0, 8, (void *)pTable[8], (void *&)g_pfnCClientVGUI_HideClientUI);
+}

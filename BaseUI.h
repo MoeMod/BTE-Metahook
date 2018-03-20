@@ -35,20 +35,6 @@ public:
 	virtual void ShowConsole(void);
 };
 
-class CKeyValuesSystem : public IKeyValuesSystem
-{
-public:
-	virtual void RegisterSizeofKeyValues(int size);
-	virtual void *AllocKeyValuesMemory(int size);
-	virtual void FreeKeyValuesMemory(void *pMem);
-	virtual HKeySymbol GetSymbolForString(const char *name);
-	virtual const char *GetStringForSymbol(HKeySymbol symbol);
-	virtual void GetLocalizedFromANSI(const char *ansi, wchar_t *outBuf, int unicodeBufferSizeInBytes);
-	virtual void GetANSIFromLocalized(const wchar_t *wchar, char *outBuf, int ansiBufferSizeInBytes);
-	virtual void AddKeyValuesToMemoryLeakList(void *pMem, HKeySymbol name);
-	virtual void RemoveKeyValuesFromMemoryLeakList(void *pMem);
-};
-
 extern IBaseUI *baseuifuncs;
 //extern IEngineVGui *enginevguifuncs;
 //extern IGameConsole *g_pGameConsole;

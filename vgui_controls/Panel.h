@@ -688,10 +688,10 @@ private:
 	// 1 == Textured (TextureId1 only)
 	// 2 == Rounded Corner Box
 	CPanelAnimationVar( int, m_nPaintBackgroundType, "PaintBackgroundType", "0" );
-	CPanelAnimationVarAliasType( int, m_nBgTextureId1, "Texture1", "vgui/hud/800corner1", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nBgTextureId2, "Texture2", "vgui/hud/800corner2", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nBgTextureId3, "Texture3", "vgui/hud/800corner3", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nBgTextureId4, "Texture4", "vgui/hud/800corner4", "textureid" );
+	CPanelAnimationVarAliasType(int, m_nBgTextureId1, "Texture1", "gfx/vgui/hud/800corner1", "textureid");
+	CPanelAnimationVarAliasType(int, m_nBgTextureId2, "Texture2", "gfx/vgui/hud/800corner2", "textureid");
+	CPanelAnimationVarAliasType(int, m_nBgTextureId3, "Texture3", "gfx/vgui/hud/800corner3", "textureid");
+	CPanelAnimationVarAliasType(int, m_nBgTextureId4, "Texture4", "gfx/vgui/hud/800corner4", "textureid");
 	
 	friend class Panel;
 	friend class BuildGroup;

@@ -13,10 +13,7 @@ vgui::IPanel *g_pVGuiPanel;
 vgui::ILocalize *g_pVGuiLocalize;
 
 //IFileSystem *g_pFullFileSystem;
-IFileSystem *g_pFullFileSystem;
 IKeyValuesSystem *g_pKeyValuesSystem;
-
-void KeyValuesSystem_InstallHook(void);
 
 namespace vgui
 {
@@ -50,8 +47,6 @@ bool VGui_InitInterfacesList(const char *moduleName, CreateInterfaceFn *factoryL
 		Warning("vgui_controls is missing a required interface!\n");
 		return false;
 	}
-
-	KeyValuesSystem_InstallHook();
 
 	return true;
 }

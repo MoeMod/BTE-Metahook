@@ -1,0 +1,2 @@
+
+void KeyValuesSystem_InstallHook(IKeyValuesSystem *pKeyValuesSystem);

@@ -126,6 +126,12 @@
     <Filter Include="GameUI\WpnDataEditor">
       <UniqueIdentifier>{a29e38b5-12a5-473f-9cd5-9078365955be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vgui2\vgui_surfacelib">
+      <UniqueIdentifier>{7cce8312-bc21-4ec9-95db-547f4b3d5682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vguimatsurface">
+      <UniqueIdentifier>{a2c85657-ae33-4304-b1f9-30ad3ff0da4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base.cpp">
@@ -248,37 +254,13 @@
     <ClCompile Include="SourceSDK\tier1\utlsymbol.cpp">
       <Filter>SourceSDK\tier1</Filter>
     </ClCompile>
-    <ClCompile Include="SourceSDK\vstdlib\KeyValuesSystem.cpp">
-      <Filter>SourceSDK\vstdlib</Filter>
-    </ClCompile>
     <ClCompile Include="SourceSDK\vstdlib\random.cpp">
       <Filter>SourceSDK\vstdlib</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceSDK\border.cpp">
-      <Filter>SourceSDK</Filter>
     </ClCompile>
     <ClCompile Include="SourceSDK\filesystem_helpers.cpp">
       <Filter>SourceSDK</Filter>
     </ClCompile>
-    <ClCompile Include="FontAmalgam.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FontTextureCache.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Surface.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Win32Font.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="SourceSDK\deadscheme.cpp">
-      <Filter>SourceSDK</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceSDK\deadsurface.cpp">
-      <Filter>SourceSDK</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceSDK\deadipanel.cpp">
       <Filter>SourceSDK</Filter>
     </ClCompile>
     <ClCompile Include="engfunchook.cpp">
@@ -629,9 +611,6 @@
     <ClCompile Include="Client\model.cpp">
       <Filter>Client</Filter>
     </ClCompile>
-    <ClCompile Include="FontManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Socket.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -956,9 +935,6 @@
     <ClCompile Include="IMEInput.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="vgui2\Input.cpp">
-      <Filter>vgui2</Filter>
-    </ClCompile>
     <ClCompile Include="CVARs.cpp">
       <Filter>Client</Filter>
     </ClCompile>
@@ -982,6 +958,66 @@
     </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\Bitmap.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\Border.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\Scheme.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\vgui_surfacelib\FontManager.cpp">
+      <Filter>vgui2\vgui_surfacelib</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\vgui_surfacelib\Win32Font.cpp">
+      <Filter>vgui2\vgui_surfacelib</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\vgui_surfacelib\FontAmalgam.cpp">
+      <Filter>vgui2\vgui_surfacelib</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\Surface.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\HtmlWindow.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\VPanelWrapper.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\VPanel.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\MemoryBitmap.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\vgui_surfacelib\FreeTypeFont.cpp">
+      <Filter>vgui2\vgui_surfacelib</Filter>
+    </ClCompile>
+    <ClCompile Include="vguimatsurface\FontTextureCache.cpp">
+      <Filter>vguimatsurface</Filter>
+    </ClCompile>
+    <ClCompile Include="vguimatsurface\Clip2D.cpp">
+      <Filter>vguimatsurface</Filter>
+    </ClCompile>
+    <ClCompile Include="vguimatsurface\Input.cpp">
+      <Filter>vguimatsurface</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\vgui_key_translation.cpp">
+      <Filter>vgui2</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook_Surface.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook_KeyValuesSystem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook_Scheme.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\vgui2.cpp">
+      <Filter>vgui2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1957,16 +1993,7 @@
     <ClInclude Include="engineinterface.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="FontAmalgam.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FontManager.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="Fonts.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FontTextureCache.h">
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="imagelib.h">
@@ -1975,13 +2002,7 @@
     <ClInclude Include="playaudio.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="Surface.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="texdraw.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Win32Font.h">
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="BugReport\CrashHandle.h">
@@ -2569,9 +2590,6 @@
     <ClInclude Include="IMEInput.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="vgui2\Input.h">
-      <Filter>vgui2</Filter>
-    </ClInclude>
     <ClInclude Include="CVARs.h">
       <Filter>Client</Filter>
     </ClInclude>
@@ -2592,6 +2610,63 @@
     </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\bitmap.h">
+      <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui_internal.h">
+      <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\VGUI_Border.h">
+      <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui_surfacelib\FontAmalgam.h">
+      <Filter>vgui2\vgui_surfacelib</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui_surfacelib\FontManager.h">
+      <Filter>vgui2\vgui_surfacelib</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui_surfacelib\Win32Font.h">
+      <Filter>vgui2\vgui_surfacelib</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\HtmlWindow.h">
+      <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\VPanel.h">
+      <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\Memorybitmap.h">
+      <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui_surfacelib\FreeTypeFont.h">
+      <Filter>vgui2\vgui_surfacelib</Filter>
+    </ClInclude>
+    <ClInclude Include="util\IDA.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="vguimatsurface\FontTextureCache.h">
+      <Filter>vguimatsurface</Filter>
+    </ClInclude>
+    <ClInclude Include="vguimatsurface\Clip2D.h">
+      <Filter>vguimatsurface</Filter>
+    </ClInclude>
+    <ClInclude Include="vguimatsurface\Input.h">
+      <Filter>vguimatsurface</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui_key_translation.h">
+      <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook_Surface.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook_KeyValuesSystem.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook_Scheme.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui2.h">
+      <Filter>vgui2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

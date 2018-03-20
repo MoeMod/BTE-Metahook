@@ -1,10 +1,16 @@
 #include <malloc.h>
 #include "FontTextureCache.h"
 #include <IEngineSurface.h>
+#include "vgui_internal.h"
+#include "LoadTGA.h"
+#include "qgl.h"
 
 extern IEngineSurface *staticSurface;
 
 CFontTextureCache g_FontTextureCache;
+
+#define TEXTURE_PAGE_WIDTH 256
+#define TEXTURE_PAGE_HEIGHT 256
 
 int CFontTextureCache::s_pFontPageSize[FONT_PAGE_SIZE_COUNT] =
 {
@@ -14,7 +20,7 @@ int CFontTextureCache::s_pFontPageSize[FONT_PAGE_SIZE_COUNT] =
 	128,
 };
 
-CFontTextureCache::CFontTextureCache(void): m_CharCache(0, 256, CacheEntryLessFunc)
+CFontTextureCache::CFontTextureCache(void) : m_CharCache(0, 256, CacheEntryLessFunc)
 {
 	CacheEntry_t listHead = { 0, 0 };
 	m_LRUListHeadIndex = m_CharCache.Insert(listHead);
@@ -63,7 +69,7 @@ bool CFontTextureCache::GetTextureForChar(HFont font, wchar_t wch, int *textureI
 		return false;
 
 	int nByteCount = s_pFontPageSize[FONT_PAGE_SIZE_COUNT - 1] * s_pFontPageSize[FONT_PAGE_SIZE_COUNT - 1] * 4;
-	unsigned char* rgba = (unsigned char *)_alloca(nByteCount);
+	unsigned char *rgba = (unsigned char *)_alloca(nByteCount);
 	memset(rgba, 0, nByteCount);
 	winFont->GetCharRGBA(wch, 0, 0, fontWide, fontTall, rgba);
 
@@ -115,14 +121,14 @@ bool CFontTextureCache::AllocatePageForChar(int charWide, int charTall, int &pag
 
 		newPage.textureID = staticSurface->createNewTextureID();
 		newPage.fontHeight = s_pFontPageSize[nPageType];
-		newPage.wide = 256;
-		newPage.tall = 256;
+		newPage.wide = TEXTURE_PAGE_WIDTH;
+		newPage.tall = TEXTURE_PAGE_HEIGHT;
 		newPage.nextX = 0;
 		newPage.nextY = 0;
 
 		nNextX = charWide;
 
-		unsigned char rgba[256 * 256 * 4];
+		unsigned char rgba[TEXTURE_PAGE_WIDTH * TEXTURE_PAGE_HEIGHT * 4];
 		memset(rgba, 0, sizeof(rgba));
 		staticSurface->drawSetTextureRGBA(newPage.textureID, rgba, newPage.wide, newPage.tall, false, true);
 	}
@@ -156,4 +162,26 @@ bool CFontTextureCache::CacheEntryLessFunc(CacheEntry_t const &lhs, CacheEntry_t
 		return false;
 
 	return (lhs.wch < rhs.wch);
+}
+
+void CFontTextureCache::DumpPageTextures(void)
+{
+	byte *pixels = new byte[TEXTURE_PAGE_WIDTH * TEXTURE_PAGE_HEIGHT * 3];
+
+	for (int i = 0; i < FONT_PAGE_SIZE_COUNT; ++i)
+	{
+		int pageIndex = m_pCurrPage[i];
+
+		if (pageIndex > -1)
+		{
+			qglBindTexture(GL_TEXTURE_2D, m_PageList[pageIndex].textureID);
+			qglGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+
+			char filename[MAX_PATH];
+			sprintf(filename, "fonttexture_%d.tga", i + i);
+			WriteTGA(pixels, TEXTURE_PAGE_WIDTH, TEXTURE_PAGE_HEIGHT, filename);
+		}
+	}
+
+	delete pixels;
 }

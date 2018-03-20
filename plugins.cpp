@@ -14,6 +14,7 @@
 
 #include "Renderer/qgl.h"
 
+#include "Client/ViewPort_Interface.h"
 #include "Client/model.h"
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
@@ -261,6 +262,9 @@ void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 	//LogToFile("MGUI°æ±¾[2013/8/17]");
 	memcpy(&gExportfuncs, pExportFunc, sizeof(gExportfuncs));
 
+	Module_LoadClient(pExportFunc);
+	ViewPort_InstallHook(pExportFunc);
+
 	pExportFunc->Initialize = Initialize;
 	pExportFunc->HUD_Init = HUD_Init;
 	pExportFunc->HUD_Redraw = HUD_Redraw;
@@ -293,7 +297,6 @@ void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 	//CClientVGUI::OnClientLoaded(pExportFunc);
 }
 
-extern char g_szFontPath[MAX_PATH];
 void IPlugins::ExitGame(int iResult)
 {
 	//Fonts_Free();
@@ -302,8 +305,6 @@ void IPlugins::ExitGame(int iResult)
 		g_pRenderer->ExitGame(iResult);
 
 	HudStatistics().Save();
-	
-	RemoveFontResource(g_szFontPath);
 }
 
 void HUD_Frame(double flHostFrameTime)
