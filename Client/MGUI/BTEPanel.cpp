@@ -835,6 +835,9 @@ void Cmd_TeamSuit()
 
 void BTEBuyMenu_Init(void)
 {
+	gEngfuncs.pfnAddCommand("buy", Cmd_Buy);
+	gEngfuncs.pfnAddCommand("buyequip", Cmd_BuyEquip);
+	gEngfuncs.pfnAddCommand("teamsuit", Cmd_TeamSuit);
 
 	memset(szFavWpn, 0, sizeof(szFavWpn));
 
@@ -1125,10 +1128,6 @@ void BTEBuyMenu_Init(void)
 }
 void BTEPanel_BuyMenu_Reset()
 {
-	gEngfuncs.pfnAddCommand("buy", Cmd_Buy);
-	gEngfuncs.pfnAddCommand("buyequip", Cmd_BuyEquip);
-	gEngfuncs.pfnAddCommand("teamsuit", Cmd_TeamSuit);
-
 	MakeWeaponList();
 
 	bFirst = true;
