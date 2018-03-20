@@ -83,6 +83,28 @@ int(__fastcall *g_pfnCBasePanel_OnGameUIActivated)(void *);
 int __fastcall CBasePanel_OnGameUIActivated(void *pthis);
 */
 
+void FillMultiTexturesForWindowDark(int w, int h)
+{
+	//surface()->DrawSetColor(10, 10, 10, 150);
+	//surface()->DrawFilledRect(5, 12, w - 10, h - 15);
+
+	GL_DrawFullPanel(g_UI_Panel_Dark, 0, 0, w + 14, h + 10, 255);
+}
+
+extern int g_UI_Button[3][3];
+
+void FillMultiTexturesForBaseButton(int state, int w, int h)
+{
+	GL_DrawPanel(g_UI_Button[state], 0, 0, w, h, 255);
+}
+
+extern int g_UI_TextEntry[3][3];
+
+void FillMultiTexturesForTextEntry(int w, int h)
+{
+	GL_DrawFullPanel(g_UI_TextEntry, 0, 0, w, h, 255);
+}
+
 #include <color.h>
 #include <Hook_Surface.h>
 

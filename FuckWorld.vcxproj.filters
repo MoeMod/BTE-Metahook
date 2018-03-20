@@ -132,6 +132,18 @@
     <Filter Include="vgui2\vgui_controls">
       <UniqueIdentifier>{a779e93e-0992-4209-be33-f2c2c600e089}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ServerBrowser\Dialogs">
+      <UniqueIdentifier>{87b23c11-4ced-4546-b7f6-62ab3b11c4a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerBrowser\Game Page">
+      <UniqueIdentifier>{c6808cf6-b1eb-442b-a445-dd252628e871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerBrowser\Message Handler">
+      <UniqueIdentifier>{9b0d87cf-87a3-45d2-9cbe-fa2c81aef5a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerBrowser\ServerResponse">
+      <UniqueIdentifier>{1f68aaaa-baf1-485b-86e9-806fbe8f9208}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base.cpp">
@@ -413,70 +425,16 @@
     <ClCompile Include="SourceSDK\tier1\NetAdr.cpp">
       <Filter>SourceSDK\tier1</Filter>
     </ClCompile>
-    <ClCompile Include="ServerBrowser\HistoryGames.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\InternetGames.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\LanBroadcastMsgHandler.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\LanGames.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\MasterMsgHandler.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\playerinfo.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\PlayerInfoMsgHandler.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
     <ClCompile Include="ServerBrowser\ServerBrowser.cpp">
       <Filter>ServerBrowser</Filter>
     </ClCompile>
     <ClCompile Include="ServerBrowser\ServerBrowserDialog.cpp">
       <Filter>ServerBrowser</Filter>
     </ClCompile>
-    <ClCompile Include="ServerBrowser\ServerContextMenu.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\serverinfo.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\ServerInfoMsgHandler.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
     <ClCompile Include="ServerBrowser\ServerList.cpp">
       <Filter>ServerBrowser</Filter>
     </ClCompile>
     <ClCompile Include="ServerBrowser\ServerListCompare.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\SpectateGames.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\BaseGamesPage.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\DialogAddServer.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\DialogGameInfo.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\DialogServerPassword.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\FavoriteGames.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\getchallenge.cpp">
-      <Filter>ServerBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerBrowser\GetChallengeMsgHandler.cpp">
       <Filter>ServerBrowser</Filter>
     </ClCompile>
     <ClCompile Include="SourceSDK\tier0\memdbg.cpp">
@@ -730,9 +688,6 @@
     </ClCompile>
     <ClCompile Include="IMEInput.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CVARs.cpp">
-      <Filter>Client</Filter>
     </ClCompile>
     <ClCompile Include="GameUI\CSBTEUpdateDialog.cpp">
       <Filter>GameUI</Filter>
@@ -1018,6 +973,69 @@
     </ClCompile>
     <ClCompile Include="vgui2\vgui_controls\AnalogBar.cpp">
       <Filter>vgui2\vgui_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="CVARs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mempatchs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook_LoadTGA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\DialogAddServer.cpp">
+      <Filter>ServerBrowser\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\DialogGameInfo.cpp">
+      <Filter>ServerBrowser\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\DialogServerPassword.cpp">
+      <Filter>ServerBrowser\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\ServerContextMenu.cpp">
+      <Filter>ServerBrowser\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\BaseGamesPage.cpp">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\HistoryGames.cpp">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\FavoriteGames.cpp">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\InternetGames.cpp">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\LanGames.cpp">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\SpectateGames.cpp">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\GetChallengeMsgHandler.cpp">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\LanBroadcastMsgHandler.cpp">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\MasterMsgHandler.cpp">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\PlayerInfoMsgHandler.cpp">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\ServerInfoMsgHandler.cpp">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\getchallenge.cpp">
+      <Filter>ServerBrowser\ServerResponse</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\playerinfo.cpp">
+      <Filter>ServerBrowser\ServerResponse</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerBrowser\serverinfo.cpp">
+      <Filter>ServerBrowser\ServerResponse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1528,49 +1546,7 @@
     <ClInclude Include="SourceSDK\tier1\netadr.h">
       <Filter>SourceSDK\tier1</Filter>
     </ClInclude>
-    <ClInclude Include="ServerBrowser\BaseGamesPage.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\DialogAddServer.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\DialogGameInfo.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\DialogServerPassword.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
     <ClInclude Include="ServerBrowser\EngineInterface.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\FavoriteGames.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\getchallenge.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\GetChallengeMsgHandler.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\HistoryGames.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\InternetGames.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\LanBroadcastMsgHandler.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\LanGames.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\MasterMsgHandler.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\playerinfo.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\PlayerInfoMsgHandler.h">
       <Filter>ServerBrowser</Filter>
     </ClInclude>
     <ClInclude Include="ServerBrowser\server.h">
@@ -1588,16 +1564,10 @@
     <ClInclude Include="ServerBrowser\serverinfo.h">
       <Filter>ServerBrowser</Filter>
     </ClInclude>
-    <ClInclude Include="ServerBrowser\ServerInfoMsgHandler.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
     <ClInclude Include="ServerBrowser\ServerList.h">
       <Filter>ServerBrowser</Filter>
     </ClInclude>
     <ClInclude Include="ServerBrowser\ServerListCompare.h">
-      <Filter>ServerBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerBrowser\SpectateGames.h">
       <Filter>ServerBrowser</Filter>
     </ClInclude>
     <ClInclude Include="SourceSDK\tier0\memdbg.h">
@@ -2374,9 +2344,6 @@
     <ClInclude Include="IMEInput.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="CVARs.h">
-      <Filter>Client</Filter>
-    </ClInclude>
     <ClInclude Include="GameUI\CSBTEUpdateDialog.h">
       <Filter>GameUI</Filter>
     </ClInclude>
@@ -2673,6 +2640,63 @@
     </ClInclude>
     <ClInclude Include="vgui2\vgui_controls\AnalogBar.h">
       <Filter>vgui2\vgui_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="CVARs.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mempatchs.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook_LoadTGA.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\DialogAddServer.h">
+      <Filter>ServerBrowser\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\DialogGameInfo.h">
+      <Filter>ServerBrowser\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\DialogServerPassword.h">
+      <Filter>ServerBrowser\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\BaseGamesPage.h">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\HistoryGames.h">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\FavoriteGames.h">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\InternetGames.h">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\LanGames.h">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\SpectateGames.h">
+      <Filter>ServerBrowser\Game Page</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\GetChallengeMsgHandler.h">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\LanBroadcastMsgHandler.h">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\MasterMsgHandler.h">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\PlayerInfoMsgHandler.h">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\ServerInfoMsgHandler.h">
+      <Filter>ServerBrowser\Message Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\getchallenge.h">
+      <Filter>ServerBrowser\ServerResponse</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBrowser\playerinfo.h">
+      <Filter>ServerBrowser\ServerResponse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

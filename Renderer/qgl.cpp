@@ -1,5 +1,5 @@
 #include <metahook.h>
-
+#include "Hook_LoadTGA.h"
 #include <gl/gl.h>
 #include <gl/glext.h>
 
@@ -373,6 +373,23 @@ void (APIENTRY *qglBlitFramebuffer)(GLint srcX0, GLint srcY0, GLint srcX1, GLint
 void (APIENTRY *qglRenderbufferStorageMultisample)(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height) = 0;
 void (APIENTRY *qglFramebufferTextureLayer)(GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer) = 0;
 
+void APIENTRY QGL_TexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
+{
+	if (target == 3553 && level == 0 && border == 0 && format == 6408 && type == 5121)
+	{
+		if (g_bLoadingTGA)
+		{
+			width = g_iLastTGAWidth;
+			height = g_iLastTGAHeight;
+			pixels = g_bTGABuffer;
+		}
+
+		g_bLoadingTGA = FALSE;
+	}
+
+	qglTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+}
+
 void QGL_InitExtension(void);
 
 void QGL_Init(void)
@@ -722,6 +739,7 @@ void QGL_Init(void)
 
         QGL_InitExtension();
     }
+	g_pMetaHookAPI->InlineHook(qglTexImage2D, QGL_TexImage2D, (void *&)qglTexImage2D);
 }
 
 void QGL_InitExtension(void)

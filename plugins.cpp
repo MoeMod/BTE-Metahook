@@ -11,6 +11,8 @@
 #include "R.h"
 #include "util.h"
 #include "Console.h"
+#include "mempatchs.h"
+#include "Hook_LoadTGA.h"
 
 #include "Renderer/qgl.h"
 
@@ -106,7 +108,6 @@ void(*g_pfn_ResampleSfx)(sfx_t *sfx, int inrate, int inwidth, byte *data) = 0;
 void ResampleSfx(sfx_t *sfx, int inrate, int inwidth, byte *data);
 
 void *Cache_Check(cache_user_t *c);
-void MemPatch_WideScreenLimit(void);
 
 void HUD_Frame(double flHostFrameTime);
 
@@ -179,10 +180,6 @@ void IPlugins::LoadEngine(void)
 	g_dwEngineBuildnum = g_pMetaHookAPI->GetEngineBuildnum();
 	g_iBPP = 32;
 
-	QGL_Init();
-
-	Config_Init();
-
 	g_pMetaHookAPI->WriteDWORD((void *)0x1DBAE6C, 0x8000000);
 	g_pMetaHookAPI->WriteDWORD((void *)0x1DBAE73, 0x8000000);
 
@@ -190,9 +187,14 @@ void IPlugins::LoadEngine(void)
 	g_dwEngineBase = g_pMetaHookAPI->GetEngineBase();
 	g_dwEngineSize = g_pMetaHookAPI->GetEngineSize();
 
+	QGL_Init();
+	Config_Init();
+	MemPatch_Start(MEMPATCH_STEP_LOADENGINE);
+
 	BaseUI_InstallHook();
 	Module_InstallHook();
 	R_InstallHook();
+	LoadTGA_InstallHook();
 
 	// Unknown function name
 	g_pMetaHookAPI->InlineHook((void *)0x1D0E720, CL_Frame, (void *&)g_pfnCL_Frame);
@@ -241,22 +243,13 @@ void IPlugins::LoadEngine(void)
 
 	g_pMetaHookAPI->InlineHook(g_pfnKey_Event, Key_Event, (void *&)g_pfnKey_Event);
 
-	
-
-	
-
-	//fix view model bug(THX to Crsky)
-	g_pMetaHookAPI->WriteDWORD((void *)0x01D90E78, 0x1D01);
-
-	MemPatch_WideScreenLimit();
-
 	if (g_pRenderer)
 		g_pRenderer->LoadEngine();
 }
 
 void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 {
-	//g_hWnd = FindWindow("Valve001", NULL);
+	MemPatch_Start(MEMPATCH_STEP_LOADCLIENT);
 	Window_LoadClient();
 
 	//LogToFile("MGUI°æ±¾[2013/8/17]");
@@ -473,29 +466,6 @@ void Key_Event(int key, int down)
 	}
 	*/
 	return g_pfnKey_Event(key, down);
-}
-
-void MemPatch_WideScreenLimit(void)
-{
-	/*	if (g_dwEngineBuildnum >= 5953)
-	return;*/
-
-	unsigned char data[] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
-	DWORD addr = (DWORD)g_pMetaHookAPI->SearchPattern((void *)g_dwEngineBase, g_dwEngineSize, "\x8B\x51\x08\x8B\x41\x0C\x8B\x71\x54\x8B\xFA\xC1\xE7\x04", 14);
-
-	if (!addr)
-	{
-		MessageBoxA(NULL, "WideScreenLimit patch failed!", "Warning", MB_ICONWARNING);
-		return;
-	}
-
-	DWORD addr2 = addr + 11;
-	DWORD addr3 = (DWORD)g_pMetaHookAPI->SearchPattern((void *)addr, 0x60, "\xB1\x01\x8B\x7C\x24\x14", 6);
-
-	if (addr3)
-	{
-		g_pMetaHookAPI->WriteMemory((void *)addr2, data, addr3 - addr2);
-	}
 }
 
 int CL_LookupSound(char *a1)

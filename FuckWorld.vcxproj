@@ -84,7 +84,7 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(OutDir)$(ProjectName).dll" "D:\CSBTE\cstrike\MetaHook\Plugins\CSBTE.dll"</Command>
+      <Command>copy "$(OutDir)$(ProjectName).dll" "D:\CSBTE\cstrike\MetaHook\Plugins\BTE.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -246,6 +246,7 @@
     <ClCompile Include="GL_BinkTexture.cpp" />
     <ClCompile Include="HLSDK\common\parsemsg.cpp" />
     <ClCompile Include="Hook_KeyValuesSystem.cpp" />
+    <ClCompile Include="Hook_LoadTGA.cpp" />
     <ClCompile Include="Hook_Scheme.cpp" />
     <ClCompile Include="Hook_Surface.cpp" />
     <ClCompile Include="imagelib.cpp" />
@@ -256,6 +257,7 @@
     <ClCompile Include="LoadDTX.cpp" />
     <ClCompile Include="LoadTexture.cpp" />
     <ClCompile Include="LoadTGA.cpp" />
+    <ClCompile Include="mempatchs.cpp" />
     <ClCompile Include="Modules.cpp" />
     <ClCompile Include="msgbuffer.cpp" />
     <ClCompile Include="msghook.cpp" />
@@ -543,6 +545,7 @@
     <ClInclude Include="GameUI\VControlsListPanel.h" />
     <ClInclude Include="GL_BinkTexture.h" />
     <ClInclude Include="Hook_KeyValuesSystem.h" />
+    <ClInclude Include="Hook_LoadTGA.h" />
     <ClInclude Include="Hook_Scheme.h" />
     <ClInclude Include="Hook_Surface.h" />
     <ClInclude Include="imagelib.h" />
@@ -752,6 +755,7 @@
     <ClInclude Include="LoadDTX.h" />
     <ClInclude Include="LoadTexture.h" />
     <ClInclude Include="LoadTGA.h" />
+    <ClInclude Include="mempatchs.h" />
     <ClInclude Include="Modules.h" />
     <ClInclude Include="msgbuffer.h" />
     <ClInclude Include="msghook.h" />
