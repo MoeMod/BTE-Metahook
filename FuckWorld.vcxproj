@@ -588,6 +588,8 @@
     <ClInclude Include="Interface\VGUI\IVGUI.h" />
     <ClInclude Include="Interface\VGUI\KeyCode.h" />
     <ClInclude Include="Interface\VGUI\MouseCode.h" />
+    <ClInclude Include="Interface\VGUI\OLDDar.h" />
+    <ClInclude Include="Interface\VGUI\Vector.h" />
     <ClInclude Include="Interface\VGUI\VGUI.h" />
     <ClInclude Include="Library\bink\bink.h" />
     <ClInclude Include="Library\bink\rad3d.h" />
@@ -965,6 +967,7 @@
     <ClInclude Include="vgui2\vgui_controls\URLLabel.h" />
     <ClInclude Include="vgui2\vgui_controls\WizardPanel.h" />
     <ClInclude Include="vgui2\vgui_controls\WizardSubPanel.h" />
+    <ClInclude Include="vgui2\vgui_hook.h" />
     <ClInclude Include="vgui2\vgui_internal.h" />
     <ClInclude Include="vgui2\vgui_key_translation.h" />
     <ClInclude Include="vgui2\vgui_surfacelib\FontAmalgam.h" />

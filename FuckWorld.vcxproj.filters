@@ -2692,6 +2692,15 @@
     <ClInclude Include="ServerBrowser\playerinfo.h">
       <Filter>ServerBrowser\ServerResponse</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\VGUI\OLDDar.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui_hook.h">
+      <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\Vector.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc">
