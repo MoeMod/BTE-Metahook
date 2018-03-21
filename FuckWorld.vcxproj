@@ -967,6 +967,7 @@
     <ClInclude Include="vgui2\vgui_controls\URLLabel.h" />
     <ClInclude Include="vgui2\vgui_controls\WizardPanel.h" />
     <ClInclude Include="vgui2\vgui_controls\WizardSubPanel.h" />
+    <ClInclude Include="vgui2\vgui_hook.h" />
     <ClInclude Include="vgui2\vgui_internal.h" />
     <ClInclude Include="vgui2\vgui_key_translation.h" />
     <ClInclude Include="vgui2\vgui_surfacelib\FontAmalgam.h" />
