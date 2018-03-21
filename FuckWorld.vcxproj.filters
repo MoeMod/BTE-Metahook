@@ -752,12 +752,6 @@
     <ClCompile Include="vgui2\vgui_key_translation.cpp">
       <Filter>vgui2</Filter>
     </ClCompile>
-    <ClCompile Include="Hook_Surface.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Hook_KeyValuesSystem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Hook_Scheme.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -1033,6 +1027,12 @@
     </ClCompile>
     <ClCompile Include="util\base64.cpp">
       <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook_KeyValuesSystem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook_Surface.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2698,6 +2698,7 @@
     <ClInclude Include="Interface\VGUI\Vector.h">
       <Filter>Interface\VGUI</Filter>
     </ClInclude>
+    <ClInclude Include="vgui2\vgui_hook.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc">
