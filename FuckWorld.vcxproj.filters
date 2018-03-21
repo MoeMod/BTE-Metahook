@@ -647,9 +647,6 @@
     <ClCompile Include="util\perf_counter.cpp">
       <Filter>util</Filter>
     </ClCompile>
-    <ClCompile Include="BugReport\base64.cpp">
-      <Filter>BugReport</Filter>
-    </ClCompile>
     <ClCompile Include="R.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -1033,6 +1030,9 @@
     </ClCompile>
     <ClCompile Include="ServerBrowser\serverinfo.cpp">
       <Filter>ServerBrowser\ServerResponse</Filter>
+    </ClCompile>
+    <ClCompile Include="util\base64.cpp">
+      <Filter>util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2299,9 +2299,6 @@
     <ClInclude Include="util\perf_counter.h">
       <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="BugReport\base64.h">
-      <Filter>BugReport</Filter>
-    </ClInclude>
     <ClInclude Include="R.h">
       <Filter>源文件</Filter>
     </ClInclude>
@@ -2691,6 +2688,15 @@
     </ClInclude>
     <ClInclude Include="ServerBrowser\playerinfo.h">
       <Filter>ServerBrowser\ServerResponse</Filter>
+    </ClInclude>
+    <ClInclude Include="util\base64.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\OLDDar.h">
+      <Filter>Interface\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\VGUI\Vector.h">
+      <Filter>Interface\VGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
