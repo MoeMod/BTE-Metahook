@@ -1,6 +1,9 @@
 #pragma once
 
-#include "vgui_controls/Label.h"
+namespace vgui
+{
+	class Label;
+}
 
 enum
 {
@@ -53,7 +56,7 @@ public:
 	void Init(void);
 	void VidInit(void);
 	void Draw(float time);
-	//void Think(void);
+	void Think(void);
 
 public:
 	void DrawRetina(float time);

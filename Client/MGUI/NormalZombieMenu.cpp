@@ -250,7 +250,7 @@ void CNormalZombieMenu::ClearMenu()
 	m_iElementCount = 0;
 }
 
-char *PraseZombieClassName(char *name)
+static inline char *PraseZombieClassName(char *name)
 {
 	char *pPos = 0;
 	if (pPos = strstr(name, "_zb"))

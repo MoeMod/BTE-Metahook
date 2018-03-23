@@ -1,5 +1,7 @@
 #pragma once
-#include "BinkPlayer.h"
+
+#include <memory>
+class CGL_BinkTexture;
 
 class CHudZBSelect : public CHudBase
 {
@@ -17,7 +19,7 @@ public:
 	bool m_bCanDraw;
 
 private:
-	CBinkPlayer m_Bink;
+	std::unique_ptr<CGL_BinkTexture> m_Bink;
 
 	int m_iIcon[20];
 	wrect_t m_rcIcon[20];

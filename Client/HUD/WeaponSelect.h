@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BinkPlayer.h"
+
 class CHudWeaponSelect : public CHudBase
 {
 public:

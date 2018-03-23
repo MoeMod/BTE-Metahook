@@ -89,12 +89,10 @@ void CHudZombieMod3::CheckTeam(int team)
 	if (team == 1) // CT
 	{
 		m_iClass = CLASS_HM;
-		m_pLabelMorale->SetVisible(true);
 	}
 	else if (team == 2)
 	{
 		m_iClass = CLASS_ZB;
-		m_pLabelMorale->SetVisible(false);
 	}
 	else m_iClass = 0;
 }
@@ -522,6 +520,7 @@ void CHudZombieMod3::VidInit(void)
 		}
 		m_pLabelMorale->SetPos(ScreenWidth / 2 - 77, ScreenHeight - 113);
 	}
+	m_pLabelMorale->SetVisible(false);
 
 	m_iNVG = FALSE;
 
@@ -705,6 +704,14 @@ void CHudZombieMod3::Draw(float time)
 
 	if (!gConfigs.bEnableNewHud)
 		DrawSkillBoard(time);
+}
+
+void CHudZombieMod3::Think()
+{
+	if (m_iClass == CLASS_HM && g_bAlive)
+		m_pLabelMorale->SetVisible(true);
+	else
+		m_pLabelMorale->SetVisible(false);
 }
 
 bool CHudZombieMod3::CheckSkillKey(int eventcode, int keynum, const char *pszCurrentBinding)
