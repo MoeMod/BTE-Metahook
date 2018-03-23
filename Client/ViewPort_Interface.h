@@ -12,8 +12,6 @@ public:
 	virtual void ActivateClientUI(void);
 	virtual void HideClientUI(void);
 
-	static void OnClientLoaded(cl_exportfuncs_t *pExportfuncs);
-
 public:
 	void HideAllPanel(void);
 	void HidePanel(const char *name);

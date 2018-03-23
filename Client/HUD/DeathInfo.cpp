@@ -10,6 +10,9 @@
 #include "deathinfo.h"
 
 #include <iostream>
+#include <algorithm>
+#include <string>
+#include <functional>
 
 static CHudDeathInfo g_HudDeathInfo;
 CHudDeathInfo &HudDeathInfo()
@@ -60,8 +63,17 @@ int CHudDeathInfo::MsgFunc_DeathInfo(const char * pszName, int iSize, void * pbu
 
 		hud_player_info_t hEnemyInfo;
 		gEngfuncs.pfnGetPlayerInfo(iEnemy, &hEnemyInfo);
+		char *pszEnemyName = hEnemyInfo.name;
+		if (!pszEnemyName)
+			pszEnemyName = "";
 
-		swprintf(strBuffer, vgui::localize()->Find("#CSO_EnemyDeathMsg"), UTF8ToUnicode(hEnemyInfo.name), iDist, GetWeaponNameFormat(pszWeaponName), iTotalDamage1);
+		/*
+		"CSO_EnemyDeathMsg"		"µÐÈËËÀÍö£º%s
+		¾àÀë£º%dm
+		ÉËº¦(Ê¹ÓÃ%s)£º%d \n"
+		*/
+
+		swprintf(strBuffer, vgui::localize()->Find("#CSO_EnemyDeathMsg"), UTF8ToUnicode(pszEnemyName), iDist, GetWeaponNameFormat(pszWeaponName), iTotalDamage1);
 		strMessage += strBuffer;
 
 		for (int i = 0; i < 5; i++)
@@ -92,10 +104,17 @@ int CHudDeathInfo::MsgFunc_DeathInfo(const char * pszName, int iSize, void * pbu
 		
 		hud_player_info_t hEnemyInfo;
 		gEngfuncs.pfnGetPlayerInfo(iEnemy, &hEnemyInfo);
-		
-		swprintf(strBuffer, vgui::localize()->Find("#CSO_DeathMsg"), UTF8ToUnicode(hEnemyInfo.name), iDist, GetWeaponNameFormat(pszWeaponName), iTotalDamage1);
+		char *pszEnemyName = hEnemyInfo.name;
+		if (!pszEnemyName)
+			pszEnemyName = "";
+		/*
+		"CSO_DeathMsg"		"±»%s»÷±Ð
+		¾àÀë£º%dm
+		ÉËº¦(Ê¹ÓÃ%s)£º%d \n"
+		*/
+		swprintf(strBuffer, vgui::localize()->Find("#CSO_DeathMsg"), UTF8ToUnicode(pszEnemyName), iDist, GetWeaponNameFormat(pszWeaponName), iTotalDamage1);
 		strMessage += strBuffer;
-
+		
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -135,8 +154,14 @@ int CHudDeathInfo::MsgFunc_DeathInfo(const char * pszName, int iSize, void * pbu
 		rgTempDrawText.color.b = 155;
 	}
 
+	/*std::wstring::size_type i = 0;
+	while ((i = strMessage.find(L'\r', i)) != std::wstring::npos)
+	strMessage.erase(i);*/
+
+	strMessage.erase(std::remove(strMessage.begin(), strMessage.end(), '\r'), strMessage.end());
+
 	rgTempDrawText.iScale = 14;
-	rgTempDrawText.flDisplayTime = cl.time + 6.0f;
+	rgTempDrawText.flDisplayTime = (float)cl.time + 6.0f;
 	rgTempDrawText.flStartTime = cl.time;
 	rgTempDrawText.fFadeTime = 0.0;
 	rgTempDrawText.iFillBg = 0;
