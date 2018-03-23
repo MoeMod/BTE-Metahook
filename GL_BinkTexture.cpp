@@ -1,4 +1,5 @@
 #include <metahook.h>
+#include <tuple>
 #include "GL_BinkTexture.h"
 #include "plugins.h"
 #include <vgui_controls\Controls.h>
@@ -7,6 +8,16 @@
 #include "bink/bink.h"
 #include "util.h"
 #include "Color.h"
+
+static inline unsigned log(unsigned n)
+{
+	__asm bsr eax, n
+}
+
+static inline unsigned suggestTextureSize(unsigned n)
+{
+	return (1 << (log(n) + !!(n & (n - 1))));
+}
 
 CGL_BinkTexture::CGL_BinkTexture(const char *szPath)
 {
@@ -18,7 +29,7 @@ CGL_BinkTexture::CGL_BinkTexture(const char *szPath)
 		return;
 	}
 	BinkSoundUseWaveOut();
-	m_hBink = BinkOpen(fullPath, BINKSNDTRACK | BINKSURFACE32RA);
+	m_hBink = BinkOpen(fullPath, BINKSNDTRACK);
 	if (!m_hBink)
 	{
 		LogToFile("LoadBink() : Fail Load %s (NOT a bink file)", szPath);
@@ -26,12 +37,17 @@ CGL_BinkTexture::CGL_BinkTexture(const char *szPath)
 		return;
 	}
 
-	int BufferSize = 4 * m_hBink->Width * m_hBink->Height;
+	m_bHasAlpha = m_hBink->OpenFlags & BINKALPHA;
+	m_iBufferSize = (m_bHasAlpha ? 4:3) * m_hBink->Width * m_hBink->Height;
+
 	m_iBinkTexture = vgui::surface()->CreateNewTextureID();
 	BinkSetSoundOnOff(m_hBink, true);
 	
 	glBindTexture(GL_TEXTURE_2D, m_iBinkTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_hBink->Width, m_hBink->Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	if (m_bHasAlpha)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_hBink->Width, m_hBink->Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_hBink->Width, m_hBink->Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -42,9 +58,9 @@ CGL_BinkTexture::CGL_BinkTexture(const char *szPath)
 
 	glGenBuffersARB(2, m_iPboIds);
 	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_iPboIds[0]);
-	glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, BufferSize, nullptr, GL_STREAM_DRAW_ARB);
+	glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_iBufferSize, nullptr, GL_STREAM_DRAW_ARB);
 	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_iPboIds[1]);
-	glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, BufferSize, nullptr, GL_STREAM_DRAW_ARB);
+	glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_iBufferSize, nullptr, GL_STREAM_DRAW_ARB);
 	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
 	
 }
@@ -63,7 +79,7 @@ void CGL_BinkTexture::UpdateFrame()
 		return;
 
 	BinkDoFrame(m_hBink);
-	glBindTexture(GL_TEXTURE_2D, m_iBinkTexture);
+	//glBindTexture(GL_TEXTURE_2D, m_iBinkTexture);
 	
 	if (BinkWait(m_hBink))
 		return;
@@ -80,18 +96,18 @@ void CGL_BinkTexture::UpdateFrame()
 	static int index = 0;
 	index ^= 1;
 	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_iPboIds[!index]);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_hBink->Width, m_hBink->Height, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_hBink->Width, m_hBink->Height, m_bHasAlpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_iPboIds[index]);
-	glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_hBink->Width * 4 * m_hBink->Height, nullptr, GL_STREAM_DRAW_ARB);    // flush data
+	glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_iBufferSize, nullptr, GL_STREAM_DRAW_ARB);    // flush data
 	if ((void *&)m_pBinkBuffer = glMapBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, GL_READ_WRITE_ARB))
 	{
-		BinkCopyToBuffer(m_hBink, m_pBinkBuffer, m_hBink->Width * 4, m_hBink->Height, 0, 0, BINKSURFACE32RA | BINKCOPYALL);
+		BinkCopyToBuffer(m_hBink, m_pBinkBuffer, m_hBink->Width * (m_bHasAlpha ? 4 : 3), m_hBink->Height, 0, 0, (m_bHasAlpha ? BINKSURFACE32RA : BINKSURFACE24R) | BINKCOPYALL);
 		glUnmapBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB);
 	}
+
 	BinkNextFrame(m_hBink);
 	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
-	
 }
 
 void CGL_BinkTexture::Reset()
@@ -100,6 +116,7 @@ void CGL_BinkTexture::Reset()
 	m_pBinkBuffer = nullptr;
 	m_iBinkTexture = NULL;
 	m_iPboIds[0] = m_iPboIds[1] = NULL;
+	m_iBufferSize = 0;
 }
 
 void CGL_BinkTexture::Draw(int x, int y, int w, int h)

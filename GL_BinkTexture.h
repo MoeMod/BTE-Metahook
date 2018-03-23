@@ -46,6 +46,8 @@ public:
 private:
 	void Reset();
 	HBINK m_hBink;
+	bool m_bHasAlpha;
+	size_t m_iBufferSize;
 	byte *m_pBinkBuffer;
 	GLuint m_iBinkTexture;
 	GLuint m_iPboIds[2];
