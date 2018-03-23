@@ -7,7 +7,6 @@ class CGL_BinkTexture
 public:
 	CGL_BinkTexture(const char *szPath);
 	~CGL_BinkTexture();
-	void Reset();
 	void Draw(int x, int y, int w = 0, int h = 0);
 	void UpdateFrame();
 	HBINK GetBinkHandle()
@@ -45,6 +44,7 @@ public:
 		return m_hBink != nullptr;
 	}
 private:
+	void Reset();
 	HBINK m_hBink;
 	byte *m_pBinkBuffer;
 	GLuint m_iBinkTexture;

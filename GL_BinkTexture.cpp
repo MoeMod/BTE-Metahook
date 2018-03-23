@@ -6,7 +6,7 @@
 #include "pbo.h"
 #include "bink/bink.h"
 #include "util.h"
-
+#include "Color.h"
 
 CGL_BinkTexture::CGL_BinkTexture(const char *szPath)
 {
@@ -32,8 +32,12 @@ CGL_BinkTexture::CGL_BinkTexture(const char *szPath)
 	
 	glBindTexture(GL_TEXTURE_2D, m_iBinkTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_hBink->Width, m_hBink->Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glGenBuffersARB(2, m_iPboIds);
@@ -104,6 +108,7 @@ void CGL_BinkTexture::Draw(int x, int y, int w, int h)
 		return;
 	UpdateFrame();
 	glBindTexture(GL_TEXTURE_2D, m_iBinkTexture);
+	glColor4ub(255, 255, 255, 255);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex3f(x, y, 0);//ul
 	glTexCoord2f(1, 0); glVertex3f(x + w, y, 0);//ru
