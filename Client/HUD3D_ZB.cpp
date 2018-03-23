@@ -9,6 +9,8 @@
 #include "msg_util.h"
 #include "TextureManager.h"
 
+#include "Client/HUD/DrawTGA.h"
+
 CHud3D_ZB gHud3D_ZB;
 
 cvar_t *hud3d_color2;

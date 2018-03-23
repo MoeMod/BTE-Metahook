@@ -5,6 +5,7 @@
 #include "util.h"
 
 #include "zbsboard.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudZBSBoard g_HudZBSBoard;
 CHudZBSBoard &HudZBSBoard()

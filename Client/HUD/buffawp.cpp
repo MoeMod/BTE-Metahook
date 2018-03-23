@@ -4,6 +4,8 @@
 #include "bink/bink.h"
 #include "buffawp.h"
 
+#include "Client/HUD/DrawTGA.h"
+
 static CHudBuffAWPSniperScope g_HudBuffAWPSniperScope;
 CHudBuffAWPSniperScope &HudBuffAWPSniperScope()
 {

@@ -9,6 +9,7 @@
 
 #include "MVPBoard.h"
 #include "DrawTABPanel.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudMVPBoard g_HudMVPBoard;
 CHudMVPBoard &HudMVPBoard()

@@ -99,6 +99,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4819;4311;4312;4430;4996;4244;4305;4800;4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>Async</ExceptionHandling>
+      <Optimization>Full</Optimization>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;imm32.lib;user32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>

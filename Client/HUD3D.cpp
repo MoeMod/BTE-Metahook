@@ -9,6 +9,7 @@
 #include "HUD3D.h"
 #include "weapons.h"
 #include "TextureManager.h"
+#include "imagelib.h"
 
 #include "Client/WeaponManager.h"
 #include "Client/HUD/overview.h"

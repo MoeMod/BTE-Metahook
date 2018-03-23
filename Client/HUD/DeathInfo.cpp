@@ -7,6 +7,7 @@
 
 #include "Client/WeaponManager.h"
 
+#include "Client/HUD/FontText.h"
 #include "deathinfo.h"
 
 #include <iostream>

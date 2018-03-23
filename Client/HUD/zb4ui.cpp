@@ -12,6 +12,7 @@
 
 #include "zb4ui.h"
 #include "scoreboard.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudZB4UI g_HudZombieMod4;
 CHudZB4UI &HudZombieMod4()

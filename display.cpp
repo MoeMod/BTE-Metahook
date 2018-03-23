@@ -11,6 +11,7 @@
 #include "util.h"
 
 #include "Client/HUD/ammo.h"
+#include "Client/HUD/DrawTGA.h"
 
 int g_MoneyPosIco = 0;
 int g_MoneyPosSym = 0;

@@ -8,6 +8,7 @@
 #include "gdboard.h"
 #include "scoreboard.h"
 #include "zbsboard.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudGunDeathBoard g_HudGunDeathBoard;
 CHudGunDeathBoard &HudGunDeathBoard()

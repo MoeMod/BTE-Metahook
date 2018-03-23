@@ -8,6 +8,7 @@
 
 #include "alarm.h"
 #include "deathmsg.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudAlarm g_HudAlarm;
 CHudAlarm &HudAlarm()

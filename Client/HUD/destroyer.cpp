@@ -7,6 +7,8 @@
 #include "bink/bink.h"
 #include "BaseUI.h"
 
+#include "Client/HUD/DrawTGA.h"
+
 static CHudDestroyerSniperScope g_HudDestroyerSniperScope;
 CHudDestroyerSniperScope &HudDestroyerSniperScope()
 {

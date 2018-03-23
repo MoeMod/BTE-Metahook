@@ -47,6 +47,8 @@
 #include "Client/HUD/buffawp.h"
 #include "Client/HUD/zb3ui.h"
 
+#include "Client/HUD/DrawTGA.h"
+
 #include "Renderer/pbo.h"
 
 using namespace vgui;

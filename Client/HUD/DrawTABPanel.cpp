@@ -10,6 +10,8 @@
 
 #include "DrawTABPanel.h"
 
+#include "Client/HUD/DrawTGA.h"
+
 static CHudTABBoard g_HudTABBoard;
 CHudTABBoard &HudTABBoard()
 {

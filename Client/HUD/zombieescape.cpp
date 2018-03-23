@@ -7,7 +7,7 @@
 #include "util.h"
 
 #include "DrawTabPanel.h"
-#include "DrawTabPanel.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudZombieEscape g_HudZombieEscape;
 CHudZombieEscape &HudZombieEscape()

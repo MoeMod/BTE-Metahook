@@ -41,7 +41,11 @@
 #include "Client/HUD/ammo.h"
 #include "Client/HUD/roundtimer.h"
 #include "Client/HUD/health.h"
+
 #include "Client/HUD/drawimage.h"
+#include "Client/HUD/FontText.h"
+#include "Client/HUD/followicon.h"
+#include "Client/HUD/DrawTGA.h"
 
 #include "MGUI/mgui.h"
 #include "MGUI/BTEPanel.h"

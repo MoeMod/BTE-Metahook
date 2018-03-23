@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <Color.h>
 #include <GL_BinkTexture.h>
+#include "engine/studio.h"
 /*
 *	TextureManager.h
 *	Definitions of CTextureManager class and other

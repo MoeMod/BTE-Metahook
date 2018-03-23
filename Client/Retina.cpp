@@ -3,6 +3,7 @@
 #include "BaseUI.h"
 #include "texdraw.h"
 #include "Retina.h"
+#include "imagelib.h"
 
 void CHudRetinaObjects::Init()
 {

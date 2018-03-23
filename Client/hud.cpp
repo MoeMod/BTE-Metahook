@@ -12,6 +12,11 @@
 #include "HUD/deathmsg.h"
 #include "HUD/zb3ui.h"
 
+#include "HUD/drawimage.h"
+#include "HUD/followicon.h"
+#include "HUD/fonttext.h"
+#include "HUD/drawtga.h"
+
 //CHud gHUD;
 CHud &Hud()
 {
@@ -67,6 +72,16 @@ int MsgFunc_EButton(const char *pszName, int iSize, void *pbuf)
 	TheEButtons.AddAttachment(iEntity, iTeamLimit, bOn);
 
 	return 1;
+}
+
+CHud::CHud() : 
+	m_iSpriteCount(0),
+	m_FollowIcon(HudFollowIconElements()), 
+	m_FontText(HudFontTextElements()), 
+	m_SPR(HudSPRElements()),
+	m_TGA(HudTGAElements())
+{
+
 }
 
 void CHud::Init()

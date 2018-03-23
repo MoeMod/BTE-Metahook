@@ -27,6 +27,7 @@
 #include "Client/HUD/nvg.h"
 #include "Client/HUD/overview.h"
 #include "Client/HUD/Statistics.h"
+#include "Client/HUD/DrawTGA.h"
 
 IFileSystem *&g_pFileSystem = g_pFullFileSystem;
 DWORD g_dwEngineBase, g_dwEngineSize;

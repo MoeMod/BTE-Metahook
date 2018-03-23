@@ -54,11 +54,6 @@ extern pfnUserMsgHook pmInitHUD;
 extern pfnUserMsgHook pmResetHUD;
 extern cvar_t *hud_draw;
 
-#include "HUD/drawimage.h"
-#include "HUD/DrawTga.h"
-#include "HUD/FontText.h"
-#include "HUD/followicon.h"
-
 class CHud
 {
 private:
@@ -101,7 +96,7 @@ public:
 
 		return pmResetHUD(pszName, iSize, pbuf);
 	}
-	CHud() : m_iSpriteCount(0) {}
+	CHud();
 	~CHud()
 	{
 		ShutDown();
@@ -151,11 +146,11 @@ public:
 public:
 	vec3_t m_vecOrigin, m_vecAngles;
 
-public:	// HUD Elements
-	CHudFollowIconElements m_FollowIcon;
-	CHudFontTextElements m_FontText;
-	CHudSPRElements m_SPR;
-	CHudTGAElements m_TGA;
+public:	// HUD Elements (pimpl, see hud.cpp)
+	class CHudFollowIconElements &m_FollowIcon;
+	class CHudFontTextElements &m_FontText;
+	class CHudSPRElements &m_SPR;
+	class CHudTGAElements &m_TGA;
 };
 
 //extern CHud gHUD;

@@ -19,6 +19,8 @@
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
 
+#include "Client/HUD/DrawTGA.h"
+
 //#define BUTTON_STATIC_DEFINE
 
 // TDM UI

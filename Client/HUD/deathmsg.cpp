@@ -17,6 +17,7 @@
 #include "gdboard.h"
 #include "DrawTABPanel.h"
 #include "Statistics.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudDeathNotice g_HudDeathNotice;
 CHudDeathNotice &HudDeathNotice()

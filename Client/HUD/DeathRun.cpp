@@ -8,6 +8,7 @@
 #include "util.h"
 
 #include "deathrun.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudDeathRunUI g_HudDeathRunUI;
 CHudDeathRunUI &HudDeathRunUI()

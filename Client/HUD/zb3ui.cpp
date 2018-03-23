@@ -23,6 +23,10 @@
 
 #include "zb3ui.h"
 #include "DrawRetina.h"
+#include "Client/HUD/drawimage.h"
+#include "Client/HUD/FontText.h"
+#include "Client/HUD/followicon.h"
+#include "Client/HUD/DrawTGA.h"
 
 #define CLASS_ZB	1
 #define CLASS_HM	2

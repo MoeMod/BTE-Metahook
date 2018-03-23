@@ -1,15 +1,21 @@
-#include "base.h"
+
 #include "hud.h"
+#include "metahook.h"
+#include "plugins.h"
+#include "gl/gl.h"
 #include "TriAPI.h"
+#include "triangleapi.h"
 #include "configs.h"
 #include "BaseUI.h"
 #include "util.h"
 
-#include "drawimage.h"
+#include "DrawTGA.h"
+
+static CHudTGAElements g_HudTGAElements;
 
 CHudTGAElements &HudTGAElements()
 {
-	return gHUD.m_TGA;
+	return g_HudTGAElements;
 }
 
 DrawTgaItem g_Tga[MAX_TGA];

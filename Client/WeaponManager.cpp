@@ -6,6 +6,7 @@
 #include "common.h"
 
 #include "WeaponManager.h"
+#include "Client/HUD/DrawTGA.h"
 
 CWeaponManager &WeaponManager()
 {

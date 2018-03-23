@@ -14,6 +14,7 @@
 #include "MGUI/NormalZombieMenu.h"
 
 #include "Client/HUD/hud_saytext.h"
+#include "Client/HUD/DrawTGA.h"
 
 MGUI_Panel *pRootPanel = NULL;
 MGUI_Image *pImage;
