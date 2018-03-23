@@ -1,5 +1,6 @@
-#include "base.h"
+#include "bte_const.h"
 #include "hud.h"
+#include "plugins.h"
 #include "exportfuncs.h"
 #include "BaseUI.h"
 #include "DrawTargaImage.h"
@@ -596,8 +597,8 @@ void BuyWeapon(char *sName, int iSlot)
 
 	int id = gEngfuncs.GetLocalPlayer()->index;
 
-	if ((!Q_stricmp(sName, "lugers") && Q_stricmp(PlayerClassManager()[id].model, "blair")) ||
-		(!Q_stricmp(sName, "holybomb") && Q_stricmp(PlayerClassManager()[id].model, "fernando")))
+	if ((!stricmp(sName, "lugers") && stricmp(PlayerClassManager()[id].model, "blair")) ||
+		(!stricmp(sName, "holybomb") && stricmp(PlayerClassManager()[id].model, "fernando")))
 	{
 		pBuyMenuPanel->MGUIMessageBox(GetLangUni("#CSO_CLASS_LOCK_H"), GetLangUni("CSO_CLASS_LOCK_B"), MB_OK, NULL, NULL, K_SPACE, -1);
 		return;

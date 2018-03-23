@@ -1,4 +1,4 @@
-#include "base.h"
+
 #include "hud.h"
 #include "parsemsg.h"
 #include "DrawTargaImage.h"

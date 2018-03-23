@@ -1,5 +1,4 @@
 #include <metahook.h>
-#include "base.h"
 #include "hud.h"
 #include "exportfuncs.h"
 #include "configs.h"
@@ -28,6 +27,11 @@
 #include "Client/HUD/overview.h"
 #include "Client/HUD/Statistics.h"
 #include "Client/HUD/DrawTGA.h"
+
+cl_exportfuncs_t gExportfuncs;
+metahook_api_t *g_pMetaHookAPI;
+mh_interface_t *g_pInterface;
+mh_enginesave_t *g_pMetaSave;
 
 IFileSystem *&g_pFileSystem = g_pFullFileSystem;
 DWORD g_dwEngineBase, g_dwEngineSize;
@@ -113,6 +117,8 @@ void *Cache_Check(cache_user_t *c);
 void HUD_Frame(double flHostFrameTime);
 
 cvar_t *developer;
+
+extern int g_iVideoMode; // triapi.cpp
 
 void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_enginesave_t *pSave)
 {

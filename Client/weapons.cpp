@@ -1,4 +1,4 @@
-#include "base.h"
+
 #include "hud.h"
 #include "weapons.h"
 #include "util.h"
@@ -159,35 +159,35 @@ const int KNIFE_WEAPONS_BIT_SUM = (1 << WEAPON_KNIFE);
 
 int FindWeaponId(const char *str)
 {
-	if (!Q_stricmp(str, "P228")) return WEAPON_P228;
-	if (!Q_stricmp(str, "SCOUT")) return WEAPON_SCOUT;
-	if (!Q_stricmp(str, "HEGERNADE")) return WEAPON_HEGRENADE;
-	if (!Q_stricmp(str, "XM1014")) return WEAPON_XM1014;
-	if (!Q_stricmp(str, "C4")) return WEAPON_C4;
-	if (!Q_stricmp(str, "MAC10")) return WEAPON_MAC10;
-	if (!Q_stricmp(str, "AUG")) return WEAPON_AUG;
-	if (!Q_stricmp(str, "SMOKEGRENADE")) return WEAPON_SMOKEGRENADE;
-	if (!Q_stricmp(str, "ELITE")) return WEAPON_ELITE;
-	if (!Q_stricmp(str, "FIVESEVEN")) return WEAPON_FIVESEVEN;
-	if (!Q_stricmp(str, "UMP45")) return WEAPON_UMP45;
-	if (!Q_stricmp(str, "SG550")) return WEAPON_SG550;
-	if (!Q_stricmp(str, "GALIL")) return WEAPON_GALIL;
-	if (!Q_stricmp(str, "FAMAS")) return WEAPON_FAMAS;
-	if (!Q_stricmp(str, "USP")) return WEAPON_USP;
-	if (!Q_stricmp(str, "GLOCK18")) return WEAPON_GLOCK18;
-	if (!Q_stricmp(str, "AWP")) return WEAPON_AWP;
-	if (!Q_stricmp(str, "MP5")) return WEAPON_MP5NAVY;
-	if (!Q_stricmp(str, "M249")) return WEAPON_M249;
-	if (!Q_stricmp(str, "M3")) return WEAPON_M3;
-	if (!Q_stricmp(str, "M4A1")) return WEAPON_M4A1;
-	if (!Q_stricmp(str, "TMP")) return WEAPON_TMP;
-	if (!Q_stricmp(str, "G3SG1")) return WEAPON_G3SG1;
-	if (!Q_stricmp(str, "FLASHBANG")) return WEAPON_FLASHBANG;
-	if (!Q_stricmp(str, "DEAGLE")) return WEAPON_DEAGLE;
-	if (!Q_stricmp(str, "SG552")) return WEAPON_SG552;
-	if (!Q_stricmp(str, "AK47")) return WEAPON_AK47;
-	if (!Q_stricmp(str, "KNIFE")) return WEAPON_KNIFE;
-	if (!Q_stricmp(str, "P90")) return WEAPON_P90;
+	if (!stricmp(str, "P228")) return WEAPON_P228;
+	if (!stricmp(str, "SCOUT")) return WEAPON_SCOUT;
+	if (!stricmp(str, "HEGERNADE")) return WEAPON_HEGRENADE;
+	if (!stricmp(str, "XM1014")) return WEAPON_XM1014;
+	if (!stricmp(str, "C4")) return WEAPON_C4;
+	if (!stricmp(str, "MAC10")) return WEAPON_MAC10;
+	if (!stricmp(str, "AUG")) return WEAPON_AUG;
+	if (!stricmp(str, "SMOKEGRENADE")) return WEAPON_SMOKEGRENADE;
+	if (!stricmp(str, "ELITE")) return WEAPON_ELITE;
+	if (!stricmp(str, "FIVESEVEN")) return WEAPON_FIVESEVEN;
+	if (!stricmp(str, "UMP45")) return WEAPON_UMP45;
+	if (!stricmp(str, "SG550")) return WEAPON_SG550;
+	if (!stricmp(str, "GALIL")) return WEAPON_GALIL;
+	if (!stricmp(str, "FAMAS")) return WEAPON_FAMAS;
+	if (!stricmp(str, "USP")) return WEAPON_USP;
+	if (!stricmp(str, "GLOCK18")) return WEAPON_GLOCK18;
+	if (!stricmp(str, "AWP")) return WEAPON_AWP;
+	if (!stricmp(str, "MP5")) return WEAPON_MP5NAVY;
+	if (!stricmp(str, "M249")) return WEAPON_M249;
+	if (!stricmp(str, "M3")) return WEAPON_M3;
+	if (!stricmp(str, "M4A1")) return WEAPON_M4A1;
+	if (!stricmp(str, "TMP")) return WEAPON_TMP;
+	if (!stricmp(str, "G3SG1")) return WEAPON_G3SG1;
+	if (!stricmp(str, "FLASHBANG")) return WEAPON_FLASHBANG;
+	if (!stricmp(str, "DEAGLE")) return WEAPON_DEAGLE;
+	if (!stricmp(str, "SG552")) return WEAPON_SG552;
+	if (!stricmp(str, "AK47")) return WEAPON_AK47;
+	if (!stricmp(str, "KNIFE")) return WEAPON_KNIFE;
+	if (!stricmp(str, "P90")) return WEAPON_P90;
 
 	return 0;
 }

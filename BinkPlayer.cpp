@@ -1,5 +1,6 @@
-#include "base.h"
-#include "BaseUI.h"
+#include "metahook.h"
+#include "gl/gl.h"
+#include "vgui_controls/controls.h"
 #include "BinkPlayer.h"
 
 void CBinkPlayer::Init(char *filename)

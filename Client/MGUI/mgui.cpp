@@ -1,12 +1,15 @@
-#include "base.h"
+#include "metahook.h"
+#include "plugins.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "imm.h"
-#include "BaseUI.h"
 #include "DrawTargaImage.h"
 #include "Fonts.h"
 #include "playaudio.h"
 #include "util.h"
+
+#include "vgui_controls/controls.h"
 
 #include "MGUI/mgui.h"
 #include "MGUI/BTEPanel.h"

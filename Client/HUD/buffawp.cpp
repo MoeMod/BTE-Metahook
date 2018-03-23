@@ -1,4 +1,4 @@
-#include "base.h"
+
 #include "hud.h"
 #include "DrawTargaImage.h"
 #include "bink/bink.h"

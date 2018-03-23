@@ -1,4 +1,7 @@
-#include "base.h" 
+#include "metahook.h" 
+#include "plugins.h" 
+#include "gl/gl.h" 
+#include "triangleapi.h" 
 #include "TriAPI.h"
 #include "Fonts.h" 
 #include "BaseUI.h" 

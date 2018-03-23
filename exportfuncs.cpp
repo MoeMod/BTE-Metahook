@@ -1,4 +1,8 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
+#include "plugins.h"
+#include "event_api.h"
+#include "com_model.h"
 #include "hud.h"
 #include "configs.h"
 #include "events.h"
@@ -21,10 +25,17 @@
 #include "CVARs.h"
 #include "Window.h"
 
+#include "gl/gl.h"
+#include "triangleapi.h"
 #include "TriAPI.h"
 #include "display.h"
 #include "engfunchook.h"
 #include "exportfuncs.h"
+
+#include "pm_defs.h"
+#include "pm_movevars.h"
+
+#include <SourceSDK\tier1\strtools.h>
 
 #include "MGUI/BTEPanel.h"
 #include "MGUI/mgui.h"

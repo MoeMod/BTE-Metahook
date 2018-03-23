@@ -1,4 +1,4 @@
-#include "base.h"
+#include "bte_const.h"
 #include "hud.h"
 #include "exportfuncs.h"
 #include "texdraw.h"

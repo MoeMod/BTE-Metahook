@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "exportfuncs.h"
 #include "CSBTEZombieDNA.h"
 #include <vgui_controls\PHandle.h>
 #include <bits32.h>

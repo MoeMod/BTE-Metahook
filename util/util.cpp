@@ -1,5 +1,6 @@
-#include "base.h"
-#include "baseui.h"
+
+#include "metahook.h"
+#include "vgui_controls/controls.h"
 #include "msghook.h"
 #include "util.h"
 

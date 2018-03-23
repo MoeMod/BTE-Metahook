@@ -1,4 +1,6 @@
-#include "base.h"
+#include "metahook.h"
+#include "tier1/strtools.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "parsemsg.h"

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <metahook.h>
-//#include <vgui_controls\Panel.h>
 #include <Interface\vgui\IEngineVGui.h>
 #include <vgui_controls\Controls.h>
 #include <Interface\IGameUIFuncs.h>
@@ -11,8 +10,6 @@
 #include <Interface\IGameConsole.h>
 #include <Interface\IEngineSurface.h>
 #include <VGUI\IPanel.h>
-//#include <r_studioint.h>
-//#include <custom.h>
 
 using namespace vgui;
 
@@ -36,31 +33,10 @@ public:
 };
 
 extern IBaseUI *baseuifuncs;
-//extern IEngineVGui *enginevguifuncs;
-//extern IGameConsole *g_pGameConsole;
-//extern IFileSystem *g_pFileSystem;
-
-
 extern IGameUIFuncs *gameuifuncs;
 extern cl_enginefunc_t *engine;
-//extern IEngineVGui *g_pEngineVGui;
 extern IEngineSurface *staticSurface;
-
 extern mh_interface_t *g_pInterface;
 
 extern vgui::ISchemeManager *g_SchemeManager;
-/*
-extern struct model_s *(*g_pfnCL_GetModelByIndex)(int index);
-//extern engine_studio_api_t IEngineStudio;
-
-extern hook_t *g_phCL_GetModelByIndex;
-extern void (*g_pfnCL_AddToResourceList)(resource_t *pResource, resource_t *pList);
-extern hook_t *g_phCL_AddToResourceList;
-
-struct model_s *CL_GetModelByIndex(int index);
-void CL_AddToResourceList(resource_t *pResource, resource_t *pList);
-
-extern char g_szModelPrecache[512][MAX_QPATH];
-extern int g_iModelPrecacheNums;
-*/
 extern bool g_bGameUIActive;

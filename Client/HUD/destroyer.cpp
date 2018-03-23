@@ -1,6 +1,13 @@
-#include "base.h"
+#include "metahook.h"
+#include "triangleapi.h"
+#include "gl/gl.h"
 #include "exportfuncs.h"
 #include "hud.h"
+
+#include "pmtrace.h"
+#include "pm_defs.h"
+
+#include "event_api.h"
 #include "TriAPI.h"
 #include "DrawTargaImage.h"
 #include "destroyer.h"

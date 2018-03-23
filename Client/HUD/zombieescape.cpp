@@ -1,5 +1,7 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "hud.h"
+#include "triangleapi.h"
 #include "exportfuncs.h"
 #include "zombieescape.h"
 #include "DrawTargaImage.h"

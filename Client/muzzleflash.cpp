@@ -1,10 +1,11 @@
-#include "base.h"
+#include "metahook.h"
 #include "exportfuncs.h"
 #include "client.h"
 #include "configs.h"
 #include "imagelib.h"
 #include "texdraw.h"
 #include "util.h"
+#include "gl/gl.h"
 
 #include "muzzleflash.h"
 

@@ -1,4 +1,7 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
+#include "gl/gl.h"
+#include "triangleapi.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "TriAPI.h"

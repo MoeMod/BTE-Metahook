@@ -1,5 +1,6 @@
-#include "base.h"
+
 #include "hud.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "parsemsg.h"
 #include "util.h"

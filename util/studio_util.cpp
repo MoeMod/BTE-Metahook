@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "com_model.h"
 #include "studio_util.h"
 
 #define DotProduct(x,y) ((x)[0]*(y)[0]+(x)[1]*(y)[1]+(x)[2]*(y)[2])

@@ -1,5 +1,7 @@
 #include <metahook.h>
-#include "base.h"
+#include "metahook.h"
+#include "cvardef.h"
+#include "plugins.h"
 #include "configs.h"
 #include "BaseUI.h"
 #include "PlayAudio.h"

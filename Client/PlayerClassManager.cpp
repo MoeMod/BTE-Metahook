@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "vgui_controls/Controls.h"
 #include "PlayerClassManager.h"
 #include "util.h"

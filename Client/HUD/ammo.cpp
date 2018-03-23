@@ -1,10 +1,13 @@
-#include "base.h"
+#include "metahook.h"
+#include "plugins.h"
+#include "bte_const.h"
+#include <pm_movevars.h>
+#include <triangleapi.h>
 #include "exportfuncs.h"
 #include "hud.h"
 #include "configs.h"
 #include "eventscripts.h"
 #include "display.h"
-#include "ev_hldm.h"
 #include "util.h"
 #include <weapons.h>
 
@@ -18,6 +21,7 @@ CHudAmmo &HudAmmo()
 }
 
 int WEAPON_AMMOID[31] = { -1, 9, -1, 2, 12, 5, 14, 6, 4, 13, 10, 7, 6, 4, 4, 4, 6, 10, 1, 10, 3, 5, 4, 10, 2, 11, 8, 4, 2, -1, 7 };
+extern int g_iShotsFired; // ev_hldm.cpp
 
 void CHudAmmo::Draw(float flTime)
 {

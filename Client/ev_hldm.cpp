@@ -1,4 +1,9 @@
-#include "base.h"
+
+#include <metahook.h>
+#include "pm_defs.h"
+#include <event_api.h>
+
+#include <BTE_Const.h>
 #include "hud.h"
 #include "exportfuncs.h"
 #include "eventscripts.h"

@@ -1,7 +1,7 @@
 #include <metahook.h>
 #include <plugins.h>
 #include <client.h>
-#include <base.h>
+#include <studio.h>
 #include <configs.h>
 #include <exportfuncs.h>
 #include <qgl.h>

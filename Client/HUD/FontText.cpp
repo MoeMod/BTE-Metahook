@@ -1,4 +1,4 @@
-#
+
 #include "hud.h"
 #include "DrawTargaImage.h"
 #include "Fonts.h"

@@ -118,7 +118,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="base.cpp" />
     <ClCompile Include="BaseUI.cpp" />
     <ClCompile Include="BinkPlayer.cpp" />
     <ClCompile Include="BugReport\BugReport.cpp" />
@@ -424,9 +423,9 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="base.h" />
     <ClInclude Include="BaseUI.h" />
     <ClInclude Include="BinkPlayer.h" />
+    <ClInclude Include="BTE_const.h" />
     <ClInclude Include="BugReport\BugReport.h" />
     <ClInclude Include="BugReport\CrashHandle.h" />
     <ClInclude Include="client.h" />

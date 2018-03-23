@@ -1,4 +1,4 @@
-#include "base.h"
+
 #include "hud.h"
 #include "BaseUI.h"
 #include "message.h"
@@ -167,7 +167,7 @@ int CHudDeathInfo::MsgFunc_DeathInfo(const char * pszName, int iSize, void * pbu
 	rgTempDrawText.fFadeTime = 0.0;
 	rgTempDrawText.iFillBg = 0;
 	rgTempDrawText.iChanne = 2;
-	Q_strcpy(rgTempDrawText.szText, UnicodeToUTF8(strMessage.c_str()));
+	strcpy(rgTempDrawText.szText, UnicodeToUTF8(strMessage.c_str()));
 
 	Hud().m_FontText.AddElement(rgTempDrawText);
 	return 1;

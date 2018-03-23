@@ -146,9 +146,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="base.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="BaseUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -1726,9 +1723,6 @@
     <ClInclude Include="msghook.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="base.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="BaseUI.h">
       <Filter>源文件</Filter>
     </ClInclude>
@@ -2699,6 +2693,9 @@
       <Filter>Interface\VGUI</Filter>
     </ClInclude>
     <ClInclude Include="vgui2\vgui_hook.h" />
+    <ClInclude Include="BTE_const.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc">

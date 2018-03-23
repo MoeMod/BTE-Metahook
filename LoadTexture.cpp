@@ -1,10 +1,11 @@
-#include <base.h>
+
 #include <metahook.h>
 #include <Interface\vgui\IEngineVGui.h>
 #include <Interface\IEngineSurface.h>
 #include <vgui_controls\Controls.h>
 #include "qgl.h"
 #include "gl/glext.h"
+#include "triangleapi.h"
 #include "TriAPI.h"
 #include "shader.h"
 #include "plugins.h"

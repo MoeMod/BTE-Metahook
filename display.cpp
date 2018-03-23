@@ -1,5 +1,8 @@
-#include "base.h"
+
 #include "hud.h"
+#include "bte_const.h"
+#include "triangleapi.h"
+#include "gl/gl.h"
 #include "TriAPI.h"
 #include "exportfuncs.h"
 #include "eventscripts.h"

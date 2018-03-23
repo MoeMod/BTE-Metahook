@@ -1,5 +1,6 @@
-#include "base.h"
+#include "cdll_dll.h"
 #include "hud.h"
+#include "gl/gl.h"
 #include "configs.h"
 #include "parsemsg.h"
 #include "BaseUI.h"
