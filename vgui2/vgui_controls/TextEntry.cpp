@@ -660,7 +660,7 @@ void TextEntry::PaintBackground()
 	wchar_t shortcode[ 5 ];
 	shortcode[ 0 ] = L'\0';
 
-	if ( m_bAllowNonAsciiCharacters )
+	if ( 0/*m_bAllowNonAsciiCharacters*/ )
 	{
 		input()->GetIMELanguageShortCode( shortcode, sizeof( shortcode ) );
 
