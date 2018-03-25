@@ -23,6 +23,6 @@ void R_StudioSetupLighting(alight_t *plighting);
 void R_StudioLighting(float *lv, int bone, int flags, vec3_t normal);
 
 int R_StudioCheckBBox(void);
-int R_StudioDrawModel(int flags);
+int Hook_R_StudioDrawModel(int flags);
 
 void StudioFuncs_InstallHook(void);

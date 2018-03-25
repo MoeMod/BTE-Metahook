@@ -1,21 +1,34 @@
-#include "base.h"
 #include <assert.h>
+#include "hud.h"
+#include "cl_util.h"
+#include "const.h"
+#include "com_model.h"
+#include "studio.h"
+#include "entity_state.h"
+#include "cl_entity.h"
+#include "dlight.h"
+#include "triangleapi.h"
+#include "client.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <memory.h>
+#include <math.h>
+
+#include "studio_util.h"
+#include "r_studioint.h"
 
 #include "StudioModelRenderer.h"
 #include "GameStudioModelRenderer.h"
-#include "studio_util.h"
 
-int g_rseq;
-int g_gaitseq;
-vec3_t g_clorg;
-vec3_t g_clang;
+void CounterStrike_GetSequence(int *seq, int *gaitseq);
+void CounterStrike_GetOrientation(float *o, float *a);
 
 float g_flStartScaleTime;
 int iPrevRenderState;
 int iRenderStateChanged;
 
 extern engine_studio_api_t IEngineStudio;
-extern cvar_t *cl_shadows;
 
 #define ANIM_WALK_SEQUENCE 3
 #define ANIM_JUMP_SEQUENCE 6
@@ -54,18 +67,6 @@ static client_anim_state_t g_clientstate;
 
 CGameStudioModelRenderer g_StudioRenderer;
 
-void CounterStrike_GetSequence(int *seq, int *gaitseq)
-{
-	*seq = g_rseq;
-	*gaitseq = g_gaitseq;
-}
-
-void CounterStrike_GetOrientation(float *o, float *a)
-{
-	VectorCopy(g_clorg, o);
-	VectorCopy(g_clang, a);
-}
-
 CGameStudioModelRenderer::CGameStudioModelRenderer(void)
 {
 	m_bLocal = false;
@@ -82,7 +83,7 @@ mstudioanim_t *CGameStudioModelRenderer::LookupAnimation(mstudioseqdesc_t *pseqd
 	if (index < 0)
 		return panim;
 
-	if (index > (pseqdesc->numblends - 1))
+	if (index >(pseqdesc->numblends - 1))
 		return panim;
 
 	panim += index * m_pStudioHeader->numbones;
@@ -329,7 +330,7 @@ void CGameStudioModelRenderer::StudioSetupBones(void)
 		if (m_pPlayerInfo->gaitsequence >= m_pStudioHeader->numseq)
 			m_pPlayerInfo->gaitsequence = 0;
 
-		pseqdesc = (mstudioseqdesc_t *)((byte *)m_pStudioHeader + m_pStudioHeader->seqindex ) + m_pPlayerInfo->gaitsequence;
+		pseqdesc = (mstudioseqdesc_t *)((byte *)m_pStudioHeader + m_pStudioHeader->seqindex) + m_pPlayerInfo->gaitsequence;
 
 		panim = StudioGetAnim(m_pRenderModel, pseqdesc);
 		StudioCalcRotations(pos2, q2, pseqdesc, panim, m_pPlayerInfo->gaitframe);
@@ -957,21 +958,6 @@ int CGameStudioModelRenderer::_StudioDrawPlayer(int flags, entity_state_t *pplay
 			if (m_pCurrentEntity->index > 0)
 				memcpy(saveent.attachment, m_pCurrentEntity->attachment, sizeof(vec3_t) * m_pStudioHeader->numattachments);
 
-			if (!strstr(m_pCurrentEntity->model->name, "zombi"))
-			{
-				model_t *pbudmodel = IEngineStudio.Mod_ForName("models/costume/bud_head.mdl", FALSE);
-
-				if (pbudmodel)
-				{
-					m_pStudioHeader = (studiohdr_t *)IEngineStudio.Mod_Extradata(pbudmodel);
-					IEngineStudio.StudioSetHeader(m_pStudioHeader);
-
-					StudioMergeCostumeBones();
-
-					StudioRenderModel();
-				}
-			}
-
 			*m_pCurrentEntity = saveent;
 			m_pStudioHeader = saveheader;
 			IEngineStudio.StudioSetHeader(m_pStudioHeader);
@@ -996,59 +982,59 @@ void CGameStudioModelRenderer::StudioFxTransform(cl_entity_t *ent, float transfo
 {
 	switch (ent->curstate.renderfx)
 	{
-		case kRenderFxDistort:
-		case kRenderFxHologram:
+	case kRenderFxDistort:
+	case kRenderFxHologram:
+	{
+		if (gEngfuncs.pfnRandomLong(0, 49) == 0)
 		{
-			if (gEngfuncs.pfnRandomLong(0, 49) == 0)
-			{
-				int axis = gEngfuncs.pfnRandomLong(0, 1);
+			int axis = gEngfuncs.pfnRandomLong(0, 1);
 
-				if (axis == 1)
-					axis = 2;
+			if (axis == 1)
+				axis = 2;
 
-				VectorScale(transform[axis], gEngfuncs.pfnRandomFloat(1, 1.484), transform[axis]);
-			}
-			else if (gEngfuncs.pfnRandomLong(0, 49) == 0)
-			{
-				float offset;
-				int axis = gEngfuncs.pfnRandomLong(0, 1);
+			VectorScale(transform[axis], gEngfuncs.pfnRandomFloat(1, 1.484), transform[axis]);
+		}
+		else if (gEngfuncs.pfnRandomLong(0, 49) == 0)
+		{
+			float offset;
+			int axis = gEngfuncs.pfnRandomLong(0, 1);
 
-				if (axis == 1)
-					axis = 2;
+			if (axis == 1)
+				axis = 2;
 
-				offset = gEngfuncs.pfnRandomFloat(-10, 10);
-				transform[gEngfuncs.pfnRandomLong(0, 2)][3] += offset;
-			}
-
-			break;
+			offset = gEngfuncs.pfnRandomFloat(-10, 10);
+			transform[gEngfuncs.pfnRandomLong(0, 2)][3] += offset;
 		}
 
-		case kRenderFxExplode:
+		break;
+	}
+
+	case kRenderFxExplode:
+	{
+		if (iRenderStateChanged)
 		{
-			if (iRenderStateChanged)
-			{
-				g_flStartScaleTime = m_clTime;
-				iRenderStateChanged = FALSE;
-			}
-
-			float flTimeDelta = m_clTime - g_flStartScaleTime;
-
-			if (flTimeDelta > 0)
-			{
-				float flScale = 0.001;
-
-				if (flTimeDelta <= 2.0)
-					flScale = 1.0 - (flTimeDelta / 2.0);
-
-				for (int i = 0; i < 3; i++)
-				{
-					for (int j = 0; j < 3; j++)
-						transform[i][j] *= flScale;
-				}
-			}
-
-			break;
+			g_flStartScaleTime = m_clTime;
+			iRenderStateChanged = FALSE;
 		}
+
+		float flTimeDelta = m_clTime - g_flStartScaleTime;
+
+		if (flTimeDelta > 0)
+		{
+			float flScale = 0.001;
+
+			if (flTimeDelta <= 2.0)
+				flScale = 1.0 - (flTimeDelta / 2.0);
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+					transform[i][j] *= flScale;
+			}
+		}
+
+		break;
+	}
 	}
 }
 
@@ -1073,20 +1059,28 @@ r_studio_interface_t studio =
 	R_StudioDrawModel,
 	R_StudioDrawPlayer,
 };
-
-void CL_InitTEnts(void);
-
+/*
 int HUD_GetStudioModelInterface(int version, struct r_studio_interface_s **ppinterface, struct engine_studio_api_s *pstudio)
 {
-	if (!gExportfuncs.HUD_GetStudioModelInterface(version, ppinterface, pstudio))
-		return 0;
+if (!gExportfuncs.HUD_GetStudioModelInterface(version, ppinterface, pstudio))
+return 0;
 
+*ppinterface = &studio;
+
+memcpy(&IEngineStudio, pstudio, sizeof(IEngineStudio));
+
+R_StudioInit();
+return 1;
+}
+*/
+
+int GameStudioModelRenderer_InstallHook(int version, struct r_studio_interface_s **ppinterface, struct engine_studio_api_s *pstudio)
+{
 	*ppinterface = &studio;
 
 	memcpy(&IEngineStudio, pstudio, sizeof(IEngineStudio));
 
 	R_StudioInit();
-
 	return 1;
 }
 
@@ -1141,154 +1135,4 @@ bool CGameStudioModelRenderer::GetPlayerBoneWorldPosition(BoneIndex whichBone, V
 	(*pos).y = m_rgCachedBoneTransform[m_boneIndexCache[whichBone]][1][3];
 	(*pos).z = m_rgCachedBoneTransform[m_boneIndexCache[whichBone]][2][3];
 	return true;
-}
-
-void CGameStudioModelRenderer::StudioSetupCostumeBones(const char *playerBoneName)
-{
-	int i;
-	double f;
-
-	mstudiobone_t *pbones;
-	mstudioseqdesc_t *pseqdesc;
-	mstudioanim_t *panim;
-
-	static float pos[MAXSTUDIOBONES][3];
-	static vec4_t q[MAXSTUDIOBONES];
-	float bonematrix[3][4];
-
-	static float pos2[MAXSTUDIOBONES][3];
-	static vec4_t q2[MAXSTUDIOBONES];
-	static float pos3[MAXSTUDIOBONES][3];
-	static vec4_t q3[MAXSTUDIOBONES];
-	static float pos4[MAXSTUDIOBONES][3];
-	static vec4_t q4[MAXSTUDIOBONES];
-
-	if (m_pCurrentEntity->curstate.sequence >= m_pStudioHeader->numseq)
-		m_pCurrentEntity->curstate.sequence = 0;
-
-	pseqdesc = (mstudioseqdesc_t *)((byte *)m_pStudioHeader + m_pStudioHeader->seqindex) + m_pCurrentEntity->curstate.sequence;
-
-	f = StudioEstimateFrame(pseqdesc);
-	panim = StudioGetAnim(m_pRenderModel, pseqdesc);
-
-	StudioCalcRotations(pos, q, pseqdesc, panim, f);
-
-	if (pseqdesc->numblends > 1)
-	{
-		float s;
-		float dadt;
-
-		panim += m_pStudioHeader->numbones;
-		StudioCalcRotations(pos2, q2, pseqdesc, panim, f);
-
-		dadt = StudioEstimateInterpolant();
-		s = (m_pCurrentEntity->curstate.blending[0] * dadt + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
-
-		StudioSlerpBones(q, pos, q2, pos2, s);
-
-		if (pseqdesc->numblends == 4)
-		{
-			panim += m_pStudioHeader->numbones;
-			StudioCalcRotations(pos3, q3, pseqdesc, panim, f);
-
-			panim += m_pStudioHeader->numbones;
-			StudioCalcRotations(pos4, q4, pseqdesc, panim, f);
-
-			s = (m_pCurrentEntity->curstate.blending[0] * dadt + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
-			StudioSlerpBones(q3, pos3, q4, pos4, s);
-
-			s = (m_pCurrentEntity->curstate.blending[1] * dadt + m_pCurrentEntity->latched.prevblending[1] * (1.0 - dadt)) / 255.0;
-			StudioSlerpBones(q, pos, q3, pos3, s);
-		}
-	}
-
-	if (m_fDoInterp && m_pCurrentEntity->latched.sequencetime && (m_pCurrentEntity->latched.sequencetime + 0.2 > m_clTime) && (m_pCurrentEntity->latched.prevsequence < m_pStudioHeader->numseq))
-	{
-		static float pos1b[MAXSTUDIOBONES][3];
-		static vec4_t q1b[MAXSTUDIOBONES];
-		float s;
-
-		pseqdesc = (mstudioseqdesc_t *)((byte *)m_pStudioHeader + m_pStudioHeader->seqindex) + m_pCurrentEntity->latched.prevsequence;
-		panim = StudioGetAnim(m_pRenderModel, pseqdesc);
-
-		StudioCalcRotations(pos1b, q1b, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
-
-		if (pseqdesc->numblends > 1)
-		{
-			panim += m_pStudioHeader->numbones;
-			StudioCalcRotations(pos2, q2, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
-
-			s = (m_pCurrentEntity->latched.prevseqblending[0]) / 255.0;
-			StudioSlerpBones(q1b, pos1b, q2, pos2, s);
-
-			if (pseqdesc->numblends == 4)
-			{
-				panim += m_pStudioHeader->numbones;
-				StudioCalcRotations(pos3, q3, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
-
-				panim += m_pStudioHeader->numbones;
-				StudioCalcRotations(pos4, q4, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
-
-				s = (m_pCurrentEntity->latched.prevseqblending[0]) / 255.0;
-				StudioSlerpBones(q3, pos3, q4, pos4, s);
-
-				s = (m_pCurrentEntity->latched.prevseqblending[1]) / 255.0;
-				StudioSlerpBones(q1b, pos1b, q3, pos3, s);
-			}
-		}
-
-		s = 1.0 - (m_clTime - m_pCurrentEntity->latched.sequencetime) / 0.2;
-		StudioSlerpBones(q, pos, q1b, pos1b, s);
-	}
-	else
-	{
-		m_pCurrentEntity->latched.prevframe = f;
-	}
-
-	pbones = (mstudiobone_t *)((byte *)m_pStudioHeader + m_pStudioHeader->boneindex);
-
-	int j = 0;
-
-	for (j = 0; j < m_nCachedBones; j++)
-	{
-		if (!stricmp(m_nCachedBoneNames[j], playerBoneName))
-			break;
-	}
-
-	if (j == m_nCachedBones)
-		return;
-
-	for (i = 0; i < m_pStudioHeader->numbones; i++)
-	{
-		QuaternionMatrix(q[i], bonematrix);
-
-		bonematrix[0][3] = pos[i][0];
-		bonematrix[1][3] = pos[i][1];
-		bonematrix[2][3] = pos[i][2];
-
-		if (pbones[i].parent == -1)
-		{
-			float rotationmatrix[3][4];
-			float srcbonematrix[3][4];
-
-			MatrixCopy(bonematrix, srcbonematrix);
-			
-			AngleMatrix(Vector(150, -100, 90), rotationmatrix);
-			
-			ConcatTransforms(srcbonematrix, rotationmatrix, bonematrix);
-			ConcatTransforms(m_rgCachedBoneTransform[j], bonematrix, (*m_pbonetransform)[i]);
-
-			StudioFxTransform(m_pCurrentEntity, (*m_pbonetransform)[i]);
-		}
-		else
-		{
-			ConcatTransforms((*m_pbonetransform)[pbones[i].parent], bonematrix, (*m_pbonetransform)[i]);
-			ConcatTransforms((*m_plighttransform)[pbones[i].parent], bonematrix, (*m_plighttransform)[i]);
-		}
-	}
-}
-
-void CGameStudioModelRenderer::StudioMergeCostumeBones(void)
-{
-	StudioSetupCostumeBones("Bip01 Head");
 }

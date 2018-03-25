@@ -4,7 +4,11 @@
 
 #pragma once
 
+#include <assert.h>
+#include <string.h>
+
 #include "wrect.h"
+
 #include "cvardef.h"
 #include "client.h"
 #include "Renderer/screen.h"
@@ -161,3 +165,35 @@ extern CHud &gHUD;
 //#define ScreenHeight Hud().m_scrinfo.iHeight
 
 #define HUD_ACTIVE (1<<1)
+
+extern struct cvar_s *cl_righthand;
+extern struct cvar_s *cl_radartype;
+extern struct cvar_s *cl_dynamiccrosshair;
+extern struct cvar_s *cl_crosshair_color;
+extern struct cvar_s *cl_crosshair_size;
+extern struct cvar_s *cl_crosshair_translucent;
+extern struct cvar_s *cl_crosshair_type;
+extern struct cvar_s *cl_killeffect;
+extern struct cvar_s *cl_killmessage;
+extern struct cvar_s *cl_headname;
+extern struct cvar_s *cl_newmenu;
+extern struct cvar_s *cl_newmenu_drawbox;
+extern struct cvar_s *cl_newradar;
+extern struct cvar_s *cl_newradar_size;
+extern struct cvar_s *cl_newradar_r;
+extern struct cvar_s *cl_newradar_g;
+extern struct cvar_s *cl_newradar_b;
+extern struct cvar_s *cl_newradar_a;
+extern struct cvar_s *cl_newchat;
+extern struct cvar_s *cl_shadows;
+extern struct cvar_s *cl_scoreboard;
+extern struct cvar_s *cl_fog_skybox;
+extern struct cvar_s *cl_fog_density;
+extern struct cvar_s *cl_fog_r;
+extern struct cvar_s *cl_fog_g;
+extern struct cvar_s *cl_fog_b;
+extern struct cvar_s *cl_minmodel;
+extern struct cvar_s *cl_min_t;
+extern struct cvar_s *cl_min_ct;
+extern struct cvar_s *cl_corpsestay;
+extern struct cvar_s *cl_corpsefade;

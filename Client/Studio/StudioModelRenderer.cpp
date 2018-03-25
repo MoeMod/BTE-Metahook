@@ -1,16 +1,31 @@
-#include "base.h"
+#include "hud.h"
+#include "cl_util.h"
+#include "const.h"
+#include "com_model.h"
+#include "studio.h"
+#include "entity_state.h"
+#include "cl_entity.h"
+#include "dlight.h"
+#include "triangleapi.h"
+#include "client.h"
+#include "weapons.h"
+#include "pmtrace.h"
+#include "event_api.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <memory.h>
+#include <math.h>
 
 #include "studio_util.h"
-#include "weapons.h"
+#include "r_studioint.h"
+
 #include "StudioModelRenderer.h"
 #include "GameStudioModelRenderer.h"
 
 engine_studio_api_t IEngineStudio;
 
 int CStudioModelRenderer::s_iShadowSprite;
-
-extern cvar_t *cl_righthand;
-extern cvar_t *cl_shadows;
 
 void CStudioModelRenderer::Init(void)
 {
@@ -22,10 +37,10 @@ void CStudioModelRenderer::Init(void)
 
 	IEngineStudio.GetModelCounters(&m_pStudioModelCount, &m_pModelsDrawn);
 
-	m_pbonetransform = (float (*)[MAXSTUDIOBONES][3][4])IEngineStudio.StudioGetBoneTransform();
-	m_plighttransform = (float (*)[MAXSTUDIOBONES][3][4])IEngineStudio.StudioGetLightTransform();
-	m_paliastransform = (float (*)[3][4])IEngineStudio.StudioGetAliasTransform();
-	m_protationmatrix = (float (*)[3][4])IEngineStudio.StudioGetRotationMatrix();
+	m_pbonetransform = (float(*)[MAXSTUDIOBONES][3][4])IEngineStudio.StudioGetBoneTransform();
+	m_plighttransform = (float(*)[MAXSTUDIOBONES][3][4])IEngineStudio.StudioGetLightTransform();
+	m_paliastransform = (float(*)[3][4])IEngineStudio.StudioGetAliasTransform();
+	m_protationmatrix = (float(*)[3][4])IEngineStudio.StudioGetRotationMatrix();
 }
 
 CStudioModelRenderer::CStudioModelRenderer(void)
@@ -54,7 +69,7 @@ CStudioModelRenderer::~CStudioModelRenderer(void)
 {
 }
 
-inline void StudioSetShadowSprite(int iSprite)
+void StudioSetShadowSprite(int iSprite)
 {
 	CStudioModelRenderer::s_iShadowSprite = iSprite;
 }
@@ -158,20 +173,20 @@ void CStudioModelRenderer::StudioCalcBoneAdj(float dadt, float *adj, const byte 
 
 		switch (pbonecontroller[j].type & STUDIO_TYPES)
 		{
-			case STUDIO_XR:
-			case STUDIO_YR:
-			case STUDIO_ZR:
-			{
-				adj[j] = value * (M_PI / 180.0);
-				break;
-			}
-			case STUDIO_X:
-			case STUDIO_Y:
-			case STUDIO_Z:
-			{
-				adj[j] = value;
-				break;
-			}
+		case STUDIO_XR:
+		case STUDIO_YR:
+		case STUDIO_ZR:
+		{
+			adj[j] = value * (M_PI / 180.0);
+			break;
+		}
+		case STUDIO_X:
+		case STUDIO_Y:
+		case STUDIO_Z:
+		{
+			adj[j] = value;
+			break;
+		}
 		}
 	}
 }
@@ -534,47 +549,47 @@ void CStudioModelRenderer::StudioFxTransform(cl_entity_t *ent, float transform[3
 {
 	switch (ent->curstate.renderfx)
 	{
-		case kRenderFxDistort:
-		case kRenderFxHologram:
+	case kRenderFxDistort:
+	case kRenderFxHologram:
+	{
+		if (gEngfuncs.pfnRandomLong(0, 49) == 0)
 		{
-			if (gEngfuncs.pfnRandomLong(0, 49) == 0)
-			{
-				int axis = gEngfuncs.pfnRandomLong(0, 1);
+			int axis = gEngfuncs.pfnRandomLong(0, 1);
 
-				if (axis == 1)
-					axis = 2;
+			if (axis == 1)
+				axis = 2;
 
-				VectorScale(transform[axis], gEngfuncs.pfnRandomFloat(1, 1.484), transform[axis]);
-			}
-			else if (gEngfuncs.pfnRandomLong(0, 49) == 0)
-			{
-				float offset;
-				int axis = gEngfuncs.pfnRandomLong(0, 1);
+			VectorScale(transform[axis], gEngfuncs.pfnRandomFloat(1, 1.484), transform[axis]);
+		}
+		else if (gEngfuncs.pfnRandomLong(0, 49) == 0)
+		{
+			float offset;
+			int axis = gEngfuncs.pfnRandomLong(0, 1);
 
-				if (axis == 1)
-					axis = 2;
+			if (axis == 1)
+				axis = 2;
 
-				offset = gEngfuncs.pfnRandomFloat(-10, 10);
-				transform[gEngfuncs.pfnRandomLong(0, 2)][3] += offset;
-			}
-
-			break;
+			offset = gEngfuncs.pfnRandomFloat(-10, 10);
+			transform[gEngfuncs.pfnRandomLong(0, 2)][3] += offset;
 		}
 
-		case kRenderFxExplode:
-		{
-			float scale;
+		break;
+	}
 
-			scale = 1.0 + (m_clTime - ent->curstate.animtime) * 10.0;
+	case kRenderFxExplode:
+	{
+		float scale;
 
-			if (scale > 2)
-				scale = 2;
+		scale = 1.0 + (m_clTime - ent->curstate.animtime) * 10.0;
 
-			transform[0][1] *= scale;
-			transform[1][1] *= scale;
-			transform[2][1] *= scale;
-			break;
-		}
+		if (scale > 2)
+			scale = 2;
+
+		transform[0][1] *= scale;
+		transform[1][1] *= scale;
+		transform[2][1] *= scale;
+		break;
+	}
 	}
 }
 
@@ -735,8 +750,8 @@ void CStudioModelRenderer::StudioSetupBones(void)
 			if (strcmp(pbones[i].name, "Bip01 Spine") == 0)
 				break;
 
-			memcpy(pos[i], pos2[i], sizeof( pos[i]));
-			memcpy(q[i], q2[i], sizeof( q[i]));
+			memcpy(pos[i], pos2[i], sizeof(pos[i]));
+			memcpy(q[i], q2[i], sizeof(q[i]));
 		}
 	}
 
@@ -756,7 +771,7 @@ void CStudioModelRenderer::StudioSetupBones(void)
 
 		if (pbones[i].parent == -1)
 		{
-			if (cl_righthand && cl_righthand->value > 0 && bIsViewModel && IEngineStudio.IsHardware())
+			if (cl_righthand && cl_righthand->value > 0 && bIsViewModel && IEngineStudio.IsHardware() && g_iCurrentWeapon != WEAPON_KNIFE)
 			{
 				bonematrix[1][0] = -bonematrix[1][0];
 				bonematrix[1][1] = -bonematrix[1][1];
@@ -876,21 +891,9 @@ void CStudioModelRenderer::StudioMergeBones(model_t *m_pSubModel)
 	}
 }
 
-static int iRightHandValue;
-
 int CStudioModelRenderer::StudioDrawModel(int flags)
 {
 	m_pCurrentEntity = IEngineStudio.GetCurrentEntity();
-
-	bool bIsViewModel = m_pCurrentEntity == gEngfuncs.GetViewModel();
-	bool changedRighthand = false;
-
-	if (g_iCurrentWeapon == WEAPON_KNIFE && bIsViewModel && (flags & STUDIO_RENDER))
-	{
-		iRightHandValue = cl_righthand->value;
-		cl_righthand->value = !iRightHandValue;
-		changedRighthand = true;
-	}
 
 	IEngineStudio.GetTimes(&m_nFrameCount, &m_clTime, &m_clOldTime);
 	IEngineStudio.GetViewInfo(m_vRenderOrigin, m_vUp, m_vRight, m_vNormal);
@@ -981,15 +984,6 @@ int CStudioModelRenderer::StudioDrawModel(int flags)
 
 		StudioRenderModel();
 	}
-
-	if (strstr(m_pCurrentEntity->model->name, "hostage"))
-	{
-		if (cl_shadows->value)
-			StudioDrawShadow(m_pCurrentEntity->origin, 12.0);
-	}
-
-	if (changedRighthand)
-		cl_righthand->value = iRightHandValue;
 
 	return 1;
 }
@@ -1325,9 +1319,7 @@ void CStudioModelRenderer::StudioRenderModel(void)
 			gEngfuncs.pTriAPI->RenderMode(kRenderNormal);
 	}
 	else
-	{
 		StudioRenderFinal();
-	}
 }
 
 void CStudioModelRenderer::StudioRenderFinal_Software(void)
@@ -1413,142 +1405,4 @@ void CStudioModelRenderer::StudioRenderFinal(void)
 		StudioRenderFinal_Hardware();
 	else
 		StudioRenderFinal_Software();
-}
-
-void CStudioModelRenderer::StudioMergeRootBones(studiohdr_t *targetHdr)
-{
-	int i;
-	double f;
-
-	mstudiobone_t *pbones;
-	mstudioseqdesc_t *pseqdesc;
-	mstudioanim_t *panim;
-
-	static float pos[MAXSTUDIOBONES][3];
-	static vec4_t q[MAXSTUDIOBONES];
-	float bonematrix[3][4];
-
-	static float pos2[MAXSTUDIOBONES][3];
-	static vec4_t q2[MAXSTUDIOBONES];
-	static float pos3[MAXSTUDIOBONES][3];
-	static vec4_t q3[MAXSTUDIOBONES];
-	static float pos4[MAXSTUDIOBONES][3];
-	static vec4_t q4[MAXSTUDIOBONES];
-
-	if (m_pCurrentEntity->curstate.sequence >= m_pStudioHeader->numseq)
-		m_pCurrentEntity->curstate.sequence = 0;
-
-	pseqdesc = (mstudioseqdesc_t *)((byte *)m_pStudioHeader + m_pStudioHeader->seqindex) + m_pCurrentEntity->curstate.sequence;
-
-	f = StudioEstimateFrame(pseqdesc);
-	panim = StudioGetAnim(m_pRenderModel, pseqdesc);
-
-	StudioCalcRotations(pos, q, pseqdesc, panim, f);
-
-	if (pseqdesc->numblends > 1)
-	{
-		float s;
-		float dadt;
-
-		panim += m_pStudioHeader->numbones;
-		StudioCalcRotations(pos2, q2, pseqdesc, panim, f);
-
-		dadt = StudioEstimateInterpolant();
-		s = (m_pCurrentEntity->curstate.blending[0] * dadt + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
-
-		StudioSlerpBones(q, pos, q2, pos2, s);
-
-		if (pseqdesc->numblends == 4)
-		{
-			panim += m_pStudioHeader->numbones;
-			StudioCalcRotations(pos3, q3, pseqdesc, panim, f);
-
-			panim += m_pStudioHeader->numbones;
-			StudioCalcRotations(pos4, q4, pseqdesc, panim, f);
-
-			s = (m_pCurrentEntity->curstate.blending[0] * dadt + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
-			StudioSlerpBones(q3, pos3, q4, pos4, s);
-
-			s = (m_pCurrentEntity->curstate.blending[1] * dadt + m_pCurrentEntity->latched.prevblending[1] * (1.0 - dadt)) / 255.0;
-			StudioSlerpBones(q, pos, q3, pos3, s);
-		}
-	}
-
-	if (m_fDoInterp && m_pCurrentEntity->latched.sequencetime && (m_pCurrentEntity->latched.sequencetime + 0.2 > m_clTime) && (m_pCurrentEntity->latched.prevsequence < m_pStudioHeader->numseq))
-	{
-		static float pos1b[MAXSTUDIOBONES][3];
-		static vec4_t q1b[MAXSTUDIOBONES];
-		float s;
-
-		pseqdesc = (mstudioseqdesc_t *)((byte *)m_pStudioHeader + m_pStudioHeader->seqindex) + m_pCurrentEntity->latched.prevsequence;
-		panim = StudioGetAnim(m_pRenderModel, pseqdesc);
-
-		StudioCalcRotations(pos1b, q1b, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
-
-		if (pseqdesc->numblends > 1)
-		{
-			panim += m_pStudioHeader->numbones;
-			StudioCalcRotations(pos2, q2, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
-
-			s = (m_pCurrentEntity->latched.prevseqblending[0]) / 255.0;
-			StudioSlerpBones(q1b, pos1b, q2, pos2, s);
-
-			if (pseqdesc->numblends == 4)
-			{
-				panim += m_pStudioHeader->numbones;
-				StudioCalcRotations(pos3, q3, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
-
-				panim += m_pStudioHeader->numbones;
-				StudioCalcRotations(pos4, q4, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
-
-				s = (m_pCurrentEntity->latched.prevseqblending[0]) / 255.0;
-				StudioSlerpBones(q3, pos3, q4, pos4, s);
-
-				s = (m_pCurrentEntity->latched.prevseqblending[1]) / 255.0;
-				StudioSlerpBones(q1b, pos1b, q3, pos3, s);
-			}
-		}
-
-		s = 1.0 - (m_clTime - m_pCurrentEntity->latched.sequencetime) / 0.2;
-		StudioSlerpBones(q, pos, q1b, pos1b, s);
-	}
-	else
-	{
-		m_pCurrentEntity->latched.prevframe = f;
-	}
-
-	pbones = (mstudiobone_t *)((byte *)m_pStudioHeader + m_pStudioHeader->boneindex);
-
-	int j = 0;
-	mstudiobone_t *ptargetBones = (mstudiobone_t *)((byte *)targetHdr + targetHdr->boneindex);
-
-	for (j = 0; j < targetHdr->numbones; j++)
-	{
-		if (ptargetBones[j].parent == -1)
-			break;
-	}
-
-	if (j == targetHdr->numbones)
-		return;
-
-	for (i = 0; i < m_pStudioHeader->numbones; i++)
-	{
-		QuaternionMatrix(q[i], bonematrix);
-
-		bonematrix[0][3] = pos[i][0];
-		bonematrix[1][3] = pos[i][1];
-		bonematrix[2][3] = pos[i][2];
-
-		if (pbones[i].parent == -1)
-		{
-			ConcatTransforms(m_rgCachedBoneTransform[j], bonematrix, (*m_pbonetransform)[i]);
-
-			StudioFxTransform(m_pCurrentEntity, (*m_pbonetransform)[i]);
-		}
-		else
-		{
-			ConcatTransforms((*m_pbonetransform)[pbones[i].parent], bonematrix, (*m_pbonetransform)[i]);
-			ConcatTransforms((*m_plighttransform)[pbones[i].parent], bonematrix, (*m_plighttransform)[i]);
-		}
-	}
 }

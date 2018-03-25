@@ -73,7 +73,7 @@ cvar_t *g_pcvarEnableConsole = NULL;
 
 cl_enginefunc_t gEngfuncs;
 
-engine_studio_api_t IEngineStudio;
+extern engine_studio_api_t IEngineStudio;
 event_api_s gEventAPI;
 efx_api_s gEfxAPI;
 bool bLoadedSky = false;
@@ -1554,14 +1554,15 @@ void V_CalcRefdef(struct ref_params_s *pParams)
 	return;
 }
 
+int GameStudioModelRenderer_InstallHook(int version, struct r_studio_interface_s **ppinterface, struct engine_studio_api_s *pstudio);
 int HUD_GetStudioModelInterface(int iVersion, struct r_studio_interface_s **ppStudioInterface, struct engine_studio_api_s *pEngineStudio)
 {
-	memcpy(&IEngineStudio, pEngineStudio, sizeof(IEngineStudio));
-
 	int iResult = gExportfuncs.HUD_GetStudioModelInterface(iVersion, ppStudioInterface, pEngineStudio);
 
+	GameStudioModelRenderer_InstallHook(iVersion, ppStudioInterface, pEngineStudio);
+
 	gStudioInterface.StudioDrawModel = (*ppStudioInterface)->StudioDrawModel;
-	(*ppStudioInterface)->StudioDrawModel = R_StudioDrawModel;
+	(*ppStudioInterface)->StudioDrawModel = Hook_R_StudioDrawModel;
 
 	gStudioFuncs.R_StudioCheckBBox = pEngineStudio->StudioCheckBBox;
 	gStudioFuncs.R_StudioSetupLighting = pEngineStudio->StudioSetupLighting;
@@ -2126,45 +2127,8 @@ void HUD_WeaponsPostThink(local_state_s *from, local_state_s *to, usercmd_t *cmd
 	//g_iFreezeTimeOver = from->client.iuser3 & IUSER3_FREEZETIMEOVER;
 }
 
-int g_irunninggausspred;
-float g_flApplyVel;
-
-void HUD_PostRunCmd(struct local_state_s *from, struct local_state_s *to, struct usercmd_s *cmd, int runfuncs, double time, unsigned int random_seed)
-{
-	HUD_WeaponsPostThink(from, to, cmd, time, random_seed);
-	//gEngfuncs.Con_Printf("%d\n", to->weapondata[g_iCurrentWeapon].m_fInReload);
-	g_bInReload = to->weapondata[g_iCurrentWeapon].m_fInReload;
-	//g_iWeaponStat = to->weapondata[g_iCurrentWeapon].m_iWeaponState;
-	//g_iCurrentWeapon = from->client.m_iId;
-	if (g_iWeaponData[g_iCurrentWeapon].iAmmoDisplay != 1 && g_iWeaponData[g_iCurrentWeapon].iAmmoDisplay != 5 && g_iWeaponData[g_iCurrentWeapon].iAmmoDisplay != 6)
-		g_iShowCustomCrosshair = 0;
-
-	static cl_entity_t *viewmodel;
-	viewmodel = gEngfuncs.GetViewModel();
-
-	if (cmd)
-	{
-		if (cmd->buttons & IN_ATTACK2)
-		{
-			g_iButton = 1;
-			if (g_iBTEWeapon == WPN_GAUSS)
-				g_irunninggausspred = true;
-		}
-		else g_iButton = 0;
-
-		cmd->buttons &= ~IN_RELOAD;
-	}
-
-	gExportfuncs.HUD_PostRunCmd(from, to, cmd, runfuncs, time, random_seed);
-
-	if (g_irunninggausspred == 1)
-	{
-		Vector forward;
-		gEngfuncs.pfnAngleVectors(v_angles, forward, NULL, NULL);
-		to->client.velocity = to->client.velocity - forward * g_flApplyVel * 5;
-		g_irunninggausspred = false;
-	}
-}
+// moved to hl_weapons.cpp
+void HUD_PostRunCmd(struct local_state_s *from, struct local_state_s *to, struct usercmd_s *cmd, int runfuncs, double time, unsigned int random_seed);
 
 void EngFunc_TempEntPlaySound(struct tempent_s *pTemp, float damp)
 {

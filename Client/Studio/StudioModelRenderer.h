@@ -41,7 +41,6 @@ public:
 	virtual void StudioProcessGait(entity_state_t *pplayer);
 
 public:
-	void StudioMergeRootBones(studiohdr_t *targetHdr);
 	void StudioSetShadowSprite(int iSprite);
 	void StudioDrawShadow(float *origin, float scale);
 
@@ -90,11 +89,11 @@ public:
 	int *m_pStudioModelCount;
 	int *m_pModelsDrawn;
 
-	float (*m_protationmatrix)[3][4];
-	float (*m_paliastransform)[3][4];
+	float(*m_protationmatrix)[3][4];
+	float(*m_paliastransform)[3][4];
 
-	float (*m_pbonetransform)[MAXSTUDIOBONES][3][4];
-	float (*m_plighttransform)[MAXSTUDIOBONES][3][4];
+	float(*m_pbonetransform)[MAXSTUDIOBONES][3][4];
+	float(*m_plighttransform)[MAXSTUDIOBONES][3][4];
 
 public:
 	static int s_iShadowSprite;

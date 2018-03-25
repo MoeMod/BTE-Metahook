@@ -144,6 +144,9 @@
     <Filter Include="ServerBrowser\ServerResponse">
       <UniqueIdentifier>{1f68aaaa-baf1-485b-86e9-806fbe8f9208}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Client\Studio">
+      <UniqueIdentifier>{5bcb446b-b964-4828-804d-402bb5363b3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseUI.cpp">
@@ -605,9 +608,6 @@
     <ClCompile Include="HLSDK\common\interface.cpp">
       <Filter>HLSDK\common</Filter>
     </ClCompile>
-    <ClCompile Include="util\studio_util.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
     <ClCompile Include="netapi.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -1030,6 +1030,21 @@
     </ClCompile>
     <ClCompile Include="Hook_Surface.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Studio\studio_util.cpp">
+      <Filter>Client\Studio</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Studio\StudioModelRenderer.cpp">
+      <Filter>Client\Studio</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Studio\GameStudioModelRenderer.cpp">
+      <Filter>Client\Studio</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\com_weapons.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\hl_weapons.cpp">
+      <Filter>Client</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1776,9 +1791,6 @@
     </ClInclude>
     <ClInclude Include="msg_util.h">
       <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="util\studio_util.h">
-      <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="Client\weapons.h">
       <Filter>Client</Filter>
@@ -2697,6 +2709,24 @@
     </ClInclude>
     <ClInclude Include="vgui2\vgui_hook.h">
       <Filter>vgui2</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Studio\StudioModelRenderer.h">
+      <Filter>Client\Studio</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Studio\GameStudioModelRenderer.h">
+      <Filter>Client\Studio</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Studio\studio_util.h">
+      <Filter>Client\Studio</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\cl_util.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\cdll_dll.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\com_weapons.h">
+      <Filter>Client</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

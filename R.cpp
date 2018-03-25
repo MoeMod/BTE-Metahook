@@ -389,7 +389,7 @@ int R_StudioCheckBBox(void)
 float g_flBloodhunterAnimTime = 0.0;
 int g_iBloodhunterSecAnim = 0;
 
-int R_StudioDrawModel(int flags)
+int Hook_R_StudioDrawModel(int flags)
 {
 	cl_entity_s *viewent = IEngineStudio.GetViewEntity();
 	cl_entity_s *curent = IEngineStudio.GetCurrentEntity();
@@ -402,7 +402,7 @@ int R_StudioDrawModel(int flags)
 			//int frame = (cl.time - g_dbBloodhunterAnimTime) * 30.0;
 			static cl_entity_t saveent;
 			saveent = *curent;
-			curent->model = IEngineStudio.Mod_ForName("models/v_bloodhunter_left.mdl", 0);
+			curent->model = IEngineStudio.Mod_ForName("models/v_bloodhunter.mdl", 0);
 
 			//从CStudioModelRenderer::StudioEstimateFrame抄来的f'(t)微积分QAQ
 			//dfdt = (m_clTime - m_pCurrentEntity->curstate.animtime) * m_pCurrentEntity->curstate.framerate * pseqdesc->fps;

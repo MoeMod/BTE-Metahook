@@ -39,10 +39,6 @@ private:
 	int GetPlayerBoneIndex(BoneIndex whichBone);
 	bool GetPlayerBoneWorldPosition(BoneIndex whichBone, Vector *pos);
 
-	void DrawPlayerCostumes(void);
-	void StudioSetupCostumeBones(const char *playerBoneName);
-	void StudioMergeCostumeBones(void);
-
 private:
 	int m_nPlayerGaitSequences[MAX_CLIENTS];
 
