@@ -2692,9 +2692,11 @@
     <ClInclude Include="Interface\VGUI\Vector.h">
       <Filter>Interface\VGUI</Filter>
     </ClInclude>
-    <ClInclude Include="vgui2\vgui_hook.h" />
     <ClInclude Include="BTE_const.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\vgui_hook.h">
+      <Filter>vgui2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
