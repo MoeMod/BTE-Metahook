@@ -23,9 +23,13 @@
 #include "StudioModelRenderer.h"
 #include "GameStudioModelRenderer.h"
 
+
 engine_studio_api_t IEngineStudio;
 
 int CStudioModelRenderer::s_iShadowSprite;
+
+extern cvar_t *cl_righthand;
+extern cvar_t *cl_shadows;
 
 void CStudioModelRenderer::Init(void)
 {
@@ -69,7 +73,7 @@ CStudioModelRenderer::~CStudioModelRenderer(void)
 {
 }
 
-void StudioSetShadowSprite(int iSprite)
+inline void StudioSetShadowSprite(int iSprite)
 {
 	CStudioModelRenderer::s_iShadowSprite = iSprite;
 }
@@ -891,6 +895,8 @@ void CStudioModelRenderer::StudioMergeBones(model_t *m_pSubModel)
 	}
 }
 
+static int iRightHandValue;
+
 int CStudioModelRenderer::StudioDrawModel(int flags)
 {
 	m_pCurrentEntity = IEngineStudio.GetCurrentEntity();
@@ -983,6 +989,12 @@ int CStudioModelRenderer::StudioDrawModel(int flags)
 		IEngineStudio.StudioSetRemapColors(m_nTopColor, m_nBottomColor);
 
 		StudioRenderModel();
+	}
+
+	if (strstr(m_pCurrentEntity->model->name, "hostage"))
+	{
+		if (cl_shadows->value)
+			StudioDrawShadow(m_pCurrentEntity->origin, 12.0);
 	}
 
 	return 1;
@@ -1319,7 +1331,9 @@ void CStudioModelRenderer::StudioRenderModel(void)
 			gEngfuncs.pTriAPI->RenderMode(kRenderNormal);
 	}
 	else
+	{
 		StudioRenderFinal();
+	}
 }
 
 void CStudioModelRenderer::StudioRenderFinal_Software(void)
@@ -1405,4 +1419,162 @@ void CStudioModelRenderer::StudioRenderFinal(void)
 		StudioRenderFinal_Hardware();
 	else
 		StudioRenderFinal_Software();
+}
+
+void CStudioModelRenderer::StudioMergeRootBones(studiohdr_t *targetHdr)
+{
+	int i;
+	double f;
+
+	mstudiobone_t *pbones;
+	mstudioseqdesc_t *pseqdesc;
+	mstudioanim_t *panim;
+
+	static float pos[MAXSTUDIOBONES][3];
+	static vec4_t q[MAXSTUDIOBONES];
+	float bonematrix[3][4];
+
+	static float pos2[MAXSTUDIOBONES][3];
+	static vec4_t q2[MAXSTUDIOBONES];
+	static float pos3[MAXSTUDIOBONES][3];
+	static vec4_t q3[MAXSTUDIOBONES];
+	static float pos4[MAXSTUDIOBONES][3];
+	static vec4_t q4[MAXSTUDIOBONES];
+
+	if (m_pCurrentEntity->curstate.sequence >= m_pStudioHeader->numseq)
+		m_pCurrentEntity->curstate.sequence = 0;
+
+	pseqdesc = (mstudioseqdesc_t *)((byte *)m_pStudioHeader + m_pStudioHeader->seqindex) + m_pCurrentEntity->curstate.sequence;
+
+	f = StudioEstimateFrame(pseqdesc);
+	panim = StudioGetAnim(m_pRenderModel, pseqdesc);
+
+	StudioCalcRotations(pos, q, pseqdesc, panim, f);
+
+	if (pseqdesc->numblends > 1)
+	{
+		float s;
+		float dadt;
+
+		panim += m_pStudioHeader->numbones;
+		StudioCalcRotations(pos2, q2, pseqdesc, panim, f);
+
+		dadt = StudioEstimateInterpolant();
+		s = (m_pCurrentEntity->curstate.blending[0] * dadt + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
+
+		StudioSlerpBones(q, pos, q2, pos2, s);
+
+		if (pseqdesc->numblends == 4)
+		{
+			panim += m_pStudioHeader->numbones;
+			StudioCalcRotations(pos3, q3, pseqdesc, panim, f);
+
+			panim += m_pStudioHeader->numbones;
+			StudioCalcRotations(pos4, q4, pseqdesc, panim, f);
+
+			s = (m_pCurrentEntity->curstate.blending[0] * dadt + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
+			StudioSlerpBones(q3, pos3, q4, pos4, s);
+
+			s = (m_pCurrentEntity->curstate.blending[1] * dadt + m_pCurrentEntity->latched.prevblending[1] * (1.0 - dadt)) / 255.0;
+			StudioSlerpBones(q, pos, q3, pos3, s);
+		}
+	}
+
+	if (m_fDoInterp && m_pCurrentEntity->latched.sequencetime && (m_pCurrentEntity->latched.sequencetime + 0.2 > m_clTime) && (m_pCurrentEntity->latched.prevsequence < m_pStudioHeader->numseq))
+	{
+		static float pos1b[MAXSTUDIOBONES][3];
+		static vec4_t q1b[MAXSTUDIOBONES];
+		float s;
+
+		pseqdesc = (mstudioseqdesc_t *)((byte *)m_pStudioHeader + m_pStudioHeader->seqindex) + m_pCurrentEntity->latched.prevsequence;
+		panim = StudioGetAnim(m_pRenderModel, pseqdesc);
+
+		StudioCalcRotations(pos1b, q1b, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
+
+		if (pseqdesc->numblends > 1)
+		{
+			panim += m_pStudioHeader->numbones;
+			StudioCalcRotations(pos2, q2, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
+
+			s = (m_pCurrentEntity->latched.prevseqblending[0]) / 255.0;
+			StudioSlerpBones(q1b, pos1b, q2, pos2, s);
+
+			if (pseqdesc->numblends == 4)
+			{
+				panim += m_pStudioHeader->numbones;
+				StudioCalcRotations(pos3, q3, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
+
+				panim += m_pStudioHeader->numbones;
+				StudioCalcRotations(pos4, q4, pseqdesc, panim, m_pCurrentEntity->latched.prevframe);
+
+				s = (m_pCurrentEntity->latched.prevseqblending[0]) / 255.0;
+				StudioSlerpBones(q3, pos3, q4, pos4, s);
+
+				s = (m_pCurrentEntity->latched.prevseqblending[1]) / 255.0;
+				StudioSlerpBones(q1b, pos1b, q3, pos3, s);
+			}
+		}
+
+		s = 1.0 - (m_clTime - m_pCurrentEntity->latched.sequencetime) / 0.2;
+		StudioSlerpBones(q, pos, q1b, pos1b, s);
+	}
+	else
+	{
+		m_pCurrentEntity->latched.prevframe = f;
+	}
+
+	pbones = (mstudiobone_t *)((byte *)m_pStudioHeader + m_pStudioHeader->boneindex);
+
+	int j = 0;
+	mstudiobone_t *ptargetBones = (mstudiobone_t *)((byte *)targetHdr + targetHdr->boneindex);
+
+	for (j = 0; j < targetHdr->numbones; j++)
+	{
+		if (ptargetBones[j].parent == -1)
+			break;
+	}
+
+	if (j == targetHdr->numbones)
+		return;
+
+	for (i = 0; i < m_pStudioHeader->numbones; i++)
+	{
+		QuaternionMatrix(q[i], bonematrix);
+
+		bonematrix[0][3] = pos[i][0];
+		bonematrix[1][3] = pos[i][1];
+		bonematrix[2][3] = pos[i][2];
+
+		if (pbones[i].parent == -1)
+		{
+			ConcatTransforms(m_rgCachedBoneTransform[j], bonematrix, (*m_pbonetransform)[i]);
+
+			StudioFxTransform(m_pCurrentEntity, (*m_pbonetransform)[i]);
+		}
+		else
+		{
+			ConcatTransforms((*m_pbonetransform)[pbones[i].parent], bonematrix, (*m_pbonetransform)[i]);
+			ConcatTransforms((*m_plighttransform)[pbones[i].parent], bonematrix, (*m_plighttransform)[i]);
+		}
+	}
+}
+
+void CStudioModelRenderer::StudioDrawGunDropEffect(void)
+{
+	model_t *pGunDropModel = IEngineStudio.Mod_ForName("models/ef_gundrop.mdl", FALSE);
+
+	if (!pGunDropModel)
+		return;
+
+	studiohdr_t *pOldHeader = m_pStudioHeader;
+
+	m_pStudioHeader = (studiohdr_t *)IEngineStudio.Mod_Extradata(pGunDropModel);
+	IEngineStudio.StudioSetHeader(m_pStudioHeader);
+
+	StudioMergeRootBones(pOldHeader);
+
+	StudioRenderModel();
+
+	m_pStudioHeader = pOldHeader;
+	IEngineStudio.StudioSetHeader(m_pStudioHeader);
 }

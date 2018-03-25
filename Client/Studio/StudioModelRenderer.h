@@ -41,6 +41,8 @@ public:
 	virtual void StudioProcessGait(entity_state_t *pplayer);
 
 public:
+	void StudioDrawGunDropEffect(void);
+	void StudioMergeRootBones(studiohdr_t *targetHdr);
 	void StudioSetShadowSprite(int iSprite);
 	void StudioDrawShadow(float *origin, float scale);
 
