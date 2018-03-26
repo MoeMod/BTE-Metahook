@@ -139,7 +139,7 @@ void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_engines
 	gPerformanceCounter.InitializePerformanceCounter();
 
 	Window_Init();
-	Console_Init();
+	//Console_Init();
 
 
 	/*
