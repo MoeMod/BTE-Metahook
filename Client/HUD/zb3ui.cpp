@@ -14,6 +14,7 @@
 #include "calcscreen.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 #include "common.h"
 #include "TextureManager.h"
 #include "LoadTexture.h"

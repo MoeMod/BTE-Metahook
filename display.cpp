@@ -12,6 +12,7 @@
 #include "Fonts.h"
 #include "client.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "Client/HUD/ammo.h"
 #include "Client/HUD/DrawTGA.h"

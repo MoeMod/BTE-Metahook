@@ -11,6 +11,7 @@
 #include "TriAPI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "zb4ui.h"
 #include "scoreboard.h"

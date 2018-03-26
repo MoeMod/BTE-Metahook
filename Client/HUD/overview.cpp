@@ -12,6 +12,7 @@
 #include "message.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 #include "calcscreen.h"
 #include "TextureManager.h"
 #include "configs.h"

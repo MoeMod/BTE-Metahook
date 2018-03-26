@@ -4,6 +4,7 @@
 #include "PlayerClassManager.h"
 #include "util.h"
 #include "common.h"
+#include "Encode.h"
 
 CPlayerClassManager &PlayerClassManager()
 {

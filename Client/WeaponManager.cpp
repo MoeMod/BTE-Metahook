@@ -4,6 +4,7 @@
 #include "weapons.h"
 #include "util.h"
 #include "common.h"
+#include "Encode.h"
 
 #include "WeaponManager.h"
 #include "Client/HUD/DrawTGA.h"

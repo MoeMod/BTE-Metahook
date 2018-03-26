@@ -7,6 +7,7 @@
 #include "DrawTargaImage.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "DrawTabPanel.h"
 #include "Client/HUD/DrawTGA.h"

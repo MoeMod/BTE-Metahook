@@ -6,6 +6,7 @@
 #include "DrawTargaImage.h"
 #include "weapons.h"
 #include "util.h"
+#include "Encode.h"
 #include "common.h"
 
 #include "mgui.h"

@@ -8,6 +8,7 @@
 #include "Fonts.h"
 #include "playaudio.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "vgui_controls/controls.h"
 

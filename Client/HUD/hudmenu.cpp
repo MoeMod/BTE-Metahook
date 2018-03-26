@@ -4,6 +4,7 @@
 #include "DrawTargaImage.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "hudmenu.h"
 

@@ -24,6 +24,7 @@
 #include "IMEInput.h"
 #include "CVARs.h"
 #include "Window.h"
+#include "UnicodeVoice.h"
 
 #include "gl/gl.h"
 #include "triangleapi.h"
@@ -411,6 +412,7 @@ int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 	pEnginefuncs->pfnPlaySoundByName = &Engfunc_PlaySoundByName;
 
 	pEnginefuncs->pfnClientCmd = EngFunc_ClCMD;
+	pEnginefuncs->pfnGetPlayerInfo = &Engfunc_GetPlayerInfo;
 
 	//pEnginefuncs->pfnDrawConsoleString = &Engfunc_DrawConsoleString;
 	//pEnginefuncs->pfnVGUI2DrawCharacter = &Engfunc_VGUI2DrawCharacter;

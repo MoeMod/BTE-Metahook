@@ -4,6 +4,7 @@
 #include "message.h"
 #include "parsemsg.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "Client/WeaponManager.h"
 

@@ -4,6 +4,7 @@
 #include "common.h"
 #include "metahook.h"
 #include "util.h"
+#include "Encode.h"
 
 #include <iostream>
 #include <string>

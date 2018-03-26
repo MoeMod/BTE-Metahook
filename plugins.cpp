@@ -13,6 +13,7 @@
 #include "mempatchs.h"
 #include "Hook_LoadTGA.h"
 #include "Hook_GL.h"
+#include "UnicodeVoice.h"
 
 #include "Renderer/qgl.h"
 
@@ -290,6 +291,7 @@ void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 	pExportFunc->CL_CreateMove = CL_CreateMove;
 	pExportFunc->HUD_Frame = HUD_Frame;
 	pExportFunc->HUD_DrawNormalTriangles = HUD_DrawNormalTriangles;
+	pExportFunc->HUD_VoiceStatus = HUD_VoiceStatus;
 
 	//pExportFunc->HUD_TxferPredictionData = HUD_TxferPredictionData;
 	//pExportFunc->HUD_TxferLocalOverrides = HUD_TxferLocalOverrides;

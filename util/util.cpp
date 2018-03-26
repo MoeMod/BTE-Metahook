@@ -3,6 +3,7 @@
 #include "vgui_controls/controls.h"
 #include "msghook.h"
 #include "util.h"
+#include "Encode.h"
 
 char g_szLang_Left[512][256];
 char g_szLang_Right[512][256];
@@ -72,42 +73,6 @@ void ClientPrint(int msg_dest, const char *msg_name, const char *param1, const c
 		MSG_WriteString(param4);
 
 	MSG_EndWrite();
-}
-wchar_t *ANSIToUnicode( const char* str )
-{
-   int textlen ;
-   static wchar_t result[1024];
-   textlen = MultiByteToWideChar( CP_ACP, 0, str,-1, NULL,0 ); 
-   memset(result, 0, sizeof(char) * ( textlen + 1 ) );
-   MultiByteToWideChar(CP_ACP, 0,str,-1,(LPWSTR)result,textlen ); 
-   return result; 
-}
-char *UnicodeToANSI( const wchar_t* str )
-{
-     static char result[1024];
-     int textlen;
-     textlen = WideCharToMultiByte( CP_ACP, 0, str, -1, NULL, 0, NULL, NULL );
-     memset(result, 0, sizeof(char) * ( textlen + 1 ) );
-     WideCharToMultiByte( CP_ACP, 0, str, -1, result, textlen, NULL, NULL );
-     return result;
-}
-wchar_t *UTF8ToUnicode( const char* str )
-{
-     int textlen ;
-     static wchar_t result[1024];
-     textlen = MultiByteToWideChar( CP_UTF8, 0, str,-1, NULL,0 ); 
-     memset(result, 0, sizeof(char) * ( textlen + 1 ) );
-     MultiByteToWideChar(CP_UTF8, 0,str,-1,(LPWSTR)result,textlen ); 
-     return result; 
-}
-char *UnicodeToUTF8( const wchar_t* str )
-{
-	static char result[1024];
-	int textlen;
-	textlen = WideCharToMultiByte( CP_UTF8, 0, str, -1, NULL, 0, NULL, NULL );
-	memset(result, 0, sizeof(char) * ( textlen + 1 ) );
-	WideCharToMultiByte( CP_UTF8, 0, str, -1, result, textlen, NULL, NULL );
-	return result;
 }
 const char *FileExtension( const char *in )
 {

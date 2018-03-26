@@ -7,6 +7,7 @@
 #include "Fonts.h"
 #include "util.h"
 #include "common.h"
+#include "Encode.h"
 
 #include "MVPBoard.h"
 #include "DrawTABPanel.h"

@@ -332,10 +332,12 @@
     <ClCompile Include="sys.cpp" />
     <ClCompile Include="texdraw.cpp" />
     <ClCompile Include="TriAPI.cpp" />
+    <ClCompile Include="UnicodeVoice.cpp" />
     <ClCompile Include="util\base64.cpp" />
     <ClCompile Include="util\bits32.cpp" />
     <ClCompile Include="util\calcbody.cpp" />
     <ClCompile Include="util\calcscreen.cpp" />
+    <ClCompile Include="util\Encode.cpp" />
     <ClCompile Include="util\iniparser.cpp" />
     <ClCompile Include="util\md5.cpp" />
     <ClCompile Include="util\perf_counter.cpp" />
@@ -930,10 +932,12 @@
     <ClInclude Include="SourceSDK\winlite.h" />
     <ClInclude Include="texdraw.h" />
     <ClInclude Include="TriAPI.h" />
+    <ClInclude Include="UnicodeVoice.h" />
     <ClInclude Include="util\base64.h" />
     <ClInclude Include="util\bits32.h" />
     <ClInclude Include="util\calcbody.h" />
     <ClInclude Include="util\calcscreen.h" />
+    <ClInclude Include="util\Encode.h" />
     <ClInclude Include="util\IDA.h" />
     <ClInclude Include="util\iniparser.h" />
     <ClInclude Include="util\md5.h" />

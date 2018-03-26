@@ -20,6 +20,7 @@ using namespace vgui;
 //#include "Random.h"
 #include "util.h"
 #include "common.h"
+#include "Encode.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>

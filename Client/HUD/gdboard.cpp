@@ -7,6 +7,7 @@
 #include "TriAPI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "gdboard.h"
 #include "scoreboard.h"

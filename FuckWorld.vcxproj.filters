@@ -1049,6 +1049,12 @@
     <ClCompile Include="Hook_GL.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="UnicodeVoice.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Encode.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2856,6 +2862,12 @@
     </ClInclude>
     <ClInclude Include="HLSDK\common\parsemsg.h">
       <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="UnicodeVoice.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Encode.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

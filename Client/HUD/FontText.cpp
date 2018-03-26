@@ -3,6 +3,7 @@
 #include "DrawTargaImage.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 #include "FontText.h"
 
 #include "Client/HUD/DrawTGA.h"

@@ -7,6 +7,7 @@
 #include "BaseUI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 #include "common.h"
 
 #include "DrawTABPanel.h"

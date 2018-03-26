@@ -4,6 +4,7 @@
 #include "BaseUI.h"
 #include "DrawTargaImage.h"
 #include "util.h"
+#include "Encode.h"
 #include "common.h"
 
 #include "mgui.h"

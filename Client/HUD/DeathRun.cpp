@@ -9,6 +9,7 @@
 #include "TriAPI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "deathrun.h"
 #include "Client/HUD/DrawTGA.h"

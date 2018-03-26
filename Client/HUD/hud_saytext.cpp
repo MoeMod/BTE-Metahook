@@ -8,6 +8,7 @@
 #include "cmd.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "DrawTabPanel.h"
 

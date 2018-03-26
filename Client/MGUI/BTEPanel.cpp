@@ -8,6 +8,7 @@
 #include "message.h"
 #include "util.h"
 #include "common.h"
+#include "Encode.h"
 
 #include <vector>
 

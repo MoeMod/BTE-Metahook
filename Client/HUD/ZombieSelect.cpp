@@ -5,6 +5,7 @@
 #include "BaseUI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 #include "GL_BinkTexture.h"
 
 #include "Client/HUD/ZombieSelect.h"
