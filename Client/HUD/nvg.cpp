@@ -37,9 +37,9 @@ void CreateLight(vec3_t origin, float radius, int r, int g, int b, float die)
 void CHudNVG::Init(void)
 {
 	Reset();
-	
+
 	m_iFlags |= HUD_ACTIVE;
-	
+
 	gEngfuncs.pfnAddCommand("+nvgadjust", [](){HudNVG().UserCmd_NVGAdjustDown(); });
 	gEngfuncs.pfnAddCommand("-nvgadjust", [](){HudNVG().UserCmd_NVGAdjustUp(); });
 }
@@ -55,6 +55,7 @@ void CHudNVG::Reset(void)
 {
 	//m_bOn = FALSE;
 	m_flAlpha = 110;
+	ZM_OffNightVision();
 }
 
 int CHudNVG::MsgFunc_NVGToggle(const char *pszName, int iSize, void *pbuf)
@@ -63,8 +64,14 @@ int CHudNVG::MsgFunc_NVGToggle(const char *pszName, int iSize, void *pbuf)
 	m_bOn = READ_BYTE();
 	HudAmmo().SetNvgOn(m_bOn);
 	if (IS_ZOMBIE_MODE)
+	{
+		ZM_OpenNightVision();
 		HudZombieMod3().m_iNVG = m_bOn;
-
+	}
+	else
+	{
+		ZM_OffNightVision();
+	}
 	return 1;
 }
 
@@ -102,6 +109,8 @@ void CHudNVG::Draw(float time)
 
 	if (IS_ZOMBIE_MODE)
 	{
+		//gEngfuncs.pfnFillRGBA(0, 0, ScreenWidth, ScreenHeight, 50, 225, 50, m_flAlpha);
+		//CreateLight(Hud().m_vecOrigin, gEngfuncs.pfnRandomLong(0, 50) + 750, 1, 20, 1, 0.1);
 		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth, ScreenHeight, 50, 255, 60, 20);
 		gEngfuncs.pfnFillRGBA(0, 0, ScreenWidth, ScreenHeight, 0, 90, 0, rand() % 10 + 50);
 	}
@@ -117,4 +126,29 @@ void CHudNVG::DrawBackground()
 	if (!m_bOn || gEngfuncs.IsSpectateOnly() || !IS_ZOMBIE_MODE)
 		return;
 	gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth, ScreenHeight, 90, 0, 0, 120);
+}
+extern cvar_t *r_fullbright;
+void GL_BuildLightmaps(void);
+
+void CHudNVG::ZM_OffNightVision(void)
+{
+	if (!IS_ZOMBIE_MODE)
+		return;
+
+	r_fullbright->value = 0.0;
+	GL_BuildLightmaps();
+
+	g_bZBNightVisionOn = false;
+}
+
+void CHudNVG::ZM_OpenNightVision(void)
+{
+	if (!IS_ZOMBIE_MODE)
+		return;
+
+	r_fullbright->value = 1.0;
+	GL_BuildLightmaps();
+
+	g_bZBNightVisionOn = true;
+
 }

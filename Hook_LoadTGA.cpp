@@ -2,6 +2,7 @@
 #include "configs.h"
 #include "Hook_LoadTGA.h"
 #include "plugins.h"
+#include "qgl.h"
 #include "perf_counter.h"
 #include "cvardef.h"
 
@@ -49,8 +50,26 @@ int LoadTGA_New(const char *szFilename, byte *buffer, int bufferSize, int *width
 	return g_pfnLoadTGA(szFilename, g_bTGABuffer, header.width * header.height, &g_iLastTGAWidth, &g_iLastTGAHeight);
 }
 
+void APIENTRY QGL_TexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
+{
+	if (target == 3553 && level == 0 && border == 0 && format == 6408 && type == 5121)
+	{
+		if (g_bLoadingTGA)
+		{
+			width = g_iLastTGAWidth;
+			height = g_iLastTGAHeight;
+			pixels = g_bTGABuffer;
+		}
+
+		g_bLoadingTGA = FALSE;
+	}
+
+	qglTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+}
+
 void LoadTGA_InstallHook()
 {
 	g_pfnLoadTGA = (int(*)(const char *, byte *, int, int *, int *))g_pMetaHookAPI->SearchPattern((void *)g_dwEngineBase, g_dwEngineSize, LOADTGA_SIG, sizeof(LOADTGA_SIG) - 1);
 	g_phLoadTGA = g_pMetaHookAPI->InlineHook(g_pfnLoadTGA, LoadTGA_New, (void *&)g_pfnLoadTGA);
+	g_pMetaHookAPI->InlineHook(qglTexImage2D, QGL_TexImage2D, (void *&)qglTexImage2D);
 }

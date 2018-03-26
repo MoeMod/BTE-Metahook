@@ -12,6 +12,7 @@
 #include "Console.h"
 #include "mempatchs.h"
 #include "Hook_LoadTGA.h"
+#include "Hook_GL.h"
 
 #include "Renderer/qgl.h"
 
@@ -198,10 +199,12 @@ void IPlugins::LoadEngine(void)
 	Config_Init();
 	MemPatch_Start(MEMPATCH_STEP_LOADENGINE);
 
+	GL_InitHook();
+
 	BaseUI_InstallHook();
 	Module_InstallHook();
 	R_InstallHook();
-	LoadTGA_InstallHook();
+	LoadTGA_InstallHook(); // must after QGL_Init
 
 	// Unknown function name
 	g_pMetaHookAPI->InlineHook((void *)0x1D0E720, CL_Frame, (void *&)g_pfnCL_Frame);

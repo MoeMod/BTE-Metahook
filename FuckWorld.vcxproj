@@ -249,6 +249,7 @@
     <ClCompile Include="GameUI\VControlsListPanel.cpp" />
     <ClCompile Include="GL_BinkTexture.cpp" />
     <ClCompile Include="HLSDK\common\parsemsg.cpp" />
+    <ClCompile Include="Hook_GL.cpp" />
     <ClCompile Include="Hook_KeyValuesSystem.cpp" />
     <ClCompile Include="Hook_LoadTGA.cpp" />
     <ClCompile Include="Hook_Scheme.cpp" />
@@ -552,6 +553,7 @@
     <ClInclude Include="GameUI\URLButton.h" />
     <ClInclude Include="GameUI\VControlsListPanel.h" />
     <ClInclude Include="GL_BinkTexture.h" />
+    <ClInclude Include="Hook_GL.h" />
     <ClInclude Include="Hook_KeyValuesSystem.h" />
     <ClInclude Include="Hook_LoadTGA.h" />
     <ClInclude Include="Hook_Scheme.h" />

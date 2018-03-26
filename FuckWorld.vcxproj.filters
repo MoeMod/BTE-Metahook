@@ -1046,6 +1046,9 @@
     <ClCompile Include="Client\hl_weapons.cpp">
       <Filter>Client</Filter>
     </ClCompile>
+    <ClCompile Include="Hook_GL.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2727,6 +2730,9 @@
     </ClInclude>
     <ClInclude Include="Client\com_weapons.h">
       <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook_GL.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
