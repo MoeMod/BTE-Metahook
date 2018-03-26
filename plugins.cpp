@@ -67,8 +67,9 @@ void(*g_pfnCL_AddToResourceList)(resource_t *pResource, resource_t *pList);
 hook_t *g_phCL_AddToResourceList;
 void CL_AddToResourceList(resource_t *pResource, resource_t *pList);
 
-char g_szModelPrecache[512][MAX_QPATH];
-int g_iModelPrecacheNums;
+//char g_szModelPrecache[512][MAX_QPATH];
+//int g_iModelPrecacheNums;
+std::vector<std::string> g_vecModelPrecache;
 
 typedef void(*type_Draw_CacheWadInitFromFile)(FileHandle_t *hFile, int len, char *name, int cacheMax, void *);
 //extern type_Draw_CacheWadInitFromFile	g_real_Draw_CacheWadInitFromFile;
@@ -347,12 +348,12 @@ void CL_InitTEnt_part2(void)
 }
 
 struct model_s *CL_GetModelByIndex(int index)
-{
+ {
 	if (index == -1)
 		return NULL;
 
 	if (index >= 512)
-		return IEngineStudio.Mod_ForName(g_szModelPrecache[index - 512], false);
+		return IEngineStudio.Mod_ForName(g_vecModelPrecache[index - 512].c_str(), false);
 
 	return g_pfnCL_GetModelByIndex(index);
 }
@@ -363,13 +364,17 @@ void CL_AddToResourceList(resource_t *pResource, resource_t *pList)
 	{
 		if (strstr(pResource->szFileName, "models/v_") || strstr(pResource->szFileName, "models/p_"))
 		{
-			for (int i = 0; i < 512; i++)
+			/*for (int i = 0; i < 512; i++)
 			{
 				if (!strcmp(g_szModelPrecache[i], pResource->szFileName))
 					return;
 			}
 
-			strcpy(g_szModelPrecache[g_iModelPrecacheNums++], pResource->szFileName);
+			strcpy(g_szModelPrecache[g_iModelPrecacheNums++], pResource->szFileName);*/
+
+			if (std::find(g_vecModelPrecache.begin(), g_vecModelPrecache.end(), pResource->szFileName) != g_vecModelPrecache.end())
+				return;
+			g_vecModelPrecache.push_back(pResource->szFileName);
 
 			char name[64], text[64];
 			strcpy(name, pResource->szFileName + 9);

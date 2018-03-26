@@ -684,9 +684,6 @@ void HUD_Init(void)
 
 void Event_VidInit(void);
 
-extern char g_szModelPrecache[512][MAX_QPATH];
-extern int g_iModelPrecacheNums;
-
 int HUD_VidInit(void)
 {
 	g_iMod = 0;
@@ -729,9 +726,6 @@ int HUD_VidInit(void)
 	memset(g_PlayerExtraInfo, 0, sizeof(g_PlayerExtraInfo));
 	memset(g_vecHostagePos, 0, sizeof(g_vecHostagePos));
 
-
-	memset(g_szModelPrecache, 0, sizeof(g_szModelPrecache));
-	g_iModelPrecacheNums = 0;
 
 	cl_righthand = gEngfuncs.pfnGetCvarPointer("cl_righthand");
 
