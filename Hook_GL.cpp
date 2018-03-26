@@ -278,7 +278,8 @@ void R_RenderBrushPoly(msurface_t *psurf)
 
 	if (IS_ZOMBIE_MODE && HudNVG().m_bOn && vPlayer[idx].team != 1)
 	{
-		glColor4f(0.7, 0.5, 0.5, (*r_blend));
+		//glColor4f(0.7, 0.5, 0.5, (*r_blend));
+		glColor4f(0.84, 0.7, 0.7, (*r_blend));
 	}
 
 	g_pfnR_RenderBrushPoly(psurf);
@@ -295,7 +296,8 @@ void R_DrawSequentialPoly(msurface_t *s, int face)
 
 	if (IS_ZOMBIE_MODE && HudNVG().m_bOn && vPlayer[idx].team != 1)
 	{
-		glColor4f(0.7, 0.5, 0.5, (*r_blend));
+		//glColor4f(0.7, 0.5, 0.5, (*r_blend));
+		glColor4f(0.84, 0.7, 0.7, (*r_blend));
 	}
 
 	g_pfnR_DrawSequentialPoly(s, face);
