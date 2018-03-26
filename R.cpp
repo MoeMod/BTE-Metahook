@@ -241,12 +241,12 @@ void R_StudioSetupSkin(studiohdr_t *phdr, int index)
 
 	if (iTexture > 0)
 	{
-		TextureManager()[iTexture].Update();
+		//TextureManager()[iTexture].Update();
 		qglBindTexture(GL_TEXTURE_2D, iTexture);
 	}
 	else
 	{
-		TextureManager()[ptexture[index].index].Update();
+		//TextureManager()[ptexture[index].index].Update();
 		g_pfnR_StudioSetupSkin(phdr, index);
 	}
 }
@@ -282,14 +282,18 @@ void R_LoadSkys(void)
 
 	for (i = 0; i<6; i++)
 	{
-		Q_snprintf(name, sizeof(name), "gfx/env/%s%s.tga", pmovevars->skyName, suf[i]);
+		Q_snprintf(name, sizeof(name), "gfx\\env\\%s%s.tga", pmovevars->skyName, suf[i]);
 
-		auto &Texture = TextureManager()[name];
-		if (!Texture)
+		auto &Texture = TextureManager().GetReplacedTexture("Sky", name);
+		if (Texture)
 		{
-			break;
+			gSkyTexNumber[i] = Texture;
 		}
-		gSkyTexNumber[i] = Texture;
+		else
+		{
+			gSkyTexNumber[i] = TextureManager()[name];
+		}
+		
 		qglBindTexture(GL_TEXTURE_2D, gSkyTexNumber[i]);
 		
 

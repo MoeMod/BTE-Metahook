@@ -289,6 +289,7 @@ void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 	pExportFunc->HUD_CreateEntities = HUD_CreateEntities;
 	pExportFunc->CL_CreateMove = CL_CreateMove;
 	pExportFunc->HUD_Frame = HUD_Frame;
+	pExportFunc->HUD_DrawNormalTriangles = HUD_DrawNormalTriangles;
 
 	//pExportFunc->HUD_TxferPredictionData = HUD_TxferPredictionData;
 	//pExportFunc->HUD_TxferLocalOverrides = HUD_TxferLocalOverrides;

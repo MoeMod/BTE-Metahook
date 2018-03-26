@@ -48,6 +48,7 @@
 #include "weaponinfo.h"
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
+#include "Client/TextureManager.h"
 
 #include "Client/HUD/health.h"
 #include "Client/HUD/DrawTABPanel.h"
@@ -2475,4 +2476,10 @@ void HUD_CreateEntities()
 	gExportfuncs.HUD_CreateEntities();
 
 	UpdateBeams();	
+}
+
+void HUD_DrawNormalTriangles(void)
+{
+	TextureManager().UpdateAll();
+	return gExportfuncs.HUD_DrawNormalTriangles();
 }

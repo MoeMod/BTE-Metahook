@@ -3,7 +3,7 @@
 #include "GL_BinkTexture.h"
 #include "plugins.h"
 #include <vgui_controls\Controls.h>
-#include "qgl.h"
+#include "gl/gl.h"
 #include "pbo.h"
 #include "bink/bink.h"
 #include "util.h"
@@ -55,14 +55,19 @@ CGL_BinkTexture::CGL_BinkTexture(const char *fileName)
 	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
 	// create texture
 	m_glTextureFormat = (m_hasAlphaChannel ? GL_RGBA : GL_RGB);
+	m_glInternalTextureFormat = (m_hasAlphaChannel ? GL_RGBA : GL_RGB);
 	m_glTextureWidth = suggestTexSize(m_bikWidth);
 	m_glTextureHeight = suggestTexSize(m_bikHeight);
-	qglGenTextures(1, &m_glTexture);
-	qglBindTexture(GL_TEXTURE_2D, m_glTexture);
-	qglTexImage2D(GL_TEXTURE_2D, 0, m_glTextureFormat, m_glTextureWidth, m_glTextureHeight, 0, m_glTextureFormat, GL_UNSIGNED_BYTE, nullptr);
-	qglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	qglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	qglBindTexture(GL_TEXTURE_2D, 0);
+	//glGenTextures(1, &m_glTexture);
+	m_glTexture = vgui::surface()->CreateNewTextureID();
+	glBindTexture(GL_TEXTURE_2D, m_glTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, m_glInternalTextureFormat, m_glTextureWidth, m_glTextureHeight, 0, m_glTextureFormat, GL_UNSIGNED_BYTE, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	// calculate texture coords
 	m_glTextureCoords[0] = 0.0f;
 	m_glTextureCoords[1] = (GLfloat)m_bikWidth / (GLfloat)m_glTextureWidth;
@@ -92,7 +97,7 @@ CGL_BinkTexture::~CGL_BinkTexture()
 	}
 	m_glPixelBufferSize = 0;
 	if (m_glTexture) {
-		qglDeleteTextures(1, &m_glTexture);
+		glDeleteTextures(1, &m_glTexture);
 		m_glTexture = 0;
 	}
 	m_glTextureWidth = 0;
@@ -106,6 +111,7 @@ void CGL_BinkTexture::UpdateFrame()
 		return;
 	}
 	BinkDoFrame(m_bikHeader);
+	glBindTexture(GL_TEXTURE_2D, GetTextureId());
 	if (BinkWait(m_bikHeader)) {
 		return;
 	}
@@ -117,30 +123,23 @@ void CGL_BinkTexture::UpdateFrame()
 		if (m_loop) {
 			BinkGoto(m_bikHeader, 0, 0);
 		}
-		return;
 	}
-	BinkNextFrame(m_bikHeader);
-}
-
-void CGL_BinkTexture::UpdateTexture()
-{
-	static int index = 0;
-	int nextIndex = 0;
 	// swap pixel buffer
-	index = (index + 1) % 2;
-	nextIndex = (index + 1) % 2;
+	static int index = 0;
+	index ^= 1;
 	// copy pixel from front buffer to texture
-	qglBindTexture(GL_TEXTURE_2D, m_glTexture);
-	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_glPixelBuffers[index]);
-	qglTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_bikWidth, m_bikHeight, m_glTextureFormat, GL_UNSIGNED_BYTE, nullptr);
+	glBindTexture(GL_TEXTURE_2D, m_glTexture);
+	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_glPixelBuffers[!index]);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_bikWidth, m_bikHeight, m_glTextureFormat, GL_UNSIGNED_BYTE, nullptr);
 	// copy pixel from bink to back buffer
-	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_glPixelBuffers[nextIndex]);
+	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_glPixelBuffers[index]);
 	glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, m_glPixelBufferSize, nullptr, GL_STREAM_DRAW_ARB);
 	void *ptr = glMapBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, GL_READ_WRITE_ARB);
 	if (ptr) {
 		BinkCopyToBuffer(m_bikHeader, ptr, m_bikPitch, m_bikHeight, 0, 0, m_bikCopyFlags);
 		glUnmapBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB);
 	}
+	BinkNextFrame(m_bikHeader);
 	glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
 }
 
@@ -149,7 +148,6 @@ void CGL_BinkTexture::Draw(int x, int y, int w, int h)
 	if (!m_bikHeader)
 		return;
 	UpdateFrame();
-	UpdateTexture();
 
 	GLfloat coords[4];
 	GetTextureCoords(coords);
@@ -158,6 +156,9 @@ void CGL_BinkTexture::Draw(int x, int y, int w, int h)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4ub(255, 255, 255, 255);
 	glBindTexture(GL_TEXTURE_2D, GetTextureId());
+	vgui::surface()->DrawSetColor(Color(255, 255, 255, 255));
+	vgui::surface()->DrawSetTexture(GetTextureId());
+
 	glBegin(GL_QUADS);
 	glTexCoord2f(coords[0], coords[2]); glVertex3f(x, y, 0);//ul
 	glTexCoord2f(coords[1], coords[2]); glVertex3f(x + w, y, 0);//ru

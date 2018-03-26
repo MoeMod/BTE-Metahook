@@ -58,6 +58,7 @@ void IN_Accumulate(void);
 void IN_ClearStates(void);
 void IN_MouseEvent(int);
 void HUD_CreateEntities(void);
+void HUD_DrawNormalTriangles(void);
 
 void Engfunc_PlaySoundByName(char *szSound, float volume);
 int Engfunc_DrawConsoleString(int x, int y, char *string);

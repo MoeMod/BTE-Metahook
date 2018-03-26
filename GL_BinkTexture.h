@@ -9,7 +9,6 @@ public:
 	~CGL_BinkTexture();
 	void Draw(int x, int y, int w = 0, int h = 0);
 	void UpdateFrame();
-	void UpdateTexture();
 	void GetTextureCoords(float *coords);
 	bool hasAlphaChannel();
 	void setPause(bool state);
@@ -58,6 +57,7 @@ private:
 	GLsizei m_glTextureWidth;		// width of opengl texture
 	GLsizei m_glTextureHeight;		// height of opengl texture
 	GLenum m_glTextureFormat;		// use in glTexImage/glTexSubImage
+	GLenum m_glInternalTextureFormat;
 	GLfloat m_glTextureCoords[4];	// { left, right, top, bottom }
 	bool m_loop;
 };
