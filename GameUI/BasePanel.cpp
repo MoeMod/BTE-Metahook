@@ -128,7 +128,7 @@ struct FakeArray
 
 void CGameMenuItem::PaintBackground(void)
 {
-	if (BasePanel()->m_pBinkTexture/* && !IsItemArmed()*/)
+	/*if (BasePanel()->m_pBinkTexture)
 	{
 		byte *buffer = BasePanel()->m_pBinkTexture->GetBuffer();
 		if (buffer)
@@ -161,7 +161,7 @@ void CGameMenuItem::PaintBackground(void)
 				GetAnimationController()->RunAnimationCommand(this, "fgcolor", Color(200, 200, 200, 255), 0.0f, 0.5, AnimationController::INTERPOLATOR_LINEAR);
 		}
 		
-	}
+	}*/
 	BaseClass::PaintBackground();
 }
 

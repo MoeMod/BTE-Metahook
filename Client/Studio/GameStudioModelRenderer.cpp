@@ -964,7 +964,7 @@ int CGameStudioModelRenderer::_StudioDrawPlayer(int flags, entity_state_t *pplay
 			if (m_pCurrentEntity->index > 0)
 				memcpy(saveent.attachment, m_pCurrentEntity->attachment, sizeof(vec3_t) * m_pStudioHeader->numattachments);
 
-			if (!strstr(m_pCurrentEntity->model->name, "zombi"))
+			/*if (!strstr(m_pCurrentEntity->model->name, "zombi"))
 			{
 				model_t *pbudmodel = IEngineStudio.Mod_ForName("models/costume/bud_head.mdl", FALSE);
 
@@ -977,7 +977,7 @@ int CGameStudioModelRenderer::_StudioDrawPlayer(int flags, entity_state_t *pplay
 
 					StudioRenderModel();
 				}
-			}
+			}*/
 
 			*m_pCurrentEntity = saveent;
 			m_pStudioHeader = saveheader;
