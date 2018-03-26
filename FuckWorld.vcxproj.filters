@@ -2734,6 +2734,129 @@
     <ClInclude Include="Hook_GL.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="HLSDK\common\particledef.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\pmtrace.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\port.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\qfont.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\r_efx.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\r_studioint.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\ref_params.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\screenfade.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\Sequence.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\studio_event.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\triangleapi.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\usercmd.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\weaponinfo.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\winsani_in.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\winsani_out.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\beamdef.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\cl_entity.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\com_model.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\con_nprint.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\const.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\crc.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\cvardef.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\demo_api.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\director_cmds.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\dlight.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\dll_state.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\entity_state.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\entity_types.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\enums.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\event_api.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\event_args.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\event_flags.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\hltv.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\in_buttons.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\interface.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\ivoicetweak.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\mathlib.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\net_api.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\netadr.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\nowin.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
+    <ClInclude Include="HLSDK\common\parsemsg.h">
+      <Filter>HLSDK\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc">

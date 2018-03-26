@@ -5,7 +5,8 @@
 #include <unordered_map>
 #include <Color.h>
 #include <GL_BinkTexture.h>
-#include "engine/studio.h"
+#include "HLSDK/engine/studio.h"
+
 /*
 *	TextureManager.h
 *	Definitions of CTextureManager class and other
@@ -115,7 +116,6 @@ private:
 	std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<CTextureDetail>>> m_TexturesReplaceList;
 	std::unordered_map<std::string, std::shared_ptr<CTextureDetail>> m_TexturesNameList;
 	std::unordered_map<int, std::shared_ptr<CTextureDetail>> m_TexturesIdList;
-	char m_szConfigPath[256];
 };
 
 CTextureManager &TextureManager(void);

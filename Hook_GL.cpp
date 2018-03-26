@@ -6,6 +6,7 @@
 #include <eventscripts.h>
 #include "hud.h"
 #include "Client/HUD/nvg.h"
+#include "studio.h"
 #include "sys.h"
 
 #define MAX_LIGHTMAPS		96

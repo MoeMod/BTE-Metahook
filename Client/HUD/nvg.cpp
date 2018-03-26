@@ -63,14 +63,15 @@ int CHudNVG::MsgFunc_NVGToggle(const char *pszName, int iSize, void *pbuf)
 	BEGIN_READ(pbuf, iSize);
 	m_bOn = READ_BYTE();
 	HudAmmo().SetNvgOn(m_bOn);
-	if (IS_ZOMBIE_MODE)
+	if (IS_ZOMBIE_MODE && (HudZombieMod3().m_iNVG = m_bOn))
 	{
-		HudZombieMod3().m_iNVG = m_bOn;
-		if (m_bOn)
-			ZM_OpenNightVision();
-		else
-			ZM_OffNightVision();
+		ZM_OpenNightVision();
 	}
+	else
+	{
+		ZM_OffNightVision();
+	}
+		
 	return 1;
 }
 

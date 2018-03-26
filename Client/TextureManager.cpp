@@ -21,9 +21,6 @@
 #include "iniparser.h"
 #include "STLHelper.h"
 
-// !!
-//#define ZOMBIE_UP_ENABLED
-
 CTextureManager::CErrorTexture CTextureManager::ErrorTexture;
 
 CTextureManager &TextureManager(void)
@@ -39,16 +36,6 @@ CTextureManager::CTextureManager(void)
 	m_TexturesReplaceList.clear();
 
 	LoadTextureReplaceList();
-
-#ifdef ZOMBIE_UP_ENABLED
-	char a[33];
-	GetPrivateProfileString("Zombie Up", "Level", "0", a, 32, m_szConfigPath);
-
-	m_iZBLevel = atoi(a);
-	if (m_iZBLevel < 0)
-		m_iZBLevel = 0;
-#else
-#endif
 	
 }
 
@@ -75,60 +62,6 @@ CTextureManager::~CTextureManager(void)
 
 void CTextureManager::LoadTextureReplaceList()
 {
-	/*char strAppNameTemp[4096], strKeyNameTemp[4096];
-
-	g_pFileSystem->GetLocalPath("textures.ini", m_szConfigPath, sizeof(m_szConfigPath));
-
-	DWORD dwAppNameSize = GetPrivateProfileString(nullptr, nullptr, nullptr, strAppNameTemp, 4096, m_szConfigPath);
-	DWORD dwKeyNameSize;
-	if (dwAppNameSize > 0)
-	{
-		TCHAR *pAppName = new char[dwAppNameSize];
-		int nAppNameLen = 0;
-		for (DWORD i = 0; i < dwAppNameSize; i++)
-		{
-			pAppName[nAppNameLen++] = strAppNameTemp[i];
-			if (!strAppNameTemp[i])
-			{
-				std::string strKey = pAppName;
-				std::transform(strKey.begin(), strKey.end(), strKey.begin(), ::tolower);
-				dwKeyNameSize = GetPrivateProfileString(pAppName, nullptr, nullptr, strKeyNameTemp, 4096, m_szConfigPath);
-				std::unordered_map<std::string, std::shared_ptr<CTextureDetail>> KeyList;
-				if (dwKeyNameSize > 0)
-				{
-					TCHAR *pKeyName = new TCHAR[dwKeyNameSize];
-					int nKeyNameLen = 0;
-					for (DWORD j = 0; j < dwKeyNameSize; j++)
-					{
-						pKeyName[nKeyNameLen++] = strKeyNameTemp[j];
-						if (!strKeyNameTemp[j])
-						{
-							char pValue[128]; // pKeyName = pValue
-							if (GetPrivateProfileString(pAppName, pKeyName, nullptr, pValue, 127, m_szConfigPath))
-							{
-								std::string strName = pKeyName;
-								std::transform(strName.begin(), strName.end(), strName.begin(), ::tolower);
-								auto ptr = GetTexturePtrByName(pValue);
-								if (ptr)
-								{
-									KeyList[strName] = ptr;
-								}
-							}
-							pKeyName[0] = '\0';
-							nKeyNameLen = 0;
-						}
-					}
-					delete[] pKeyName;
-					m_TexturesReplaceList[strKey] = KeyList;
-				}
-				
-				pAppName[0] = '\0';
-				nAppNameLen = 0;
-			}
-		}
-		delete[] pAppName;
-	}*/
-
 	for (auto &app : CIniParser("textures.ini"))
 	{
 		std::unordered_map<std::string, std::shared_ptr<CTextureDetail>> KeyList;
