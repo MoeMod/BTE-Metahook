@@ -6,7 +6,6 @@ extern struct hook_s *g_phLoadTGA;
 
 extern bool g_bLoadingTGA;
 extern int g_iLastTGAWidth, g_iLastTGAHeight;
-extern byte g_bTGABuffer[];
 
 int LoadTGA_New(const char *szFilename, byte *buffer, int bufferSize, int *width, int *height);
 void LoadTGA_InstallHook();

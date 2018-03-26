@@ -8,6 +8,8 @@
 #include <shader.h>
 #include <weapons.h>
 #include "calcbody.h"
+#include "strtools.h"
+#include "pm_movevars.h"
 
 #include "Client/hud.h"
 #include "Client/HUD3D.h"
@@ -36,6 +38,9 @@ type_R_DrawViewModel			g_pfn_R_PreDrawViewModel;
 void(*g_pfnR_StudioSetupSkin)(studiohdr_t *phdr, int index);
 
 void(*g_pfnR_DrawSpriteModel)(cl_entity_t *);
+
+#define R_LOADSKYS_SIG "\x83\xEC\x6C\xA1\x2A\x2A\x2A\x2A\x56\x85\xC0\xC7\x44\x24\x0C\x00\x00\x00\x00\x75\x2A\x33\xF6\x8D\x4C\x24\x04\x8D\x86\x2A\x2A\x2A\x2A"
+void(*g_pfnR_LoadSkys)(void) = NULL;
 
 mstudiotexture_t gCurrentTexture;
 
@@ -246,18 +251,81 @@ void R_StudioSetupSkin(studiohdr_t *phdr, int index)
 	}
 }
 
+bool gLoadSky = true;
+unsigned(*gSkyTexNumber) = (unsigned(*))0x280E0A0;
+const char *suf[] = { "rt","bk","lf","ft","up","dn" };
+
+void R_LoadSkys(void)
+{
+	//return g_pfnR_LoadSkys();
+	
+	movevars_t * const pmovevars = (movevars_t *)0x027e8fc0;
+
+	int		i, j;
+	char	name[64];
+	byte	*buffer;
+	qboolean printed = false;
+
+	if (!gLoadSky)
+	{
+		for (i = 0; i < 6; i++)
+		{
+			if (gSkyTexNumber[i])
+			{
+				qglDeleteTextures(1, &gSkyTexNumber[i]);
+				gSkyTexNumber[i] = 0;
+			}
+		}
+
+		//return;
+	}
+
+	for (i = 0; i<6; i++)
+	{
+		Q_snprintf(name, sizeof(name), "gfx/env/%s%s.tga", pmovevars->skyName, suf[i]);
+
+		auto &Texture = TextureManager()[name];
+		if (!Texture)
+		{
+			break;
+		}
+		gSkyTexNumber[i] = Texture;
+		qglBindTexture(GL_TEXTURE_2D, gSkyTexNumber[i]);
+		
+
+		qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		if (!printed)
+		{
+			gEngfuncs.Con_DPrintf("SKY:  ");
+			printed = true;
+		}
+
+		gEngfuncs.Con_DPrintf("%s%s, ", pmovevars->skyName, suf[i]);
+	}
+
+	if (printed)
+	{
+		gEngfuncs.Con_DPrintf("done\n");
+	}
+
+	gLoadSky = false;
+}
+
 void R_InstallHook(void)
 {
 	g_pfn_R_DrawViewModel = (decltype(g_pfn_R_DrawViewModel))GetEngfuncsAddress(0x1D45660);
 	g_pfn_R_PreDrawViewModel = (decltype(g_pfn_R_PreDrawViewModel))GetEngfuncsAddress(0x1D45A10);
 	g_pfnR_LightLambert = (decltype(g_pfnR_LightLambert))g_pMetaHookAPI->SearchPattern((void *)g_dwEngineBase, g_dwEngineSize, R_LIGHTLAMBERT_SIG, sizeof(R_LIGHTLAMBERT_SIG) - 1);
 	g_pfnR_StudioSetupSkin = (void(*)(studiohdr_t *, int))g_pMetaHookAPI->SearchPattern((void *)g_dwEngineBase, g_dwEngineSize, R_STUDIOSETUPSKIN_SIG, sizeof(R_STUDIOSETUPSKIN_SIG) - 1);
-
+	g_pfnR_LoadSkys = (void(*)(void))g_pMetaHookAPI->SearchPattern((void *)g_dwEngineBase, g_dwEngineSize, R_LOADSKYS_SIG, sizeof(R_LOADSKYS_SIG) - 1);
 
 	g_pMetaHookAPI->InlineHook((void *)g_pfn_R_DrawViewModel, R_DrawViewModel, (void *&)g_real_R_DrawViewModel);
 	g_pMetaHookAPI->InlineHook(g_pfnR_StudioSetupSkin, R_StudioSetupSkin, (void *&)g_pfnR_StudioSetupSkin);
 	g_pMetaHookAPI->InlineHook(g_pfnR_LightLambert, R_LightLambert, (void *&)g_pfnR_LightLambert);
 	g_pMetaHookAPI->InlineHook((void *)0x1D448F0, R_DrawSpriteModel, (void *&)g_pfnR_DrawSpriteModel);
+	g_pMetaHookAPI->InlineHook(g_pfnR_LoadSkys, R_LoadSkys, (void *&)g_pfnR_LoadSkys);
 }
 
 #define R_STUDIOLIGHTING_SIG "\x51\xDB\x05\x2A\x2A\x2A\x2A\x8A\x4C\x24\x10\xB8\x01\x00\x00\x00\x84\xC8\xD9\x5C\x24\x00"

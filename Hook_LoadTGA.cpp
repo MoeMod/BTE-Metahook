@@ -5,13 +5,15 @@
 #include "qgl.h"
 #include "perf_counter.h"
 #include "cvardef.h"
+#include <vector>
 
 int (*g_pfnLoadTGA)(const char *szFilename, byte *buffer, int bufferSize, int *width, int *height);
 hook_t *g_phLoadTGA;
 
 bool g_bLoadingTGA;
 int g_iLastTGAWidth, g_iLastTGAHeight;
-byte g_bTGABuffer[1024 * 1024 * 4];
+//byte g_bTGABuffer[1024 * 1024 * 4];
+std::vector<byte> g_vecTGABuffer;
 
 #pragma pack(1)
 
@@ -47,7 +49,8 @@ int LoadTGA_New(const char *szFilename, byte *buffer, int bufferSize, int *width
 		return g_pfnLoadTGA(szFilename, buffer, bufferSize, width, height);
 
 	g_bLoadingTGA = TRUE;
-	return g_pfnLoadTGA(szFilename, g_bTGABuffer, header.width * header.height, &g_iLastTGAWidth, &g_iLastTGAHeight);
+	g_vecTGABuffer.reserve(header.width * header.height * 4);
+	return g_pfnLoadTGA(szFilename, g_vecTGABuffer.data(), header.width * header.height, &g_iLastTGAWidth, &g_iLastTGAHeight);
 }
 
 void APIENTRY QGL_TexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
@@ -58,13 +61,14 @@ void APIENTRY QGL_TexImage2D(GLenum target, GLint level, GLint internalformat, G
 		{
 			width = g_iLastTGAWidth;
 			height = g_iLastTGAHeight;
-			pixels = g_bTGABuffer;
+			pixels = g_vecTGABuffer.data();
 		}
 
 		g_bLoadingTGA = FALSE;
 	}
 
 	qglTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+	g_vecTGABuffer.clear();
 }
 
 void LoadTGA_InstallHook()
