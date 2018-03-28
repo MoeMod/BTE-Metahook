@@ -31,67 +31,223 @@ int totalwpn;
 
 // defines Keys' sequence and its object type
 // !! ComboBox TBD
-using WeaponKeyInfoType = std::pair<const std::string, objtype_t>;
+
+class IBaseControlPanel : public vgui::Panel
+{
+public:
+	IBaseControlPanel(vgui::Panel *parent, char const *panelName)
+		: Panel(parent, panelName), m_pControl(NULL) {}
+
+public:
+	virtual void OnSizeChanged(int wide, int tall) override
+	{
+		int inset = 4;
+
+		if (m_pControl)
+			m_pControl->SetBounds(0, inset, wide, tall - 2 * inset);
+	}
+	virtual ~IBaseControlPanel() {}
+	virtual std::string GetValue() = 0;
+
+public:
+	std::string key;
+	vgui::Panel *m_pControl;
+};
+
+// 有左边文本和右边输入框的基类
+class IBaseControlPair : public IBaseControlPanel
+{
+public:
+	IBaseControlPair(vgui::Panel *parent, char const *panelName, char const *szDesc)
+		: IBaseControlPanel(parent, panelName), m_pPrompt(NULL) 
+	{
+		m_pPrompt = new Label(this, "DescLabel", "");
+		m_pPrompt->SetContentAlignment(Label::a_west);
+		m_pPrompt->SetTextInset(5, 0);
+		m_pPrompt->SetText(szDesc);
+	}
+	virtual void OnSizeChanged(int wide, int tall) override
+	{
+		int inset = 4;
+
+		int w = wide / 2;
+
+		if (m_pControl)
+			m_pControl->SetBounds(w + 20, inset, w - 20, tall - 2 * inset);
+
+		m_pPrompt->SetBounds(0, inset, w + 20, tall - 2 * inset);
+	}
+public:
+	vgui::Label *m_pPrompt;
+};
+
+class CControlPairString : public IBaseControlPair
+{
+public:
+	CControlPairString(vgui::Panel *parent, char const *panelName, char const *defaultValue, char const *desc)
+		: IBaseControlPair(parent, panelName, desc)
+	{
+		TextEntry *pEdit = new TextEntry(this, "DescTextEntry");
+		pEdit->InsertString(defaultValue);
+		m_pControl = (Panel *)pEdit;
+	}
+	virtual std::string GetValue() override
+	{
+		char strValue[256];
+		auto pEdit = (TextEntry *)m_pControl;
+		pEdit->GetText(strValue, sizeof(strValue));
+		return{ strValue };
+	}
+};
+
+class CControlPairNumber : public CControlPairString
+{
+public:
+	CControlPairNumber(vgui::Panel *parent, char const *panelName, char const *defaultValue, char const *desc)
+		: CControlPairString(parent, panelName, defaultValue, desc)
+	{
+		// no need dynamic_cast
+		TextEntry *pEdit = static_cast<TextEntry *>(m_pControl);
+		pEdit->SetAllowNumericInputOnly(true);
+	}
+};
+
+class CControlPairBool : public IBaseControlPanel
+{
+public:
+	CControlPairBool(vgui::Panel *parent, char const *panelName, char const *defaultValue, char const *desc)
+		: IBaseControlPanel(parent, panelName)
+	{
+		CheckButton *pBox = new CheckButton(this, "DescCheckButton", desc);
+		pBox->SetSelected(!stricmp(defaultValue, "TRUE"));
+		m_pControl = (Panel *)pBox;
+	}
+	virtual std::string GetValue() override
+	{
+		auto pBox = (CheckButton *)m_pControl;
+		return pBox->IsSelected() ? "TRUE" : "FALSE";
+	}
+};
+
+class CControlPairComboBox : public IBaseControlPair
+{
+public:
+	CControlPairComboBox(vgui::Panel *parent, char const *panelName, char const *desc)
+		: IBaseControlPair(parent, panelName, desc)
+	{
+		ComboBox *pComboBox = new ComboBox(this, "ComboBox", 6, false);
+		m_pControl = (Panel *)pComboBox;
+	}
+	virtual std::string GetValue() override
+	{
+		auto pComboBox = (ComboBox *)m_pControl;
+		
+		KeyValues *pKeyValues = pComboBox->GetActiveItemUserData();
+		return pKeyValues->GetString("value");
+	}
+};
+
+using ControlPairFactoryType = std::function<IBaseControlPanel *(vgui::Panel *parent, char const *panelName, char const *defaultValue, char const *desc)>;
+
+template<class T>
+IBaseControlPanel *DefaultControlFactory(vgui::Panel *parent, char const *panelName, char const *defaultValue, char const *desc)
+{
+	return new T(parent, panelName, defaultValue, desc);
+}
+
+auto ControlPairNumberFactory = DefaultControlFactory<CControlPairNumber>;
+auto ControlPairStringFactory = DefaultControlFactory<CControlPairString>;
+auto ControlPairBoolFactory = DefaultControlFactory<CControlPairBool>;
+
+class ControlPairComboBoxFactoryHelper
+{
+public:
+	ControlPairComboBoxFactoryHelper(const std::initializer_list<std::string> &ValueList)
+	{
+		for (auto &str : ValueList)
+		{
+			m_List.emplace_back(str, str);
+		}
+	}
+	IBaseControlPanel *operator()(vgui::Panel *parent, char const *panelName, char const *defaultValue, char const *desc)
+	{
+		auto pCtrl = new CControlPairComboBox(parent, panelName, desc);
+		auto pComboBox = static_cast<ComboBox *>(pCtrl->m_pControl);
+		// defaultValue
+		for (auto &pair : m_List)
+		{
+			auto pkv = new KeyValues("ControlPairValue", "value", pair.second.c_str());
+			pComboBox->AddItem(pair.first.c_str(), pkv);
+		}
+		auto p = std::find_if(m_List.begin(), m_List.end(), std::bind(IsKeyEqualsToTupleElement<1, std::pair<std::string, std::string>>, std::cref(defaultValue), std::placeholders::_1));
+		pComboBox->ActivateItem(p - m_List.begin());
+		return pCtrl;
+	}
+	std::vector<std::pair<std::string, std::string>> m_List; // { display, real_key}
+};
+
+
+using WeaponKeyInfoType = std::pair<const std::string, ControlPairFactoryType>;
 static WeaponKeyInfoType WeaponKeyInfo[] = {
-	{ "WeaponID", O_NUMBER },
-{ "Special", O_NUMBER },
-{ "Type", O_NUMBER },
-{ "Menu", O_STRING },
-{ "BulletType", O_STRING },
-{ "Damage", O_STRING },
-{ "DamageZombie", O_STRING },
-{ "AttackInterval", O_STRING },
-{ "Delay", O_STRING },
-{ "MaxClip", O_STRING },
-{ "MaxAmmo", O_STRING },
-{ "AmmoCost", O_STRING },
-{ "Ammo", O_STRING },
-{ "Distance", O_STRING },
-{ "Angle", O_STRING },
-{ "MaxSpeed", O_NUMBER },
-{ "ReloadTime", O_STRING },
-{ "DeployTime", O_STRING },
-{ "KnockBack", O_STRING },
-{ "VelocityModifier", O_STRING },
-{ "Zoom", O_STRING },
-{ "AnimExtention", O_STRING },
-{ "Cost", O_STRING },
-{ "CanBuy", O_BOOL },
-{ "Team", O_STRING },
-{ "GameModeLimit", O_NUMBER },
-{ "BurstSpeed", O_STRING },
-{ "BurstTimes", O_STRING },
-{ "WorldModel", O_STRING },
+{ "WeaponID", ControlPairNumberFactory },
+{ "Special", ControlPairNumberFactory },
+{ "Type", ControlPairNumberFactory },
+{ "Menu", ControlPairStringFactory },
+{ "BulletType", ControlPairStringFactory },
+{ "Damage", ControlPairStringFactory },
+{ "DamageZombie", ControlPairStringFactory },
+{ "AttackInterval", ControlPairStringFactory },
+{ "Delay", ControlPairStringFactory },
+{ "MaxClip", ControlPairStringFactory },
+{ "MaxAmmo", ControlPairStringFactory },
+{ "AmmoCost", ControlPairStringFactory },
+{ "Ammo", ControlPairStringFactory },
+{ "Distance", ControlPairStringFactory },
+{ "Angle", ControlPairStringFactory },
+{ "MaxSpeed", ControlPairNumberFactory },
+{ "ReloadTime", ControlPairStringFactory },
+{ "DeployTime", ControlPairStringFactory },
+{ "KnockBack", ControlPairStringFactory },
+{ "VelocityModifier", ControlPairStringFactory },
+{ "Zoom", ControlPairStringFactory },
+{ "AnimExtention", ControlPairStringFactory },
+{ "Cost", ControlPairStringFactory },
+{ "CanBuy", ControlPairBoolFactory },
+{ "Team", ControlPairComboBoxFactoryHelper{ "ALL", "CT", "TR" } },
+{ "GameModeLimit", ControlPairNumberFactory },
+{ "BurstSpeed", ControlPairStringFactory },
+{ "BurstTimes", ControlPairStringFactory },
+{ "WorldModel", ControlPairStringFactory },
 
-{ "EntitySpawnOrigin", O_STRING },
-{ "EntityKnockBack", O_STRING },
-{ "EntityDamage", O_STRING },
-{ "EntityDamageZombie", O_STRING },
-{ "EntityRange", O_STRING },
-{ "EntitySpeed", O_STRING },
-{ "EntityGravity", O_STRING },
-{ "EntityAngle", O_STRING },
+{ "EntitySpawnOrigin", ControlPairStringFactory },
+{ "EntityKnockBack", ControlPairStringFactory },
+{ "EntityDamage", ControlPairStringFactory },
+{ "EntityDamageZombie", ControlPairStringFactory },
+{ "EntityRange", ControlPairStringFactory },
+{ "EntitySpeed", ControlPairStringFactory },
+{ "EntityGravity", ControlPairStringFactory },
+{ "EntityAngle", ControlPairStringFactory },
 
-{ "AccuracyCalculate", O_NUMBER },
-{ "AccuracyDefault", O_NUMBER },
-{ "Accuracy", O_STRING },
-{ "AccuracyRange", O_STRING },
-{ "Spread", O_STRING },
-{ "SpreadRun", O_STRING },
-{ "AccuracyMul", O_STRING },
+{ "AccuracyCalculate", ControlPairNumberFactory },
+{ "AccuracyDefault", ControlPairNumberFactory },
+{ "Accuracy", ControlPairStringFactory },
+{ "AccuracyRange", ControlPairStringFactory },
+{ "Spread", ControlPairStringFactory },
+{ "SpreadRun", ControlPairStringFactory },
+{ "AccuracyMul", ControlPairStringFactory },
 
-{ "Punchangle", O_STRING },
-{ "Penetration", O_STRING },
-{ "Distance", O_STRING },
-{ "ArmorRatio", O_STRING },
-{ "RangeModifier", O_STRING },
+{ "Punchangle", ControlPairStringFactory },
+{ "Penetration", ControlPairStringFactory },
+{ "Distance", ControlPairStringFactory },
+{ "ArmorRatio", ControlPairStringFactory },
+{ "RangeModifier", ControlPairStringFactory },
 
-{ "KickBackWalking", O_STRING },
-{ "KickBackNotOnGround", O_STRING },
-{ "KickBackDucking", O_STRING },
-{ "KickBack", O_STRING },
+{ "KickBackWalking", ControlPairStringFactory },
+{ "KickBackNotOnGround", ControlPairStringFactory },
+{ "KickBackDucking", ControlPairStringFactory },
+{ "KickBack", ControlPairStringFactory },
 
-{ "Event", O_STRING }
+{ "Event", ControlPairStringFactory }
 };
 // UnaryFunction: Compares a fixed string with pair
 /*struct KeyEquals
@@ -231,73 +387,22 @@ void CCSBTEWpnDataEditor::CreateControls()
 	//std::map<std::string, ControlPair *, WeaponInfoKey_Less> CtrlMap;
 	for (const auto &kv : wpnDataMap)
 	{
-		ControlPair *pCtrl = new ControlPair(m_pListPanel, "CSBTEWpnDataEditor::ControlPair");
+		auto p = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals(kv.first));
+		
 
-		pCtrl->key = kv.first;
-
-		auto p = std::find_if(std::begin(WeaponKeyInfo), std::end(WeaponKeyInfo), KeyEquals(pCtrl->key));
-		pCtrl->type = p == std::end(WeaponKeyInfo) ? O_STRING : p->second;
+		ControlPairFactoryType ControlPairFactory = p == std::end(WeaponKeyInfo) ? ControlPairStringFactory : p->second;
 
 		std::string desc = "#CSBTE_WpnDataEditor_";
 		desc += kv.first;
 
-		switch (pCtrl->type)
-		{
-		case O_BOOL:
-		{
-			CheckButton *pBox = new CheckButton(pCtrl, "DescCheckButton", desc.c_str());
-			pBox->SetSelected(kv.second == "TRUE");
-			pCtrl->pControl = (Panel *)pBox;
-			break;
-		}
+		IBaseControlPanel *pCtrl = ControlPairFactory(m_pListPanel, "CSBTEWpnDataEditor::ControlPair", kv.second.c_str(), desc.c_str());
 
-		case O_STRING:
-		case O_NUMBER:
-		{
-			TextEntry *pEdit = new TextEntry(pCtrl, "DescTextEntry");
-			pEdit->InsertString(kv.second.c_str());
-			pCtrl->pControl = (Panel *)pEdit;
-			break;
-		}
-
-		/*case O_LIST:
-		{
-		ComboBox *pCombo = new ComboBox(pCtrl, "DescComboBox", 5, false);
-		pListItem = pObj->pListItems;
-
-		while (pListItem)
-		{
-		pCombo->AddItem(pListItem->szItemText, NULL);
-		pListItem = pListItem->pNext;
-		}
-
-		pCombo->ActivateItemByRow((int)pObj->fdefValue);
-		pCtrl->pControl = (Panel *)pCombo;
-		break;
-		}*/
-
-		default: break;
-		}
-
-		if (pCtrl->type != O_BOOL)
-		{
-			pCtrl->pPrompt = new Label(pCtrl, "DescLabel", "");
-			pCtrl->pPrompt->SetContentAlignment(Label::a_west);
-			pCtrl->pPrompt->SetTextInset(5, 0);
-			pCtrl->pPrompt->SetText(desc.c_str());
-		}
+		pCtrl->key = kv.first;
 
 		pCtrl->SetSize(100, 28);
 		m_pListPanel->AddItem(pCtrl);
 		//CtrlMap.emplace(kv.first, pCtrl);
 	}
-
-	//CtrlList.sort([](ControlPair * lhs, ControlPair *rhs) {return WeaponInfoKey_Less()(lhs->key, rhs->key); });
-	//std::for_each(CtrlList.begin(), CtrlList.end(), std::bind(&CPanelListPanel::AddItem, m_pListPanel, std::placeholders::_1));
-	//for (auto &prprpr : CtrlMap)
-	//{
-	//	m_pListPanel->AddItem(prprpr.second);
-	//}
 }
 
 void CCSBTEWpnDataEditor::DestroyControls()
@@ -311,8 +416,9 @@ void CCSBTEWpnDataEditor::SaveData()
 
 	for (int i = 0; i < m_pListPanel->GetItemCount(); ++i)
 	{
-		auto pList = static_cast<ControlPair *>(m_pListPanel->GetItem(i));
+		auto pList = static_cast<IBaseControlPanel *>(m_pListPanel->GetItem(i));
 		const std::string &key = pList->key;
+		const std::string &&value = pList->GetValue();
 
 		char szValue[256];
 		char strValue[256];
@@ -320,57 +426,8 @@ void CCSBTEWpnDataEditor::SaveData()
 		// ugly switch in cpp
 		// dont know if dynamic_cast required
 		// using virtual functions to fix that?
-		switch (pList->type)
-		{
-		case O_BOOL:
-		{
-			auto pBox = (CheckButton *)pList->pControl;
-			sprintf(szValue, "%s", pBox->IsSelected() ? "TRUE" : "FALSE");
-			break;
-		}
-		case O_NUMBER:
-		{
-			auto pEdit = (TextEntry *)pList->pControl;
-			pEdit->GetText(strValue, sizeof(strValue));
-			sprintf(szValue, "%s", strValue);
-			break;
-		}
-		case O_STRING:
-		{
-			auto pEdit = (TextEntry *)pList->pControl;
-			pEdit->GetText(strValue, sizeof(strValue));
-			sprintf(szValue, "%s", strValue);
-			break;
-		}
-		/*case O_LIST:
-		{
-		pCombo = (ComboBox *)pList->pControl;
-		int activeItem = pCombo->GetActiveItem();
-		pItem = pObj->pListItems;
-		int n = (int)pObj->fdefValue;
-
-		while (pItem)
-		{
-		if (!activeItem--)
-		break;
-
-		pItem = pItem->pNext;
-		}
-
-		if (pItem)
-		{
-		sprintf(szValue, "%s", pItem->szValue);
-		}
-		else
-		{
-		assert(!("Couldn't find string in list, using default value"));
-		sprintf(szValue, "%s", pObj->defValue);
-		}
-
-		break;
-		}*/
-		} // switch ends
-		wpnDataMap[key] = szValue;
+		
+		wpnDataMap[key] = value;
 	}
 	m_iniData.SaveFile();
 }

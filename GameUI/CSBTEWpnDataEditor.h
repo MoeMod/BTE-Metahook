@@ -105,38 +105,4 @@ private:
 	Label *m_pName, *curWpnID, *totalWpnID, *Divider;
 	CPanelListPanel *m_pListPanel;
 
-	class ControlPair : public vgui::Panel
-	{
-	public:
-		ControlPair(vgui::Panel *parent, char const *panelName) : Panel(parent, panelName), type(O_BADTYPE), pControl(NULL), pPrompt(NULL) {}
-
-	public:
-		virtual void OnSizeChanged(int wide, int tall)
-		{
-			int inset = 4;
-
-			if (pPrompt)
-			{
-				int w = wide / 2;
-
-				if (pControl)
-					pControl->SetBounds(w + 20, inset, w - 20, tall - 2 * inset);
-
-				pPrompt->SetBounds(0, inset, w + 20, tall - 2 * inset);
-			}
-			else
-			{
-				if (pControl)
-					pControl->SetBounds(0, inset, wide, tall - 2 * inset);
-			}
-		}
-		virtual ~ControlPair() {}
-
-	public:
-		objtype_t type;
-		std::string key;
-		vgui::Panel *pControl;
-		vgui::Label *pPrompt;
-	};
-
 };
