@@ -27,8 +27,6 @@ using std::endl;
 
 extern wchar_t *GetWeaponNameFormat(const std::string &);
 
-int totalwpn;
-
 // defines Keys' sequence and its object type
 // !! ComboBox TBD
 
@@ -192,7 +190,7 @@ static WeaponKeyInfoType WeaponKeyInfo[] = {
 { "WeaponID", ControlPairNumberFactory },
 { "Special", ControlPairNumberFactory },
 { "Type", ControlPairNumberFactory },
-{ "Menu", ControlPairStringFactory },
+{ "Menu", ControlPairComboBoxFactoryHelper{ "PISTOL", "SHOTGUN", "SMG", "RIFLE", "MG", "EQUIP", "KNIFE" } },
 { "BulletType", ControlPairStringFactory },
 { "Damage", ControlPairStringFactory },
 { "DamageZombie", ControlPairStringFactory },
@@ -340,7 +338,7 @@ void CCSBTEWpnDataEditor::SetLayout()
 	m_pSearchWpn->SetCommand("searchwpnname");
 	m_pSearchWpn->SetVisible(true);*/
 
-	totalwpn = m_iniData.size();
+	int totalwpn = m_iniData.size();
 	//gEngfuncs.Con_Printf("Readed %d Weapons.\n", totalwpn);
 	std::cout << "Readed " << totalwpn << " Weapons." << std::endl;
 
@@ -349,7 +347,7 @@ void CCSBTEWpnDataEditor::SetLayout()
 
 void CCSBTEWpnDataEditor::CountWpn()
 {
-	//int totalwpn = std::distance(m_iniData.begin(), m_iniData.end());
+	int totalwpn = m_iniData.size();
 	int wpnID = std::distance(m_iniData.begin(), m_iniDataIterator) + 1;
 
 	std::string ID = std::to_string(totalwpn);
