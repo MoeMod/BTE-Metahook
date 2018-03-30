@@ -118,7 +118,7 @@ int CHudDeathInfo::MsgFunc_DeathInfo(const char * pszName, int iSize, void * pbu
 		strMessage += strBuffer;
 		
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			unsigned iDamage = READ_SHORT();
 			unsigned iHitCount = READ_BYTE();
@@ -131,10 +131,10 @@ int CHudDeathInfo::MsgFunc_DeathInfo(const char * pszName, int iSize, void * pbu
 
 		unsigned iTotalDamage2 = READ_SHORT();
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 5; i++)
 		{
-			int iDamage = READ_SHORT();
-			int iHitCount = READ_BYTE();
+			unsigned iDamage = READ_SHORT();
+			unsigned iHitCount = READ_BYTE();
 			if (iDamage && iHitCount)
 			{
 				swprintf(strBuffer, L"\n%s %u(%u%s)", vgui::localize()->Find(CHudDeathInfo::m_pHitgroupName[i]), iDamage, iHitCount, vgui::localize()->Find("#CSO_AmmoCount"));
@@ -145,7 +145,7 @@ int CHudDeathInfo::MsgFunc_DeathInfo(const char * pszName, int iSize, void * pbu
 
 		unsigned iHP = READ_SHORT();
 		unsigned iAP = READ_SHORT();
-		swprintf(strBuffer, vgui::localize()->Find("#CSO_HpAp"), iHP, iAP);
+		swprintf(strBuffer, vgui::localize()->Find("#CSO_HpAp"), iHP, iAP); // ¶Ô·½HP£º%d/AP:%d
 		strMessage += strBuffer;
 
 		rgTempDrawText.iCenter = 0;
