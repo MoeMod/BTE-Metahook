@@ -50,6 +50,7 @@
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
 #include "Client/TextureManager.h"
+#include "Client/PrecacheManager.h"
 
 #include "Client/HUD/health.h"
 #include "Client/HUD/DrawTABPanel.h"
@@ -665,6 +666,7 @@ void HUD_Init(void)
 	g_pMetaHookAPI->InlineHook(g_pfnHudSniperScope_Draw, HudSniperScope_Draw, (void *&)g_pfnHudSniperScope_Draw);
 
 	Weapon_Init();
+	PrecacheManager().Init();
 
 	g_pMetaHookAPI->InlineHook(g_pfnCHudSayText_Draw, CHudSayText_Draw, (void *&)g_pfnCHudSayText_Draw);
 
@@ -701,6 +703,7 @@ int HUD_VidInit(void)
 
 	WeaponManager().Reset();
 	PlayerClassManager().Reset();
+	PrecacheManager().VidInit();
 
 	DisplayInitialize();
 	MessageInitialize();
