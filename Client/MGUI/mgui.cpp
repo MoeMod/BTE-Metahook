@@ -551,7 +551,7 @@ void MGUI_Send_Cmd(char *szCmd)
 		else if (strstr(szCmd, "ShowBuyMenu"))
 		{
 			if (g_iMod == MOD_TDM || g_iMod == MOD_DM || g_iMod == MOD_ZB4)
-				BTEPanel_TeamSuit_SetSlot(1);
+				BTEPanel_TeamSuit_SetSlot(0);
 
 			BTEPanel_BuyMenu_UpdateItems(-1, "");
 			BTEPanel_BuyMenu_SetPage(0, 0);

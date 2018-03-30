@@ -1031,15 +1031,6 @@
     <ClCompile Include="Hook_Surface.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Client\Studio\studio_util.cpp">
-      <Filter>Client\Studio</Filter>
-    </ClCompile>
-    <ClCompile Include="Client\Studio\StudioModelRenderer.cpp">
-      <Filter>Client\Studio</Filter>
-    </ClCompile>
-    <ClCompile Include="Client\Studio\GameStudioModelRenderer.cpp">
-      <Filter>Client\Studio</Filter>
-    </ClCompile>
     <ClCompile Include="Client\com_weapons.cpp">
       <Filter>Client</Filter>
     </ClCompile>
@@ -1054,6 +1045,15 @@
     </ClCompile>
     <ClCompile Include="util\Encode.cpp">
       <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Studio\studio_util.cpp">
+      <Filter>Client\Studio</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Studio\StudioModelRenderer.cpp">
+      <Filter>Client\Studio</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Studio\GameStudioModelRenderer.cpp">
+      <Filter>Client\Studio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2719,15 +2719,6 @@
     <ClInclude Include="vgui2\vgui_hook.h">
       <Filter>vgui2</Filter>
     </ClInclude>
-    <ClInclude Include="Client\Studio\StudioModelRenderer.h">
-      <Filter>Client\Studio</Filter>
-    </ClInclude>
-    <ClInclude Include="Client\Studio\GameStudioModelRenderer.h">
-      <Filter>Client\Studio</Filter>
-    </ClInclude>
-    <ClInclude Include="Client\Studio\studio_util.h">
-      <Filter>Client\Studio</Filter>
-    </ClInclude>
     <ClInclude Include="Client\cl_util.h">
       <Filter>Client</Filter>
     </ClInclude>
@@ -2868,6 +2859,15 @@
     </ClInclude>
     <ClInclude Include="util\Encode.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Studio\studio_util.h">
+      <Filter>Client\Studio</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Studio\StudioModelRenderer.h">
+      <Filter>Client\Studio</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Studio\GameStudioModelRenderer.h">
+      <Filter>Client\Studio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
