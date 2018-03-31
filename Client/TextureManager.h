@@ -75,14 +75,6 @@ private:
 	CTextureManager(CTextureManager &&Other);
 	~CTextureManager();
 
-	class CErrorTexture : public CTextureDetail
-	{
-	public:
-		CErrorTexture() : CTextureDetail(0, 0, 0, "")
-		{
-		}
-	};
-	static CErrorTexture ErrorTexture;
 	
 public:
 
@@ -93,14 +85,14 @@ public:
 	{ 
 		auto ptr = GetTexturePtrByName(szPath);
 		if (!ptr) 
-			return ErrorTexture; 
+			return *m_pErrorTexture;
 		return *ptr;
 	}
 	const CTextureDetail &operator[](int id)
 	{
 		auto ptr = GetTexturePtrById(id);
 		if (!ptr) 
-			return ErrorTexture; 
+			return *m_pErrorTexture;
 		return *ptr;
 	}
 	void UpdateAll() const
@@ -116,6 +108,7 @@ private:
 	std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<CTextureDetail>>> m_TexturesReplaceList;
 	std::unordered_map<std::string, std::shared_ptr<CTextureDetail>> m_TexturesNameList;
 	std::unordered_map<int, std::shared_ptr<CTextureDetail>> m_TexturesIdList;
+	std::unique_ptr<CTextureDetail> m_pErrorTexture;
 };
 
 CTextureManager &TextureManager(void);

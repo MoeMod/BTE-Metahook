@@ -20,8 +20,16 @@
 #include "TextureManager.h"
 #include "iniparser.h"
 #include "STLHelper.h"
+#include "vgui_controls/Controls.h"
 
-CTextureManager::CErrorTexture CTextureManager::ErrorTexture;
+
+class CErrorTexture : public CTextureManager::CTextureDetail
+{
+public:
+	CErrorTexture()
+	{
+	}
+};
 
 CTextureManager &TextureManager(void)
 {
@@ -37,6 +45,7 @@ CTextureManager::CTextureManager(void)
 
 	LoadTextureReplaceList();
 	
+	m_pErrorTexture = std::make_unique<CErrorTexture>();
 }
 
 void CTextureManager::CTextureDetail::Draw(int x, int y, Color rgba, int w, int h) const
@@ -166,7 +175,7 @@ auto CTextureManager::GetReplacedTexture(char *key, char *name) -> const CTextur
 			return *it2->second;
 	}
 
-	return ErrorTexture;
+	return *m_pErrorTexture;
 }
 
 auto CTextureManager::ReplaceTexture(char *modelname, mstudiotexture_t *p) -> bool
