@@ -2,7 +2,9 @@
 
 #include <string>
 #include <algorithm>
+#include <numeric>
 #include <tuple>
+#include <iterator>
 
 inline std::string ToLower(std::string sz)
 {
@@ -65,4 +67,62 @@ template<size_t n, class Tuple>
 inline bool IsKeyEqualsToTupleElement(const std::string &sz, const Tuple &pair)
 {
 	return sz == std::get<n>(pair);
+}
+
+struct range_iterator
+{
+	int n, step, end;
+	using difference_type = int;
+	using iterator_category = std::input_iterator_tag;
+	using pointer = range_iterator;
+	using reference = int &;
+	using value_type = int;
+	range_iterator &operator++() { return  n += step, *this; }
+	bool operator!=(range_iterator &other) { return is_end() != other.is_end() && n != other.n; }
+	int operator*() { return n; }
+	bool is_end() { return n >= end; }
+};
+
+struct range_iterator_one
+{
+	int n;
+	using difference_type = int;
+	using iterator_category = std::input_iterator_tag;
+	using pointer = range_iterator_one;
+	using reference = int &;
+	using value_type = int;
+	range_iterator_one &operator++() { return  ++n, *this; }
+	bool operator!=(range_iterator_one &other) { return n != other.n; }
+	int operator*() { return n; }
+};
+
+struct range_generator
+{
+	int start, stop, step;
+	range_iterator begin() { return { start, step, stop }; }
+	range_iterator end() { return { stop, step, stop }; }
+};
+
+struct range_generator_one
+{
+	int start, stop;
+	range_iterator_one begin() { return { start }; }
+	range_iterator_one end() { return { stop }; }
+};
+
+inline range_generator xrange(int start, int stop, int step)
+{
+	return { start ,stop , step };
+}
+
+inline range_generator_one xrange(int start, int stop)
+{
+	return { start ,stop };
+}
+
+template<class...Args>
+inline std::vector<int> range(Args&&...args)
+{
+	auto &&ran = xrange(args...);
+	return std::vector<int>(ran.begin(), ran.end());
 }
