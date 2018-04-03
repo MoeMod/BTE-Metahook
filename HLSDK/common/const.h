@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*
-*	This product contains software technology licensed from Id
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
+*	
+*	This product contains software technology licensed from Id 
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -112,7 +112,7 @@
 
 // entity flags
 #define EFLAG_SLERP				1	// do studio interpolation of this entity
-
+		
 //
 // temp entity events
 //
@@ -337,8 +337,8 @@
 // short 1.2.13 x (-1 = center)
 // short 1.2.13 y (-1 = center)
 // byte Effect 0 = fade in/fade out
-// 1 is flickery credits
-// 2 is write out (training room)
+			// 1 is flickery credits
+			// 2 is write out (training room)
 
 // 4 bytes r,g,b,a color1	(text color)
 // 4 bytes r,g,b,a color2	(effect color)
@@ -674,8 +674,8 @@
 #define TE_BOUNCE_SHOTSHELL	2
 
 // Rendering constants
-enum
-{
+enum 
+{	
 	kRenderNormal,			// src
 	kRenderTransColor,		// c*a+dest*(1-a)
 	kRenderTransTexture,	// src*a+dest*(1-a)
@@ -684,21 +684,21 @@ enum
 	kRenderTransAdd,		// src*a+dest
 };
 
-enum
-{
-	kRenderFxNone = 0,
-	kRenderFxPulseSlow,
-	kRenderFxPulseFast,
-	kRenderFxPulseSlowWide,
-	kRenderFxPulseFastWide,
-	kRenderFxFadeSlow,
-	kRenderFxFadeFast,
-	kRenderFxSolidSlow,
-	kRenderFxSolidFast,
-	kRenderFxStrobeSlow,
-	kRenderFxStrobeFast,
-	kRenderFxStrobeFaster,
-	kRenderFxFlickerSlow,
+enum 
+{	
+	kRenderFxNone = 0, 
+	kRenderFxPulseSlow, 
+	kRenderFxPulseFast, 
+	kRenderFxPulseSlowWide, 
+	kRenderFxPulseFastWide, 
+	kRenderFxFadeSlow, 
+	kRenderFxFadeFast, 
+	kRenderFxSolidSlow, 
+	kRenderFxSolidFast, 	   
+	kRenderFxStrobeSlow, 
+	kRenderFxStrobeFast, 
+	kRenderFxStrobeFaster, 
+	kRenderFxFlickerSlow, 
 	kRenderFxFlickerFast,
 	kRenderFxNoDissipation,
 	kRenderFxDistort,			// Distort/scale/translate flicker
@@ -710,8 +710,8 @@ enum
 };
 
 
-typedef int	func_t;
-typedef int	string_t;
+typedef unsigned int	func_t;
+typedef unsigned int	string_t;
 
 typedef unsigned char 		byte;
 typedef unsigned short 		word;
@@ -721,7 +721,7 @@ typedef unsigned short 		word;
 #undef false
 
 #ifndef __cplusplus
-typedef enum { false, true }	qboolean;
+typedef enum {false, true}	qboolean;
 #else 
 typedef int qboolean;
 #endif

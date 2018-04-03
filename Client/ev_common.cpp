@@ -6,8 +6,9 @@
 #include "event_api.h"
 #include "cl_entity.h"
 #include "mathlib/Vector.h"
+#include "links.h"
 
-void(*g_pfnEV_EjectBrass)(float *origin, float *velocity, float rotation, int model, int soundtype, int idx, int angle_velocity) = (void(*)(float *, float *, float, int, int, int, int))0x1945180;
+//void(*g_pfnEV_EjectBrass)(float *origin, float *velocity, float rotation, int model, int soundtype, int idx, int angle_velocity) = (void(*)(float *, float *, float, int, int, int, int))0x1945180;
 void(*g_pfnEV_GetDefaultShellInfo)(event_args_t *args, float *origin, float *velocity, float *ShellVelocity, float *ShellOrigin, float *forward, float *right, float *up, float forwardScale, float upScale, float rightScale, bool bReverseDirection) = (void(*)(event_args_t *, float *, float *, float *, float *, float *, float *, float *, float, float, float, bool))0x1945260;
 
 void EV_EjectBrass(float *origin, float *velocity, float rotation, int model, int soundtype, int idx, int angle_velocity)

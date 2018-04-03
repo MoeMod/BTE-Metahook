@@ -153,22 +153,7 @@ void CHudRoundTimer::SetTimeEnd(float flTime)
 	m_bPanicColor = false;
 }
 
-int(__fastcall *g_pfnCHudRoundTimer_Draw)(void *, int, float) = (int(__fastcall *)(void *, int, float))0x1949D90;
-
-int __fastcall CHudRoundTimer_Draw(void *pthis, int i, float flTime)
-{
-	if (gConfigs.bEnableNewHud)
-		return 1;
-
-	if (g_iMod != MOD_ZB4)
-		return g_pfnCHudRoundTimer_Draw(pthis, i, flTime);
-
-	return 1;
-}
-
 void CHudRoundTimer::Init(void)
 {
 	m_iFlags |= HUD_ACTIVE;
-	
-	g_pMetaHookAPI->InlineHook(g_pfnCHudRoundTimer_Draw, CHudRoundTimer_Draw, (void *&)g_pfnCHudRoundTimer_Draw);
 }

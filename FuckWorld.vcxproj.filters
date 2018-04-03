@@ -147,6 +147,12 @@
     <Filter Include="Client\Studio">
       <UniqueIdentifier>{5bcb446b-b964-4828-804d-402bb5363b3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Client\VGUI">
+      <UniqueIdentifier>{c27acac7-44f5-4d5b-a8e1-c651963eaa0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\game_controls">
+      <UniqueIdentifier>{78d2bc5d-fdd7-43db-8459-0ff7bd277f4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseUI.cpp">
@@ -1055,7 +1061,22 @@
     <ClCompile Include="Client\Studio\GameStudioModelRenderer.cpp">
       <Filter>Client\Studio</Filter>
     </ClCompile>
-    <ClCompile Include="Client\PrecacheManager.cpp">
+    <ClCompile Include="Client\ViewPort.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp">
+      <Filter>Client\VGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\VGUI\vgui_int.cpp">
+      <Filter>Client\VGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\CounterStrikeViewport.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\links.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\Hook_Client.cpp">
       <Filter>Client</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2872,8 +2893,35 @@
     <ClInclude Include="Client\Studio\GameStudioModelRenderer.h">
       <Filter>Client\Studio</Filter>
     </ClInclude>
-    <ClInclude Include="Client\PrecacheManager.h">
+    <ClInclude Include="Client\ViewPort.h">
       <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\BackGroundPanel.h">
+      <Filter>Client\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\CSBackGroundPanel.h">
+      <Filter>Client\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\vgui_int.h">
+      <Filter>Client\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\CounterStrikeViewport.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\TeamFortressViewport.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGuiLibrary.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\links.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\Hook_Client.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceSDK\tier1\utlstack.h">
+      <Filter>SourceSDK\tier1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

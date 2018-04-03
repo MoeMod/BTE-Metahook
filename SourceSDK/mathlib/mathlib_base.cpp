@@ -19,6 +19,9 @@
 #pragma warning(disable:4244)   // "conversion from 'const int' to 'float', possible loss of data"
 #pragma warning(disable:4730)	// "mixing _m64 and floating point expressions may result in incorrect code"
 
+#include "mathlib/vector.h"
+#include "mathlib/vector2d.h"
+
 #include "mathlib.h"
 #include "vector.h"
 #if !defined( _X360 )

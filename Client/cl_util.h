@@ -143,7 +143,8 @@ inline void VectorClear(float *a) { a[0]=0.0;a[1]=0.0;a[2]=0.0;}
 float VectorNormalize (float *v);
 #define VectorInverse(x) ((x)[0] = -(x)[0], (x)[1] = -(x)[1], (x)[2] = -(x)[2])
 
-extern vec3_t vec3_origin;
+//extern vec3_t vec3_origin;
+extern const Vector vec3_origin;
 
 #ifdef MSC_VER
 // disable 'possible loss of data converting float to int' warning message
@@ -154,8 +155,6 @@ extern vec3_t vec3_origin;
 
 float *GetClientColor( int clientIndex );
 HSPRITE LoadSprite(const char *pszName);
-
-extern vec3_t g_ColorRed, g_ColorBlue, g_ColorYellow, g_ColorGrey;
 
 #define bound( min, num, max ) ((num) >= (min) ? ((num) < (max) ? (num) : (max)) : (min))
 #define RAD2DEG( x )	((float)(x) * (float)(180.f / M_PI))

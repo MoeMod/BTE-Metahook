@@ -39,8 +39,6 @@ void CHudBuffAWPSniperScope::End(void)
 	m_flStartTime = 0.0;
 }
 
-void DrawTexture(int index, int iX, int iY, int iW, int iH, int alpha);
-
 void CHudBuffAWPSniperScope::Draw(float flTime)
 {
 	if (!m_flStartTime)
@@ -48,10 +46,10 @@ void CHudBuffAWPSniperScope::Draw(float flTime)
 
 	int iH = ScreenHeight / 588.0f * 256.0f;
 
-	DrawTexture(g_Texture[m_iTexture].iTexture, ScreenWidth / 2 - iH, ScreenHeight / 2 - iH, iH, iH, 255);
-	DrawTexture(g_Texture[m_iTexture].iTexture, ScreenWidth / 2 - iH, ScreenHeight / 2 + iH, iH, -iH, 255);
-	DrawTexture(g_Texture[m_iTexture].iTexture, ScreenWidth / 2 + iH, ScreenHeight / 2 - iH, -iH, iH, 255);
-	DrawTexture(g_Texture[m_iTexture].iTexture, ScreenWidth / 2 + iH, ScreenHeight / 2 + iH, -iH, -iH, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, ScreenWidth / 2 - iH, ScreenHeight / 2 - iH, iH, iH, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, ScreenWidth / 2 - iH, ScreenHeight / 2 + iH, iH, -iH, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, ScreenWidth / 2 + iH, ScreenHeight / 2 - iH, -iH, iH, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, ScreenWidth / 2 + iH, ScreenHeight / 2 + iH, -iH, -iH, 255);
 
 
 	GL_DrawTGA2(g_Texture[m_iTgaBG].iTexture, ScreenWidth / 2 - g_Texture[m_iTgaBG].iWidth / 2, ScreenHeight / 4 * 3, g_Texture[m_iTgaBG].iWidth, g_Texture[m_iTgaBG].iHeight, 255);

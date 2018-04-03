@@ -7,6 +7,8 @@
 #include "common.h"
 #include <BaseUI.h>
 #include <EButtonManager.h>
+#include "CounterStrikeViewport.h"
+#include "Viewport.h"
 
 #include "HUD/ammo.h"
 #include "HUD/MVPBoard.h"
@@ -87,8 +89,9 @@ CHud::CHud() :
 
 void CHud::Init()
 {
+	CounterStrikeViewport_InstallHook();
 	ShutDown();
-
+	
 	/*m_NVG.Init();	// Actually it won't place any other element
 	m_Retina.Init();
 	m_BinkPlayer.Init();
@@ -133,6 +136,7 @@ void CHud::Init()
 	gEngfuncs.pfnHookUserMsg("EButton", MsgFunc_EButton);
 
 	//gExportfuncs.HUD_Init();
+	g_pViewPort->Init();
 }
 
 int CHud::VidInit()
@@ -243,7 +247,7 @@ int CHud::VidInit()
 	}
 
 	TheEButtons.Init();
-
+	g_pViewPort->VidInit();
 	//gExportfuncs.HUD_VidInit();
 	return 1;
 }
@@ -258,11 +262,31 @@ int CHud::Redraw(float time, int intermission)
 		m_iRes = 320;
 	else
 		m_iRes = 640;
-	m_iIntermission = intermission;
 
 	m_flOldTime = m_flTime;
 	m_flTime = time;
 	m_flTimeDelta = m_flTime - m_flOldTime;
+
+	if (m_flTimeDelta < 0)
+		m_flTimeDelta = 0;
+
+	if (m_iIntermission && !intermission)
+	{
+		m_iIntermission = intermission;
+
+		g_pViewPort->HideAllVGUIMenu();
+		//g_pViewPort->UpdateSpectatorPanel();
+	}
+	else if (!m_iIntermission && intermission)
+	{
+		m_iIntermission = intermission;
+
+		g_pViewPort->HideAllVGUIMenu();
+		//g_pViewPort->ShowScoreBoard();
+		//g_pViewPort->UpdateSpectatorPanel();
+	}
+
+	m_iIntermission = intermission;
 
 	if (hud_draw->value)
 	{
@@ -272,7 +296,7 @@ int CHud::Redraw(float time, int intermission)
 				p->Draw(time);
 		}
 	}
-
+	g_pViewPort->SetPaintEnabled(hud_draw->value);
 	return 1;//iResult;
 }
 

@@ -183,8 +183,6 @@ void CHudDestroyerSniperScope::End(void)
 	m_flStartTime = 0.0;
 }
 
-void DrawTexture(int index, int iX, int iY, int iW, int iH, int alpha);
-
 void CHudDestroyerSniperScope::Draw(float flTime)
 {
 	if (!m_flStartTime || !m_hBink)
@@ -216,14 +214,14 @@ void CHudDestroyerSniperScope::Draw(float flTime)
 	iX = ScreenWidth / 2 - iWidth;
 	iY = ScreenHeight / 2 - iHeight;
 
-	DrawTexture(g_Texture[m_iTexture].iTexture, iX, iY, iWidth, iHeight, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, iX, iY, iWidth, iHeight, 255);
 	iY = ScreenHeight / 2 + iHeight;
-	DrawTexture(g_Texture[m_iTexture].iTexture, iX, iY, iWidth, -iHeight, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, iX, iY, iWidth, -iHeight, 255);
 	iX = ScreenWidth / 2 + iWidth;
 	iY = ScreenHeight / 2 - iHeight;
-	DrawTexture(g_Texture[m_iTexture].iTexture, iX, iY, -iWidth, iHeight, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, iX, iY, -iWidth, iHeight, 255);
 	iY = ScreenHeight / 2 + iHeight;
-	DrawTexture(g_Texture[m_iTexture].iTexture, iX, iY, -iWidth, -iHeight, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, iX, iY, -iWidth, -iHeight, 255);
 
 	//iX = ScreenWidth / 2 + 130;
 	//iY -= 275;
