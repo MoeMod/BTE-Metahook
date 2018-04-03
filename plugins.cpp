@@ -19,11 +19,12 @@
 
 #include "Client/ViewPort_Interface.h"
 #include "Client/model.h"
-
+#include "Client/PlayerClassManager.h"
+#include "Client/WeaponManager.h"
 
 #include "vgui_controls/Controls.h"
 
-
+#include "Client/HUD/DrawTABPanel.h"
 #include "Client/HUD/nvg.h"
 #include "Client/HUD/overview.h"
 #include "Client/HUD/Statistics.h"
@@ -54,6 +55,21 @@ void CL_InitTEnt_part2(void);
 
 int(*g_pfnCL_Frame)(int);
 int CL_Frame(int intermission);
+
+
+
+#define CL_GETMODELBYINDEX_SIG "\x83\xEC\x10\x56\x57\x8B\x7C\x24\x1C\x8B\x34\xBD\x2A\x2A\x2A\x2A\x85\xF6"
+#define CL_ADDTORESOURCELIST_SIG "\x8B\x44\x24\x04\x8B\x88\x84\x00\x00\x00\x85\xC9"
+struct model_s *(*g_pfnCL_GetModelByIndex)(int index);
+struct model_s *CL_GetModelByIndex(int index);
+hook_t *g_phCL_GetModelByIndex;
+void(*g_pfnCL_AddToResourceList)(resource_t *pResource, resource_t *pList);
+hook_t *g_phCL_AddToResourceList;
+void CL_AddToResourceList(resource_t *pResource, resource_t *pList);
+
+//char g_szModelPrecache[512][MAX_QPATH];
+//int g_iModelPrecacheNums;
+std::vector<std::string> g_vecModelPrecache;
 
 typedef void(*type_Draw_CacheWadInitFromFile)(FileHandle_t *hFile, int len, char *name, int cacheMax, void *);
 //extern type_Draw_CacheWadInitFromFile	g_real_Draw_CacheWadInitFromFile;
@@ -192,10 +208,16 @@ void IPlugins::LoadEngine(void)
 	R_InstallHook();
 	LoadTGA_InstallHook(); // must after QGL_Init
 
-	// Unknown function name
+						   // Unknown function name
 	g_pMetaHookAPI->InlineHook((void *)0x1D0E720, CL_Frame, (void *&)g_pfnCL_Frame);
 
 	//g_pMetaHookAPI->InlineHook(g_pfnCL_WeaponAnim, CL_WeaponAnim, (void *&)g_pfnCL_WeaponAnim);
+
+	g_pfnCL_GetModelByIndex = (struct model_s *(*)(int))g_pMetaHookAPI->SearchPattern((void *)g_dwEngineBase, g_dwEngineSize, CL_GETMODELBYINDEX_SIG, sizeof(CL_GETMODELBYINDEX_SIG) - 1);
+	g_pfnCL_AddToResourceList = (void(*)(resource_t *, resource_t *))g_pMetaHookAPI->SearchPattern((void *)g_dwEngineBase, g_dwEngineSize, CL_ADDTORESOURCELIST_SIG, sizeof(CL_ADDTORESOURCELIST_SIG) - 1);
+
+	g_phCL_AddToResourceList = g_pMetaHookAPI->InlineHook(g_pfnCL_AddToResourceList, CL_AddToResourceList, (void *&)g_pfnCL_AddToResourceList);
+	g_phCL_GetModelByIndex = g_pMetaHookAPI->InlineHook(g_pfnCL_GetModelByIndex, CL_GetModelByIndex, (void *&)g_pfnCL_GetModelByIndex);
 
 	Model_InstallHook();
 
@@ -210,7 +232,7 @@ void IPlugins::LoadEngine(void)
 	g_pMetaHookAPI->InlineHook((void *)g_pfn_COM_MultipleOpenFile, COM_MultipleOpenFile, (void *&)g_pfn_COM_MultipleOpenFile);
 
 
-	
+
 	//g_pMetaHookAPI->InlineHook((void *)g_pfn_COM_MultipleOpenFile, COM_MultipleOpenFile, (void *&)g_pfn_COM_MultipleOpenFile);
 
 
@@ -325,6 +347,73 @@ void CL_InitTEnt_part2(void)
 	gTempEntsNew[2499].next = NULL;
 }
 
+struct model_s *CL_GetModelByIndex(int index)
+{
+	if (index == -1)
+		return NULL;
+
+	if (index >= 512)
+		return IEngineStudio.Mod_ForName(g_vecModelPrecache[index - 512].c_str(), false);
+
+	return g_pfnCL_GetModelByIndex(index);
+}
+
+void CL_AddToResourceList(resource_t *pResource, resource_t *pList)
+{
+	if (pResource->type == t_model)
+	{
+		if (strstr(pResource->szFileName, "models/v_") || strstr(pResource->szFileName, "models/p_"))
+		{
+			/*for (int i = 0; i < 512; i++)
+			{
+			if (!strcmp(g_szModelPrecache[i], pResource->szFileName))
+			return;
+			}
+
+			strcpy(g_szModelPrecache[g_iModelPrecacheNums++], pResource->szFileName);*/
+
+			if (std::find(g_vecModelPrecache.begin(), g_vecModelPrecache.end(), pResource->szFileName) != g_vecModelPrecache.end())
+				return;
+			g_vecModelPrecache.push_back(pResource->szFileName);
+
+			char name[64], text[64];
+			strcpy(name, pResource->szFileName + 9);
+			name[strlen(name) - 4] = 0;
+
+			sprintf(text, "gfx\\vgui\\%s.tga", name);
+			if (g_pFileSystem->FileExists(text))
+			{
+				text[strlen(text) - 4] = 0;
+				Hud().m_TGA.FindTexture(text);
+			}
+
+			if (pResource->szFileName[7] == 'v' && !strstr(pResource->szFileName, "_2.mdl"))
+				WeaponManager().OnPrecacheWeapon(name);
+			//LoadWeaponData(name);
+
+			if (strstr(name, "buff"))
+			{
+				HudTABBoard().SetHostOwnBuff(true);
+			}
+
+			return;
+		}
+
+		if (strstr(pResource->szFileName, "models/player/"))
+		{
+			char name[64];
+			strcpy(name, pResource->szFileName + 14);
+			name[strlen(name) - 4] = 0;
+			name[strlen(name) / 2] = 0;
+
+			//LoadClassData(name);
+			PlayerClassManager().OnPrecacheClass(name);
+		}
+	}
+
+	g_pfnCL_AddToResourceList(pResource, pList);
+}
+
 void Draw_CacheWadInitFromFile(FileHandle_t *hFile, int len, char *name, int cacheMax, void *wad)
 {
 	/*if (!strcmp(name, "decals.wad") && gConfigs.bEnableBlood == 0)
@@ -385,13 +474,13 @@ void Key_Event(int key, int down)
 	/*
 	if (key == VK_ESCAPE && down)
 	{
-		if (g_mgui_candraw)
-		{
-			BTEPanel_BuyMenu_Close();
-			if (IS_ZOMBIE_MODE)
-				BuyDefaultWeapon();
-			return;
-		}
+	if (g_mgui_candraw)
+	{
+	BTEPanel_BuyMenu_Close();
+	if (IS_ZOMBIE_MODE)
+	BuyDefaultWeapon();
+	return;
+	}
 	}
 	*/
 	return g_pfnKey_Event(key, down);

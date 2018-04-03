@@ -52,7 +52,7 @@ void Mod_LoadStudioModel(model_t *mod, byte *buffer)
 		((studiohdr_t*)buffer)->boneindex &= ~0x400;
 	}
 
-	/*char newname[MAX_QPATH];
+	char newname[MAX_QPATH];
 	strcpy(newname, mod->name);
 	newname[strlen(newname) - 4] = 0;
 
@@ -180,7 +180,7 @@ void Mod_LoadStudioModel(model_t *mod, byte *buffer)
 
 		g_iSequenceNums = 0;
 	}
-	*/
+	
 	g_pfnMod_LoadStudioModel(mod, buffer);
 
 	studiohdr_t	*pstudio;
