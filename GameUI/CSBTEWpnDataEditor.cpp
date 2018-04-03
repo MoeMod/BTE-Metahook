@@ -329,7 +329,7 @@ void CCSBTEWpnDataEditor::SetLayout()
 
 	//Search Weapons//
 	m_pWeaponSearch = new CCSBTEWpnDataEditorSearchBar(this, "Search Weapons");
-	m_pWeaponSearch->SetBounds(480, 30, 100, 20);
+	m_pWeaponSearch->SetBounds(375, 30, 200, 20);
 	m_pWeaponSearch->SetAllowNonAsciiCharacters(true);
 
 	/*m_pSearchWpn = new Button(this, "Search Weapons", "Search");
