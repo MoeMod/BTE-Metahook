@@ -84,7 +84,7 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(OutDir)$(ProjectName).dll" "D:\CSBTE\cstrike\MetaHook\Plugins\BTE.dll"</Command>
+      <Command>copy "$(OutDir)$(ProjectName).dll" "C:\Users\ByeMSC\Desktop\CS\CSBTE\cstrike\metahook\plugins\BTE.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
