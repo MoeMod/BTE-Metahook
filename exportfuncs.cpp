@@ -50,7 +50,6 @@
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
 #include "Client/TextureManager.h"
-#include "Client/PrecacheManager.h"
 
 #include "Client/HUD/health.h"
 #include "Client/HUD/DrawTABPanel.h"
@@ -273,7 +272,7 @@ void CL_VisEdicts_Patch(void)
 
 	//alloc here
 
-	cl_visedicts_new = (cl_entity_t **)malloc(cl_maxvisedicts*sizeof(cl_entity_t *));
+	cl_visedicts_new = (cl_entity_t **)malloc(cl_maxvisedicts * sizeof(cl_entity_t *));
 
 	if (!cl_visedicts_new)
 	{
@@ -344,7 +343,7 @@ void CL_VisEdicts_Patch(void)
 	count = 0;
 	memcpy(sig, "\x8B\x2A\x2A\x2A\x2A\x2A\x2A", 7);
 	*(DWORD *)(&sig[3]) = (DWORD)cl_visedicts_old;
-	
+
 	addr = (DWORD)(g_dwEngineBase + 0x1D45420 - 0x1D01000);/*gRefFuncs.R_DrawEntitiesOnList;*/
 	size = 0x350;
 	end = size + addr;
@@ -405,7 +404,7 @@ int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 	pEnginefuncs->pEventAPI->EV_WeaponAnimation = &Engfunc_WeaponAnim;
 	//pEnginefuncs->pEfxAPI->Draw_DecalIndex = &EfxAPI_DecalIndex;
 	//pEnginefuncs->pEfxAPI->Draw_DecalIndexFromName = &EfxAPI_DecalIndexFromName;
-//	pEnginefuncs->pEfxAPI->R_BulletImpactParticles = &EfxAPI_BulletImpactParticles;
+	//	pEnginefuncs->pEfxAPI->R_BulletImpactParticles = &EfxAPI_BulletImpactParticles;
 	pEnginefuncs->pfnClientCmd = &Engfunc_ClientCmd;
 	//pEnginefuncs->pEventAPI->EV_PlayerTrace = &EventAPI_PlayerTrace;
 	//pEnginefuncs->pEfxAPI->R_StreakSplash = &EfxAPI_R_StreakSplash;
@@ -636,9 +635,9 @@ void HUD_Init(void)
 	g_pcvarEnableConsole = gEngfuncs.pfnRegisterVariable("bte_enable_console", "1", FCVAR_ARCHIVE);
 
 	Hud().Init();
-	
+
 	developer = gEngfuncs.pfnGetCvarPointer("developer");
-	
+
 	BTEPanel_Init();
 	BTEBuyMenu_Init();
 	g_TeamMenu.Init();
@@ -656,7 +655,7 @@ void HUD_Init(void)
 	g_iSniperScope[3] = Hud().m_TGA.FindTexture("sprites\\scope_arc");
 
 	g_iScreenTexture = vgui::surface()->CreateNewTextureID();
-	
+
 	/*vgui::surface()->DrawSetTextureFile(g_iScreenTexture,"test",true,true);*/
 
 	/*int g_iScreenTexture = vgui::surface()->CreateNewTextureID();
@@ -666,7 +665,6 @@ void HUD_Init(void)
 	g_pMetaHookAPI->InlineHook(g_pfnHudSniperScope_Draw, HudSniperScope_Draw, (void *&)g_pfnHudSniperScope_Draw);
 
 	Weapon_Init();
-	PrecacheManager().Init();
 
 	g_pMetaHookAPI->InlineHook(g_pfnCHudSayText_Draw, CHudSayText_Draw, (void *&)g_pfnCHudSayText_Draw);
 
@@ -703,7 +701,6 @@ int HUD_VidInit(void)
 
 	WeaponManager().Reset();
 	PlayerClassManager().Reset();
-	PrecacheManager().VidInit();
 
 	DisplayInitialize();
 	MessageInitialize();
@@ -711,7 +708,7 @@ int HUD_VidInit(void)
 	BTEPanel_BuyMenu_Reset();
 	g_TeamMenu.Reset();
 	g_NormalZombieMenu.Reset();
-	
+
 	gHud3D.VidInit();
 	gHud3D_ZB.VidInit();
 
@@ -729,6 +726,8 @@ int HUD_VidInit(void)
 	memset(g_PlayerExtraInfo, 0, sizeof(g_PlayerExtraInfo));
 	memset(g_vecHostagePos, 0, sizeof(g_vecHostagePos));
 
+	extern std::vector<std::string> g_vecModelPrecache; // plugins.cpp
+	g_vecModelPrecache.clear();
 
 	cl_righthand = gEngfuncs.pfnGetCvarPointer("cl_righthand");
 
@@ -830,7 +829,7 @@ void HUD_ProcessPlayerState(struct entity_state_s *dst, const struct entity_stat
 					WeaponManager().SetPlayerWeapon(src->number, 0, Weapon);
 					WeaponManager().SetPlayerWeapon(src->number, iSlot, Weapon);
 				}
-					//g_iCustomWeapon[src->number][0] = g_iCustomWeapon[src->number][iSlot] = iBteWpn;
+				//g_iCustomWeapon[src->number][0] = g_iCustomWeapon[src->number][iSlot] = iBteWpn;
 			}
 		}
 	}
@@ -842,11 +841,11 @@ void HUD_ProcessPlayerState(struct entity_state_s *dst, const struct entity_stat
 int HUD_Redraw(float time, int intermission)
 {
 	HudNVG().Draw(time);
-	
+
 	int iResult = gExportfuncs.HUD_Redraw(time, intermission);
-	
+
 	DisplayRedraw(time, intermission);
-	
+
 	Hud().Redraw(time, intermission);
 
 	MGUI_Redraw();
@@ -868,7 +867,7 @@ void HUD_DrawTransparentTriangles(void)
 
 	if (HudOverview().CanDraw())
 		HudOverview().EntityESP();
-		
+
 	//gEngfuncs.Con_Printf("%d\n", glGetError());
 }
 
@@ -1339,7 +1338,7 @@ void V_CalcRefdef(struct ref_params_s *pParams)
 
 					Engfunc_Call_AddVisibleEntity(&(g_pDualSwordEffect2->entity));
 				}
-				
+
 				//g_pfnR_DrawSpriteModel(&(g_pDualSwordEffect1->entity));
 				//g_pfnR_DrawSpriteModel(&(g_pDualSwordEffect2->entity));
 			}
@@ -1569,17 +1568,17 @@ int HUD_GetStudioModelInterface(int iVersion, struct r_studio_interface_s **ppSt
 	StudioFuncs_InstallHook();
 
 	Window_VidInit();
-	
+
 	//Hud().m_scrinfo.iSize = sizeof(Hud().m_scrinfo);
 	//gEngfuncs.pfnGetScreenInfo(&Hud().m_scrinfo);
-	
+
 	//char *value;
 
-	
+
 	/*
 	if (ScreenInfo().iHeight <= 600 && ScreenInfo().iWidth <= 800)
-		if (!strcmp(gConfigs.szLanguage, "schinese"))
-			MessageBoxA(NULL, "游戏正在不推荐的分辨率运行，请尝试使用更高分辨率。", "警告", MB_OK | MB_ICONWARNING);
+	if (!strcmp(gConfigs.szLanguage, "schinese"))
+	MessageBoxA(NULL, "游戏正在不推荐的分辨率运行，请尝试使用更高分辨率。", "警告", MB_OK | MB_ICONWARNING);
 	*/
 	LogToFile("===初始化模型接口===");
 
@@ -1629,7 +1628,7 @@ int HUD_GetStudioModelInterface(int iVersion, struct r_studio_interface_s **ppSt
 	//DrawTgaLoadList(); !!!
 	MGUI_Init();
 	CVAR_Init();
-	
+
 
 	g_Font.Init("font.ttf");
 	g_FontBold.Init("font_bold.ttf");
@@ -1664,28 +1663,28 @@ int Engfunc_AddVisibleEntity(struct cl_entity_s *pEntity)
 	/*
 	if (strstr(pEntity->model->name, "zb_skill_headshot"))
 	{
-		cl_entity_t *pPlayer = NULL;
-		pPlayer = gEngfuncs.GetEntityByIndex(pEntity->curstate.aiment);
-		if (!pEntity) Engfunc_Call_AddVisibleEntity(pEntity);
-		//if(vPlayer[pEntity->curstate.aiment].team==2)
-		//pEntity->curstate.renderamt = 0;
+	cl_entity_t *pPlayer = NULL;
+	pPlayer = gEngfuncs.GetEntityByIndex(pEntity->curstate.aiment);
+	if (!pEntity) Engfunc_Call_AddVisibleEntity(pEntity);
+	//if(vPlayer[pEntity->curstate.aiment].team==2)
+	//pEntity->curstate.renderamt = 0;
 
-		pEntity->origin[0] = pPlayer->origin[0];
-		pEntity->origin[1] = pPlayer->origin[1];
-		pEntity->origin[2] = pPlayer->origin[2];
+	pEntity->origin[0] = pPlayer->origin[0];
+	pEntity->origin[1] = pPlayer->origin[1];
+	pEntity->origin[2] = pPlayer->origin[2];
 
-		return Engfunc_Call_AddVisibleEntity(pEntity);
+	return Engfunc_Call_AddVisibleEntity(pEntity);
 	}*/
 
 	/*
 	if (pEntity->curstate.scale < 0.3 && pEntity->model->name && strstr(pEntity->model->name, "flame3"))
 	{
-		cl_entity_t *pViewEntity = gEngfuncs.GetViewModel();
-		if (!pEntity) Engfunc_Call_AddVisibleEntity(pEntity);
+	cl_entity_t *pViewEntity = gEngfuncs.GetViewModel();
+	if (!pEntity) Engfunc_Call_AddVisibleEntity(pEntity);
 
-		pEntity->origin = pViewEntity->attachment[1];
+	pEntity->origin = pViewEntity->attachment[1];
 
-		return Engfunc_Call_AddVisibleEntity(pEntity);
+	return Engfunc_Call_AddVisibleEntity(pEntity);
 	}
 	*/
 	if (pEntity->curstate.iuser4 == MUZZLEFLASH_GUITAR)
@@ -1804,13 +1803,13 @@ void HUD_StudioEvent(const struct mstudioevent_s *pEvent, const struct cl_entity
 				pEnt->entity.curstate.rendermode = kRenderTransAdd;
 				pEnt->entity.curstate.renderamt = 150;
 				pEnt->entity.curstate.scale = RANDOM_FLOAT(0.3, 0.4);
-				pEnt->entity.baseline.origin = Vector(0,0,50);
+				pEnt->entity.baseline.origin = Vector(0, 0, 50);
 
 				pEnt->die = cl.time + 0.57;
 				pEnt->callback = SmokeRise_Wind; /*bWind ? SmokeRise_Wind : SmokeRise;*/
 				pEnt->flags |= FTENT_CLIENTCUSTOM | FTENT_PERSIST | FTENT_SPRANIMATELOOP;
 			}
-			
+
 		}
 
 		if (pEvent->event != 5001 && pEvent->event != 5011 && pEvent->event != 5021 && pEvent->event != 5031)
@@ -2078,7 +2077,7 @@ void HUD_StudioEvent(const struct mstudioevent_s *pEvent, const struct cl_entity
 					pTemp->entity.angles[2] = gEngfuncs.pfnRandomLong(0, index ? 359 : 20);
 
 				Engfunc_Call_AddVisibleEntity(&(pTemp->entity));
-				
+
 			}
 			return;
 		}
@@ -2108,7 +2107,7 @@ void HUD_WeaponsPostThink(local_state_s *from, local_state_s *to, usercmd_t *cmd
 		gEngfuncs.pEventAPI->EV_KillEvents(player->index, "events/blocksmg.sc");
 	}
 
-	if (player && (g_iCurrentWeapon != to->client.m_iId || g_iViewModel != to->client.viewmodel ))
+	if (player && (g_iCurrentWeapon != to->client.m_iId || g_iViewModel != to->client.viewmodel))
 	{
 		CheckViewEntity();
 	}
@@ -2140,11 +2139,11 @@ void EngFunc_TempEntPlaySound(struct tempent_s *pTemp, float damp)
 	if (pTemp == NULL)
 		return;
 
-	if (pTemp->entity.model && 
+	if (pTemp->entity.model &&
 		Q_stristr(pTemp->entity.model->name, "block_shell") &&
-			(
-				pTemp->hitSound == BOUNCE_SHELL ||
-				pTemp->hitSound == BOUNCE_SHOTSHELL
+		(
+			pTemp->hitSound == BOUNCE_SHELL ||
+			pTemp->hitSound == BOUNCE_SHOTSHELL
 			)
 		)
 	{
@@ -2266,21 +2265,21 @@ int HUD_AddEntity(int iType, struct cl_entity_s *pEntity, const char *pszModel)
 			/*
 			if (Q_stristr(pEntity->model->name, "/w_"))
 			{
-				if (g_Entity_Index[pEntity->index] < cl.time && !(IS_ZOMBIE_MODE && vPlayer[gEngfuncs.GetLocalPlayer()->index].team == 2) && !(pEntity->curstate.velocity.Length()))
-				{
-					TEMPENTITY *pEffect;
-					pEffect = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(pEntity->origin, IEngineStudio.Mod_ForName("models/ef_gundrop.mdl", false));
-					pEffect->entity.curstate.frame = 0;
-					pEffect->entity.curstate.framerate = 1;
-					pEffect->entity.baseline.iuser1 = pEntity->index;
-					pEffect->die = cl.time + 5.0;
-					pEffect->callback = GunDropEffect_FollowThink;
-					
-					pEffect->clientIndex = pEntity->index;
-					pEffect->flags |= FTENT_PLYRATTACHMENT | FTENT_CLIENTCUSTOM;
+			if (g_Entity_Index[pEntity->index] < cl.time && !(IS_ZOMBIE_MODE && vPlayer[gEngfuncs.GetLocalPlayer()->index].team == 2) && !(pEntity->curstate.velocity.Length()))
+			{
+			TEMPENTITY *pEffect;
+			pEffect = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(pEntity->origin, IEngineStudio.Mod_ForName("models/ef_gundrop.mdl", false));
+			pEffect->entity.curstate.frame = 0;
+			pEffect->entity.curstate.framerate = 1;
+			pEffect->entity.baseline.iuser1 = pEntity->index;
+			pEffect->die = cl.time + 5.0;
+			pEffect->callback = GunDropEffect_FollowThink;
 
-					g_Entity_Index[pEntity->index] = cl.time + 5.0;
-				}
+			pEffect->clientIndex = pEntity->index;
+			pEffect->flags |= FTENT_PLYRATTACHMENT | FTENT_CLIENTCUSTOM;
+
+			g_Entity_Index[pEntity->index] = cl.time + 5.0;
+			}
 			}
 			*/
 			if (Q_stristr(pEntity->model->name, "s_grenade_spark"))
@@ -2320,7 +2319,7 @@ int HUD_AddEntity(int iType, struct cl_entity_s *pEntity, const char *pszModel)
 						pEnt->entity.curstate.framerate = gEngfuncs.pfnRandomFloat(3.0, 4.0);
 						pEnt->die = cl.time + pEnt->frameMax / pEnt->entity.curstate.framerate;
 					}
-					
+
 
 					pModel = IEngineStudio.Mod_ForName("sprites/hotglow.spr", 0);
 					pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(origin, pModel);
@@ -2448,7 +2447,7 @@ int HUD_Key_Event(int eventcode, int keynum, const char *pszCurrentBinding)
 		g_Next_Key_CanUse = cl.time + 0.15;
 
 		//if (keynum == K_ESCAPE)
-			//BTEPanel_BuyMenu_Close();
+		//BTEPanel_BuyMenu_Close();
 
 		if ((keynum != 96 && keynum != 27) && (pszCurrentBinding && stricmp(pszCurrentBinding, "snapshot")))
 		{
@@ -2474,7 +2473,7 @@ void HUD_CreateEntities()
 {
 	gExportfuncs.HUD_CreateEntities();
 
-	UpdateBeams();	
+	UpdateBeams();
 }
 
 void HUD_DrawNormalTriangles(void)

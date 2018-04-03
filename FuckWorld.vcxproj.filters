@@ -1055,9 +1055,6 @@
     <ClCompile Include="Client\Studio\GameStudioModelRenderer.cpp">
       <Filter>Client\Studio</Filter>
     </ClCompile>
-    <ClCompile Include="Client\PrecacheManager.cpp">
-      <Filter>Client</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2871,9 +2868,6 @@
     </ClInclude>
     <ClInclude Include="Client\Studio\GameStudioModelRenderer.h">
       <Filter>Client\Studio</Filter>
-    </ClInclude>
-    <ClInclude Include="Client\PrecacheManager.h">
-      <Filter>Client</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

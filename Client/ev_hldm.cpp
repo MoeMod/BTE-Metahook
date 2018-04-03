@@ -1001,7 +1001,7 @@ void EV_HLDM_FireBullets(int idx, float *forward, float *right, float *up, int c
 					if (iBulletType == BULLET_PLAYER_JANUS11)
 					{
 						BEAM *pBeam;
-						pBeam = gEngfuncs.pEfxAPI->R_BeamPoints(vecSrc, tr.endpos, iBeamModelIndex, 0.5, 0.3, 0.0, 1.0, 0, 0, 0, 255 / 255.0, 20 / 255.0, 50 / 255.0);
+						pBeam = gEngfuncs.pEfxAPI->R_BeamPoints(vecSrc, tr.endpos, iBeamModelIndex, 0.5, 0.3, 0.0, 1.0, 0, 0, 0, 78 / 255.0, 37 / 255.0, 29 / 255.0);
 
 						if (pBeam)
 							pBeam->flags |= FBEAM_FADEIN;
@@ -4922,7 +4922,6 @@ void EV_FireM1887XMAS(struct event_args_s *args)
 	vec3_t origin;
 	vec3_t angles;
 	vec3_t velocity;
-	int shell;
 	vec3_t vecSrc, vecAiming;
 	vec3_t up, right, forward;
 	cl_entity_t *ent;
@@ -4943,8 +4942,6 @@ void EV_FireM1887XMAS(struct event_args_s *args)
 	angles[1] += args->iparam2 / 100.0;
 	
 	gEngfuncs.pfnAngleVectors(angles, forward, right, up);
-	
-	shell = gEngfuncs.pEventAPI->EV_FindModelIndex(WeaponData.szShell);		
 	
 	if (EV_IsLocal(idx))
 	{
@@ -9797,8 +9794,6 @@ void EV_FireJanus11(struct event_args_s *args)
 	}
 
 	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, WeaponData.szSoundSilen2, 1.0, 0.48, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
-
-	//gEngfuncs.pfnClientCmd("stopsound");
 
 	EV_GetGunPosition(args, vecSrc, origin);
 
