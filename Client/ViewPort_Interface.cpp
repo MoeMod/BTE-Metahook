@@ -1,14 +1,20 @@
 #include <metahook.h>
-#include "BaseUI.h"
-#include "ViewPort_Interface.h"
-#include <EngineInterface.h>
+#include <vgui_controls/Controls.h>
+using namespace vgui;
 
+#include <Interface\vgui\IEngineVGui.h>
+#include <Interface\IClientVGUI.h>
+#include <VGUI\IPanel.h>
+#include <Interface\IEngineSurface.h>
+#include <VGUI\IPanel.h>
 #include <vgui_controls/Panel.h>
 #include <VGUI/ISurface.h>
-#include <IGameUIFuncs.h>
-#include "Configs.h"
 
-IEngineVGui *enginevgui;
+#include <EngineInterface.h>
+#include "ViewPort.h"
+#include "ViewPort_Interface.h"
+
+vgui::IEngineVGui *enginevgui;
 IClientVGUI *g_pClientVGUI;
 
 EXPOSE_SINGLE_INTERFACE(CClientVGUI, IClientVGUI, CLIENTVGUI_INTERFACE_VERSION);
@@ -29,12 +35,15 @@ void CClientVGUI::Initialize(CreateInterfaceFn *factories, int count)
 
 void CClientVGUI::Start(void)
 {
-	return g_pfnCClientVGUI_Start(this, 0);
+	g_pfnCClientVGUI_Start(this, 0);
+	g_pViewPort = new CViewport();
+	g_pViewPort->Start();
 }
 
 void CClientVGUI::SetParent(vgui::VPANEL parent)
 {
-	return g_pfnCClientVGUI_SetParent(this, 0, parent);
+	g_pfnCClientVGUI_SetParent(this, 0, parent);
+	g_pViewPort->SetParent(parent);
 }
 
 bool CClientVGUI::UseVGUI1(void)
@@ -49,16 +58,19 @@ void CClientVGUI::HideScoreBoard(void)
 
 void CClientVGUI::HideAllVGUIMenu(void)
 {
+	g_pViewPort->HideAllVGUIMenu();
 	return g_pfnCClientVGUI_HideAllVGUIMenu(this, 0);
 }
 
 void CClientVGUI::ActivateClientUI(void)
 {
+	g_pViewPort->ActivateClientUI();
 	return g_pfnCClientVGUI_ActivateClientUI(this, 0);
 }
 
 void CClientVGUI::HideClientUI(void)
 {
+	g_pViewPort->HideClientUI();
 	return g_pfnCClientVGUI_HideClientUI(this, 0);
 }
 

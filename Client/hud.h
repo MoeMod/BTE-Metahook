@@ -197,3 +197,17 @@ extern struct cvar_s *cl_min_t;
 extern struct cvar_s *cl_min_ct;
 extern struct cvar_s *cl_corpsestay;
 extern struct cvar_s *cl_corpsefade;
+
+#define MAX_HOSTAGES 24
+#define MAX_TEAM_NAME 16
+
+struct hostage_info_t
+{
+	bool dead;
+	Vector origin;
+	int health;
+	float radarflash;
+	int radarflashon;
+	int radarflashes;
+	char teamname[MAX_TEAM_NAME];
+};

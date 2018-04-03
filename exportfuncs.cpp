@@ -47,6 +47,7 @@
 #include "util.h"
 #include "weapons.h"
 #include "weaponinfo.h"
+#include "Client/Hook_Client.h"
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
 #include "Client/TextureManager.h"
@@ -55,11 +56,7 @@
 #include "Client/HUD/DrawTABPanel.h"
 #include "Client/HUD/overview.h"
 #include "Client/HUD/nvg.h"
-#include "Client/HUD/sfsniper.h"
-#include "Client/HUD/destroyer.h"
-#include "Client/HUD/buffawp.h"
 #include "Client/HUD/zb3ui.h"
-
 #include "Client/HUD/DrawTGA.h"
 
 #include "Renderer/pbo.h"
@@ -121,20 +118,7 @@ float g_flTutorClose;
 
 int g_iWeaponAnim = 0;
 
-int(__fastcall *g_pfnHudSniperScope_Draw)(void *, int, float flTime) = (int(__fastcall *)(void *, int, float))0x1961AD0;
-int __fastcall HudSniperScope_Draw(void *p, int i, float f);
-void(__fastcall *g_pfnCHudSayText_Draw)(void *, int, float) = (void(__fastcall *)(void *, int, float))0x1960A10;
-
 cl_entity_t **r_currententity;
-
-void __fastcall CHudSayText_Draw(void *pthis, int, float flTime)
-{
-	if (gConfigs.bEnableNewHud)
-	{
-		return;
-	}
-	return g_pfnCHudSayText_Draw(pthis, 0, flTime);
-}
 
 char TranslateKeyCharacter(int keynum, BOOL bIgnoreShift, BOOL bIgnorePad)
 {
@@ -382,7 +366,7 @@ int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 	memcpy(&gEfxAPI, pEnginefuncs->pEfxAPI, sizeof(efx_api_s));
 
 	InitCrashHandle();
-	INEIN_InstallHook();
+	//INEIN_InstallHook();
 	SVC_Init();
 	PBO_Init();
 
@@ -426,148 +410,6 @@ int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 	return iResult;
 }
 
-void DrawTexture(int index, int iX, int iY, int iW, int iH, int alpha)
-{
-	Tri_Enable(GL_TEXTURE_2D);
-	Tri_Enable(GL_BLEND);
-	Tri_BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	Tri_BindTexture(GL_TEXTURE_2D, index);
-	gEngfuncs.pTriAPI->Color4ub(255, 255, 255, alpha);
-	gEngfuncs.pTriAPI->Begin(TRI_QUADS);
-	gEngfuncs.pTriAPI->TexCoord2f(0.01, 0.99);
-	gEngfuncs.pTriAPI->Vertex3f(iX, iY + iH, 0);
-	gEngfuncs.pTriAPI->TexCoord2f(0.99, 0.99);
-	gEngfuncs.pTriAPI->Vertex3f(iX + iW, iY + iH, 0);
-	gEngfuncs.pTriAPI->TexCoord2f(0.99, 0.01);
-	gEngfuncs.pTriAPI->Vertex3f(iX + iW, iY, 0);
-	gEngfuncs.pTriAPI->TexCoord2f(0.01, 0.01);
-	gEngfuncs.pTriAPI->Vertex3f(iX, iY, 0);
-	gEngfuncs.pTriAPI->End();
-}
-
-int __fastcall HudSniperScope_Draw(void *p, int i, float f)
-{
-	if (WeaponManager().GetCurWeapon().iSniperScopeType == 1 && 0.0 < Hud().m_FOV && Hud().m_FOV <= 40.0)
-	{
-		int iH = ScreenHeight / 592.0f * 256.0f;
-		int iY = ScreenHeight / 2 - iH;
-		int iX = ScreenWidth / 2 - iH;
-		DrawTexture(g_Texture[WeaponManager().GetCurWeapon().iSniperScope[0]].iTexture, iX, iY, iH, iH, 255);
-		DrawTexture(g_Texture[WeaponManager().GetCurWeapon().iSniperScope[1]].iTexture, ScreenWidth / 2, iY, iH, iH, 255);
-		DrawTexture(g_Texture[WeaponManager().GetCurWeapon().iSniperScope[2]].iTexture, iX, ScreenHeight / 2, iH, iH, 255);
-		DrawTexture(g_Texture[WeaponManager().GetCurWeapon().iSniperScope[3]].iTexture, ScreenWidth / 2, ScreenHeight / 2, iH, iH, 255);
-
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth / 2 - iH, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(ScreenWidth / 2 + iH, 0, ScreenWidth / 2 - iH, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth, ScreenHeight / 2 - iH, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, ScreenHeight / 2 + iH, ScreenWidth, ScreenHeight / 2 - iH, 0, 0, 0, 255);
-
-		/*gEngfuncs.pfnFillRGBABlend(ScreenWidth/2,0,1,ScreenHeight,0,0,0,255);
-		gEngfuncs.pfnFillRGBABlend(0,ScreenHeight/2+1,ScreenWidth,1,0,0,0,255);*/
-		return g_pfnHudSniperScope_Draw(p, i, f);
-	}
-	if (WeaponManager().GetCurWeapon().iSniperScopeType == 2 && 0.0 < Hud().m_FOV && Hud().m_FOV <= 40.0)
-	{
-		int iH = ScreenHeight / 588.0f * 256.0f;
-		int iY = ScreenHeight / 2 - iH;
-		int iX = ScreenWidth / 2 - iH;
-		DrawTexture(g_Texture[g_iSniperScope[0]].iTexture, iX, iY, iH, iH, 255);
-		DrawTexture(g_Texture[g_iSniperScope[1]].iTexture, ScreenWidth / 2, iY, iH, iH, 255);
-		DrawTexture(g_Texture[g_iSniperScope[2]].iTexture, iX, ScreenHeight / 2, iH, iH, 255);
-		DrawTexture(g_Texture[g_iSniperScope[3]].iTexture, ScreenWidth / 2, ScreenHeight / 2, iH, iH, 255);
-
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth / 2 - iH, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(ScreenWidth / 2 + iH, 0, ScreenWidth / 2 - iH, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth, ScreenHeight / 2 - iH, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, ScreenHeight / 2 + iH, ScreenWidth, ScreenHeight / 2 - iH, 0, 0, 0, 255);
-
-		/*gEngfuncs.pfnFillRGBABlend(ScreenWidth/2,0,1,ScreenHeight,0,0,0,255);
-		gEngfuncs.pfnFillRGBABlend(0,ScreenHeight/2+1,ScreenWidth,1,0,0,0,255);*/
-		return 0/*g_pfnHudSniperScope_Draw(p,i,f)*/;
-	}
-	if (pCvar_DrawScope->value != 0 && g_iBTEWeapon != WPN_SFSNIPER && g_iBTEWeapon != WPN_DESTROYER && g_iBTEWeapon != WPN_BUFFAWP && 0.0 < Hud().m_FOV && Hud().m_FOV <= 40.0)
-	{
-		//LogToFile("BreakPoint");
-		int tid;
-		float scale;
-		float x, y, w, h;
-
-		if (g_iBTEWeapon == WPN_M200)
-			tid = Hud().m_TGA.GetTGA("other\\scope_m200");
-		else
-			tid = Hud().m_TGA.GetTGA("other\\scope");
-
-		scale = ScreenHeight / 0.85 / g_MHTga[tid].height;
-
-		w = g_MHTga[tid].width * scale;
-		h = g_MHTga[tid].height * scale;
-
-		x = ScreenWidth / 2 - w / 2;
-		y = ScreenHeight / 2 - h / 2;
-
-		Tri_Enable(GL_TEXTURE_2D);
-		Tri_BindTexture(GL_TEXTURE_2D, g_MHTga[tid].texid);
-		if (g_iVideoMode)
-		{
-			glColor4ub(255, 255, 255, 255);
-		}
-		else gEngfuncs.pTriAPI->Color4ub(255, 255, 255, 255);
-		Tri_Enable(GL_BLEND);
-		Tri_Enable(GL_ALPHA_TEST);
-		Tri_BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		Tri_AlphaFunc(GL_GREATER, 0.0);
-		gEngfuncs.pTriAPI->Begin(TRI_QUADS);
-		gEngfuncs.pTriAPI->TexCoord2f(0, 1);
-		gEngfuncs.pTriAPI->Vertex3f(x, y + h, 0);
-		gEngfuncs.pTriAPI->TexCoord2f(1, 1);
-		gEngfuncs.pTriAPI->Vertex3f(x + w, y + h, 0);
-		gEngfuncs.pTriAPI->TexCoord2f(1, 0);
-		gEngfuncs.pTriAPI->Vertex3f(x + w, y, 0);
-		gEngfuncs.pTriAPI->TexCoord2f(0, 0);
-		gEngfuncs.pTriAPI->Vertex3f(x, y, 0);
-		gEngfuncs.pTriAPI->End();
-
-		int LENGTH_SCOPE = w / 2;
-
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth / 2 - LENGTH_SCOPE, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(ScreenWidth / 2 + LENGTH_SCOPE, 0, ScreenWidth / 2 - LENGTH_SCOPE, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth, ScreenHeight / 2 - LENGTH_SCOPE, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, ScreenHeight / 2 + LENGTH_SCOPE, ScreenWidth, ScreenHeight / 2 - LENGTH_SCOPE, 0, 0, 0, 255);
-
-		// Don't know why
-		gEngfuncs.pfnDrawConsoleString(-10, -10, "!");
-
-		return 0;
-	}
-
-	if (g_iBTEWeapon == WPN_SFSNIPER)
-	{
-		HudSfsniperScope().Draw(f);
-
-		return 0;
-	}
-
-	if (g_iBTEWeapon == WPN_DESTROYER)
-	{
-		HudDestroyerSniperScope().Draw(f);
-
-		return 0;
-	}
-
-	if (g_iBTEWeapon == WPN_BUFFAWP)
-	{
-		HudBuffAWPSniperScope().Draw(f);
-	}
-
-	return g_pfnHudSniperScope_Draw(p, i, f);
-}
-
-int(__fastcall *g_pfnCHudAmmo_DrawCrosshair)(void *, int, float flTime, int weaponid) = (int(__fastcall *)(void *, int, float, int))0x1940430;
-
-int __fastcall CHudAmmo_DrawCrosshair(void *pthis, int, float flTime, int weaponid)
-{
-	return 1;
-}
 void Cmd_ShowPos()
 {
 	char text[256];
@@ -661,14 +503,12 @@ void HUD_Init(void)
 	/*int g_iScreenTexture = vgui::surface()->CreateNewTextureID();
 	vgui::surface()->DrawSetTextureFile(g_iScreenTexture,"models\\texture\\#256256m2_p",true,true);*/
 
-	g_pMetaHookAPI->InlineHook(g_pfnCHudAmmo_DrawCrosshair, CHudAmmo_DrawCrosshair, (void *&)g_pfnCHudAmmo_DrawCrosshair);
-	g_pMetaHookAPI->InlineHook(g_pfnHudSniperScope_Draw, HudSniperScope_Draw, (void *&)g_pfnHudSniperScope_Draw);
+	
+	
 
 	Weapon_Init();
 
-	g_pMetaHookAPI->InlineHook(g_pfnCHudSayText_Draw, CHudSayText_Draw, (void *&)g_pfnCHudSayText_Draw);
-
-
+	ClientLinks_InstallHook();
 
 	/*g_hCurrentFont = vgui::surface()->CreateFont();
 	vgui::surface()->AddCustomFontFile("df_gb_y9.ttf");

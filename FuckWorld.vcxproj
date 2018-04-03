@@ -126,11 +126,13 @@
     <ClCompile Include="BugReport\CrashHandle.cpp" />
     <ClCompile Include="client.cpp" />
     <ClCompile Include="Client\com_weapons.cpp" />
+    <ClCompile Include="Client\CounterStrikeViewport.cpp" />
     <ClCompile Include="Client\EButtonManager.cpp" />
     <ClCompile Include="Client\events.cpp" />
     <ClCompile Include="Client\ev_common.cpp" />
     <ClCompile Include="Client\ev_hldm.cpp" />
     <ClCompile Include="Client\hl_weapons.cpp" />
+    <ClCompile Include="Client\Hook_Client.cpp" />
     <ClCompile Include="Client\hud.cpp" />
     <ClCompile Include="Client\HUD3D.cpp" />
     <ClCompile Include="Client\HUD3D_ZB.cpp" />
@@ -170,6 +172,7 @@
     <ClCompile Include="Client\HUD\zombieescape.cpp" />
     <ClCompile Include="Client\HUD\ZombieSelect.cpp" />
     <ClCompile Include="Client\HUD\zse.cpp" />
+    <ClCompile Include="Client\links.cpp" />
     <ClCompile Include="Client\message.cpp" />
     <ClCompile Include="Client\MGUI\BTEPanel.cpp" />
     <ClCompile Include="Client\MGUI\mgui.cpp" />
@@ -184,6 +187,9 @@
     <ClCompile Include="Client\Studio\studio_util.cpp" />
     <ClCompile Include="Client\svc_hook.cpp" />
     <ClCompile Include="Client\TextureManager.cpp" />
+    <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp" />
+    <ClCompile Include="Client\VGUI\vgui_int.cpp" />
+    <ClCompile Include="Client\ViewPort.cpp" />
     <ClCompile Include="Client\ViewPort_Interface.cpp" />
     <ClCompile Include="Client\WeaponManager.cpp" />
     <ClCompile Include="Client\weapons.cpp" />
@@ -442,10 +448,12 @@
     <ClInclude Include="Client\cdll_dll.h" />
     <ClInclude Include="Client\cl_util.h" />
     <ClInclude Include="Client\com_weapons.h" />
+    <ClInclude Include="Client\CounterStrikeViewport.h" />
     <ClInclude Include="Client\EButtonManager.h" />
     <ClInclude Include="Client\events.h" />
     <ClInclude Include="Client\eventscripts.h" />
     <ClInclude Include="Client\ev_hldm.h" />
+    <ClInclude Include="Client\Hook_Client.h" />
     <ClInclude Include="Client\hud.h" />
     <ClInclude Include="Client\HUD3D.h" />
     <ClInclude Include="Client\HUD3D_ZB.h" />
@@ -485,6 +493,7 @@
     <ClInclude Include="Client\HUD\zombieescape.h" />
     <ClInclude Include="Client\HUD\ZombieSelect.h" />
     <ClInclude Include="Client\HUD\zse.h" />
+    <ClInclude Include="Client\links.h" />
     <ClInclude Include="Client\message.h" />
     <ClInclude Include="Client\MGUI\BTEPanel.h" />
     <ClInclude Include="Client\MGUI\mgui.h" />
@@ -498,7 +507,13 @@
     <ClInclude Include="Client\Studio\StudioModelRenderer.h" />
     <ClInclude Include="Client\Studio\studio_util.h" />
     <ClInclude Include="Client\svc_hook.h" />
+    <ClInclude Include="Client\TeamFortressViewport.h" />
     <ClInclude Include="Client\TextureManager.h" />
+    <ClInclude Include="Client\VGuiLibrary.h" />
+    <ClInclude Include="Client\VGUI\BackGroundPanel.h" />
+    <ClInclude Include="Client\VGUI\CSBackGroundPanel.h" />
+    <ClInclude Include="Client\VGUI\vgui_int.h" />
+    <ClInclude Include="Client\ViewPort.h" />
     <ClInclude Include="Client\ViewPort_Interface.h" />
     <ClInclude Include="Client\WeaponManager.h" />
     <ClInclude Include="Client\weapons.h" />
@@ -924,6 +939,7 @@
     <ClInclude Include="SourceSDK\tier1\utlmemory.h" />
     <ClInclude Include="SourceSDK\tier1\utlqueue.h" />
     <ClInclude Include="SourceSDK\tier1\utlrbtree.h" />
+    <ClInclude Include="SourceSDK\tier1\utlstack.h" />
     <ClInclude Include="SourceSDK\tier1\utlstring.h" />
     <ClInclude Include="SourceSDK\tier1\UtlStringMap.h" />
     <ClInclude Include="SourceSDK\tier1\utlsymbol.h" />

@@ -15,6 +15,8 @@
 
 #include "GameUI/CSBTEMapLoading.h"
 
+#include "Client/ViewPort.h"
+
 #include "Client/HUD/zse.h"
 #include "Client/HUD/zb4ui.h"
 #include "Client/HUD/zb3ui.h"
@@ -2173,6 +2175,8 @@ int MsgFunc_ServerName(const char *pszName, int iSize, void *pbuf)
 
 	if (g_hCSBTEMapLoading)
 		g_hCSBTEMapLoading->SetServerName(pszServerName);
+
+	strcpy(g_pViewPort->m_szServerName, pszServerName);
 
 	return pmServerName(pszName, iSize, pbuf);
 }
