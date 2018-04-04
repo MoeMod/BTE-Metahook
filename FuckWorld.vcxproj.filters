@@ -1091,6 +1091,9 @@
     <ClCompile Include="Client\shared_util.cpp">
       <Filter>Client</Filter>
     </ClCompile>
+    <ClCompile Include="Client\VGUI\cstrikebuysubmenu.cpp">
+      <Filter>Client\VGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">

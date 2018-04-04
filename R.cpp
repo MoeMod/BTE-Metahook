@@ -266,7 +266,7 @@ void R_LoadSkys(void)
 	byte	*buffer;
 	qboolean printed = false;
 
-	if (!gLoadSky)
+	/*if (!gLoadSky)
 	{
 		for (i = 0; i < 6; i++)
 		{
@@ -278,7 +278,7 @@ void R_LoadSkys(void)
 		}
 
 		//return;
-	}
+	}*/
 
 	for (i = 0; i<6; i++)
 	{

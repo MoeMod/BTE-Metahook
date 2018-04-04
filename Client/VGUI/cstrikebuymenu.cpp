@@ -32,12 +32,14 @@ CCSBaseBuyMenu::CCSBaseBuyMenu(const char *subPanelName) : CBuyMenu()
 	if (m_pMainMenu)
 		delete m_pMainMenu;
 
-	m_pMainMenu = new CCSBuySubMenu(this, subPanelName);
+	m_pMainMenu = new CCSBuySubMenu_DefaultMode(this, subPanelName);
 	LoadControlSettings("Resource/UI/Buymenu.res", "GAME");
 	LoadControlSettings("Resource/UI/CSO_Buymenu.res", "GAME");
 
 	m_pMainMenu->LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
 	m_pMainMenu->SetVisible(false);
+
+
 }
 
 void CCSBaseBuyMenu::SetVisible(bool state)
@@ -176,57 +178,4 @@ void CCSBaseBuyMenu::ActivateMenu(int iMenu)
 	GotoMenu(iMenu);
 
 	g_pViewPort->ShowPanel(this, true);
-}
-
-CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMenu(parent, name)
-{
-	m_pMoney = NULL;
-	m_lastMoney = -1;
-}
-
-void CCSBuySubMenu::OnCommand(const char *command)
-{
-	if (!Q_strcmp(command, "buy_unavailable"))
-	{
-		BaseClass::OnCommand("vguicancel");
-		return;
-	}
-
-	BaseClass::OnCommand(command);
-}
-
-void CCSBuySubMenu::OnSizeChanged(int newWide, int newTall)
-{
-	BaseClass::OnSizeChanged(newWide, newTall);
-}
-
-void CCSBuySubMenu::OnDisplay(void)
-{
-	BaseClass::OnDisplay();
-}
-
-void CCSBuySubMenu::PerformLayout(void)
-{
-	BaseClass::PerformLayout();
-
-}
-
-MouseOverPanelButton *CCSBuySubMenu::CreateNewMouseOverPanelButton(EditablePanel *panel)
-{
-	return new BuyMouseOverPanelButton(this, NULL, panel);
-}
-
-CBuySubMenu *CCSBuySubMenu::CreateNewSubMenu(const char *name)
-{
-	return new CCSBuySubMenu(this, name);
-}
-
-void CCSBuySubMenu::SetupNextSubPanel(const char *fileName)
-{
-	return BaseClass::SetupNextSubPanel(fileName);
-}
-
-void CCSBuySubMenu::UpdateLoadout(void)
-{
-	
 }

@@ -192,6 +192,7 @@
     <ClCompile Include="Client\TextureManager.cpp" />
     <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp" />
     <ClCompile Include="Client\VGUI\cstrikebuymenu.cpp" />
+    <ClCompile Include="Client\VGUI\cstrikebuysubmenu.cpp" />
     <ClCompile Include="Client\VGUI\vgui_int.cpp" />
     <ClCompile Include="Client\ViewPort.cpp" />
     <ClCompile Include="Client\ViewPort_Interface.cpp" />

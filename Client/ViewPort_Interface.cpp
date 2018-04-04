@@ -1,5 +1,7 @@
 #include <metahook.h>
 #include <vgui_controls/Controls.h>
+#include "Configs.h"
+#include "common.h"
 using namespace vgui;
 
 #include <Interface\vgui\IEngineVGui.h>
@@ -30,6 +32,13 @@ void(__fastcall *g_pfnCClientVGUI_HideClientUI)(IClientVGUI *, int) = NULL;
 
 void CClientVGUI::Initialize(CreateInterfaceFn *factories, int count)
 {
+	if (!vgui::VGui_InitInterfacesList("ClientUI", factories, count))
+		return;
+
+	g_pVGuiLocalize->AddFile(g_pFullFileSystem, va("Resource/cstrike_%s.txt", gConfigs.szCSOLanguageName));
+	g_pVGuiLocalize->AddFile(g_pFullFileSystem, va("Resource/cso_%s.txt", gConfigs.szCSOLanguageName));
+	g_pVGuiLocalize->AddFile(g_pFullFileSystem, "Resource/location_%language%.txt");
+
 	return g_pfnCClientVGUI_Initialize(this, 0, factories, count);
 }
 

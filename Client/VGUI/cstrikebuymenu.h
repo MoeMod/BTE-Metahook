@@ -42,9 +42,6 @@ public:
 	virtual void PaintBackground(void);
 	virtual void PerformLayout(void);
 	virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
-
-protected:
-	BuyMouseOverPanelButton * m_pSlotButtons[10];
 };
 
 class CCSBuyMenu_CT : public CCSBaseBuyMenu
