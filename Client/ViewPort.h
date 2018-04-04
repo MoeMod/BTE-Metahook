@@ -24,7 +24,8 @@
 #define PANEL_ACTIVE "active"
 
 class CCSBackGroundPanel;
-class CCSChatDialog;
+class CCSBuyMenu_CT;
+class CCSBuyMenu_TER;
 
 #ifdef GetCurrentTime
 #undef GetCurrentTime
@@ -64,9 +65,10 @@ public:
 	char *GetServerName(void) { return m_szServerName; }
 
 public:
-	void HideAllVGUIMenu(void) {}
-	bool ShowVGUIMenu(int iMenu) { return false; }
-	bool HideVGUIMenu(int iMenu) { return false; }
+	void HideAllVGUIMenu(void);
+	bool ShowVGUIMenu(int iMenu);
+	bool HideVGUIMenu(int iMenu);
+	void HideVGUIMenu(void);
 
 	CViewPortPanel *AddNewPanel(CViewPortPanel *pPanel, char const *pchDebugName = NULL);
 	CViewPortPanel *FindPanelByName(const char *szPanelName);
@@ -78,8 +80,8 @@ public:
 	void UpdateAllPanels(void);
 	void RemoveAllPanels(void);
 
-	void ActivateClientUI(void) {}
-	void HideClientUI(void) {}
+	void ActivateClientUI(void) { SetVisible(true); }
+	void HideClientUI(void) { SetVisible(false); }
 
 	bool AllowedToPrintText(void);
 
@@ -95,6 +97,8 @@ private:
 	char m_szServerName[MAX_SERVERNAME_LENGTH];
 
 private:
+	CCSBuyMenu_CT * m_pBuyMenu_CT;
+	CCSBuyMenu_TER *m_pBuyMenu_TER;
 
 public:
 	friend int MsgFunc_ServerName(const char *pszName, int iSize, void *pbuf); //message.cpp

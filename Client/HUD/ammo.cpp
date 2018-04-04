@@ -14,6 +14,8 @@
 #include "ammo.h"
 #include "zb3ui.h"
 
+#include "shared_util.h"
+
 static CHudAmmo g_HudAmmo;
 CHudAmmo &HudAmmo()
 {
@@ -810,7 +812,7 @@ void CHudAmmo::CalculateCrosshairSize(void)
 	}
 }
 
-
+/*
 static char s_shared_token[1500];
 
 char *SharedParse(char *data)
@@ -964,7 +966,7 @@ char *SharedGetToken(void)
 {
 	return s_shared_token;
 }
-
+*/
 
 void CHudAmmo::CalculateCrosshairColor(void)
 {

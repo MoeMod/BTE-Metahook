@@ -52,7 +52,7 @@
 
 #include "MGUI/mgui.h"
 #include "MGUI/BTEPanel.h"
-#include "MGUI/TeamMenu.h"
+#include "ViewPort.h"
 
 pfnUserMsgHook pmTeamScore;
 pfnUserMsgHook pmResetHUD;
@@ -179,25 +179,8 @@ int MsgFunc_VGUIMenu(const char *pszName, int iSize, void *pbuf)
 {
 	BEGIN_READ(pbuf, iSize);
 	byte MenuID = READ_BYTE();
-	if (MenuID == MENU_TEAM)
-	{
-		g_TeamMenu.Show();
-		g_TeamMenu.SwitchTeam(2);
+	if (g_pViewPort->ShowVGUIMenu(MenuID))
 		return 1;
-	}
-	else if (MenuID == MENU_CLASS_T)
-	{
-		g_TeamMenu.Show();
-		g_TeamMenu.SwitchTeam(1);
-		return 1;
-	}
-	else if (MenuID == MENU_CLASS_CT)
-	{
-		g_TeamMenu.Show();
-		g_TeamMenu.SwitchTeam(2);
-		return 1;
-	}
-	
 	return pmVGUIMenu(pszName, iSize, pbuf);
 }
 

@@ -1079,6 +1079,18 @@
     <ClCompile Include="Client\Hook_Client.cpp">
       <Filter>Client</Filter>
     </ClCompile>
+    <ClCompile Include="Client\game_controls\buymenu.cpp">
+      <Filter>Client\game_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\game_controls\buysubmenu.cpp">
+      <Filter>Client\game_controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\VGUI\cstrikebuymenu.cpp">
+      <Filter>Client\VGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\shared_util.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2922,6 +2934,30 @@
     </ClInclude>
     <ClInclude Include="SourceSDK\tier1\utlstack.h">
       <Filter>SourceSDK\tier1</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\game_controls\mouseoverpanelbutton.h">
+      <Filter>Client\game_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\game_controls\buymenu.h">
+      <Filter>Client\game_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\game_controls\buysubmenu.h">
+      <Filter>Client\game_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\cstrikebuymenu.h">
+      <Filter>Client\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\shared_util.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\buymouseoverpanelbutton.h">
+      <Filter>Client\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\cstrikebuysubmenu.h">
+      <Filter>Client\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\newmouseoverpanelbutton.h">
+      <Filter>Client\VGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

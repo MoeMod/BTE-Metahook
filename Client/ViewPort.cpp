@@ -2,13 +2,24 @@
 #include "exportfuncs.h"
 #include "plugins.h"
 #include "demo_api.h"
+#include "cdll_dll.h"
 
 #include "ViewPort.h"
 #include "links.h"
 #include "CounterStrikeViewPort.h"
 #include "VGUI/CSBackGroundPanel.h"
+#include "Screen.h"
+
+#include "vgui/cstrikebuymenu.h"
+
+#include "MGUI/mgui.h"
+#include "MGUI/BTEPanel.h"
+#include "MGUI/TeamMenu.h"
 
 using namespace vgui;
+
+Panel *g_lastPanel = NULL;
+Button *g_lastButton = NULL;
 
 CViewport *g_pViewPort = NULL;
 
@@ -47,6 +58,8 @@ void CViewport::Start(void)
 {
 	CreateBackGround();
 
+	m_pBuyMenu_TER = (CCSBuyMenu_TER *)AddNewPanel(new CCSBuyMenu_TER);
+	m_pBuyMenu_CT = (CCSBuyMenu_CT *)AddNewPanel(new CCSBuyMenu_CT);
 
 	m_bInitialied = true;
 
@@ -167,6 +180,121 @@ bool CViewport::IsBombDefuseMap(void)
 		return true;
 
 	return false;
+}
+
+void CViewport::HideAllVGUIMenu(void)
+{
+	ShowPanel(PANEL_ALL, false);
+	//ShowPanel(m_pTextWindow, false);
+}
+
+bool CViewport::ShowVGUIMenu(int iMenu)
+{
+	CViewPortPanel *panel = NULL;
+
+	switch (iMenu)
+	{
+	case MENU_CLASS_T:
+	{
+		g_TeamMenu.Show();
+		g_TeamMenu.SwitchTeam(1);
+		return true;
+	}
+	case MENU_TEAM:
+	case MENU_CLASS_CT:
+	{
+		g_TeamMenu.Show();
+		g_TeamMenu.SwitchTeam(2);
+		return true;
+	}
+
+	case MENU_BUY:
+	case MENU_BUY_PISTOL:
+	case MENU_BUY_SHOTGUN:
+	case MENU_BUY_RIFLE:
+	case MENU_BUY_SUBMACHINEGUN:
+	case MENU_BUY_MACHINEGUN:
+	case MENU_BUY_ITEM:
+	{
+		CCSBaseBuyMenu *buyMenu = NULL;
+
+		if (g_iTeamNumber == TEAM_CT)
+			buyMenu = m_pBuyMenu_CT;
+		else
+			buyMenu = m_pBuyMenu_TER;
+
+		buyMenu->ActivateMenu(iMenu);
+		return true;
+	}
+	}
+
+	if (panel)
+	{
+		ShowPanel(panel, true);
+		return true;
+	}
+
+	return false;
+}
+
+bool CViewport::HideVGUIMenu(int iMenu)
+{
+	CViewPortPanel *panel = NULL;
+
+	switch (iMenu)
+	{
+	case MENU_CLASS_T:
+	case MENU_TEAM:
+	case MENU_CLASS_CT:
+	{
+		g_TeamMenu.Close();
+		return true;
+	}
+
+	case MENU_BUY:
+	case MENU_BUY_PISTOL:
+	case MENU_BUY_SHOTGUN:
+	case MENU_BUY_RIFLE:
+	case MENU_BUY_SUBMACHINEGUN:
+	case MENU_BUY_MACHINEGUN:
+	case MENU_BUY_ITEM:
+	{
+		if (g_iTeamNumber == TEAM_CT)
+			panel = m_pBuyMenu_CT;
+		else
+			panel = m_pBuyMenu_TER;
+	}
+	}
+
+	if (panel)
+	{
+		ShowPanel(panel, false);
+		return true;
+	}
+
+	return false;
+}
+
+void CViewport::HideVGUIMenu(void)
+{
+	if (m_pActivePanel)
+	{
+		if (m_pLastActivePanel)
+		{
+			m_pActivePanel = m_pLastActivePanel;
+			m_pLastActivePanel = NULL;
+
+			if (m_pActivePanel->NeedsUpdate())
+				m_pActivePanel->Update();
+
+			m_pActivePanel->ShowPanel(true);
+		}
+
+		m_pActivePanel->ShowPanel(false);
+		m_pActivePanel = NULL;
+
+		UpdateAllPanels();
+	}
 }
 
 CViewPortPanel *CViewport::AddNewPanel(CViewPortPanel *pPanel, char const *pchDebugName)

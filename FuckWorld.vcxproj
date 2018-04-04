@@ -131,6 +131,8 @@
     <ClCompile Include="Client\events.cpp" />
     <ClCompile Include="Client\ev_common.cpp" />
     <ClCompile Include="Client\ev_hldm.cpp" />
+    <ClCompile Include="Client\game_controls\buymenu.cpp" />
+    <ClCompile Include="Client\game_controls\buysubmenu.cpp" />
     <ClCompile Include="Client\hl_weapons.cpp" />
     <ClCompile Include="Client\Hook_Client.cpp" />
     <ClCompile Include="Client\hud.cpp" />
@@ -182,12 +184,14 @@
     <ClCompile Include="Client\muzzleflash.cpp" />
     <ClCompile Include="Client\PlayerClassManager.cpp" />
     <ClCompile Include="Client\Retina.cpp" />
+    <ClCompile Include="Client\shared_util.cpp" />
     <ClCompile Include="Client\Studio\GameStudioModelRenderer.cpp" />
     <ClCompile Include="Client\Studio\StudioModelRenderer.cpp" />
     <ClCompile Include="Client\Studio\studio_util.cpp" />
     <ClCompile Include="Client\svc_hook.cpp" />
     <ClCompile Include="Client\TextureManager.cpp" />
     <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp" />
+    <ClCompile Include="Client\VGUI\cstrikebuymenu.cpp" />
     <ClCompile Include="Client\VGUI\vgui_int.cpp" />
     <ClCompile Include="Client\ViewPort.cpp" />
     <ClCompile Include="Client\ViewPort_Interface.cpp" />
@@ -453,6 +457,9 @@
     <ClInclude Include="Client\events.h" />
     <ClInclude Include="Client\eventscripts.h" />
     <ClInclude Include="Client\ev_hldm.h" />
+    <ClInclude Include="Client\game_controls\buymenu.h" />
+    <ClInclude Include="Client\game_controls\buysubmenu.h" />
+    <ClInclude Include="Client\game_controls\mouseoverpanelbutton.h" />
     <ClInclude Include="Client\Hook_Client.h" />
     <ClInclude Include="Client\hud.h" />
     <ClInclude Include="Client\HUD3D.h" />
@@ -503,6 +510,7 @@
     <ClInclude Include="Client\muzzleflash.h" />
     <ClInclude Include="Client\PlayerClassManager.h" />
     <ClInclude Include="Client\Retina.h" />
+    <ClInclude Include="Client\shared_util.h" />
     <ClInclude Include="Client\Studio\GameStudioModelRenderer.h" />
     <ClInclude Include="Client\Studio\StudioModelRenderer.h" />
     <ClInclude Include="Client\Studio\studio_util.h" />
@@ -511,7 +519,11 @@
     <ClInclude Include="Client\TextureManager.h" />
     <ClInclude Include="Client\VGuiLibrary.h" />
     <ClInclude Include="Client\VGUI\BackGroundPanel.h" />
+    <ClInclude Include="Client\VGUI\buymouseoverpanelbutton.h" />
     <ClInclude Include="Client\VGUI\CSBackGroundPanel.h" />
+    <ClInclude Include="Client\VGUI\cstrikebuymenu.h" />
+    <ClInclude Include="Client\VGUI\cstrikebuysubmenu.h" />
+    <ClInclude Include="Client\VGUI\newmouseoverpanelbutton.h" />
     <ClInclude Include="Client\VGUI\vgui_int.h" />
     <ClInclude Include="Client\ViewPort.h" />
     <ClInclude Include="Client\ViewPort_Interface.h" />
