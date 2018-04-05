@@ -1,4 +1,7 @@
-#include "base.h"
+#include "metahook.h"
+#include "triangleapi.h"
+#include "gl/gl.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "parsemsg.h"
@@ -6,8 +9,10 @@
 #include "TriAPI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "deathrun.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudDeathRunUI g_HudDeathRunUI;
 CHudDeathRunUI &HudDeathRunUI()

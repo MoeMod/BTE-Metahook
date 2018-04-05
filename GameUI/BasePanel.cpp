@@ -31,6 +31,7 @@
 #include "BackgroundMenuButton.h"
 #include "OptionsDialog.h"
 #include "CreateMultiplayerGameDialog.h"
+#include "CSBTEWpnDataEditor.h"
 
 #include "ToolBar.h"
 #include "plugins.h"
@@ -127,7 +128,7 @@ struct FakeArray
 
 void CGameMenuItem::PaintBackground(void)
 {
-	if (BasePanel()->m_pBinkTexture/* && !IsItemArmed()*/)
+	/*if (BasePanel()->m_pBinkTexture)
 	{
 		byte *buffer = BasePanel()->m_pBinkTexture->GetBuffer();
 		if (buffer)
@@ -160,7 +161,7 @@ void CGameMenuItem::PaintBackground(void)
 				GetAnimationController()->RunAnimationCommand(this, "fgcolor", Color(200, 200, 200, 255), 0.0f, 0.5, AnimationController::INTERPOLATOR_LINEAR);
 		}
 		
-	}
+	}*/
 	BaseClass::PaintBackground();
 }
 
@@ -1094,6 +1095,10 @@ void CBasePanel::RunMenuCommand(const char *command)
 	{
 		OnOpenServerBrowser();
 	}
+	else if (!Q_stricmp(command, "OpenCSBTEWpnDataEditor"))
+	{
+		OnOpenCSBTEWpnDataEditor();
+	}
 	else if (!Q_stricmp(command, "OpenCreateMultiplayerGameDialog"))
 	{
 		OnOpenCreateMultiplayerGameDialog();
@@ -1121,10 +1126,6 @@ void CBasePanel::RunMenuCommand(const char *command)
 	else if (!Q_stricmp(command, "OpenCSBTEUpdateDialog"))
 	{
 		OnOpenCSBTEUpdateDialog();
-	}
-	else if (!Q_stricmp(command, "OpenCSBTEModeSelection"))
-	{
-		OnOpenCSBTEModeSelection();
 	}
 	else if (!Q_stricmp(command, "OpenCSBTEMyWpnEditor"))
 	{
@@ -1238,6 +1239,17 @@ void CBasePanel::OnOpenOptionsDialog(void)
 	m_hOptionsDialog->Activate();
 }
 
+void CBasePanel::OnOpenCSBTEWpnDataEditor(void)
+{
+	if (!m_hCSBTEWpnDataEditor.Get())
+	{
+		m_hCSBTEWpnDataEditor = new CCSBTEWpnDataEditor(this, "CSBTEWpnDataEditor");
+		PositionDialog(m_hCSBTEWpnDataEditor);
+	}
+
+	m_hCSBTEWpnDataEditor->Activate();
+}
+
 void CBasePanel::OnOpenCreateMultiplayerGameDialog(void)
 {
 	if (!m_hCreateMultiplayerGameDialog.Get())
@@ -1270,17 +1282,6 @@ void CBasePanel::OnOpenCSBTEUpdateDialog(void)
 
 	m_hCSBTEUpdateDialog->Activate();
 
-}
-
-void CBasePanel::OnOpenCSBTEModeSelection(void)
-{
-	if (!m_hCSBTEModeSelection.Get())
-	{
-		m_hCSBTEModeSelection = new CCSBTEModeSelection(this, "CSBTEAboutDialog");
-		PositionDialog(m_hCSBTEModeSelection);
-	}
-
-	m_hCSBTEModeSelection->Activate();
 }
 
 void CBasePanel::OnOpenCSBTEMyWpnEditor(void)

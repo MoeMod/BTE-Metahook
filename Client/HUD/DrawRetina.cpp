@@ -1,7 +1,10 @@
-#include "base.h"
+
 #include "hud.h"
 #include "TexDraw.h"
 #include "DrawRetina.h"
+
+#include "Client/HUD/DrawTGA.h"
+
 static CHudRetina g_HudRetina;
 CHudRetina &HudRetina()
 {

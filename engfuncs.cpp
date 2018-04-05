@@ -1,4 +1,4 @@
-#include "base.h"
+#include "metahook.h"
 #include "playaudio.h"
 
 int EngFunc_ClCMD(char *p)

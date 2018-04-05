@@ -63,10 +63,6 @@ inline void VectorScale(const float *in, const float *scale, float *out)
 
 void ClientPrint(int msg_dest, const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL);
 
-wchar_t *UTF8ToUnicode( const char* str );
-wchar_t *ANSIToUnicode( const char* str );
-char *UnicodeToANSI( const wchar_t* str );
-char *UnicodeToUTF8( const wchar_t* str );
 wchar_t *GetLangUni(char *pLeft);
 wchar_t *GetLangUni2(char *pLeft);
 char *GetLangUtf(char *pLeft);

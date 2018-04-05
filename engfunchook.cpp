@@ -1,4 +1,5 @@
-#include "base.h"
+#include "event_api.h"
+#include "bte_const.h"
 #include "hud.h"
 #include "exportfuncs.h"
 #include "configs.h"

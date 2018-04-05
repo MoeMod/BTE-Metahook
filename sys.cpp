@@ -1,6 +1,9 @@
-﻿#include "base.h"
+﻿#include "metahook.h"
+#include "plugins.h"
 #include "configs.h"
 #include "BaseUI.h"
+
+#include <SourceSDK\tier1\strtools.h>
 
 void Sys_GetRegKeyValueUnderRoot(const char *pszSubKey, const char *pszElement, char *pszReturnString, int nReturnLength, const char *pszDefaultValue)
 {

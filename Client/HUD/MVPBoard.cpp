@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "parsemsg.h"
@@ -6,9 +7,11 @@
 #include "Fonts.h"
 #include "util.h"
 #include "common.h"
+#include "Encode.h"
 
 #include "MVPBoard.h"
 #include "DrawTABPanel.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudMVPBoard g_HudMVPBoard;
 CHudMVPBoard &HudMVPBoard()

@@ -1,15 +1,20 @@
-#include "base.h"
+
 #include "hud.h"
+#include "bte_const.h"
+#include "plugins.h"
 #include "exportfuncs.h"
 #include "configs.h"
 #include "bink/bink.h"
 #include "msghook.h"
 #include "parsemsg.h"
 #include "texdraw.h"
+#include "gl/gl.h"
+#include "triangleapi.h"
 #include "TriAPI.h"
 #include "calcscreen.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 #include "common.h"
 #include "TextureManager.h"
 #include "LoadTexture.h"
@@ -23,6 +28,10 @@
 
 #include "zb3ui.h"
 #include "DrawRetina.h"
+#include "Client/HUD/drawimage.h"
+#include "Client/HUD/FontText.h"
+#include "Client/HUD/followicon.h"
+#include "Client/HUD/DrawTGA.h"
 
 #define CLASS_ZB	1
 #define CLASS_HM	2
@@ -89,12 +98,10 @@ void CHudZombieMod3::CheckTeam(int team)
 	if (team == 1) // CT
 	{
 		m_iClass = CLASS_HM;
-		m_pLabelMorale->SetVisible(true);
 	}
 	else if (team == 2)
 	{
 		m_iClass = CLASS_ZB;
-		m_pLabelMorale->SetVisible(false);
 	}
 	else m_iClass = 0;
 }
@@ -522,6 +529,7 @@ void CHudZombieMod3::VidInit(void)
 		}
 		m_pLabelMorale->SetPos(ScreenWidth / 2 - 77, ScreenHeight - 113);
 	}
+	m_pLabelMorale->SetVisible(false);
 
 	m_iNVG = FALSE;
 
@@ -705,6 +713,14 @@ void CHudZombieMod3::Draw(float time)
 
 	if (!gConfigs.bEnableNewHud)
 		DrawSkillBoard(time);
+}
+
+void CHudZombieMod3::Think()
+{
+	if (m_iClass == CLASS_HM && g_bAlive)
+		m_pLabelMorale->SetVisible(true);
+	else
+		m_pLabelMorale->SetVisible(false);
 }
 
 bool CHudZombieMod3::CheckSkillKey(int eventcode, int keynum, const char *pszCurrentBinding)

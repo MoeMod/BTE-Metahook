@@ -13,7 +13,7 @@
 //#include "exportfuncs.h"
 #include "engfuncs.h"
 
-#include "base.h"
+#include "plugins.h"
 #include "hud.h"
 #include "playaudio.h"
 #include "fmod\fmod.h"

@@ -11,7 +11,7 @@ int BitsCount(unsigned x)
 	x = (x & 0x0000FFFF) + ((x >> 16) & 0x0000FFFF);
 	return x;
 }
-int BitsGetFirst(unsigned x)
+/*int BitsGetFirst(unsigned x)
 {
 	int iPos = 0;
 	for (int i = 4; i >= 0; i--)
@@ -21,7 +21,7 @@ int BitsGetFirst(unsigned x)
 			iPos += (1 << i);
 		}
 	return iPos;
-}
+}*/
 int BitsGetRandom(unsigned x)
 {
 	int iCount = BitsCount(x);

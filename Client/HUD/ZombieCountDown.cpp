@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "BaseUI.h"

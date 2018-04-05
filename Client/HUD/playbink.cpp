@@ -1,5 +1,7 @@
-#include "base.h"
+
 #include "hud.h"
+#include "gl/gl.h"
+#include "triangleapi.h"
 #include "bink/bink.h"
 #include "BaseUI.h"
 #include "TriAPI.h"

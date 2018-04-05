@@ -1,11 +1,13 @@
-#include "base.h"
+
 #include "hud.h"
 #include "vgui_controls/Controls.h"
 #include "weapons.h"
 #include "util.h"
 #include "common.h"
+#include "Encode.h"
 
 #include "WeaponManager.h"
+#include "Client/HUD/DrawTGA.h"
 
 CWeaponManager &WeaponManager()
 {
@@ -91,6 +93,13 @@ wchar_t *GetWeaponNameFormat(char *name)
 		wstrResult = vgui::localize()->Find(va("#CSBTE_%s", pTemp));
 
 	return wstrResult ? wstrResult : UTF8ToUnicode(va("#CSBTE_%s", pTemp));
+}
+
+wchar_t *GetWeaponNameFormat(const std::string &name)
+{
+	static char buffer[128];
+	strcpy(buffer, name.c_str());
+	return GetWeaponNameFormat(buffer);
 }
 
 wchar_t *GetWeaponDescription(char *pItem)

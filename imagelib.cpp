@@ -1,6 +1,10 @@
-#include "base.h"
+#include "metahook.h"
+#include "plugins.h"
+#include <SourceSDK\tier1\strtools.h>
 #include "BaseUI.h"
 #include "imagelib.h"
+#include "triangleapi.h"
+#include "gl/gl.h"
 #include "TriAPI.h"
 #include "util.h"
 #define LERPBYTE( i )	r = resamplerow1[i]; out[i] = (byte)(((( resamplerow2[i] - r ) * lerp)>>16 ) + r )

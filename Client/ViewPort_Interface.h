@@ -12,11 +12,11 @@ public:
 	virtual void ActivateClientUI(void);
 	virtual void HideClientUI(void);
 
-	static void OnClientLoaded(cl_exportfuncs_t *pExportfuncs);
-
 public:
 	void HideAllPanel(void);
 	void HidePanel(const char *name);
 };
 
 extern IClientVGUI *g_pClientVGUI;
+
+void ViewPort_InstallHook(cl_exportfuncs_t *pExportfuncs);

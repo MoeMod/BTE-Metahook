@@ -1,11 +1,20 @@
-#include "base.h"
+#include "metahook.h"
+#include "triangleapi.h"
+#include "gl/gl.h"
 #include "exportfuncs.h"
 #include "hud.h"
+
+#include "pmtrace.h"
+#include "pm_defs.h"
+
+#include "event_api.h"
 #include "TriAPI.h"
 #include "DrawTargaImage.h"
 #include "destroyer.h"
 #include "bink/bink.h"
 #include "BaseUI.h"
+
+#include "Client/HUD/DrawTGA.h"
 
 static CHudDestroyerSniperScope g_HudDestroyerSniperScope;
 CHudDestroyerSniperScope &HudDestroyerSniperScope()
@@ -174,8 +183,6 @@ void CHudDestroyerSniperScope::End(void)
 	m_flStartTime = 0.0;
 }
 
-void DrawTexture(int index, int iX, int iY, int iW, int iH, int alpha);
-
 void CHudDestroyerSniperScope::Draw(float flTime)
 {
 	if (!m_flStartTime || !m_hBink)
@@ -207,14 +214,14 @@ void CHudDestroyerSniperScope::Draw(float flTime)
 	iX = ScreenWidth / 2 - iWidth;
 	iY = ScreenHeight / 2 - iHeight;
 
-	DrawTexture(g_Texture[m_iTexture].iTexture, iX, iY, iWidth, iHeight, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, iX, iY, iWidth, iHeight, 255);
 	iY = ScreenHeight / 2 + iHeight;
-	DrawTexture(g_Texture[m_iTexture].iTexture, iX, iY, iWidth, -iHeight, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, iX, iY, iWidth, -iHeight, 255);
 	iX = ScreenWidth / 2 + iWidth;
 	iY = ScreenHeight / 2 - iHeight;
-	DrawTexture(g_Texture[m_iTexture].iTexture, iX, iY, -iWidth, iHeight, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, iX, iY, -iWidth, iHeight, 255);
 	iY = ScreenHeight / 2 + iHeight;
-	DrawTexture(g_Texture[m_iTexture].iTexture, iX, iY, -iWidth, -iHeight, 255);
+	GL_DrawTGA2(g_Texture[m_iTexture].iTexture, iX, iY, -iWidth, -iHeight, 255);
 
 	//iX = ScreenWidth / 2 + 130;
 	//iY -= 275;

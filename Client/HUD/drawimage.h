@@ -1,5 +1,7 @@
 #pragma once
 
+// Backward support (for MetaHook 2.0) only, DO NOT use any more.
+
 #define MAX_DRAWIMAGE 64
 
 struct DrawImageItem
@@ -26,7 +28,8 @@ public:
 	void Draw(float time);
 
 public:
-	void AddElement(DrawImageItem item);
+	void AddElement(const DrawImageItem &item);
+	DrawImageItem m_rgDrawImage[MAX_DRAWIMAGE];
 };
 
 CHudSPRElements &HudSPRElements();

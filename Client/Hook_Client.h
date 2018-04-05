@@ -1,0 +1,2 @@
+
+void ClientLinks_InstallHook();

@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "plugins.h"
 #include "client.h"
 #include "exportfuncs.h"
 #include "BaseUI.h"

@@ -1,4 +1,8 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
+#include "plugins.h"
+#include "event_api.h"
+#include "com_model.h"
 #include "hud.h"
 #include "configs.h"
 #include "events.h"
@@ -20,11 +24,19 @@
 #include "IMEInput.h"
 #include "CVARs.h"
 #include "Window.h"
+#include "UnicodeVoice.h"
 
+#include "gl/gl.h"
+#include "triangleapi.h"
 #include "TriAPI.h"
 #include "display.h"
 #include "engfunchook.h"
 #include "exportfuncs.h"
+
+#include "pm_defs.h"
+#include "pm_movevars.h"
+
+#include <SourceSDK\tier1\strtools.h>
 
 #include "MGUI/BTEPanel.h"
 #include "MGUI/mgui.h"
@@ -35,17 +47,17 @@
 #include "util.h"
 #include "weapons.h"
 #include "weaponinfo.h"
+#include "Client/Hook_Client.h"
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
+#include "Client/TextureManager.h"
 
 #include "Client/HUD/health.h"
 #include "Client/HUD/DrawTABPanel.h"
 #include "Client/HUD/overview.h"
 #include "Client/HUD/nvg.h"
-#include "Client/HUD/sfsniper.h"
-#include "Client/HUD/destroyer.h"
-#include "Client/HUD/buffawp.h"
 #include "Client/HUD/zb3ui.h"
+#include "Client/HUD/DrawTGA.h"
 
 #include "Renderer/pbo.h"
 
@@ -59,9 +71,8 @@ cvar_t *gl_fxaa;
 cvar_t *g_pcvarEnableConsole = NULL;
 
 cl_enginefunc_t gEngfuncs;
-cl_enginefunc_t *engine = &gEngfuncs;
 
-engine_studio_api_t IEngineStudio;
+extern engine_studio_api_t IEngineStudio;
 event_api_s gEventAPI;
 efx_api_s gEfxAPI;
 bool bLoadedSky = false;
@@ -107,41 +118,7 @@ float g_flTutorClose;
 
 int g_iWeaponAnim = 0;
 
-int(__fastcall *g_pfnHudSniperScope_Draw)(void *, int, float flTime) = (int(__fastcall *)(void *, int, float))0x1961AD0;
-int __fastcall HudSniperScope_Draw(void *p, int i, float f);
-
-void(__fastcall *g_pfnAWP_Idle)(void *) = (void(__fastcall *)(void *))0x1910B20;
-void(__fastcall *g_pfnAWP_Reload)(void *) = (void(__fastcall *)(void *))0x1910AA0;
-void(__fastcall *g_pfnM3_Reload)(void *) = (void(__fastcall *)(void *))0x19175E0;
-void(__fastcall *g_pfnM3_Idle)(void *) = (void(__fastcall *)(void *))0x1917750;
-void(__fastcall *g_pfnXM1014_Reload)(void *) = (void(__fastcall *)(void *))0x191D590;
-void(__fastcall *g_pfnXM1014_Idle)(void *) = (void(__fastcall *)(void *))0x191D780;
-void(__fastcall *g_pfnGlock_Reload)(void *) = (void(__fastcall *)(void *))0x19150D0;
-void(__fastcall *g_pfnGlock_Idle)(void *) = (void(__fastcall *)(void *))0x1915140;
-void(__fastcall *g_pfnGlock_Deploy)(void *) = (void(__fastcall *)(void *))0x1914AF0;
-void(__fastcall *g_pfnScout_Reload)(void *) = (void(__fastcall *)(void *))0x191A1C0;
-void(__fastcall *g_pfnScout_Idle)(void *) = (void(__fastcall *)(void *))0x191A220;
-void(__fastcall *g_pfnScout_Deploy)(void *) = (void(__fastcall *)(void *))0x1919D70;
-void(__fastcall *g_pfnKnife_Deploy)(void *) = (void(__fastcall *)(void *))0x1915D90;
-void(__fastcall *g_pfnKnife_PrimaryAttack)(void *) = (void(__fastcall *)(void *))0x19160D0;
-void(__fastcall *g_pfnKnife_SecondaryAttack)(void *) = (void(__fastcall *)(void *))0x19162A0;
-void(__fastcall *g_pfnKnife_Idle)(void *) = (void(__fastcall *)(void *))0x1916300;
-void(__fastcall *g_pfnM4A1_SecondaryAttack)(void *) = (void(__fastcall *)(void *))0x1917B00;
-void(__fastcall *g_pfnUSP_SecondaryAttack)(void *) = (void(__fastcall *)(void *))0x191CAB0;
-
-void __fastcall WeaponBlock(void *p);
-void(__fastcall *g_pfnCHudSayText_Draw)(void *, int, float) = (void(__fastcall *)(void *, int, float))0x1960A10;
-
 cl_entity_t **r_currententity;
-
-void __fastcall CHudSayText_Draw(void *pthis, int, float flTime)
-{
-	if (gConfigs.bEnableNewHud)
-	{
-		return;
-	}
-	return g_pfnCHudSayText_Draw(pthis, 0, flTime);
-}
 
 char TranslateKeyCharacter(int keynum, BOOL bIgnoreShift, BOOL bIgnorePad)
 {
@@ -279,7 +256,7 @@ void CL_VisEdicts_Patch(void)
 
 	//alloc here
 
-	cl_visedicts_new = (cl_entity_t **)malloc(cl_maxvisedicts*sizeof(cl_entity_t *));
+	cl_visedicts_new = (cl_entity_t **)malloc(cl_maxvisedicts * sizeof(cl_entity_t *));
 
 	if (!cl_visedicts_new)
 	{
@@ -350,7 +327,7 @@ void CL_VisEdicts_Patch(void)
 	count = 0;
 	memcpy(sig, "\x8B\x2A\x2A\x2A\x2A\x2A\x2A", 7);
 	*(DWORD *)(&sig[3]) = (DWORD)cl_visedicts_old;
-	
+
 	addr = (DWORD)(g_dwEngineBase + 0x1D45420 - 0x1D01000);/*gRefFuncs.R_DrawEntitiesOnList;*/
 	size = 0x350;
 	end = size + addr;
@@ -371,7 +348,7 @@ void CL_VisEdicts_Patch(void)
 #endif
 
 void SVC_Init(void);
-void GameUI_Init();
+//void GameUI_Init();
 void EngFunc_SPR_Set(HSPRITE hSPR, int r, int g, int b);
 
 TEMPENTITY *g_pPetrolboomerFlame = nullptr;
@@ -381,6 +358,7 @@ TEMPENTITY *g_pDualSwordEffect2 = nullptr;
 
 int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 {
+	engine = pEnginefuncs;
 	//	pEnginefuncs->pfnDrawCharacter = &DrawCharacter;
 
 	memcpy(&gEngfuncs, pEnginefuncs, sizeof(gEngfuncs));
@@ -410,7 +388,7 @@ int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 	pEnginefuncs->pEventAPI->EV_WeaponAnimation = &Engfunc_WeaponAnim;
 	//pEnginefuncs->pEfxAPI->Draw_DecalIndex = &EfxAPI_DecalIndex;
 	//pEnginefuncs->pEfxAPI->Draw_DecalIndexFromName = &EfxAPI_DecalIndexFromName;
-//	pEnginefuncs->pEfxAPI->R_BulletImpactParticles = &EfxAPI_BulletImpactParticles;
+	//	pEnginefuncs->pEfxAPI->R_BulletImpactParticles = &EfxAPI_BulletImpactParticles;
 	pEnginefuncs->pfnClientCmd = &Engfunc_ClientCmd;
 	//pEnginefuncs->pEventAPI->EV_PlayerTrace = &EventAPI_PlayerTrace;
 	//pEnginefuncs->pEfxAPI->R_StreakSplash = &EfxAPI_R_StreakSplash;
@@ -418,6 +396,7 @@ int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 	pEnginefuncs->pfnPlaySoundByName = &Engfunc_PlaySoundByName;
 
 	pEnginefuncs->pfnClientCmd = EngFunc_ClCMD;
+	pEnginefuncs->pfnGetPlayerInfo = &Engfunc_GetPlayerInfo;
 
 	//pEnginefuncs->pfnDrawConsoleString = &Engfunc_DrawConsoleString;
 	//pEnginefuncs->pfnVGUI2DrawCharacter = &Engfunc_VGUI2DrawCharacter;
@@ -431,148 +410,6 @@ int Initialize(struct cl_enginefuncs_s *pEnginefuncs, int iVersion)
 	return iResult;
 }
 
-void DrawTexture(int index, int iX, int iY, int iW, int iH, int alpha)
-{
-	Tri_Enable(GL_TEXTURE_2D);
-	Tri_Enable(GL_BLEND);
-	Tri_BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	Tri_BindTexture(GL_TEXTURE_2D, index);
-	gEngfuncs.pTriAPI->Color4ub(255, 255, 255, alpha);
-	gEngfuncs.pTriAPI->Begin(TRI_QUADS);
-	gEngfuncs.pTriAPI->TexCoord2f(0.01, 0.99);
-	gEngfuncs.pTriAPI->Vertex3f(iX, iY + iH, 0);
-	gEngfuncs.pTriAPI->TexCoord2f(0.99, 0.99);
-	gEngfuncs.pTriAPI->Vertex3f(iX + iW, iY + iH, 0);
-	gEngfuncs.pTriAPI->TexCoord2f(0.99, 0.01);
-	gEngfuncs.pTriAPI->Vertex3f(iX + iW, iY, 0);
-	gEngfuncs.pTriAPI->TexCoord2f(0.01, 0.01);
-	gEngfuncs.pTriAPI->Vertex3f(iX, iY, 0);
-	gEngfuncs.pTriAPI->End();
-}
-
-int __fastcall HudSniperScope_Draw(void *p, int i, float f)
-{
-	if (WeaponManager().GetCurWeapon().iSniperScopeType == 1 && 0.0 < Hud().m_FOV && Hud().m_FOV <= 40.0)
-	{
-		int iH = ScreenHeight / 592.0f * 256.0f;
-		int iY = ScreenHeight / 2 - iH;
-		int iX = ScreenWidth / 2 - iH;
-		DrawTexture(g_Texture[WeaponManager().GetCurWeapon().iSniperScope[0]].iTexture, iX, iY, iH, iH, 255);
-		DrawTexture(g_Texture[WeaponManager().GetCurWeapon().iSniperScope[1]].iTexture, ScreenWidth / 2, iY, iH, iH, 255);
-		DrawTexture(g_Texture[WeaponManager().GetCurWeapon().iSniperScope[2]].iTexture, iX, ScreenHeight / 2, iH, iH, 255);
-		DrawTexture(g_Texture[WeaponManager().GetCurWeapon().iSniperScope[3]].iTexture, ScreenWidth / 2, ScreenHeight / 2, iH, iH, 255);
-
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth / 2 - iH, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(ScreenWidth / 2 + iH, 0, ScreenWidth / 2 - iH, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth, ScreenHeight / 2 - iH, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, ScreenHeight / 2 + iH, ScreenWidth, ScreenHeight / 2 - iH, 0, 0, 0, 255);
-
-		/*gEngfuncs.pfnFillRGBABlend(ScreenWidth/2,0,1,ScreenHeight,0,0,0,255);
-		gEngfuncs.pfnFillRGBABlend(0,ScreenHeight/2+1,ScreenWidth,1,0,0,0,255);*/
-		return g_pfnHudSniperScope_Draw(p, i, f);
-	}
-	if (WeaponManager().GetCurWeapon().iSniperScopeType == 2 && 0.0 < Hud().m_FOV && Hud().m_FOV <= 40.0)
-	{
-		int iH = ScreenHeight / 588.0f * 256.0f;
-		int iY = ScreenHeight / 2 - iH;
-		int iX = ScreenWidth / 2 - iH;
-		DrawTexture(g_Texture[g_iSniperScope[0]].iTexture, iX, iY, iH, iH, 255);
-		DrawTexture(g_Texture[g_iSniperScope[1]].iTexture, ScreenWidth / 2, iY, iH, iH, 255);
-		DrawTexture(g_Texture[g_iSniperScope[2]].iTexture, iX, ScreenHeight / 2, iH, iH, 255);
-		DrawTexture(g_Texture[g_iSniperScope[3]].iTexture, ScreenWidth / 2, ScreenHeight / 2, iH, iH, 255);
-
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth / 2 - iH, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(ScreenWidth / 2 + iH, 0, ScreenWidth / 2 - iH, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth, ScreenHeight / 2 - iH, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, ScreenHeight / 2 + iH, ScreenWidth, ScreenHeight / 2 - iH, 0, 0, 0, 255);
-
-		/*gEngfuncs.pfnFillRGBABlend(ScreenWidth/2,0,1,ScreenHeight,0,0,0,255);
-		gEngfuncs.pfnFillRGBABlend(0,ScreenHeight/2+1,ScreenWidth,1,0,0,0,255);*/
-		return 0/*g_pfnHudSniperScope_Draw(p,i,f)*/;
-	}
-	if (pCvar_DrawScope->value != 0 && g_iBTEWeapon != WPN_SFSNIPER && g_iBTEWeapon != WPN_DESTROYER && g_iBTEWeapon != WPN_BUFFAWP && 0.0 < Hud().m_FOV && Hud().m_FOV <= 40.0)
-	{
-		//LogToFile("BreakPoint");
-		int tid;
-		float scale;
-		float x, y, w, h;
-
-		if (g_iBTEWeapon == WPN_M200)
-			tid = Hud().m_TGA.GetTGA("other\\scope_m200");
-		else
-			tid = Hud().m_TGA.GetTGA("other\\scope");
-
-		scale = ScreenHeight / 0.85 / g_MHTga[tid].height;
-
-		w = g_MHTga[tid].width * scale;
-		h = g_MHTga[tid].height * scale;
-
-		x = ScreenWidth / 2 - w / 2;
-		y = ScreenHeight / 2 - h / 2;
-
-		Tri_Enable(GL_TEXTURE_2D);
-		Tri_BindTexture(GL_TEXTURE_2D, g_MHTga[tid].texid);
-		if (g_iVideoMode)
-		{
-			glColor4ub(255, 255, 255, 255);
-		}
-		else gEngfuncs.pTriAPI->Color4ub(255, 255, 255, 255);
-		Tri_Enable(GL_BLEND);
-		Tri_Enable(GL_ALPHA_TEST);
-		Tri_BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		Tri_AlphaFunc(GL_GREATER, 0.0);
-		gEngfuncs.pTriAPI->Begin(TRI_QUADS);
-		gEngfuncs.pTriAPI->TexCoord2f(0, 1);
-		gEngfuncs.pTriAPI->Vertex3f(x, y + h, 0);
-		gEngfuncs.pTriAPI->TexCoord2f(1, 1);
-		gEngfuncs.pTriAPI->Vertex3f(x + w, y + h, 0);
-		gEngfuncs.pTriAPI->TexCoord2f(1, 0);
-		gEngfuncs.pTriAPI->Vertex3f(x + w, y, 0);
-		gEngfuncs.pTriAPI->TexCoord2f(0, 0);
-		gEngfuncs.pTriAPI->Vertex3f(x, y, 0);
-		gEngfuncs.pTriAPI->End();
-
-		int LENGTH_SCOPE = w / 2;
-
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth / 2 - LENGTH_SCOPE, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(ScreenWidth / 2 + LENGTH_SCOPE, 0, ScreenWidth / 2 - LENGTH_SCOPE, ScreenHeight, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, 0, ScreenWidth, ScreenHeight / 2 - LENGTH_SCOPE, 0, 0, 0, 255);
-		gEngfuncs.pfnFillRGBABlend(0, ScreenHeight / 2 + LENGTH_SCOPE, ScreenWidth, ScreenHeight / 2 - LENGTH_SCOPE, 0, 0, 0, 255);
-
-		// Don't know why
-		gEngfuncs.pfnDrawConsoleString(-10, -10, "!");
-
-		return 0;
-	}
-
-	if (g_iBTEWeapon == WPN_SFSNIPER)
-	{
-		HudSfsniperScope().Draw(f);
-
-		return 0;
-	}
-
-	if (g_iBTEWeapon == WPN_DESTROYER)
-	{
-		HudDestroyerSniperScope().Draw(f);
-
-		return 0;
-	}
-
-	if (g_iBTEWeapon == WPN_BUFFAWP)
-	{
-		HudBuffAWPSniperScope().Draw(f);
-	}
-
-	return g_pfnHudSniperScope_Draw(p, i, f);
-}
-
-int(__fastcall *g_pfnCHudAmmo_DrawCrosshair)(void *, int, float flTime, int weaponid) = (int(__fastcall *)(void *, int, float, int))0x1940430;
-
-int __fastcall CHudAmmo_DrawCrosshair(void *pthis, int, float flTime, int weaponid)
-{
-	return 1;
-}
 void Cmd_ShowPos()
 {
 	char text[256];
@@ -604,11 +441,6 @@ void Cmd_ShowIcon()
 		gEngfuncs.Cvar_SetValue("mh_showtipicon", 0);
 	else
 		gEngfuncs.Cvar_SetValue("mh_showtipicon", 1);
-}
-
-void __fastcall WeaponBlock(void *p)
-{
-	return;
 }
 
 void HUD_Init(void)
@@ -645,9 +477,9 @@ void HUD_Init(void)
 	g_pcvarEnableConsole = gEngfuncs.pfnRegisterVariable("bte_enable_console", "1", FCVAR_ARCHIVE);
 
 	Hud().Init();
-	
+
 	developer = gEngfuncs.pfnGetCvarPointer("developer");
-	
+
 	BTEPanel_Init();
 	BTEBuyMenu_Init();
 	g_TeamMenu.Init();
@@ -665,38 +497,18 @@ void HUD_Init(void)
 	g_iSniperScope[3] = Hud().m_TGA.FindTexture("sprites\\scope_arc");
 
 	g_iScreenTexture = vgui::surface()->CreateNewTextureID();
-	
+
 	/*vgui::surface()->DrawSetTextureFile(g_iScreenTexture,"test",true,true);*/
 
 	/*int g_iScreenTexture = vgui::surface()->CreateNewTextureID();
 	vgui::surface()->DrawSetTextureFile(g_iScreenTexture,"models\\texture\\#256256m2_p",true,true);*/
 
-	g_pMetaHookAPI->InlineHook(g_pfnCHudAmmo_DrawCrosshair, CHudAmmo_DrawCrosshair, (void *&)g_pfnCHudAmmo_DrawCrosshair);
-	g_pMetaHookAPI->InlineHook(g_pfnHudSniperScope_Draw, HudSniperScope_Draw, (void *&)g_pfnHudSniperScope_Draw);
+	
+	
 
-	g_pMetaHookAPI->InlineHook(g_pfnAWP_Idle, WeaponBlock, (void *&)g_pfnAWP_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnAWP_Reload, WeaponBlock, (void *&)g_pfnAWP_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnM3_Reload, WeaponBlock, (void *&)g_pfnM3_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnM3_Idle, WeaponBlock, (void *&)g_pfnM3_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnXM1014_Reload, WeaponBlock, (void *&)g_pfnXM1014_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnXM1014_Idle, WeaponBlock, (void *&)g_pfnXM1014_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnGlock_Reload, WeaponBlock, (void *&)g_pfnGlock_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnGlock_Idle, WeaponBlock, (void *&)g_pfnGlock_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnGlock_Deploy, WeaponBlock, (void *&)g_pfnGlock_Deploy);
-	g_pMetaHookAPI->InlineHook(g_pfnScout_Reload, WeaponBlock, (void *&)g_pfnScout_Reload);
-	g_pMetaHookAPI->InlineHook(g_pfnScout_Idle, WeaponBlock, (void *&)g_pfnScout_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnScout_Deploy, WeaponBlock, (void *&)g_pfnScout_Deploy);
-	g_pMetaHookAPI->InlineHook(g_pfnKnife_Deploy, WeaponBlock, (void *&)g_pfnKnife_Deploy);
-	g_pMetaHookAPI->InlineHook(g_pfnKnife_PrimaryAttack, WeaponBlock, (void *&)g_pfnKnife_PrimaryAttack);
-	g_pMetaHookAPI->InlineHook(g_pfnKnife_SecondaryAttack, WeaponBlock, (void *&)g_pfnKnife_SecondaryAttack);
-	g_pMetaHookAPI->InlineHook(g_pfnKnife_Idle, WeaponBlock, (void *&)g_pfnKnife_Idle);
-	g_pMetaHookAPI->InlineHook(g_pfnM4A1_SecondaryAttack, WeaponBlock, (void *&)g_pfnM4A1_SecondaryAttack);
-	g_pMetaHookAPI->InlineHook(g_pfnUSP_SecondaryAttack, WeaponBlock, (void *&)g_pfnUSP_SecondaryAttack);
+	Weapon_Init();
 
-	g_pMetaHookAPI->InlineHook(g_pfnCHudSayText_Draw, CHudSayText_Draw, (void *&)g_pfnCHudSayText_Draw);
-
-
-	//gEngfuncs.pfnAddCommand("weapondata_reload", WeaponInitialize);
+	ClientLinks_InstallHook();
 
 	/*g_hCurrentFont = vgui::surface()->CreateFont();
 	vgui::surface()->AddCustomFontFile("df_gb_y9.ttf");
@@ -711,9 +523,6 @@ void HUD_Init(void)
 }
 
 void Event_VidInit(void);
-
-extern char g_szModelPrecache[512][MAX_QPATH];
-extern int g_iModelPrecacheNums;
 
 int HUD_VidInit(void)
 {
@@ -739,7 +548,7 @@ int HUD_VidInit(void)
 	BTEPanel_BuyMenu_Reset();
 	g_TeamMenu.Reset();
 	g_NormalZombieMenu.Reset();
-	
+
 	gHud3D.VidInit();
 	gHud3D_ZB.VidInit();
 
@@ -757,9 +566,8 @@ int HUD_VidInit(void)
 	memset(g_PlayerExtraInfo, 0, sizeof(g_PlayerExtraInfo));
 	memset(g_vecHostagePos, 0, sizeof(g_vecHostagePos));
 
-
-	memset(g_szModelPrecache, 0, sizeof(g_szModelPrecache));
-	g_iModelPrecacheNums = 0;
+	extern std::vector<std::string> g_vecModelPrecache; // plugins.cpp
+	g_vecModelPrecache.clear();
 
 	cl_righthand = gEngfuncs.pfnGetCvarPointer("cl_righthand");
 
@@ -780,7 +588,7 @@ int HUD_VidInit(void)
 
 	gEngfuncs.pfnClientCmd("-duck;");
 
-	WeaponInitialize();
+	Weapon_VidInit();
 
 	return gExportfuncs.HUD_VidInit();
 }
@@ -861,7 +669,7 @@ void HUD_ProcessPlayerState(struct entity_state_s *dst, const struct entity_stat
 					WeaponManager().SetPlayerWeapon(src->number, 0, Weapon);
 					WeaponManager().SetPlayerWeapon(src->number, iSlot, Weapon);
 				}
-					//g_iCustomWeapon[src->number][0] = g_iCustomWeapon[src->number][iSlot] = iBteWpn;
+				//g_iCustomWeapon[src->number][0] = g_iCustomWeapon[src->number][iSlot] = iBteWpn;
 			}
 		}
 	}
@@ -873,11 +681,11 @@ void HUD_ProcessPlayerState(struct entity_state_s *dst, const struct entity_stat
 int HUD_Redraw(float time, int intermission)
 {
 	HudNVG().Draw(time);
-	
+
 	int iResult = gExportfuncs.HUD_Redraw(time, intermission);
-	
+
 	DisplayRedraw(time, intermission);
-	
+
 	Hud().Redraw(time, intermission);
 
 	MGUI_Redraw();
@@ -899,7 +707,7 @@ void HUD_DrawTransparentTriangles(void)
 
 	if (HudOverview().CanDraw())
 		HudOverview().EntityESP();
-		
+
 	//gEngfuncs.Con_Printf("%d\n", glGetError());
 }
 
@@ -1370,7 +1178,7 @@ void V_CalcRefdef(struct ref_params_s *pParams)
 
 					Engfunc_Call_AddVisibleEntity(&(g_pDualSwordEffect2->entity));
 				}
-				
+
 				//g_pfnR_DrawSpriteModel(&(g_pDualSwordEffect1->entity));
 				//g_pfnR_DrawSpriteModel(&(g_pDualSwordEffect2->entity));
 			}
@@ -1585,31 +1393,32 @@ void V_CalcRefdef(struct ref_params_s *pParams)
 	return;
 }
 
+int GameStudioModelRenderer_InstallHook(int version, struct r_studio_interface_s **ppinterface, struct engine_studio_api_s *pstudio);
 int HUD_GetStudioModelInterface(int iVersion, struct r_studio_interface_s **ppStudioInterface, struct engine_studio_api_s *pEngineStudio)
 {
-	memcpy(&IEngineStudio, pEngineStudio, sizeof(IEngineStudio));
-
 	int iResult = gExportfuncs.HUD_GetStudioModelInterface(iVersion, ppStudioInterface, pEngineStudio);
 
+	GameStudioModelRenderer_InstallHook(iVersion, ppStudioInterface, pEngineStudio);
+
 	gStudioInterface.StudioDrawModel = (*ppStudioInterface)->StudioDrawModel;
-	(*ppStudioInterface)->StudioDrawModel = R_StudioDrawModel;
+	(*ppStudioInterface)->StudioDrawModel = Hook_R_StudioDrawModel;
 
 	gStudioFuncs.R_StudioCheckBBox = pEngineStudio->StudioCheckBBox;
 	gStudioFuncs.R_StudioSetupLighting = pEngineStudio->StudioSetupLighting;
 	StudioFuncs_InstallHook();
 
 	Window_VidInit();
-	
+
 	//Hud().m_scrinfo.iSize = sizeof(Hud().m_scrinfo);
 	//gEngfuncs.pfnGetScreenInfo(&Hud().m_scrinfo);
-	
+
 	//char *value;
 
-	
+
 	/*
 	if (ScreenInfo().iHeight <= 600 && ScreenInfo().iWidth <= 800)
-		if (!strcmp(gConfigs.szLanguage, "schinese"))
-			MessageBoxA(NULL, "游戏正在不推荐的分辨率运行，请尝试使用更高分辨率。", "警告", MB_OK | MB_ICONWARNING);
+	if (!strcmp(gConfigs.szLanguage, "schinese"))
+	MessageBoxA(NULL, "游戏正在不推荐的分辨率运行，请尝试使用更高分辨率。", "警告", MB_OK | MB_ICONWARNING);
 	*/
 	LogToFile("===初始化模型接口===");
 
@@ -1659,7 +1468,7 @@ int HUD_GetStudioModelInterface(int iVersion, struct r_studio_interface_s **ppSt
 	//DrawTgaLoadList(); !!!
 	MGUI_Init();
 	CVAR_Init();
-	
+
 
 	g_Font.Init("font.ttf");
 	g_FontBold.Init("font_bold.ttf");
@@ -1694,28 +1503,28 @@ int Engfunc_AddVisibleEntity(struct cl_entity_s *pEntity)
 	/*
 	if (strstr(pEntity->model->name, "zb_skill_headshot"))
 	{
-		cl_entity_t *pPlayer = NULL;
-		pPlayer = gEngfuncs.GetEntityByIndex(pEntity->curstate.aiment);
-		if (!pEntity) Engfunc_Call_AddVisibleEntity(pEntity);
-		//if(vPlayer[pEntity->curstate.aiment].team==2)
-		//pEntity->curstate.renderamt = 0;
+	cl_entity_t *pPlayer = NULL;
+	pPlayer = gEngfuncs.GetEntityByIndex(pEntity->curstate.aiment);
+	if (!pEntity) Engfunc_Call_AddVisibleEntity(pEntity);
+	//if(vPlayer[pEntity->curstate.aiment].team==2)
+	//pEntity->curstate.renderamt = 0;
 
-		pEntity->origin[0] = pPlayer->origin[0];
-		pEntity->origin[1] = pPlayer->origin[1];
-		pEntity->origin[2] = pPlayer->origin[2];
+	pEntity->origin[0] = pPlayer->origin[0];
+	pEntity->origin[1] = pPlayer->origin[1];
+	pEntity->origin[2] = pPlayer->origin[2];
 
-		return Engfunc_Call_AddVisibleEntity(pEntity);
+	return Engfunc_Call_AddVisibleEntity(pEntity);
 	}*/
 
 	/*
 	if (pEntity->curstate.scale < 0.3 && pEntity->model->name && strstr(pEntity->model->name, "flame3"))
 	{
-		cl_entity_t *pViewEntity = gEngfuncs.GetViewModel();
-		if (!pEntity) Engfunc_Call_AddVisibleEntity(pEntity);
+	cl_entity_t *pViewEntity = gEngfuncs.GetViewModel();
+	if (!pEntity) Engfunc_Call_AddVisibleEntity(pEntity);
 
-		pEntity->origin = pViewEntity->attachment[1];
+	pEntity->origin = pViewEntity->attachment[1];
 
-		return Engfunc_Call_AddVisibleEntity(pEntity);
+	return Engfunc_Call_AddVisibleEntity(pEntity);
 	}
 	*/
 	if (pEntity->curstate.iuser4 == MUZZLEFLASH_GUITAR)
@@ -1834,13 +1643,13 @@ void HUD_StudioEvent(const struct mstudioevent_s *pEvent, const struct cl_entity
 				pEnt->entity.curstate.rendermode = kRenderTransAdd;
 				pEnt->entity.curstate.renderamt = 150;
 				pEnt->entity.curstate.scale = RANDOM_FLOAT(0.3, 0.4);
-				pEnt->entity.baseline.origin = Vector(0,0,50);
+				pEnt->entity.baseline.origin = Vector(0, 0, 50);
 
 				pEnt->die = cl.time + 0.57;
 				pEnt->callback = SmokeRise_Wind; /*bWind ? SmokeRise_Wind : SmokeRise;*/
 				pEnt->flags |= FTENT_CLIENTCUSTOM | FTENT_PERSIST | FTENT_SPRANIMATELOOP;
 			}
-			
+
 		}
 
 		if (pEvent->event != 5001 && pEvent->event != 5011 && pEvent->event != 5021 && pEvent->event != 5031)
@@ -2108,7 +1917,7 @@ void HUD_StudioEvent(const struct mstudioevent_s *pEvent, const struct cl_entity
 					pTemp->entity.angles[2] = gEngfuncs.pfnRandomLong(0, index ? 359 : 20);
 
 				Engfunc_Call_AddVisibleEntity(&(pTemp->entity));
-				
+
 			}
 			return;
 		}
@@ -2138,7 +1947,7 @@ void HUD_WeaponsPostThink(local_state_s *from, local_state_s *to, usercmd_t *cmd
 		gEngfuncs.pEventAPI->EV_KillEvents(player->index, "events/blocksmg.sc");
 	}
 
-	if (player && (g_iCurrentWeapon != to->client.m_iId || g_iViewModel != to->client.viewmodel ))
+	if (player && (g_iCurrentWeapon != to->client.m_iId || g_iViewModel != to->client.viewmodel))
 	{
 		CheckViewEntity();
 	}
@@ -2157,45 +1966,8 @@ void HUD_WeaponsPostThink(local_state_s *from, local_state_s *to, usercmd_t *cmd
 	//g_iFreezeTimeOver = from->client.iuser3 & IUSER3_FREEZETIMEOVER;
 }
 
-int g_irunninggausspred;
-float g_flApplyVel;
-
-void HUD_PostRunCmd(struct local_state_s *from, struct local_state_s *to, struct usercmd_s *cmd, int runfuncs, double time, unsigned int random_seed)
-{
-	HUD_WeaponsPostThink(from, to, cmd, time, random_seed);
-	//gEngfuncs.Con_Printf("%d\n", to->weapondata[g_iCurrentWeapon].m_fInReload);
-	g_bInReload = to->weapondata[g_iCurrentWeapon].m_fInReload;
-	//g_iWeaponStat = to->weapondata[g_iCurrentWeapon].m_iWeaponState;
-	//g_iCurrentWeapon = from->client.m_iId;
-	if (g_iWeaponData[g_iCurrentWeapon].iAmmoDisplay != 1 && g_iWeaponData[g_iCurrentWeapon].iAmmoDisplay != 5 && g_iWeaponData[g_iCurrentWeapon].iAmmoDisplay != 6)
-		g_iShowCustomCrosshair = 0;
-
-	static cl_entity_t *viewmodel;
-	viewmodel = gEngfuncs.GetViewModel();
-
-	if (cmd)
-	{
-		if (cmd->buttons & IN_ATTACK2)
-		{
-			g_iButton = 1;
-			if (g_iBTEWeapon == WPN_GAUSS)
-				g_irunninggausspred = true;
-		}
-		else g_iButton = 0;
-
-		cmd->buttons &= ~IN_RELOAD;
-	}
-
-	gExportfuncs.HUD_PostRunCmd(from, to, cmd, runfuncs, time, random_seed);
-
-	if (g_irunninggausspred == 1)
-	{
-		Vector forward;
-		gEngfuncs.pfnAngleVectors(v_angles, forward, NULL, NULL);
-		to->client.velocity = to->client.velocity - forward * g_flApplyVel * 5;
-		g_irunninggausspred = false;
-	}
-}
+// moved to hl_weapons.cpp
+void HUD_PostRunCmd(struct local_state_s *from, struct local_state_s *to, struct usercmd_s *cmd, int runfuncs, double time, unsigned int random_seed);
 
 void EngFunc_TempEntPlaySound(struct tempent_s *pTemp, float damp)
 {
@@ -2207,11 +1979,11 @@ void EngFunc_TempEntPlaySound(struct tempent_s *pTemp, float damp)
 	if (pTemp == NULL)
 		return;
 
-	if (pTemp->entity.model && 
+	if (pTemp->entity.model &&
 		Q_stristr(pTemp->entity.model->name, "block_shell") &&
-			(
-				pTemp->hitSound == BOUNCE_SHELL ||
-				pTemp->hitSound == BOUNCE_SHOTSHELL
+		(
+			pTemp->hitSound == BOUNCE_SHELL ||
+			pTemp->hitSound == BOUNCE_SHOTSHELL
 			)
 		)
 	{
@@ -2333,21 +2105,21 @@ int HUD_AddEntity(int iType, struct cl_entity_s *pEntity, const char *pszModel)
 			/*
 			if (Q_stristr(pEntity->model->name, "/w_"))
 			{
-				if (g_Entity_Index[pEntity->index] < cl.time && !(IS_ZOMBIE_MODE && vPlayer[gEngfuncs.GetLocalPlayer()->index].team == 2) && !(pEntity->curstate.velocity.Length()))
-				{
-					TEMPENTITY *pEffect;
-					pEffect = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(pEntity->origin, IEngineStudio.Mod_ForName("models/ef_gundrop.mdl", false));
-					pEffect->entity.curstate.frame = 0;
-					pEffect->entity.curstate.framerate = 1;
-					pEffect->entity.baseline.iuser1 = pEntity->index;
-					pEffect->die = cl.time + 5.0;
-					pEffect->callback = GunDropEffect_FollowThink;
-					
-					pEffect->clientIndex = pEntity->index;
-					pEffect->flags |= FTENT_PLYRATTACHMENT | FTENT_CLIENTCUSTOM;
+			if (g_Entity_Index[pEntity->index] < cl.time && !(IS_ZOMBIE_MODE && vPlayer[gEngfuncs.GetLocalPlayer()->index].team == 2) && !(pEntity->curstate.velocity.Length()))
+			{
+			TEMPENTITY *pEffect;
+			pEffect = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(pEntity->origin, IEngineStudio.Mod_ForName("models/ef_gundrop.mdl", false));
+			pEffect->entity.curstate.frame = 0;
+			pEffect->entity.curstate.framerate = 1;
+			pEffect->entity.baseline.iuser1 = pEntity->index;
+			pEffect->die = cl.time + 5.0;
+			pEffect->callback = GunDropEffect_FollowThink;
 
-					g_Entity_Index[pEntity->index] = cl.time + 5.0;
-				}
+			pEffect->clientIndex = pEntity->index;
+			pEffect->flags |= FTENT_PLYRATTACHMENT | FTENT_CLIENTCUSTOM;
+
+			g_Entity_Index[pEntity->index] = cl.time + 5.0;
+			}
 			}
 			*/
 			if (Q_stristr(pEntity->model->name, "s_grenade_spark"))
@@ -2387,7 +2159,7 @@ int HUD_AddEntity(int iType, struct cl_entity_s *pEntity, const char *pszModel)
 						pEnt->entity.curstate.framerate = gEngfuncs.pfnRandomFloat(3.0, 4.0);
 						pEnt->die = cl.time + pEnt->frameMax / pEnt->entity.curstate.framerate;
 					}
-					
+
 
 					pModel = IEngineStudio.Mod_ForName("sprites/hotglow.spr", 0);
 					pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(origin, pModel);
@@ -2515,7 +2287,7 @@ int HUD_Key_Event(int eventcode, int keynum, const char *pszCurrentBinding)
 		g_Next_Key_CanUse = cl.time + 0.15;
 
 		//if (keynum == K_ESCAPE)
-			//BTEPanel_BuyMenu_Close();
+		//BTEPanel_BuyMenu_Close();
 
 		if ((keynum != 96 && keynum != 27) && (pszCurrentBinding && stricmp(pszCurrentBinding, "snapshot")))
 		{
@@ -2541,5 +2313,11 @@ void HUD_CreateEntities()
 {
 	gExportfuncs.HUD_CreateEntities();
 
-	UpdateBeams();	
+	UpdateBeams();
+}
+
+void HUD_DrawNormalTriangles(void)
+{
+	TextureManager().UpdateAll();
+	return gExportfuncs.HUD_DrawNormalTriangles();
 }

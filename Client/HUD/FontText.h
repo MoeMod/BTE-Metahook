@@ -24,3 +24,5 @@ public:
 	void Draw(float time);
 	void AddElement(DrawFontTextItem item);
 };
+
+CHudFontTextElements &HudFontTextElements();

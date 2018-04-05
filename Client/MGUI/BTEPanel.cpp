@@ -1,5 +1,6 @@
-#include "base.h"
+#include "bte_const.h"
 #include "hud.h"
+#include "plugins.h"
 #include "exportfuncs.h"
 #include "BaseUI.h"
 #include "DrawTargaImage.h"
@@ -7,6 +8,7 @@
 #include "message.h"
 #include "util.h"
 #include "common.h"
+#include "Encode.h"
 
 #include <vector>
 
@@ -18,6 +20,8 @@
 #include "weapons.h"
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
+
+#include "Client/HUD/DrawTGA.h"
 
 //#define BUTTON_STATIC_DEFINE
 
@@ -594,8 +598,8 @@ void BuyWeapon(char *sName, int iSlot)
 
 	int id = gEngfuncs.GetLocalPlayer()->index;
 
-	if ((!Q_stricmp(sName, "lugers") && Q_stricmp(PlayerClassManager()[id].model, "blair")) ||
-		(!Q_stricmp(sName, "holybomb") && Q_stricmp(PlayerClassManager()[id].model, "fernando")))
+	if ((!stricmp(sName, "lugers") && stricmp(PlayerClassManager()[id].model, "blair")) ||
+		(!stricmp(sName, "holybomb") && stricmp(PlayerClassManager()[id].model, "fernando")))
 	{
 		pBuyMenuPanel->MGUIMessageBox(GetLangUni("#CSO_CLASS_LOCK_H"), GetLangUni("CSO_CLASS_LOCK_B"), MB_OK, NULL, NULL, K_SPACE, -1);
 		return;
@@ -835,7 +839,7 @@ void Cmd_TeamSuit()
 
 void BTEBuyMenu_Init(void)
 {
-	gEngfuncs.pfnAddCommand("buy", Cmd_Buy);
+	//gEngfuncs.pfnAddCommand("buy", Cmd_Buy);
 	gEngfuncs.pfnAddCommand("buyequip", Cmd_BuyEquip);
 	gEngfuncs.pfnAddCommand("teamsuit", Cmd_TeamSuit);
 

@@ -4,7 +4,11 @@
 
 #pragma once
 
+#include <assert.h>
+#include <string.h>
+
 #include "wrect.h"
+
 #include "cvardef.h"
 #include "client.h"
 #include "Renderer/screen.h"
@@ -54,11 +58,6 @@ extern pfnUserMsgHook pmInitHUD;
 extern pfnUserMsgHook pmResetHUD;
 extern cvar_t *hud_draw;
 
-#include "HUD/drawimage.h"
-#include "HUD/DrawTga.h"
-#include "HUD/FontText.h"
-#include "HUD/followicon.h"
-
 class CHud
 {
 private:
@@ -101,7 +100,7 @@ public:
 
 		return pmResetHUD(pszName, iSize, pbuf);
 	}
-	CHud() : m_iSpriteCount(0) {}
+	CHud();
 	~CHud()
 	{
 		ShutDown();
@@ -151,11 +150,11 @@ public:
 public:
 	vec3_t m_vecOrigin, m_vecAngles;
 
-public:	// HUD Elements
-	CHudFollowIconElements m_FollowIcon;
-	CHudFontTextElements m_FontText;
-	CHudSPRElements m_SPR;
-	CHudTGAElements m_TGA;
+public:	// HUD Elements (pimpl, see hud.cpp)
+	class CHudFollowIconElements &m_FollowIcon;
+	class CHudFontTextElements &m_FontText;
+	class CHudSPRElements &m_SPR;
+	class CHudTGAElements &m_TGA;
 };
 
 //extern CHud gHUD;
@@ -166,3 +165,49 @@ extern CHud &gHUD;
 //#define ScreenHeight Hud().m_scrinfo.iHeight
 
 #define HUD_ACTIVE (1<<1)
+
+extern struct cvar_s *cl_righthand;
+extern struct cvar_s *cl_radartype;
+extern struct cvar_s *cl_dynamiccrosshair;
+extern struct cvar_s *cl_crosshair_color;
+extern struct cvar_s *cl_crosshair_size;
+extern struct cvar_s *cl_crosshair_translucent;
+extern struct cvar_s *cl_crosshair_type;
+extern struct cvar_s *cl_killeffect;
+extern struct cvar_s *cl_killmessage;
+extern struct cvar_s *cl_headname;
+extern struct cvar_s *cl_newmenu;
+extern struct cvar_s *cl_newmenu_drawbox;
+extern struct cvar_s *cl_newradar;
+extern struct cvar_s *cl_newradar_size;
+extern struct cvar_s *cl_newradar_r;
+extern struct cvar_s *cl_newradar_g;
+extern struct cvar_s *cl_newradar_b;
+extern struct cvar_s *cl_newradar_a;
+extern struct cvar_s *cl_newchat;
+extern struct cvar_s *cl_shadows;
+extern struct cvar_s *cl_scoreboard;
+extern struct cvar_s *cl_fog_skybox;
+extern struct cvar_s *cl_fog_density;
+extern struct cvar_s *cl_fog_r;
+extern struct cvar_s *cl_fog_g;
+extern struct cvar_s *cl_fog_b;
+extern struct cvar_s *cl_minmodel;
+extern struct cvar_s *cl_min_t;
+extern struct cvar_s *cl_min_ct;
+extern struct cvar_s *cl_corpsestay;
+extern struct cvar_s *cl_corpsefade;
+
+#define MAX_HOSTAGES 24
+#define MAX_TEAM_NAME 16
+
+struct hostage_info_t
+{
+	bool dead;
+	Vector origin;
+	int health;
+	float radarflash;
+	int radarflashon;
+	int radarflashes;
+	char teamname[MAX_TEAM_NAME];
+};

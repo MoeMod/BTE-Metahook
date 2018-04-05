@@ -180,7 +180,7 @@ void Mod_LoadStudioModel(model_t *mod, byte *buffer)
 
 		g_iSequenceNums = 0;
 	}
-
+	
 	g_pfnMod_LoadStudioModel(mod, buffer);
 
 	studiohdr_t	*pstudio;

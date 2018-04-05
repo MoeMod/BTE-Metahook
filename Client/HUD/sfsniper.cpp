@@ -14,6 +14,7 @@
 #include <triangleapi.h>
 
 #include "sfsniper.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudSfsniperScope g_HudSfsniperScope;
 CHudSfsniperScope &HudSfsniperScope()

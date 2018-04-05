@@ -1,4 +1,6 @@
-#include "base.h"
+#include "metahook.h"
+#include "tier1/strtools.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "parsemsg.h"
@@ -8,6 +10,7 @@
 
 #include "alarm.h"
 #include "deathmsg.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudAlarm g_HudAlarm;
 CHudAlarm &HudAlarm()
@@ -146,8 +149,8 @@ void CHudAlarm::Init(void)
 	m_iSlotFree = 1;
 	m_bDrawBackground = true;
 
-	char szAlarm[256], szRibbon[256];
-	char szTextAlarm[256], szTextRibbon[256];
+	char szAlarm[256];
+	char szTextAlarm[256];
 
 	m_iCurAlarm = -1;
 
@@ -160,20 +163,15 @@ void CHudAlarm::Init(void)
 	for (int i = 0; i < MAX_ALARM_TYPES; i++)
 	{
 		Q_snprintf(szAlarm, 255, "resource\\announceribbon\\announceicon\\alarm_%s", m_szAlarmNames[i]);
-		Q_snprintf(szRibbon, 255, "resource\\announceribbon\\ribbonicon\\ribbon_%s", m_szAlarmNames[i]);
 		Q_snprintf(szTextAlarm, 255, "#CSO_Alarm_%s", m_szAlarmNames[i]);
-		Q_snprintf(szTextRibbon, 255, "#CSO_Ribbon_%s", m_szAlarmNames[i]);
 
 		m_iAlarms[i] = Hud().m_TGA.FindTexture(szAlarm);
-		m_iRibbons[i] = Hud().m_TGA.FindTexture(szRibbon);
 		m_iHappenedTimes[i] = 0;
 		wcscpy(m_lpAlarms[i], GetLangUni(szTextAlarm));
-		wcscpy(m_lpRibbons[i], GetLangUni(szTextRibbon));
 
 		if (!wcscmp(m_lpAlarms[i], L"#CSO_Alarm_supporter"))
 		{
 			wcscpy(m_lpAlarms[i], GetLangUni("#CSO_Alarm_Surpporter"));
-			wcscpy(m_lpRibbons[i], GetLangUni("#CSO_Ribbon_Surpporter"));
 		}
 	}
 }

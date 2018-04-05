@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "configs.h"
@@ -13,6 +14,8 @@
 #include "util.h"
 
 #include "GameUI/CSBTEMapLoading.h"
+
+#include "Client/ViewPort.h"
 
 #include "Client/HUD/zse.h"
 #include "Client/HUD/zb4ui.h"
@@ -41,11 +44,15 @@
 #include "Client/HUD/ammo.h"
 #include "Client/HUD/roundtimer.h"
 #include "Client/HUD/health.h"
+
 #include "Client/HUD/drawimage.h"
+#include "Client/HUD/FontText.h"
+#include "Client/HUD/followicon.h"
+#include "Client/HUD/DrawTGA.h"
 
 #include "MGUI/mgui.h"
 #include "MGUI/BTEPanel.h"
-#include "MGUI/TeamMenu.h"
+#include "ViewPort.h"
 
 pfnUserMsgHook pmTeamScore;
 pfnUserMsgHook pmResetHUD;
@@ -172,25 +179,8 @@ int MsgFunc_VGUIMenu(const char *pszName, int iSize, void *pbuf)
 {
 	BEGIN_READ(pbuf, iSize);
 	byte MenuID = READ_BYTE();
-	if (MenuID == MENU_TEAM)
-	{
-		g_TeamMenu.Show();
-		g_TeamMenu.SwitchTeam(2);
+	if (g_pViewPort->ShowVGUIMenu(MenuID))
 		return 1;
-	}
-	else if (MenuID == MENU_CLASS_T)
-	{
-		g_TeamMenu.Show();
-		g_TeamMenu.SwitchTeam(1);
-		return 1;
-	}
-	else if (MenuID == MENU_CLASS_CT)
-	{
-		g_TeamMenu.Show();
-		g_TeamMenu.SwitchTeam(2);
-		return 1;
-	}
-	
 	return pmVGUIMenu(pszName, iSize, pbuf);
 }
 
@@ -2168,6 +2158,8 @@ int MsgFunc_ServerName(const char *pszName, int iSize, void *pbuf)
 
 	if (g_hCSBTEMapLoading)
 		g_hCSBTEMapLoading->SetServerName(pszServerName);
+
+	strcpy(g_pViewPort->m_szServerName, pszServerName);
 
 	return pmServerName(pszName, iSize, pbuf);
 }

@@ -31,3 +31,5 @@ public:
 public:
 	DrawIconItem m_Icon[DRAWICON_MAX + 1];
 };
+
+CHudFollowIconElements &HudFollowIconElements();
