@@ -27,7 +27,7 @@ int g_iSpoce = 0;
 int g_bInReload = 0;
 
 PlayerInfo vPlayer[36];
-//extra_player_info_t  g_PlayerExtraInfo[MAX_PLAYERS+1]; //moved to links.cpp
+extra_player_info_t  g_PlayerExtraInfo[MAX_PLAYERS+1];
 
 char g_szLocation[2048];
 bool g_bAlive;

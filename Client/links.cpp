@@ -14,7 +14,7 @@
 
 void *gpViewPortInterface = (void *)0x1A3A7B8;
 
-extra_player_info_t *g_PlayerExtraInfo = (extra_player_info_t *)0x1A25618;
+//extra_player_info_t *g_PlayerExtraInfo = (extra_player_info_t *)0x1A25618;
 hostage_info_t *g_HostageInfo = (hostage_info_t *)0x19F73E8;
 
 void (__fastcall *g_pfnCHudHealth_DrawRadar)(void *, int, float) = (void (__fastcall *)(void *, int, float))0x194A780;
