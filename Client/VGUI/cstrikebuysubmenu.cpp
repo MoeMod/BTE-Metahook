@@ -119,13 +119,25 @@ void CCSBuySubMenu::UpdateLoadout(void)
 	
 }
 
+void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
+{
+	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
+
+	// 0->exit
+	m_pSlotButtons[9]->SetText("#Cstrike_Cancel");
+	m_pSlotButtons[9]->SetCommand("vguicancel");
+
+}
+
 void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
 
+	// hide zbs
 	m_pUpgradeTitle->SetVisible(false);
 	m_pOppZombiUpgradeTitle->SetVisible(false);
 
+	// hide dm set
 	m_pSetSelBg->SetVisible(false);
 	m_pSetLabel->SetVisible(false);
 	m_pPrevSetBtn->SetVisible(false);
@@ -133,4 +145,56 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 	m_pEditDescLabel_DM->SetVisible(false);
 	m_pEditDescBg->SetVisible(false);
 	m_pEquipSample->SetVisible(false);
+
+	// Lower Right Corner
+	m_pBasketClear->SetVisible(false);
+	m_pBasketBuy->SetVisible(false);
+	m_pQuitButton->SetVisible(false);
+}
+
+void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
+{
+	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
+
+	// hide zbs
+	m_pUpgradeTitle->SetVisible(false);
+	m_pOppZombiUpgradeTitle->SetVisible(false);
+
+	// hide dm set
+	m_pSetSelBg->SetVisible(false);
+	m_pSetLabel->SetVisible(false);
+	m_pPrevSetBtn->SetVisible(false);
+	m_pNextSetBtn->SetVisible(false);
+	m_pEditDescLabel_DM->SetVisible(false);
+	m_pEditDescBg->SetVisible(false);
+	m_pEquipSample->SetVisible(false);
+
+	// hide money & buy time
+	moneyText->SetVisible(false);
+	buytime_num->SetVisible(false);
+}
+
+void CCSBuySubMenu_DeathMatch::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
+{
+	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
+
+	// hide zbs
+	m_pUpgradeTitle->SetVisible(false);
+	m_pOppZombiUpgradeTitle->SetVisible(false);
+
+	// Right Fav List Hide
+	for (int i = 0; i < 5; i++)
+	{
+		m_pFavButtons[i]->SetVisible(false);
+		m_pFavSaveButtons[i]->SetVisible(false);
+	}
+	m_pFavDirectBuy->SetVisible(false);
+
+	// hide money & buy time
+	moneyText->SetVisible(false);
+	buytime_num->SetVisible(false);
+
+	// hide rebuy & autobuy
+	m_pRebuyButton->SetVisible(false);
+	m_pAutobuyButton->SetVisible(false);
 }

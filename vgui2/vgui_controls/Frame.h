@@ -241,6 +241,11 @@ private:
 	bool	m_bChainKeysToParent;
 	bool	m_bPrimed;
 	VPANEL	m_hPreviousModal;
+
+	bool m_bImageBackground;
+	IImage *m_pTopBackground[3];
+	IImage *m_pCenterBackground[3];
+	IImage *m_pBottomBackground[3];
 };
 
 } // namespace vgui

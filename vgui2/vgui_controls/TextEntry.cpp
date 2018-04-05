@@ -83,6 +83,7 @@ TextEntry::TextEntry(Panel *parent, const char *panelName) : Panel(parent, panel
 	m_nLangInset = 0;
 	m_bUseFallbackFont = false;
 	m_hFallbackFont = INVALID_FONT;
+	m_bImageBackground = false;
 
 	//a -1 for _select[0] means that the selection is empty
 	_select[0] = -1;
@@ -143,6 +144,22 @@ void TextEntry::ApplySchemeSettings(IScheme *pScheme)
 
 	_font = pScheme->GetFont("Default", IsProportional() );
 	_smallfont = pScheme->GetFont( "DefaultVerySmall", IsProportional() );
+
+	const char *resourceString = pScheme->GetResourceString("TextEntry.TopLeft");
+
+	if (resourceString[0])
+	{
+		m_bImageBackground = true;
+		m_pTopBackground[0] = scheme()->GetImage(resourceString, true);
+		m_pTopBackground[1] = scheme()->GetImage(pScheme->GetResourceString("TextEntry.TopCenter"), true);
+		m_pTopBackground[2] = scheme()->GetImage(pScheme->GetResourceString("TextEntry.TopRight"), true);
+		m_pCenterBackground[0] = scheme()->GetImage(pScheme->GetResourceString("TextEntry.MiddleLeft"), true);
+		m_pCenterBackground[1] = scheme()->GetImage(pScheme->GetResourceString("TextEntry.MiddleCenter"), true);
+		m_pCenterBackground[2] = scheme()->GetImage(pScheme->GetResourceString("TextEntry.MiddleRight"), true);
+		m_pBottomBackground[0] = scheme()->GetImage(pScheme->GetResourceString("TextEntry.BottomLeft"), true);
+		m_pBottomBackground[1] = scheme()->GetImage(pScheme->GetResourceString("TextEntry.BottomCenter"), true);
+		m_pBottomBackground[2] = scheme()->GetImage(pScheme->GetResourceString("TextEntry.BottomRight"), true);
+	}
 
 	SetFont( _font );
 }
@@ -627,7 +644,6 @@ bool TextEntry::NeedsEllipses( HFont font, int *pIndex )
 	return false;
 }
 
-void FillMultiTexturesForTextEntry(int w, int h);
 //-----------------------------------------------------------------------------
 // Purpose: Draws the text in the panel
 //-----------------------------------------------------------------------------
@@ -644,23 +660,58 @@ void TextEntry::PaintBackground()
 		col = _disabledBgColor;
 	}
 	Color saveBgColor = col;
-
-	//surface()->DrawSetColor(col);
 	int wide, tall;
 	GetSize( wide, tall );
-	//surface()->DrawFilledRect(0, 0, wide, tall);
-	FillMultiTexturesForTextEntry(GetWide(), GetTall());
+	if (!m_bImageBackground)
+	{
+		surface()->DrawSetColor(col);
+		surface()->DrawFilledRect(0, 0, wide, tall);
+	}
+	else
+	{
+		const int iOffset = 0;
+
+		m_pTopBackground[0]->SetPos(0, 0);
+		m_pTopBackground[0]->SetSize(7, 7);
+		m_pTopBackground[0]->Paint();
+		m_pTopBackground[1]->SetPos(7, 0);
+		m_pTopBackground[1]->SetSize(wide - 14 - iOffset, 7);
+		m_pTopBackground[1]->Paint();
+		m_pTopBackground[2]->SetPos(wide - 7 - iOffset, 0);
+		m_pTopBackground[2]->SetSize(7, 7);
+		m_pTopBackground[2]->Paint();
+
+		m_pCenterBackground[0]->SetPos(0, 7);
+		m_pCenterBackground[0]->SetSize(7, tall - 14);
+		m_pCenterBackground[0]->Paint();
+		m_pCenterBackground[1]->SetPos(7, 7);
+		m_pCenterBackground[1]->SetSize(wide - 14 - iOffset, tall - 14);
+		m_pCenterBackground[1]->Paint();
+		m_pCenterBackground[2]->SetPos(wide - 7 - iOffset, 7);
+		m_pCenterBackground[2]->SetSize(7, tall - 14);
+		m_pCenterBackground[2]->Paint();
+
+		m_pBottomBackground[0]->SetPos(0, tall - 7);
+		m_pBottomBackground[0]->SetSize(7, 7);
+		m_pBottomBackground[0]->Paint();
+		m_pBottomBackground[1]->SetPos(7, tall - 7);
+		m_pBottomBackground[1]->SetSize(wide - 14 - iOffset, 7);
+		m_pBottomBackground[1]->Paint();
+		m_pBottomBackground[2]->SetPos(wide - 7, tall - 7);
+		m_pBottomBackground[2]->SetSize(7, 7);
+		m_pBottomBackground[2]->Paint();
+	}
 
 	// where to Start drawing
 	int x = DRAW_OFFSET_X + _pixelsIndent, y = GetYStart();
 
-	m_nLangInset = 0;
+	/*m_nLangInset = 0;
 
 	int langlen = 0;
 	wchar_t shortcode[ 5 ];
 	shortcode[ 0 ] = L'\0';
-
-	if ( 0/*m_bAllowNonAsciiCharacters*/ )
+	
+	if (  m_bAllowNonAsciiCharacters )
 	{
 		input()->GetIMELanguageShortCode( shortcode, sizeof( shortcode ) );
 
@@ -684,7 +735,7 @@ void TextEntry::PaintBackground()
 			wide -= m_nLangInset;
 		}
 	}
-
+	*/
 	HFont useFont = _font;
 
 	surface()->DrawSetTextFont(useFont);
@@ -901,7 +952,7 @@ void TextEntry::PaintBackground()
 		m_TextStream.RemoveMultiple( oldCursorPos, remove );
 	}
 	_cursorPos = oldCursorPos;
-
+	/*
 	if ( HasFocus() && m_bAllowNonAsciiCharacters && langlen > 0 )
 	{
 		wide += m_nLangInset;
@@ -930,7 +981,7 @@ void TextEntry::PaintBackground()
 		{
 			x += DrawChar( shortcode[ i ], _smallfont, i, x, remembery );
 		}
-	}
+	}*/
 }
 
 //-----------------------------------------------------------------------------

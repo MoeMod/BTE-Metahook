@@ -32,6 +32,8 @@ protected:
 public:
 	virtual void SetupNextSubPanel(const char *fileName);
 
+	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
+
 protected:
 	// Left Column
 	BuyMouseOverPanelButton * m_pSlotButtons[10]; // slot0 ... slot10
@@ -86,10 +88,30 @@ protected:
 class CCSBuySubMenu_DefaultMode : public CCSBuySubMenu
 {
 private:
-	typedef CBuySubMenu BaseClass;
+	typedef CCSBuySubMenu BaseClass;
 
 public:
 	CCSBuySubMenu_DefaultMode(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name){}
+	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
+};
+
+class CCSBuySubMenu_ZombieMod : public CCSBuySubMenu
+{
+private:
+	typedef CCSBuySubMenu BaseClass;
+
+public:
+	CCSBuySubMenu_ZombieMod(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name) {}
+	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
+};
+
+class CCSBuySubMenu_DeathMatch : public CCSBuySubMenu
+{
+private:
+	typedef CCSBuySubMenu BaseClass;
+
+public:
+	CCSBuySubMenu_DeathMatch(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name) {}
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
 };
 

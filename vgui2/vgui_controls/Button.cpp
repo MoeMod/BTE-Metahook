@@ -85,6 +85,7 @@ void Button::Init()
 	SetContentAlignment(a_center);
 
 	_paint = true;
+	_imageBackground = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -280,7 +281,6 @@ void Button::DrawFocusBox( bool bEnable )
 	_buttonFlags.SetFlag( DRAW_FOCUS_BOX, bEnable );
 }
 
-void FillMultiTexturesForBaseButton(int state, int w, int h);
 //-----------------------------------------------------------------------------
 // Purpose:	Paint button on screen
 //-----------------------------------------------------------------------------
@@ -292,7 +292,7 @@ void Button::Paint(void)
 	BaseClass::Paint();
 
 	return;
-	/*
+	
 	if ( HasFocus() && IsEnabled() && IsDrawingFocusBox() )
 	{
 		int x0, y0, x1, y1;
@@ -300,17 +300,37 @@ void Button::Paint(void)
 		GetSize(wide, tall);
 		x0 = 3, y0 = 3, x1 = wide - 4 , y1 = tall - 2;
 		DrawFocusBorder(x0, y0, x1, y1);
-	}*/
+	}
 }
 
 void Button::PaintBackground(void)
 {
-	if (IsDepressed())
-		FillMultiTexturesForBaseButton(2, GetWide(), GetTall());
-	else if (IsArmed())
-		FillMultiTexturesForBaseButton(1, GetWide(), GetTall());
-	else
-		FillMultiTexturesForBaseButton(0, GetWide(), GetTall());
+	if (_imageBackground)
+	{
+		int wide, tall;
+		GetSize(wide, tall);
+
+		const int iOffset = 0;
+		IImage **ppimage;
+
+		if (_buttonFlags.IsFlagSet(DEPRESSED))
+			ppimage = _depressedImage;
+		else if (_buttonFlags.IsFlagSet(ARMED))
+			ppimage = _armedImage;
+		else
+			ppimage = _defaultImage;
+
+		ppimage[0]->SetPos(0, 0);
+		ppimage[0]->SetSize(10, tall);
+		ppimage[0]->Paint();
+		ppimage[1]->SetPos(10, 0);
+		ppimage[1]->SetSize(wide - 20 - iOffset, tall);
+		ppimage[1]->Paint();
+		ppimage[2]->SetPos(wide - 10 - iOffset, 0);
+		ppimage[2]->SetSize(10 - iOffset, tall);
+		ppimage[2]->Paint();
+		return;
+	}
 
 	BaseClass::PaintBackground();
 }
@@ -418,6 +438,36 @@ void Button::ApplySchemeSettings(IScheme *pScheme)
 	_depressedFgColor = GetSchemeColor("ButtonDepressedFgColor", _defaultFgColor, pScheme);
 	_depressedBgColor = GetSchemeColor("ButtonDepressedBgColor", _defaultBgColor, pScheme);
 	_keyboardFocusColor = GetSchemeColor("Button.FocusBorderColor", Color(0,0,0,255), pScheme);
+
+	int xInset = 0, yInset = 0;
+
+	const char *resourceString = pScheme->GetResourceString("Button.TextInsetX");
+
+	if (resourceString[0])
+		xInset = atoi(resourceString);
+
+	resourceString = pScheme->GetResourceString("Button.TextInsetY");
+
+	if (resourceString[0])
+		yInset = atoi(resourceString);
+
+	SetTextInset(xInset, yInset);
+
+	const char *enableImage = pScheme->GetResourceString("Button.LeftC");
+
+	if (enableImage[0])
+	{
+		_imageBackground = true;
+		_depressedImage[0] = scheme()->GetImage(enableImage, true);
+		_depressedImage[1] = scheme()->GetImage(pScheme->GetResourceString("Button.CenterC"), true);
+		_depressedImage[2] = scheme()->GetImage(pScheme->GetResourceString("Button.RightC"), true);
+		_defaultImage[0] = scheme()->GetImage(pScheme->GetResourceString("Button.LeftN"), true);
+		_defaultImage[1] = scheme()->GetImage(pScheme->GetResourceString("Button.CenterN"), true);
+		_defaultImage[2] = scheme()->GetImage(pScheme->GetResourceString("Button.RightN"), true);
+		_armedImage[0] = scheme()->GetImage(pScheme->GetResourceString("Button.LeftO"), true);
+		_armedImage[1] = scheme()->GetImage(pScheme->GetResourceString("Button.CenterO"), true);
+		_armedImage[2] = scheme()->GetImage(pScheme->GetResourceString("Button.RightO"), true);
+	}
 
 	_blinkFgColor = GetSchemeColor("Button.BlinkColor", Color(255, 155, 0, 255), pScheme);
 	InvalidateLayout();

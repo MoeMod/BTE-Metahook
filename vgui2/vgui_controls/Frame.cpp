@@ -852,6 +852,8 @@ Frame::Frame(Panel *parent, const char *panelName, bool showTaskbarIcon) : Edita
 	_menuButton = new FrameSystemButton(this, "frame_menu");
 	_menuButton->SetMenu(GetSysMenu());
 	
+	m_bImageBackground = false;
+
 	SetupResizeCursors();
 }
 
@@ -1567,13 +1569,50 @@ bool Frame::GetDefaultScreenPosition(int &x, int &y, int &wide, int &tall)
 	return false;
 }
 
-void FillMultiTexturesForWindowDark(int w, int h);
-
 //-----------------------------------------------------------------------------
 // Purpose: draws title bar
 //-----------------------------------------------------------------------------
 void Frame::PaintBackground()
 {
+	if (m_bImageBackground)
+	{
+		int wide, tall;
+		GetSize(wide, tall);
+
+		const int iOffset = 10;
+		const int iOffset2 = 10;
+
+		m_pTopBackground[0]->SetPos(0, 0);
+		m_pTopBackground[0]->SetSize(24, 24);
+		m_pTopBackground[0]->Paint();
+		m_pTopBackground[1]->SetPos(24, 0);
+		m_pTopBackground[1]->SetSize(wide - 48 + iOffset, 24);
+		m_pTopBackground[1]->Paint();
+		m_pTopBackground[2]->SetPos(wide - 24 + iOffset, 0);
+		m_pTopBackground[2]->SetSize(24, 24);
+		m_pTopBackground[2]->Paint();
+
+		m_pCenterBackground[0]->SetPos(0, 24);
+		m_pCenterBackground[0]->SetSize(24, tall - 48 + iOffset2);
+		m_pCenterBackground[0]->Paint();
+		m_pCenterBackground[1]->SetPos(24, 24);
+		m_pCenterBackground[1]->SetSize(wide - 48 + iOffset, tall - 48 + iOffset2);
+		m_pCenterBackground[1]->Paint();
+		m_pCenterBackground[2]->SetPos(wide - 24 + iOffset, 24);
+		m_pCenterBackground[2]->SetSize(24, tall - 48 + iOffset2);
+		m_pCenterBackground[2]->Paint();
+
+		m_pBottomBackground[0]->SetPos(0, tall - 24 + iOffset2);
+		m_pBottomBackground[0]->SetSize(24, 24);
+		m_pBottomBackground[0]->Paint();
+		m_pBottomBackground[1]->SetPos(24, tall - 24 + iOffset2);
+		m_pBottomBackground[1]->SetSize(wide - 48 + iOffset, 24);
+		m_pBottomBackground[1]->Paint();
+		m_pBottomBackground[2]->SetPos(wide - 24 + iOffset, tall - 24 + iOffset2);
+		m_pBottomBackground[2]->SetSize(24, 24);
+		m_pBottomBackground[2]->Paint();
+	}
+
 	// take the panel with focus and check up tree for this panel
 	// if you find it, than some child of you has the focus, so
 	// you should be focused
@@ -1583,8 +1622,7 @@ void Frame::PaintBackground()
 		titleColor = _titleBarBgColor;
 	}
 
-	//BaseClass::PaintBackground();
-	FillMultiTexturesForWindowDark(GetWide(), GetTall());
+	BaseClass::PaintBackground();
 
 	if (_drawTitleBar)
 	{
@@ -1680,6 +1718,22 @@ void Frame::ApplySchemeSettings(IScheme *pScheme)
 
 	SetBgColor(m_InFocusBgColor);
 	SetBorder(pScheme->GetBorder("FrameBorder"));
+
+	resourceString = pScheme->GetResourceString("Frame.TopLeft");
+
+	if (resourceString[0])
+	{
+		m_bImageBackground = true;
+		m_pTopBackground[0] = scheme()->GetImage(resourceString, true);
+		m_pTopBackground[1] = scheme()->GetImage(pScheme->GetResourceString("Frame.TopCenter"), true);
+		m_pTopBackground[2] = scheme()->GetImage(pScheme->GetResourceString("Frame.TopRight"), true);
+		m_pCenterBackground[0] = scheme()->GetImage(pScheme->GetResourceString("Frame.MiddleLeft"), true);
+		m_pCenterBackground[1] = scheme()->GetImage(pScheme->GetResourceString("Frame.MiddleCenter"), true);
+		m_pCenterBackground[2] = scheme()->GetImage(pScheme->GetResourceString("Frame.MiddleRight"), true);
+		m_pBottomBackground[0] = scheme()->GetImage(pScheme->GetResourceString("Frame.BottomLeft"), true);
+		m_pBottomBackground[1] = scheme()->GetImage(pScheme->GetResourceString("Frame.BottomCenter"), true);
+		m_pBottomBackground[2] = scheme()->GetImage(pScheme->GetResourceString("Frame.BottomRight"), true);
+	}
 
 	OnFrameFocusChanged( m_bHasFocus );
 }

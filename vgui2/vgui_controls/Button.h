@@ -216,6 +216,12 @@ private:
 
 	unsigned short	   m_sArmedSoundName, m_sDepressedSoundName, m_sReleasedSoundName;
 	bool m_bSelectionStateSaved;
+
+	protected:
+		bool				_imageBackground;
+		IImage				*_defaultImage[3];
+		IImage              *_armedImage[3];
+		IImage              *_depressedImage[3];
 };
 
 } // namespace vgui

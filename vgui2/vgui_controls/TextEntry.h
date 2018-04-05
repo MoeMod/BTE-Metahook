@@ -385,6 +385,11 @@ private:
 
 	bool				m_bUseFallbackFont : 1;
 	HFont				m_hFallbackFont;
+
+	bool m_bImageBackground;
+	IImage *m_pTopBackground[3];
+	IImage *m_pCenterBackground[3];
+	IImage *m_pBottomBackground[3];
 };
 
 }
