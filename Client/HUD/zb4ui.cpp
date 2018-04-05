@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "configs.h"
 #include "exportfuncs.h"
 #include "message.h"
@@ -6,12 +7,15 @@
 #include "hud.h"
 #include "BaseUI.h"
 #include "texdraw.h"
+#include "gl/gl.h"
 #include "TriAPI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "zb4ui.h"
 #include "scoreboard.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudZB4UI g_HudZombieMod4;
 CHudZB4UI &HudZombieMod4()

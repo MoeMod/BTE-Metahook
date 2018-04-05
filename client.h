@@ -96,6 +96,7 @@ extern cvar_t *g_pcvarEnableConsole;
 
 extern PlayerInfo vPlayer[36];
 extern extra_player_info_t  g_PlayerExtraInfo[MAX_PLAYERS+1];
+//extern extra_player_info_t *g_PlayerExtraInfo;
 extern char g_szLocation[2048];
 extern bool g_bAlive;
 extern int g_iWeapon;

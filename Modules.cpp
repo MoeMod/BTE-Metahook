@@ -9,6 +9,7 @@
 
 HMODULE g_hClientModule = NULL;
 HMODULE g_hGameUIModule = NULL;
+HMODULE g_hVGUI2Module = NULL;
 HMODULE g_hGameOverlayRenderer = NULL;
 
 HMODULE (WINAPI *g_pfnLoadLibraryA)(LPCSTR lpLibFileName);
@@ -18,19 +19,33 @@ hook_t *g_phGetProcAddress;
 BOOL (WINAPI *g_pfnFreeLibrary)(HMODULE hLibModule);
 hook_t *g_phFreeLibrary;
 
-void *(*g_pfnCreateInterfaceFn)(const char *pName, int *pReturnCode);
+void *(*g_pfnClient_CreateInterfaceFn)(const char *pName, int *pReturnCode);
+void *(*g_pfnVGUI2_CreateInterfaceFn)(const char *pName, int *pReturnCode);
 
-void *Hook_CreateInterfaceFn(const char *pName, int *pReturnCode)
+void *Hook_Client_CreateInterfaceFn(const char *pName, int *pReturnCode)
+{
+	/*void *p = CreateInterface(pName, pReturnCode);
+
+	if (p)
+	{
+	if (!strcmp(pName, CLIENTVGUI_INTERFACE_VERSION))
+	return p;
+	}*/
+
+	return g_pfnClient_CreateInterfaceFn(pName, pReturnCode);
+}
+
+void *Hook_VGUI2_CreateInterfaceFn(const char *pName, int *pReturnCode)
 {
 	void *p = CreateInterface(pName, pReturnCode);
 
 	if (p)
 	{
-		if (!strcmp(pName, CLIENTVGUI_INTERFACE_VERSION))
+		if (!strcmp(pName, VGUI_SCHEME_INTERFACE_VERSION)) // IScheme
 			return p;
 	}
 
-	return g_pfnCreateInterfaceFn(pName, pReturnCode);
+	return g_pfnVGUI2_CreateInterfaceFn(pName, pReturnCode);
 }
 
 int Hook_EmptyFunction(...)
@@ -65,6 +80,15 @@ FARPROC WINAPI Hook_GetProcAddress(HMODULE hModule, LPCSTR lpProcName)
 		return g_pfnGetProcAddress(hModule, lpProcName);
 	}
 
+	if (g_hVGUI2Module == hModule)
+	{
+		if (!strcmp(lpProcName, CREATEINTERFACE_PROCNAME))
+		{
+			g_pfnVGUI2_CreateInterfaceFn = (void *(*)(const char *, int *))g_pfnGetProcAddress(hModule, lpProcName);
+			return (FARPROC)Hook_VGUI2_CreateInterfaceFn;
+		}
+	}
+
 	return g_pfnGetProcAddress(hModule, lpProcName);
 }
 
@@ -78,6 +102,10 @@ HMODULE WINAPI Hook_LoadLibraryA(LPCSTR lpLibFileName)
 	if (strstr(lpLibFileName, "cl_dlls\\GameUI.dll"))
 	{
 		return g_hThisModule;
+	}
+	if (strstr(lpLibFileName, "vgui2.dll"))
+	{
+		return g_hVGUI2Module = g_pfnLoadLibraryA(lpLibFileName);
 	}
 	/*
 	if (g_dwEngineBuildnum >= 5953)
@@ -138,4 +166,10 @@ void Module_Shutdown(void)
 	g_pMetaHookAPI->UnHook(g_phLoadLibraryA);
 	g_pMetaHookAPI->UnHook(g_phGetProcAddress);
 	g_pMetaHookAPI->UnHook(g_phFreeLibrary);
+}
+
+void Module_LoadClient(cl_exportfuncs_t *pExportFunc)
+{
+	CreateInterfaceFn fnCreateInterfaceClient = (CreateInterfaceFn)pExportFunc->ClientFactory();
+	g_pMetaHookAPI->InlineHook((void *)fnCreateInterfaceClient, Hook_Client_CreateInterfaceFn, (void *&)g_pfnClient_CreateInterfaceFn);
 }

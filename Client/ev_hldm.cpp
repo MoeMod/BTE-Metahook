@@ -1,4 +1,9 @@
-#include "base.h"
+
+#include <metahook.h>
+#include "pm_defs.h"
+#include <event_api.h>
+
+#include <BTE_Const.h>
 #include "hud.h"
 #include "exportfuncs.h"
 #include "eventscripts.h"
@@ -93,6 +98,7 @@ extern "C"
 	void EV_FireBlockSMG(struct event_args_s *args);
 	void EV_FireDesperado(struct event_args_s *args);
 	void EV_FireDualSword(struct event_args_s *args);
+	void EV_FireJanus11(struct event_args_s *args);
 
 	void EV_Explosion(struct event_args_s *args);
 	void EV_TE(struct event_args_s *args);
@@ -194,6 +200,7 @@ void Game_HookEvents(void)
 	gEngfuncs.pfnHookEvent("events/blocksmg.sc", EV_FireBlockSMG);
 	gEngfuncs.pfnHookEvent("events/desperado.sc", EV_FireDesperado);
 	gEngfuncs.pfnHookEvent("events/dualsword.sc", EV_FireDualSword);
+	gEngfuncs.pfnHookEvent("events/janus11.sc", EV_FireJanus11);
 	
 	cl_gunbubbles = gEngfuncs.pfnRegisterVariable("cl_gunbubbles", "2", FCVAR_ARCHIVE);
 	cl_tracereffect = gEngfuncs.pfnRegisterVariable("cl_tracereffect", "0", FCVAR_ARCHIVE);
@@ -886,7 +893,7 @@ void EV_HLDM_FireBullets(int idx, float *forward, float *right, float *up, int c
 
 		while (iShots > 0)
 		{
-			if (iBulletType == BULLET_PLAYER_BUCKSHOT || iBulletType == BULLET_PLAYER_46MM || iBulletType == BULLET_PLAYER_NNGAUSS_1 || iBulletType == BULLET_PLAYER_RAILCANNON)
+			if (iBulletType == BULLET_PLAYER_BUCKSHOT || iBulletType == BULLET_PLAYER_46MM || iBulletType == BULLET_PLAYER_NNGAUSS_1 || iBulletType == BULLET_PLAYER_RAILCANNON || iBulletType == BULLET_PLAYER_JANUS11)
 			{
 				do
 				{
@@ -982,6 +989,16 @@ void EV_HLDM_FireBullets(int idx, float *forward, float *right, float *up, int c
 					}
 
 					if (iBulletType == BULLET_PLAYER_RAILCANNON)
+					{
+						BEAM *pBeam;
+						pBeam = gEngfuncs.pEfxAPI->R_BeamPoints(vecSrc, tr.endpos, iBeamModelIndex, 0.5, 0.3, 0.0, 1.0, 0, 0, 0, 78 / 255.0, 37 / 255.0, 29 / 255.0);
+
+						if (pBeam)
+							pBeam->flags |= FBEAM_FADEIN;
+
+					}
+
+					if (iBulletType == BULLET_PLAYER_JANUS11)
 					{
 						BEAM *pBeam;
 						pBeam = gEngfuncs.pEfxAPI->R_BeamPoints(vecSrc, tr.endpos, iBeamModelIndex, 0.5, 0.3, 0.0, 1.0, 0, 0, 0, 78 / 255.0, 37 / 255.0, 29 / 255.0);
@@ -4905,7 +4922,6 @@ void EV_FireM1887XMAS(struct event_args_s *args)
 	vec3_t origin;
 	vec3_t angles;
 	vec3_t velocity;
-	int shell;
 	vec3_t vecSrc, vecAiming;
 	vec3_t up, right, forward;
 	cl_entity_t *ent;
@@ -4926,8 +4942,6 @@ void EV_FireM1887XMAS(struct event_args_s *args)
 	angles[1] += args->iparam2 / 100.0;
 	
 	gEngfuncs.pfnAngleVectors(angles, forward, right, up);
-	
-	shell = gEngfuncs.pEventAPI->EV_FindModelIndex(WeaponData.szShell);		
 	
 	if (EV_IsLocal(idx))
 	{
@@ -9732,4 +9746,65 @@ void EV_FireDualSword(struct event_args_s *args)
 	}
 
 
+}
+
+void EV_FireJanus11(struct event_args_s *args)
+{
+	if (!args->bparam2)
+	{
+		return EV_FireM3(args);
+	}
+	
+	int idx;
+	vec3_t origin;
+	vec3_t angles;
+	vec3_t velocity;
+	vec3_t ShellVelocity;
+	vec3_t ShellOrigin;
+	vec3_t vecSrc, vecAiming;
+	vec3_t up, right, forward;
+	cl_entity_t *ent;
+	int lefthand;
+	vec3_t vSpread;
+
+
+	float flDistance = 4096.0;
+
+	ent = GetViewEntity();
+	idx = args->entindex;
+	lefthand = cl_righthand->value;
+	auto &WeaponData = WeaponManager().GetPlayerWeapon(idx, 0);
+
+	VectorCopy(args->origin, origin);
+	VectorCopy(args->angles, angles);
+	VectorCopy(args->velocity, velocity);
+
+	angles[0] += args->iparam1 / 100.0;
+	angles[1] += args->iparam2 / 100.0;
+
+	gEngfuncs.pfnAngleVectors(angles, forward, right, up);
+
+	if (EV_IsLocal(idx))
+	{
+		g_iShotsFired++;
+
+		EV_MuzzleFlash();
+		
+		gEngfuncs.pEventAPI->EV_WeaponAnimation(9, 2);
+	}
+
+	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, WeaponData.szSoundSilen2, 1.0, 0.48, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
+
+	EV_GetGunPosition(args, vecSrc, origin);
+
+	VectorCopy(forward, vecAiming);
+
+	vSpread[0] = vSpread[1] = vSpread[2] = 0;
+
+	int shots;
+
+	vSpread[0] = vSpread[1] = 0.07;
+	shots = 8;
+	flDistance = 8192.0;
+	EV_HLDM_FireBullets(idx, forward, right, up, shots, vecSrc, forward, vSpread, flDistance, BULLET_PLAYER_JANUS11, 0, 0, 1);
 }

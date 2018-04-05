@@ -1,13 +1,16 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "hud.h"
+#include "triangleapi.h"
 #include "exportfuncs.h"
 #include "zombieescape.h"
 #include "DrawTargaImage.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "DrawTabPanel.h"
-#include "DrawTabPanel.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudZombieEscape g_HudZombieEscape;
 CHudZombieEscape &HudZombieEscape()

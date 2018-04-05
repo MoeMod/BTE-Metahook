@@ -1,7 +1,9 @@
-#include "base.h"
+
 #include "hud.h"
 #include "DrawTargaImage.h"
 #include "respawnbar.h"
+
+#include "Client/HUD/DrawTGA.h"
 
 static CHudRespawnBar g_HudRespawnBar;
 CHudRespawnBar &HudRespawnBar()

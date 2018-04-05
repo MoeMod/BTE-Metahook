@@ -1,5 +1,4 @@
 #include <metahook.h>
-
 #include <gl/gl.h>
 #include <gl/glext.h>
 

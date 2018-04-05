@@ -1,4 +1,4 @@
-#include "base.h"
+#include "metahook.h"
 #include "CSBTEMyWpnEditor.h"
 #include "common.h"
 #include <io.h>

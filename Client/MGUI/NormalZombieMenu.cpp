@@ -1,9 +1,10 @@
-#include "base.h"
+#include "bte_const.h"
 #include "hud.h"
 #include "parsemsg.h"
 #include "BaseUI.h"
 #include "DrawTargaImage.h"
 #include "util.h"
+#include "Encode.h"
 #include "common.h"
 
 #include "mgui.h"
@@ -250,7 +251,7 @@ void CNormalZombieMenu::ClearMenu()
 	m_iElementCount = 0;
 }
 
-char *PraseZombieClassName(char *name)
+static inline char *PraseZombieClassName(char *name)
 {
 	char *pPos = 0;
 	if (pPos = strstr(name, "_zb"))

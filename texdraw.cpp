@@ -1,4 +1,6 @@
-#include "base.h"
+#include "metahook.h"
+#include "gl/gl.h"
+#include "triangleapi.h"
 #include "TriAPI.h"
 
 void TEXD_BeginDraw(void)

@@ -1,6 +1,8 @@
-#include "base.h"
+
 #include "configs.h"
 #include "BaseUI.h"
+#include "gl/gl.h"
+#include "triangleapi.h"
 #include "TriAPI.h"
 #include "DrawTargaImage.h"
 

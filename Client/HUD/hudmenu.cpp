@@ -1,9 +1,10 @@
-#include "base.h"
+
 #include "hud.h"
 #include "parsemsg.h"
 #include "DrawTargaImage.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "hudmenu.h"
 

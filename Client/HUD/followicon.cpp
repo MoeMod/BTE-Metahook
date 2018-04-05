@@ -1,8 +1,15 @@
-#include "base.h"
+
 #include "hud.h"
 #include "TextureManager.h"
 #include "calcscreen.h"
 #include "Fonts.h"
+#include "followicon.h"
+
+static CHudFollowIconElements g_HudFollowIconElements;
+CHudFollowIconElements &HudFollowIconElements()
+{
+	return g_HudFollowIconElements;
+}
 
 void CHudFollowIconElements::Init(void)
 {

@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "message.h"
@@ -17,6 +18,7 @@
 #include "gdboard.h"
 #include "DrawTABPanel.h"
 #include "Statistics.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudDeathNotice g_HudDeathNotice;
 CHudDeathNotice &HudDeathNotice()

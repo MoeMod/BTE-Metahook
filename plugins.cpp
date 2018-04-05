@@ -1,5 +1,4 @@
 #include <metahook.h>
-#include "base.h"
 #include "hud.h"
 #include "exportfuncs.h"
 #include "configs.h"
@@ -10,9 +9,15 @@
 #include "Window.h"
 #include "R.h"
 #include "util.h"
+#include "Console.h"
+#include "mempatchs.h"
+#include "Hook_LoadTGA.h"
+#include "Hook_GL.h"
+#include "UnicodeVoice.h"
 
 #include "Renderer/qgl.h"
 
+#include "Client/ViewPort_Interface.h"
 #include "Client/model.h"
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
@@ -23,6 +28,12 @@
 #include "Client/HUD/nvg.h"
 #include "Client/HUD/overview.h"
 #include "Client/HUD/Statistics.h"
+#include "Client/HUD/DrawTGA.h"
+
+cl_exportfuncs_t gExportfuncs;
+metahook_api_t *g_pMetaHookAPI;
+mh_interface_t *g_pInterface;
+mh_enginesave_t *g_pMetaSave;
 
 IFileSystem *&g_pFileSystem = g_pFullFileSystem;
 DWORD g_dwEngineBase, g_dwEngineSize;
@@ -30,7 +41,7 @@ DWORD g_dwEngineBuildnum;
 bool g_bIsUseSteam;
 bool g_bWindowed;
 int g_iVideoWidth, g_iVideoHeight, g_iBPP;
-extern HWND g_hWnd;
+// HWND g_hWnd; // moved to window.cpp
 
 #define GetEngfuncsAddress(addr) (g_dwEngineBase+addr-0x1D01000)
 
@@ -56,8 +67,9 @@ void(*g_pfnCL_AddToResourceList)(resource_t *pResource, resource_t *pList);
 hook_t *g_phCL_AddToResourceList;
 void CL_AddToResourceList(resource_t *pResource, resource_t *pList);
 
-char g_szModelPrecache[512][MAX_QPATH];
-int g_iModelPrecacheNums;
+//char g_szModelPrecache[512][MAX_QPATH];
+//int g_iModelPrecacheNums;
+std::vector<std::string> g_vecModelPrecache;
 
 typedef void(*type_Draw_CacheWadInitFromFile)(FileHandle_t *hFile, int len, char *name, int cacheMax, void *);
 //extern type_Draw_CacheWadInitFromFile	g_real_Draw_CacheWadInitFromFile;
@@ -104,11 +116,12 @@ void(*g_pfn_ResampleSfx)(sfx_t *sfx, int inrate, int inwidth, byte *data) = 0;
 void ResampleSfx(sfx_t *sfx, int inrate, int inwidth, byte *data);
 
 void *Cache_Check(cache_user_t *c);
-void MemPatch_WideScreenLimit(void);
 
 void HUD_Frame(double flHostFrameTime);
 
 cvar_t *developer;
+
+extern int g_iVideoMode; // triapi.cpp
 
 void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_enginesave_t *pSave)
 {
@@ -126,6 +139,7 @@ void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_engines
 	gPerformanceCounter.InitializePerformanceCounter();
 
 	Window_Init();
+	Console_Init();
 
 
 	/*
@@ -161,14 +175,9 @@ void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_engines
 
 void IPlugins::Shutdown()
 {
-	if (g_pRenderer)
-		g_pRenderer->Shutdown();
-
 	Renderer_Shutdown();
 	Module_Shutdown();
-
-	//if (g_pViewPort)
-	//delete g_pViewPort;
+	Console_Shutdown();
 }
 
 void IPlugins::LoadEngine(void)
@@ -181,10 +190,6 @@ void IPlugins::LoadEngine(void)
 	g_dwEngineBuildnum = g_pMetaHookAPI->GetEngineBuildnum();
 	g_iBPP = 32;
 
-	QGL_Init();
-
-	Config_Init();
-
 	g_pMetaHookAPI->WriteDWORD((void *)0x1DBAE6C, 0x8000000);
 	g_pMetaHookAPI->WriteDWORD((void *)0x1DBAE73, 0x8000000);
 
@@ -192,11 +197,18 @@ void IPlugins::LoadEngine(void)
 	g_dwEngineBase = g_pMetaHookAPI->GetEngineBase();
 	g_dwEngineSize = g_pMetaHookAPI->GetEngineSize();
 
+	QGL_Init();
+	Config_Init();
+	MemPatch_Start(MEMPATCH_STEP_LOADENGINE);
+
+	GL_InitHook();
+
 	BaseUI_InstallHook();
 	Module_InstallHook();
 	R_InstallHook();
+	LoadTGA_InstallHook(); // must after QGL_Init
 
-	// Unknown function name
+						   // Unknown function name
 	g_pMetaHookAPI->InlineHook((void *)0x1D0E720, CL_Frame, (void *&)g_pfnCL_Frame);
 
 	//g_pMetaHookAPI->InlineHook(g_pfnCL_WeaponAnim, CL_WeaponAnim, (void *&)g_pfnCL_WeaponAnim);
@@ -220,7 +232,7 @@ void IPlugins::LoadEngine(void)
 	g_pMetaHookAPI->InlineHook((void *)g_pfn_COM_MultipleOpenFile, COM_MultipleOpenFile, (void *&)g_pfn_COM_MultipleOpenFile);
 
 
-	
+
 	//g_pMetaHookAPI->InlineHook((void *)g_pfn_COM_MultipleOpenFile, COM_MultipleOpenFile, (void *&)g_pfn_COM_MultipleOpenFile);
 
 
@@ -243,25 +255,20 @@ void IPlugins::LoadEngine(void)
 
 	g_pMetaHookAPI->InlineHook(g_pfnKey_Event, Key_Event, (void *&)g_pfnKey_Event);
 
-	
-
-	
-
-	//fix view model bug(THX to Crsky)
-	g_pMetaHookAPI->WriteDWORD((void *)0x01D90E78, 0x1D01);
-
-	MemPatch_WideScreenLimit();
-
 	if (g_pRenderer)
 		g_pRenderer->LoadEngine();
 }
 
 void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 {
-	g_hWnd = FindWindow("Valve001", NULL);
+	MemPatch_Start(MEMPATCH_STEP_LOADCLIENT);
+	Window_LoadClient();
 
 	//LogToFile("MGUI°æ±¾[2013/8/17]");
 	memcpy(&gExportfuncs, pExportFunc, sizeof(gExportfuncs));
+
+	Module_LoadClient(pExportFunc);
+	ViewPort_InstallHook(pExportFunc);
 
 	pExportFunc->Initialize = Initialize;
 	pExportFunc->HUD_Init = HUD_Init;
@@ -284,6 +291,8 @@ void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 	pExportFunc->HUD_CreateEntities = HUD_CreateEntities;
 	pExportFunc->CL_CreateMove = CL_CreateMove;
 	pExportFunc->HUD_Frame = HUD_Frame;
+	pExportFunc->HUD_DrawNormalTriangles = HUD_DrawNormalTriangles;
+	pExportFunc->HUD_VoiceStatus = HUD_VoiceStatus;
 
 	//pExportFunc->HUD_TxferPredictionData = HUD_TxferPredictionData;
 	//pExportFunc->HUD_TxferLocalOverrides = HUD_TxferLocalOverrides;
@@ -295,7 +304,6 @@ void IPlugins::LoadClient(cl_exportfuncs_t *pExportFunc)
 	//CClientVGUI::OnClientLoaded(pExportFunc);
 }
 
-extern char g_szFontPath[MAX_PATH];
 void IPlugins::ExitGame(int iResult)
 {
 	//Fonts_Free();
@@ -304,8 +312,6 @@ void IPlugins::ExitGame(int iResult)
 		g_pRenderer->ExitGame(iResult);
 
 	HudStatistics().Save();
-	
-	RemoveFontResource(g_szFontPath);
 }
 
 void HUD_Frame(double flHostFrameTime)
@@ -347,7 +353,7 @@ struct model_s *CL_GetModelByIndex(int index)
 		return NULL;
 
 	if (index >= 512)
-		return IEngineStudio.Mod_ForName(g_szModelPrecache[index - 512], false);
+		return IEngineStudio.Mod_ForName(g_vecModelPrecache[index - 512].c_str(), false);
 
 	return g_pfnCL_GetModelByIndex(index);
 }
@@ -358,13 +364,17 @@ void CL_AddToResourceList(resource_t *pResource, resource_t *pList)
 	{
 		if (strstr(pResource->szFileName, "models/v_") || strstr(pResource->szFileName, "models/p_"))
 		{
-			for (int i = 0; i < 512; i++)
+			/*for (int i = 0; i < 512; i++)
 			{
-				if (!strcmp(g_szModelPrecache[i], pResource->szFileName))
-					return;
+			if (!strcmp(g_szModelPrecache[i], pResource->szFileName))
+			return;
 			}
 
-			strcpy(g_szModelPrecache[g_iModelPrecacheNums++], pResource->szFileName);
+			strcpy(g_szModelPrecache[g_iModelPrecacheNums++], pResource->szFileName);*/
+
+			if (std::find(g_vecModelPrecache.begin(), g_vecModelPrecache.end(), pResource->szFileName) != g_vecModelPrecache.end())
+				return;
+			g_vecModelPrecache.push_back(pResource->szFileName);
 
 			char name[64], text[64];
 			strcpy(name, pResource->szFileName + 9);
@@ -379,7 +389,7 @@ void CL_AddToResourceList(resource_t *pResource, resource_t *pList)
 
 			if (pResource->szFileName[7] == 'v' && !strstr(pResource->szFileName, "_2.mdl"))
 				WeaponManager().OnPrecacheWeapon(name);
-				//LoadWeaponData(name);
+			//LoadWeaponData(name);
 
 			if (strstr(name, "buff"))
 			{
@@ -464,39 +474,16 @@ void Key_Event(int key, int down)
 	/*
 	if (key == VK_ESCAPE && down)
 	{
-		if (g_mgui_candraw)
-		{
-			BTEPanel_BuyMenu_Close();
-			if (IS_ZOMBIE_MODE)
-				BuyDefaultWeapon();
-			return;
-		}
+	if (g_mgui_candraw)
+	{
+	BTEPanel_BuyMenu_Close();
+	if (IS_ZOMBIE_MODE)
+	BuyDefaultWeapon();
+	return;
+	}
 	}
 	*/
 	return g_pfnKey_Event(key, down);
-}
-
-void MemPatch_WideScreenLimit(void)
-{
-	/*	if (g_dwEngineBuildnum >= 5953)
-	return;*/
-
-	unsigned char data[] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
-	DWORD addr = (DWORD)g_pMetaHookAPI->SearchPattern((void *)g_dwEngineBase, g_dwEngineSize, "\x8B\x51\x08\x8B\x41\x0C\x8B\x71\x54\x8B\xFA\xC1\xE7\x04", 14);
-
-	if (!addr)
-	{
-		MessageBoxA(NULL, "WideScreenLimit patch failed!", "Warning", MB_ICONWARNING);
-		return;
-	}
-
-	DWORD addr2 = addr + 11;
-	DWORD addr3 = (DWORD)g_pMetaHookAPI->SearchPattern((void *)addr, 0x60, "\xB1\x01\x8B\x7C\x24\x14", 6);
-
-	if (addr3)
-	{
-		g_pMetaHookAPI->WriteMemory((void *)addr2, data, addr3 - addr2);
-	}
 }
 
 int CL_LookupSound(char *a1)

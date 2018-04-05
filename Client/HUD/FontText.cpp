@@ -1,8 +1,18 @@
-#include "base.h"
+
 #include "hud.h"
 #include "DrawTargaImage.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
+#include "FontText.h"
+
+#include "Client/HUD/DrawTGA.h"
+
+static CHudFontTextElements g_HudFontTextElements;
+CHudFontTextElements &HudFontTextElements()
+{
+	return g_HudFontTextElements;
+}
 
 DrawFontTextItem g_rgDrawFontText[MAX_DRAWFONTTEXT];
 int m_TextBg_Right,m_TextBg_Left,m_TextBg_Center;

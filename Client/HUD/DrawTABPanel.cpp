@@ -1,4 +1,5 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "message.h"
@@ -6,9 +7,12 @@
 #include "BaseUI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
 #include "common.h"
 
 #include "DrawTABPanel.h"
+
+#include "Client/HUD/DrawTGA.h"
 
 static CHudTABBoard g_HudTABBoard;
 CHudTABBoard &HudTABBoard()

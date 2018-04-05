@@ -1,10 +1,14 @@
 #include <metahook.h>
-#include "base.h"
+#include "metahook.h"
+#include "cvardef.h"
+#include "plugins.h"
 #include "configs.h"
 #include "BaseUI.h"
 #include "PlayAudio.h"
 
-#include "Input.h"
+#include "vgui_hook.h"
+#include "vgui2.h"
+#include <vstdlib/IKeyValuesSystem.h>
 
 #include "DrawTargaImage.h"
 #include "util.h"
@@ -50,12 +54,11 @@ HINTERFACEMODULE g_hVGUI2;
 //HINTERFACEMODULE g_hGameUI;
 //HINTERFACEMODULE g_hServerBrowser;
 
+cvar_t *vgui_stencil_test;
+cvar_t *vgui_message_dialog_modal;
+cvar_t *vgui_emulatemouse;
 
-IEngineVGui *enginevguifuncs;
-IEngineSurface *staticSurface;
-ISurface *enginesurfacefuncs;
-IGameUIFuncs *gameuifuncs;
-IBaseUI *baseuifuncs = NULL;
+IBaseUI *g_pBaseUI;
 
 vgui::IPanel *g_pPanel;
 
@@ -72,36 +75,6 @@ void(__fastcall *g_pfnCBaseUI_ActivateGameUI)(void *pthis, int);
 bool(__fastcall *g_pfnCBaseUI_IsGameUIVisible)(void *pthis, int);
 void(__fastcall *g_pfnCBaseUI_HideConsole)(void *pthis, int);
 void(__fastcall *g_pfnCBaseUI_ShowConsole)(void *pthis, int);
-
-void(__fastcall *g_pfnRegisterSizeofKeyValues)(void *pthis, int edx, int size) = NULL;
-void *(__fastcall *g_pfnAllocKeyValuesMemory)(void *pthis, int edx, int size) = NULL;
-void(__fastcall *g_pfnFreeKeyValuesMemory)(void *pthis, int edx, void *pMem) = NULL;
-HKeySymbol(__fastcall *g_pfnGetSymbolForString)(void *pthis, int edx, const char *name) = NULL;
-const char *(__fastcall *g_pfnGetStringForSymbol)(void *pthis, int edx, HKeySymbol symbol) = NULL;
-void(__fastcall *g_pfnGetLocalizedFromANSI)(void *pthis, int edx, const char *ansi, wchar_t *outBuf, int unicodeBufferSizeInBytes) = NULL;
-void(__fastcall *g_pfnGetANSIFromLocalized)(void *pthis, int edx, const wchar_t *wchar, char *outBuf, int ansiBufferSizeInBytes) = NULL;
-void(__fastcall *g_pfnAddKeyValuesToMemoryLeakList)(void *pthis, int edx, void *pMem, HKeySymbol name) = NULL;
-void(_fastcall *g_pfnRemoveKeyValuesFromMemoryLeakList)(void *pthis, int edx, void *pMem) = NULL;
-
-void(__fastcall *g_pfnCGameUI_Initialize)(void *pthis, int edx, CreateInterfaceFn *factories, int count) = 0;
-void(__fastcall *g_pfnCGameUI_Start)(void *pthis, int edx, struct cl_enginefuncs_s *engineFuncs, int interfaceVersion, void *system) = 0;
-void(__fastcall *g_pfnCGameUI_Shutdown)(void *pthis, int edx) = 0;
-int(__fastcall *g_pfnCGameUI_ActivateGameUI)(void *pthis, int edx) = 0;
-int(__fastcall *g_pfnCGameUI_ActivateDemoUI)(void *pthis, int edx) = 0;
-int(__fastcall *g_pfnCGameUI_HasExclusiveInput)(void *pthis, int edx) = 0;
-void(__fastcall *g_pfnCGameUI_RunFrame)(void *pthis, int edx) = 0;
-void(__fastcall *g_pfnCGameUI_ConnectToServer)(void *pthis, int edx, const char *game, int IP, int port) = 0;
-void(__fastcall *g_pfnCGameUI_DisconnectFromServer)(void *pthis, int edx) = 0;
-void(__fastcall *g_pfnCGameUI_HideGameUI)(void *pthis, int edx) = 0;
-bool(__fastcall *g_pfnCGameUI_IsGameUIActive)(void *pthis, int edx) = 0;
-void(__fastcall *g_pfnCGameUI_LoadingStarted)(void *pthis, int edx, const char *resourceType, const char *resourceName) = 0;
-void(__fastcall *g_pfnCGameUI_LoadingFinished)(void *pthis, int edx, const char *resourceType, const char *resourceName) = 0;
-void(__fastcall *g_pfnCGameUI_StartProgressBar)(void *pthis, int edx, const char *progressType, int progressSteps) = 0;
-int(__fastcall *g_pfnCGameUI_ContinueProgressBar)(void *pthis, int edx, int progressPoint, float progressFraction) = 0;
-void(__fastcall *g_pfnCGameUI_StopProgressBar)(void *pthis, int edx, bool bError, const char *failureReason, const char *extendedReason) = 0;
-int(__fastcall *g_pfnCGameUI_SetProgressBarStatusText)(void *pthis, int edx, const char *statusText) = 0;
-void(__fastcall *g_pfnCGameUI_SetSecondaryProgressBar)(void *pthis, int edx, float progress) = 0;
-void(__fastcall *g_pfnCGameUI_SetSecondaryProgressBarText)(void *pthis, int edx, const char *statusText) = 0;
 
 bool g_bGameUIActive = false;
 /*
@@ -135,7 +108,7 @@ void FillMultiTexturesForTextEntry(int w, int h)
 }
 
 #include <color.h>
-#include <Surface.h>
+#include <Hook_Surface.h>
 
 void CBaseUI::Initialize(CreateInterfaceFn *factories, int count)
 {
@@ -152,20 +125,25 @@ void CBaseUI::Initialize(CreateInterfaceFn *factories, int count)
 		/* Initialize GameUI interfaces */
 		//g_pGameConsole = (IGameConsole *)fnGameUICreateInterface(GAMECONSOLE_INTERFACE_VERSION, NULL);
 		//g_pGameUI = (IGameUI *)fnGameUICreateInterface(GAMEUI_INTERFACE_VERSION, NULL);
-		//enginevguifuncs = (IEngineVGui *)fnEngineCreateInterface(VENGINE_VGUI_VERSION, NULL);
 
 		/* Initialize localized string table and surface interfaces */
 		g_pVGuiLocalize = (ILocalize *)fnVGUI2CreateInterface(VGUI_LOCALIZE_INTERFACE_VERSION, NULL);
 		g_pVGuiSurface = (ISurface *)fnEngineCreateInterface(VGUI_SURFACE_INTERFACE_VERSION, NULL);
-		staticSurface = (IEngineSurface *)fnEngineCreateInterface(ENGINE_SURFACE_VERSION, NULL);
-		gameuifuncs = (IGameUIFuncs *)fnEngineCreateInterface(VENGINE_GAMEUIFUNCS_VERSION, NULL);
+		IKeyValuesSystem *pKeyValuesSystem = (IKeyValuesSystem *)fnVGUI2CreateInterface(KEYVALUES_INTERFACE_VERSION, NULL);
+
 		vgui::IInputInternal *pInput = (vgui::IInputInternal *)fnVGUI2CreateInterface(VGUI_INPUT_INTERFACE_VERSION, NULL);
-		//serverbrowser = (IServerBrowser *)CreateInterface(SERVERBROWSER_INTERFACE_VERSION, NULL);
+		vgui::IPanel *pPanel = (vgui::IPanel *)fnVGUI2CreateInterface(VGUI_PANEL_INTERFACE_VERSION, NULL);
+		vgui::ISchemeManager *pSchemeManager = (vgui::ISchemeManager *)fnVGUI2CreateInterface(VGUI_SCHEME_INTERFACE_VERSION, NULL);
 
 		Input_InstallHook(pInput);
 		Surface_InstallHook(g_pVGuiSurface);
+		Panel_InstallHook(pPanel);
+		SchemeManager_InstallHook(pSchemeManager);
+		KeyValuesSystem_InstallHook(pKeyValuesSystem);
 
 		g_pPanel = (vgui::IPanel *)fnVGUI2CreateInterface(VGUI_PANEL_INTERFACE_VERSION, NULL);
+
+		g_pVGuiSurface->AddCustomFontFile("resource\\font\\font.ttf");
 
 		/* Check if the interfaces are valid */
 		//if (g_pGameConsole)
@@ -191,7 +169,8 @@ void CBaseUI::Initialize(CreateInterfaceFn *factories, int count)
 
 		//g_pfnCBasePanel_OnGameUIActivated = (int(__fastcall *)(void *))g_pMetaHookAPI->SearchPattern((void *)g_hGameUI, g_pMetaHookAPI->GetModuleSize((HMODULE)g_hGameUI), CBASEPANEL_ONGAMEUIACTIVATED_SIG, sizeof(CBASEPANEL_ONGAMEUIACTIVATED_SIG) - 1);
 		//g_pMetaHookAPI->InlineHook(g_pfnCBasePanel_OnGameUIActivated, CBasePanel_OnGameUIActivated, (void *&)g_pfnCBasePanel_OnGameUIActivated);
-		
+
+		vgui::VGui_LoadEngineInterfaces(fnVGUI2CreateInterface, fnEngineCreateInterface);
 	}
 	else
 	{
@@ -200,6 +179,9 @@ void CBaseUI::Initialize(CreateInterfaceFn *factories, int count)
 		//if (!g_hGameUI)
 		//	LogToFile("内存中找不到GameUI.dll");
 	}
+	vgui_stencil_test = gEngfuncs.pfnRegisterVariable("vgui_stencil_test", "0", FCVAR_ARCHIVE);
+	vgui_message_dialog_modal = engine->pfnRegisterVariable("vgui_message_dialog_modal", "1", FCVAR_ARCHIVE);
+	vgui_emulatemouse = engine->pfnGetCvarPointer("vgui_emulatemouse");
 }
 
 void CBaseUI::Start(struct cl_enginefuncs_s *engineFuncs, int interfaceVersion)
@@ -329,49 +311,6 @@ void CBaseUI::ShowConsole(void)
 	//GameConsole().Activate();
 }
 
-void CKeyValuesSystem::RegisterSizeofKeyValues(int size)
-{
-	return g_pfnRegisterSizeofKeyValues(this, 0, size);
-}
-
-void *CKeyValuesSystem::AllocKeyValuesMemory(int size)
-{
-	return malloc(size);
-}
-void CKeyValuesSystem::FreeKeyValuesMemory(void *pMem)
-{
-	return free(pMem);
-}
-
-HKeySymbol CKeyValuesSystem::GetSymbolForString(const char *name)
-{
-	return g_pfnGetSymbolForString(this, 0, name);
-}
-
-const char *CKeyValuesSystem::GetStringForSymbol(HKeySymbol symbol)
-{
-	return g_pfnGetStringForSymbol(this, 0, symbol);
-}
-
-void CKeyValuesSystem::GetLocalizedFromANSI(const char *ansi, wchar_t *outBuf, int unicodeBufferSizeInBytes)
-{
-	return g_pfnGetLocalizedFromANSI(this, 0, ansi, outBuf, unicodeBufferSizeInBytes);
-}
-
-void CKeyValuesSystem::GetANSIFromLocalized(const wchar_t *wchar, char *outBuf, int ansiBufferSizeInBytes)
-{
-	return g_pfnGetANSIFromLocalized(this, 0, wchar, outBuf, ansiBufferSizeInBytes);
-}
-
-void CKeyValuesSystem::AddKeyValuesToMemoryLeakList(void *pMem, HKeySymbol name)
-{
-	return g_pfnAddKeyValuesToMemoryLeakList(this, 0, pMem, name);
-}
-
-void CKeyValuesSystem::RemoveKeyValuesFromMemoryLeakList(void *pMem)
-{
-	return g_pfnRemoveKeyValuesFromMemoryLeakList(this, 0, pMem);
-}
 /*
 void RewriteGameMenuResourceFile(void)
 {
@@ -427,37 +366,21 @@ void OnOpenQuitConfirmationDialog()
 void BaseUI_InstallHook(void)
 {
 	CreateInterfaceFn fnCreateInterface = g_pMetaHookAPI->GetEngineFactory();
-	baseuifuncs = (IBaseUI *)fnCreateInterface(BASEUI_INTERFACE_VERSION, NULL);
+	g_pBaseUI = (IBaseUI *)fnCreateInterface(BASEUI_INTERFACE_VERSION, NULL);
 	
 	CBaseUI BaseUI;
 	DWORD *pVFTable = *(DWORD **)&BaseUI;
 
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 1, (void *)pVFTable[1], (void *&)g_pfnCBaseUI_Initialize);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 2, (void *)pVFTable[2], (void *&)g_pfnCBaseUI_Start);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 3, (void *)pVFTable[3], (void *&)g_pfnCBaseUI_Shutdown);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 4, (void *)pVFTable[4], (void *&)g_pfnCBaseUI_Key_Event);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 5, (void *)pVFTable[5], (void *&)g_pfnCBaseUI_CallEngineSurfaceProc);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 6, (void *)pVFTable[6], (void *&)g_pfnCBaseUI_Paint);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 7, (void *)pVFTable[7], (void *&)g_pfnCBaseUI_HideGameUI);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 8, (void *)pVFTable[8], (void *&)g_pfnCBaseUI_ActivateGameUI);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 9, (void *)pVFTable[9], (void *&)g_pfnCBaseUI_IsGameUIVisible);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 10, (void *)pVFTable[10], (void *&)g_pfnCBaseUI_HideConsole);
-	g_pMetaHookAPI->VFTHook(baseuifuncs, 0, 11, (void *)pVFTable[11], (void *&)g_pfnCBaseUI_ShowConsole);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 1, (void *)pVFTable[1], (void *&)g_pfnCBaseUI_Initialize);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 2, (void *)pVFTable[2], (void *&)g_pfnCBaseUI_Start);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 3, (void *)pVFTable[3], (void *&)g_pfnCBaseUI_Shutdown);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 4, (void *)pVFTable[4], (void *&)g_pfnCBaseUI_Key_Event);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 5, (void *)pVFTable[5], (void *&)g_pfnCBaseUI_CallEngineSurfaceProc);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 6, (void *)pVFTable[6], (void *&)g_pfnCBaseUI_Paint);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 7, (void *)pVFTable[7], (void *&)g_pfnCBaseUI_HideGameUI);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 8, (void *)pVFTable[8], (void *&)g_pfnCBaseUI_ActivateGameUI);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 9, (void *)pVFTable[9], (void *&)g_pfnCBaseUI_IsGameUIVisible);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 10, (void *)pVFTable[10], (void *&)g_pfnCBaseUI_HideConsole);
+	g_pMetaHookAPI->VFTHook(g_pBaseUI, 0, 11, (void *)pVFTable[11], (void *&)g_pfnCBaseUI_ShowConsole);
 
-}
-
-void KeyValuesSystem_InstallHook(void)
-{
-	CKeyValuesSystem KeyValuesSystem;
-	DWORD *pVFTable = *(DWORD **)&KeyValuesSystem;
-
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 1, (void *)pVFTable[1], (void *&)g_pfnRegisterSizeofKeyValues);
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 2, (void *)pVFTable[2], (void *&)g_pfnAllocKeyValuesMemory);
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 3, (void *)pVFTable[3], (void *&)g_pfnFreeKeyValuesMemory);
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 4, (void *)pVFTable[4], (void *&)g_pfnGetSymbolForString);
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 5, (void *)pVFTable[5], (void *&)g_pfnGetStringForSymbol);
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 6, (void *)pVFTable[6], (void *&)g_pfnGetLocalizedFromANSI);
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 7, (void *)pVFTable[7], (void *&)g_pfnGetANSIFromLocalized);
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 8, (void *)pVFTable[8], (void *&)g_pfnAddKeyValuesToMemoryLeakList);
-	g_pMetaHookAPI->VFTHook(g_pKeyValuesSystem, 0, 9, (void *)pVFTable[9], (void *&)g_pfnRemoveKeyValuesFromMemoryLeakList);
 }

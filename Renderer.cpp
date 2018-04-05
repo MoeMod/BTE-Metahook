@@ -2,7 +2,7 @@
 #include "Renderer.h"
 
 IRenderer *g_pRenderer = NULL;
-HINTERFACEMODULE g_hRenderer;
+HINTERFACEMODULE g_hRenderer = NULL;
 
 void Renderer_Init(void)
 {
@@ -22,6 +22,7 @@ void Renderer_Init(void)
 void Renderer_Shutdown(void)
 {
 	if (g_pRenderer)
+		g_pRenderer->Shutdown();
 		Sys_FreeModule(g_hRenderer);
 }
 

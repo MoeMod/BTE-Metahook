@@ -1,10 +1,11 @@
-#include "base.h"
+
 #include "hud.h"
 #include "DrawTargaImage.h"
 #include "Fonts.h"
 #include "util.h"
 
 #include "quest.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudQuest g_HudQuest;
 CHudQuest &HudQuest()

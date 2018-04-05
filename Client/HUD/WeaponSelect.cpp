@@ -1,4 +1,4 @@
-#include "base.h"
+
 #include "hud.h"
 #include "BaseUI.h"
 #include "common.h"
@@ -22,7 +22,7 @@ void CHudWeaponSelect::Init(void)
 	memset(m_rcIcon, NULL, sizeof(wrect_t));
 	memset(m_szTimeRemaining, 0, sizeof(m_szTimeRemaining));
 
-	m_Bink.Init("cstrike//resource//zombie//zbselectbg.bik");
+	m_Bink.Init("cstrike//resource//zombi//zbselectbg.bik");
 }
 
 void CHudWeaponSelect::VidInit(void)

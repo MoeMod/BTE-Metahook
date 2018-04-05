@@ -1,5 +1,8 @@
-#include "base.h"
+
 #include "hud.h"
+#include "bte_const.h"
+#include "triangleapi.h"
+#include "gl/gl.h"
 #include "TriAPI.h"
 #include "exportfuncs.h"
 #include "eventscripts.h"
@@ -9,8 +12,10 @@
 #include "Fonts.h"
 #include "client.h"
 #include "util.h"
+#include "Encode.h"
 
 #include "Client/HUD/ammo.h"
+#include "Client/HUD/DrawTGA.h"
 
 int g_MoneyPosIco = 0;
 int g_MoneyPosSym = 0;

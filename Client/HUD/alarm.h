@@ -149,10 +149,8 @@ private:
 	int m_iAlarmBG;
 	int m_iAlarms[MAX_ALARM_TYPES];
 	int m_iHappenedTimes[MAX_ALARM_TYPES];
-	int m_iRibbons[MAX_ALARM_TYPES];
 	float m_flEndDraw;
 	wchar_t m_lpAlarms[MAX_ALARM_TYPES][512];
-	wchar_t m_lpRibbons[MAX_ALARM_TYPES][512];
 };
 
 CHudAlarm &HudAlarm();

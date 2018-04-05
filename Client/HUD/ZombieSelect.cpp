@@ -1,12 +1,14 @@
-#include "base.h"
+#include "metahook.h"
+#include "bte_const.h"
 #include "exportfuncs.h"
 #include "hud.h"
 #include "BaseUI.h"
 #include "Fonts.h"
 #include "util.h"
+#include "Encode.h"
+#include "GL_BinkTexture.h"
 
 #include "Client/HUD/ZombieSelect.h"
-#include "Client/HUD/WeaponSelect.h"
 
 static CHudZBSelect g_HudZBSelect;
 CHudZBSelect &HudZBSelect()
@@ -38,6 +40,7 @@ static const char *g_szZombieSlot[19] =
 	"cancel"
 };
 */
+
 void CHudZBSelect::Init()
 {
 	m_iFlags |= HUD_ACTIVE;
@@ -47,13 +50,12 @@ void CHudZBSelect::Init()
 		
 	memset(m_rcIcon, 0, sizeof(m_rcIcon));
 	memset(m_szTimeRemaining, 0, sizeof(m_szTimeRemaining));
-
-	m_Bink.Init("cstrike//resource//zombie//zbselectbg.bik");
 }
 
 void CHudZBSelect::VidInit()
 {
-	m_Bink.VidInit();
+	if (!m_Bink)
+		m_Bink = std::make_unique<CGL_BinkTexture>("resource\\zombi\\zbselectbg.bik");
 	
 	m_iSlotCount = 0;
 
@@ -65,20 +67,50 @@ void CHudZBSelect::SetCount(int count)
 {
 	count += 1;
 
-	int width = m_Bink.GetOriginalWidth();
-	int height = m_Bink.GetOriginalHeight() + 59 * ((count) % 2 - 2);
-
 	m_iSlotCount = 0;
-
-	m_Bink.SetSize(width, height);
+		
 
 	SetIcon(19, "cancel");
+}
+
+static inline const char *PraseZombieClassName(const char *name)
+{
+	static char result[32];
+	strcpy(result, name);
+	
+	char *pPos = 0;
+	if (pPos = strstr(result, "_zb"))
+	{
+		*pPos = '\0';
+		strcat(result, "zb");
+	}
+	else if (pPos = strstr(result, "_zombi"))
+	{
+		*pPos = '\0';
+		strcat(result, "zb");
+	}
+	else if (pPos = strstr(result, "zombi"))
+	{
+		*pPos = '\0';
+		strcat(result, "zb");
+	}
+
+	if (!stricmp(result, "healzb"))
+		strcpy(result, "doctorzb");
+	if (!stricmp(result, "tankzb"))
+		strcpy(result, "defaultzb");
+	if (!stricmp(result, "speedzb"))
+		strcpy(result, "lightzb");
+	if (!stricmp(result, "undertaker"))
+		strcpy(result, "undertakerzb");
+	
+	return result;
 }
 
 void CHudZBSelect::SetIcon(int slot, const char *name)
 {
 	char szFilename[128];
-	sprintf(szFilename,"resource\\zombie\\zombietype_%s", name);
+	sprintf(szFilename, "resource\\zombi\\zombietype_%s", PraseZombieClassName(name));
 
 	vgui::surface()->DrawSetTextureFile(m_iIcon[slot], szFilename, true, false);
 	vgui::surface()->DrawGetTextureSize(m_iIcon[slot], m_rcIcon[slot].right, m_rcIcon[slot].bottom);
@@ -109,8 +141,7 @@ void CHudZBSelect::Draw(float flTime)
 
 	int iX = 0, iY = 210;//ScreenHeight - 40 - 417;
 
-	m_Bink.SetPos(0, iY);
-	m_Bink.Paint(flTime);
+	m_Bink->Draw(0, iY, m_Bink->w(), m_Bink->h() + 59 * ((m_iSlotCount + 1) % 2 - 2));
 
 	iX += 60;
 
@@ -205,11 +236,7 @@ void CHudZBSelect::Draw(float flTime)
 
 void CHudZBSelect::SetDrawTime(float flTime)
 {
-	if (HudWeaponSelect().m_bCanDraw)
-		HudWeaponSelect().m_bCanDraw = false;
-	
 	m_flTimeEnd = flTime + 5.0;
-	m_Bink.Play(true, flTime + 5.0);
 	m_iTimeRemaining = 5;
 
 	m_bCanDraw = true;
@@ -232,6 +259,5 @@ void CHudZBSelect::Select(int item)
 		gEngfuncs.pfnClientCmd(ch);
 
 		m_bCanDraw = false;	
-		m_Bink.Stop();
 	}
 }

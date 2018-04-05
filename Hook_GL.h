@@ -1,0 +1,1 @@
+void GL_InitHook(void);

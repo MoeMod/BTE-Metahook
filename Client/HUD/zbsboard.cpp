@@ -1,10 +1,11 @@
-#include "base.h"
+#include "bte_const.h"
 #include "hud.h"
 #include "exportfuncs.h"
 #include "texdraw.h"
 #include "util.h"
 
 #include "zbsboard.h"
+#include "Client/HUD/DrawTGA.h"
 
 static CHudZBSBoard g_HudZBSBoard;
 CHudZBSBoard &HudZBSBoard()
