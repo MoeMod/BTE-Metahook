@@ -342,6 +342,7 @@
     <ClCompile Include="SourceSDK\tier1\utlstring.cpp" />
     <ClCompile Include="SourceSDK\tier1\utlsymbol.cpp" />
     <ClCompile Include="SourceSDK\vstdlib\random.cpp" />
+    <ClCompile Include="StartupGraphic.cpp" />
     <ClCompile Include="sys.cpp" />
     <ClCompile Include="texdraw.cpp" />
     <ClCompile Include="TriAPI.cpp" />
@@ -962,6 +963,7 @@
     <ClInclude Include="SourceSDK\vstdlib\random.h" />
     <ClInclude Include="SourceSDK\vstdlib\vstdlib.h" />
     <ClInclude Include="SourceSDK\winlite.h" />
+    <ClInclude Include="StartupGraphic.h" />
     <ClInclude Include="texdraw.h" />
     <ClInclude Include="TriAPI.h" />
     <ClInclude Include="UnicodeVoice.h" />

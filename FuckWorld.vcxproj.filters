@@ -1097,6 +1097,9 @@
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.cpp">
       <Filter>Client\VGUI\BuyMenu</Filter>
     </ClCompile>
+    <ClCompile Include="StartupGraphic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2967,6 +2970,9 @@
     </ClInclude>
     <ClInclude Include="Client\VGUI\newtabpanel.h">
       <Filter>Client\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="StartupGraphic.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
