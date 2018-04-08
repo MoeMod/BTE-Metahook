@@ -81,6 +81,7 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	{
 		sprintf(buffer, "slot%d", i);
 		m_pSlotButtons[i] = new CSBuyMouseOverPanelButton(this, buffer, m_pPanel);
+		m_pSlotButtons[i]->GetClassPanel()->SetName("ItemInfo");
 	}
 	m_pPrevBtn = new vgui::Button(this, "prevBtn", "#CSO_PrevBuy");
 	m_pNextBtn = new vgui::Button(this, "nextBtn", "#CSO_NextBuy");
@@ -277,9 +278,9 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 
 void CCSBuySubMenu::SetupPage(size_t iPage)
 {
-	int totalpages = m_BuyItemList.size() / 9;
-	if (iPage < 0) iPage = 0;
-	if (iPage >= totalpages)
+	int totalpages = m_BuyItemList.size() / 9 - !!(m_BuyItemList.size() % 9) + 1;
+	if (iPage <= 0) iPage = 0;
+	else if (iPage >= totalpages)
 		iPage = totalpages - 1;
 
 	m_iCurrentPage = iPage;
