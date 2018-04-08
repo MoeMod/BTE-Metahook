@@ -6,7 +6,7 @@
 
 #include "game_controls\buysubmenu.h"
 #include "buymouseoverpanelbutton.h"
-#include "../NewTabPanel.h"
+#include "cso_controls/NewTabButton.h"
 #include "WeaponManager.h"
 
 using namespace vgui;
@@ -49,6 +49,8 @@ protected:
 public:
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
 	virtual void OnCommand(const char *command) override;
+	virtual void PerformLayout() override;
+	virtual void OnThink() override;
 
 	virtual void SetupItems(CWeaponManager::WeaponBuyMenuType type);
 	virtual void SetupPage(size_t page);
@@ -68,8 +70,8 @@ protected:
 protected:
 	vgui::Label *m_pTitleLabel;
 	// Left Column
-	NewTabPanel *m_pShowCTWeapon;
-	NewTabPanel *m_pShowTERWeapon;
+	NewTabButton *m_pShowCTWeapon;
+	NewTabButton *m_pShowTERWeapon;
 	CSBuyMouseOverPanelButton * m_pSlotButtons[10]; // slot0 ... slot10
 	vgui::Button *m_pPrevBtn; // prevpage
 	vgui::Button *m_pNextBtn; // nextpage

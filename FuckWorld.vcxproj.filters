@@ -156,6 +156,9 @@
     <Filter Include="Client\VGUI\BuyMenu">
       <UniqueIdentifier>{5d918f27-83d0-4e6e-9d47-fafc923ef746}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vgui2\cso_controls">
+      <UniqueIdentifier>{859fd20d-e470-4cc2-a4bd-9c1018d58614}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseUI.cpp">
@@ -2968,11 +2971,17 @@
     <ClInclude Include="Client\VGUI\BuyMenu\buymouseoverpanelbutton.h">
       <Filter>Client\VGUI\BuyMenu</Filter>
     </ClInclude>
-    <ClInclude Include="Client\VGUI\newtabpanel.h">
-      <Filter>Client\VGUI</Filter>
-    </ClInclude>
     <ClInclude Include="StartupGraphic.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\cso_controls\NewTabButton.h">
+      <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\cso_controls\ButtonGlow.h">
+      <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\cso_controls\DarkTextEntry.h">
+      <Filter>vgui2\cso_controls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

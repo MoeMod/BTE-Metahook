@@ -526,7 +526,6 @@
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.h" />
     <ClInclude Include="Client\VGUI\CSBackGroundPanel.h" />
     <ClInclude Include="Client\VGUI\newmouseoverpanelbutton.h" />
-    <ClInclude Include="Client\VGUI\newtabpanel.h" />
     <ClInclude Include="Client\VGUI\vgui_int.h" />
     <ClInclude Include="Client\ViewPort.h" />
     <ClInclude Include="Client\ViewPort_Interface.h" />
@@ -979,6 +978,9 @@
     <ClInclude Include="util\STLHelper.h" />
     <ClInclude Include="util\util.h" />
     <ClInclude Include="vgui2\bitmap.h" />
+    <ClInclude Include="vgui2\cso_controls\ButtonGlow.h" />
+    <ClInclude Include="vgui2\cso_controls\DarkTextEntry.h" />
+    <ClInclude Include="vgui2\cso_controls\NewTabButton.h" />
     <ClInclude Include="vgui2\HtmlWindow.h" />
     <ClInclude Include="vgui2\Memorybitmap.h" />
     <ClInclude Include="vgui2\vgui2.h" />

@@ -12,6 +12,8 @@
 #include "vgui_controls/CheckButton.h"
 #include "vgui_controls/TextEntry.h"
 #include "buymouseoverpanelbutton.h"
+#include "cso_controls/ButtonGlow.h"
+#include "cso_controls/DarkTextEntry.h"
 
 #include "WeaponManager.h"
 
@@ -56,11 +58,11 @@ void CSBuyMouseOverPanelButton::Paint()
 	Color col = COL_NONE;
 	if (m_iTeam == WeaponBuyTeam::TR)
 	{
-		col = COL_CT;
+		col = COL_TR;
 	}
 	else if (m_iTeam == WeaponBuyTeam::CT)
 	{
-		col = COL_TR;
+		col = COL_CT;
 	}
 	SetFgColor(col);
 	BaseClass::Paint();
@@ -72,8 +74,8 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 
 	char buffer[64];
 
-	m_pShowCTWeapon = new NewTabPanel(this, "ShowCTWeapon", "#CSO_BuyShowCT");
-	m_pShowTERWeapon = new NewTabPanel(this, "ShowTERWeapon", "#CSO_BuyShowTER");
+	m_pShowCTWeapon = new NewTabButton(this, "ShowCTWeapon", "#CSO_BuyShowCT");
+	m_pShowTERWeapon = new NewTabButton(this, "ShowTERWeapon", "#CSO_BuyShowTER");
 	m_pShowCTWeapon->SetTextColor(COL_CT);
 	m_pShowTERWeapon->SetTextColor(COL_TR);
 
@@ -86,8 +88,8 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	m_pPrevBtn = new vgui::Button(this, "prevBtn", "#CSO_PrevBuy");
 	m_pNextBtn = new vgui::Button(this, "nextBtn", "#CSO_NextBuy");
 
-	m_pRebuyButton = new vgui::Button(this, "RebuyButton", "#Cstrike_BuyMenuRebuy");
-	m_pAutobuyButton = new vgui::Button(this, "AutobuyButton", "#CSO_AutoBuy2");
+	m_pRebuyButton = new ButtonGlow(this, "RebuyButton", "#Cstrike_BuyMenuRebuy");
+	m_pAutobuyButton = new ButtonGlow(this, "AutobuyButton", "#CSO_AutoBuy2");
 
 	m_pBasketClear = new vgui::Button(this, "BasketClear", "#CSO_BasketClear");
 	m_pBasketBuy = new vgui::Button(this, "BasketBuy", "#CSO_BasketBuy");
@@ -124,9 +126,9 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	buytime_num = new vgui::Label(this, "buytime_num", "");
 	moneyText = new vgui::Label(this, "moneyText", "");
 
-	account = new vgui::TextEntry(this, "account");
-	buytime = new vgui::TextEntry(this, "buytime");
-	moneyBack = new vgui::TextEntry(this, "moneyBack");
+	account = new DarkTextEntry(this, "account");
+	buytime = new DarkTextEntry(this, "buytime");
+	moneyBack = new DarkTextEntry(this, "moneyBack");
 
 	m_pUpgradeTitle = new vgui::Label(this, "UpgradeTitle", "");
 	m_pOppZombiUpgradeTitle = new vgui::Label(this, "OppZombiUpgradeTitle", "");
@@ -220,6 +222,28 @@ void CCSBuySubMenu::OnCommand(const char *command)
 	BaseClass::OnCommand(command);
 }
 
+void CCSBuySubMenu::PerformLayout()
+{
+	BaseClass::PerformLayout();
+
+	int  w, h;
+	GetSize(w, h);
+	int w2, h2;
+	m_pTitleLabel->GetSize(w2, h2);
+	m_pTitleLabel->SetPos(w / 2 - w2 / 2, 22);
+}
+
+void CCSBuySubMenu::OnThink()
+{
+	BaseClass::OnThink();
+
+	int time = g_iBuyTime - (int)Hud().m_flTime;
+	if (time < 0)
+		time = 0;
+	account_num->SetText(std::to_wstring(g_iMoney).c_str());
+	buytime_num->SetText(std::to_wstring(time).c_str());
+}
+
 void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 {
 	m_BuyItemList.clear();
@@ -278,7 +302,7 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 
 void CCSBuySubMenu::SetupPage(size_t iPage)
 {
-	int totalpages = m_BuyItemList.size() / 9 - !!(m_BuyItemList.size() % 9) + 1;
+	int totalpages = m_BuyItemList.size() / 9 + 1;
 	if (iPage <= 0) iPage = 0;
 	else if (iPage >= totalpages)
 		iPage = totalpages - 1;
@@ -333,6 +357,18 @@ void CCSBuySubMenu::SetTeam(WeaponBuyTeam team)
 		m_pShowCTWeapon->SetActive(true);
 	if (team == WeaponBuyTeam::TR)
 		m_pShowTERWeapon->SetActive(true);
+
+	Color col = { 255,255,255,255 };
+	Color bg = { 255,255,255,255 };
+	if (m_iTeam == WeaponBuyTeam::TR)
+	{
+		col = COL_TR;
+	}
+	else if (m_iTeam == WeaponBuyTeam::CT)
+	{
+		col = COL_CT;
+	}
+
 }
 
 void CCSBuySubMenu::SelectWeapon(const char *weapon)
@@ -360,6 +396,16 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 	// 0->exit
 	m_pSlotButtons[9]->SetText("#Cstrike_Cancel");
 	m_pSlotButtons[9]->SetCommand("vguicancel");
+
+	account->SetText("#Cstrike_Current_Money");
+	buytime->SetText("#CSO_BuyTime");
+	for (vgui::TextEntry *p : { account , buytime })
+	{
+		p->SetMouseInputEnabled(false);
+	}
+
+	m_pTitleLabel->SetFont(scheme()->GetIScheme(m_pTitleLabel->GetScheme())->GetFont("Title", IsProportional()));
+	m_pTitleLabel->SizeToContents();
 }
 
 void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
@@ -389,6 +435,9 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 	{
 		pPanel->SetVisible(false);
 	}
+
+	m_pShowCTWeapon->SetVisible(false);
+	m_pShowTERWeapon->SetVisible(false);
 
 	moneyText->SetVisible(false);
 	moneyBack->SetVisible(false);

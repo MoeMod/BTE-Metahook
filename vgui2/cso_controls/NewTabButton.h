@@ -12,20 +12,40 @@
 #include <vgui_controls/Button.h>
 #include <vgui_controls/ImagePanel.h>
 
-class NewTabPanel : public vgui::Button
+class ColoredButton : public vgui::Button
 {
-	DECLARE_CLASS_SIMPLE(NewTabPanel, Button );
+	DECLARE_CLASS_SIMPLE(ColoredButton, Button);
+
+	Color _replaceColor;
+public:
+	ColoredButton(vgui::Panel *parent, const char *panelName, const char *text) :
+		Button(parent, panelName, text) {}
+
+	void SetTextColor(Color col)
+	{
+		_replaceColor = col;
+	}
+
+	virtual Color GetButtonFgColor()
+	{
+		return _replaceColor;
+	}
+};
+
+class NewTabButton : public ColoredButton
+{
+	DECLARE_CLASS_SIMPLE(NewTabButton, ColoredButton);
 
 private:
 	bool _active;
-	Color _replaceColor;
+	
 	int m_bMaxTabWidth;
 	vgui::IBorder *m_pActiveBorder;
 	vgui::IBorder *m_pNormalBorder;
 
 public:
-	NewTabPanel(vgui::Panel *parent, const char *panelName, const char *text, int maxTabWidth = 64) :
-		Button( parent, panelName, text)
+	NewTabButton(vgui::Panel *parent, const char *panelName, const char *text, int maxTabWidth = 64) :
+		ColoredButton( parent, panelName, text)
 	{
 		SetCommand(new KeyValues("TabPressed"));
 		_active = false;
@@ -54,6 +74,16 @@ public:
 		wide = max(m_bMaxTabWidth, contentWide + 10);  // 10 = 5 pixels margin on each side
 		SetSize(wide, tall);
 		
+		_imageBackground = true;
+		_depressedImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_left_c", true);
+		_depressedImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_center_c", true);
+		_depressedImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_right_c", true);
+		_defaultImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_left_n", true);
+		_defaultImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_center_n", true);
+		_defaultImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_right_n", true);
+		_armedImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_left_o", true);
+		_armedImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_center_o", true);
+		_armedImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_right_o", true);
 	}
 
 	vgui::IBorder *GetBorder(bool depressed, bool armed, bool selected, bool keyfocus)
@@ -65,16 +95,6 @@ public:
 		if(m_pNormalBorder)
 			return m_pNormalBorder;
 		return BaseClass::GetBorder(depressed, armed, selected, keyfocus);
-	}
-
-	void SetTextColor(Color col)
-	{
-		_replaceColor = col;
-	}
-
-	virtual Color GetButtonFgColor()
-	{
-		return _replaceColor;
 	}
 
 	virtual void SetActive(bool state)
