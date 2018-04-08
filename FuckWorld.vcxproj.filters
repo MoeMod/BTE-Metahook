@@ -153,6 +153,9 @@
     <Filter Include="Client\game_controls">
       <UniqueIdentifier>{78d2bc5d-fdd7-43db-8459-0ff7bd277f4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Client\VGUI\BuyMenu">
+      <UniqueIdentifier>{5d918f27-83d0-4e6e-9d47-fafc923ef746}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseUI.cpp">
@@ -1085,14 +1088,14 @@
     <ClCompile Include="Client\game_controls\buysubmenu.cpp">
       <Filter>Client\game_controls</Filter>
     </ClCompile>
-    <ClCompile Include="Client\VGUI\cstrikebuymenu.cpp">
-      <Filter>Client\VGUI</Filter>
-    </ClCompile>
     <ClCompile Include="Client\shared_util.cpp">
       <Filter>Client</Filter>
     </ClCompile>
-    <ClCompile Include="Client\VGUI\cstrikebuysubmenu.cpp">
-      <Filter>Client\VGUI</Filter>
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymenu.cpp">
+      <Filter>Client\VGUI\BuyMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.cpp">
+      <Filter>Client\VGUI\BuyMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2947,19 +2950,22 @@
     <ClInclude Include="Client\game_controls\buysubmenu.h">
       <Filter>Client\game_controls</Filter>
     </ClInclude>
-    <ClInclude Include="Client\VGUI\cstrikebuymenu.h">
-      <Filter>Client\VGUI</Filter>
-    </ClInclude>
     <ClInclude Include="Client\shared_util.h">
       <Filter>Client</Filter>
     </ClInclude>
-    <ClInclude Include="Client\VGUI\buymouseoverpanelbutton.h">
-      <Filter>Client\VGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Client\VGUI\cstrikebuysubmenu.h">
-      <Filter>Client\VGUI</Filter>
-    </ClInclude>
     <ClInclude Include="Client\VGUI\newmouseoverpanelbutton.h">
+      <Filter>Client\VGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymenu.h">
+      <Filter>Client\VGUI\BuyMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.h">
+      <Filter>Client\VGUI\BuyMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\BuyMenu\buymouseoverpanelbutton.h">
+      <Filter>Client\VGUI\BuyMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\newtabpanel.h">
       <Filter>Client\VGUI</Filter>
     </ClInclude>
   </ItemGroup>

@@ -298,6 +298,7 @@ public:
 
 	void SetHotkey(wchar_t ch)
 	{
+		m_cHotkey = ch;
 		BaseClass::SetHotkey(towlower(ch));
 	}
 

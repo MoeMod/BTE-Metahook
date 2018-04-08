@@ -35,7 +35,9 @@ CCSBackGroundPanel::CCSBackGroundPanel(Panel *parent) : BaseClass(parent)
 	m_pBottomRightPanel->SetVisible(m_enabled);
 	m_pGapPanel->SetVisible(m_enabled);
 	m_pTitleLabel->SetVisible(m_enabled);
+
 	m_pExclamationPanel->SetVisible(false);
+	
 }
 
 void CCSBackGroundPanel::SetTitleText(const wchar_t *text)

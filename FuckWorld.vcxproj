@@ -190,9 +190,9 @@
     <ClCompile Include="Client\Studio\studio_util.cpp" />
     <ClCompile Include="Client\svc_hook.cpp" />
     <ClCompile Include="Client\TextureManager.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymenu.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.cpp" />
     <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp" />
-    <ClCompile Include="Client\VGUI\cstrikebuymenu.cpp" />
-    <ClCompile Include="Client\VGUI\cstrikebuysubmenu.cpp" />
     <ClCompile Include="Client\VGUI\vgui_int.cpp" />
     <ClCompile Include="Client\ViewPort.cpp" />
     <ClCompile Include="Client\ViewPort_Interface.cpp" />
@@ -520,11 +520,12 @@
     <ClInclude Include="Client\TextureManager.h" />
     <ClInclude Include="Client\VGuiLibrary.h" />
     <ClInclude Include="Client\VGUI\BackGroundPanel.h" />
-    <ClInclude Include="Client\VGUI\buymouseoverpanelbutton.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\buymouseoverpanelbutton.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymenu.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.h" />
     <ClInclude Include="Client\VGUI\CSBackGroundPanel.h" />
-    <ClInclude Include="Client\VGUI\cstrikebuymenu.h" />
-    <ClInclude Include="Client\VGUI\cstrikebuysubmenu.h" />
     <ClInclude Include="Client\VGUI\newmouseoverpanelbutton.h" />
+    <ClInclude Include="Client\VGUI\newtabpanel.h" />
     <ClInclude Include="Client\VGUI\vgui_int.h" />
     <ClInclude Include="Client\ViewPort.h" />
     <ClInclude Include="Client\ViewPort_Interface.h" />

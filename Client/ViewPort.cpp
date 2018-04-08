@@ -1,6 +1,7 @@
 #include "metahook.h"
 #include "exportfuncs.h"
 #include "plugins.h"
+#include "message.h"
 #include "demo_api.h"
 #include "cdll_dll.h"
 
@@ -10,7 +11,7 @@
 #include "VGUI/CSBackGroundPanel.h"
 #include "Screen.h"
 
-#include "vgui/cstrikebuymenu.h"
+#include "vgui/BuyMenu/cstrikebuymenu.h"
 
 #include "MGUI/mgui.h"
 #include "MGUI/BTEPanel.h"
@@ -58,8 +59,7 @@ void CViewport::Start(void)
 {
 	CreateBackGround();
 
-	m_pBuyMenu_TER = (CCSBuyMenu_TER *)AddNewPanel(new CCSBuyMenu_TER);
-	m_pBuyMenu_CT = (CCSBuyMenu_CT *)AddNewPanel(new CCSBuyMenu_CT);
+	m_pBuyMenu = (CCSBaseBuyMenu *)AddNewPanel(new CCSBaseBuyMenu);
 
 	m_bInitialied = true;
 
@@ -218,12 +218,12 @@ bool CViewport::ShowVGUIMenu(int iMenu)
 	{
 		CCSBaseBuyMenu *buyMenu = NULL;
 
-		if (g_iTeamNumber == TEAM_CT)
-			buyMenu = m_pBuyMenu_CT;
+		if (g_iTeam == 1)
+			m_pBuyMenu->SetTeam(TEAM_CT);
 		else
-			buyMenu = m_pBuyMenu_TER;
+			m_pBuyMenu->SetTeam(TEAM_TERRORIST);
 
-		buyMenu->ActivateMenu(iMenu);
+		m_pBuyMenu->ActivateMenu(iMenu);
 		return true;
 	}
 	}
@@ -259,10 +259,7 @@ bool CViewport::HideVGUIMenu(int iMenu)
 	case MENU_BUY_MACHINEGUN:
 	case MENU_BUY_ITEM:
 	{
-		if (g_iTeamNumber == TEAM_CT)
-			panel = m_pBuyMenu_CT;
-		else
-			panel = m_pBuyMenu_TER;
+		panel = m_pBuyMenu;
 	}
 	}
 

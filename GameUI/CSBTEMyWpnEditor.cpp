@@ -70,7 +70,7 @@ void CCSBTEMyWpnElement::SetId(int id)
 
 }
 
-extern wchar_t *GetWeaponNameFormat(char *name);
+extern wchar_t *GetWeaponNameFormat(const char *name);
 void CCSBTEMyWpnElement::SetWeapon(char *szWeaponName, int iTeam)
 {
 	char szPath[128];

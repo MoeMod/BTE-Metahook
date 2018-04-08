@@ -5,11 +5,37 @@
 #endif
 
 #include "game_controls\buysubmenu.h"
+#include "buymouseoverpanelbutton.h"
+#include "../NewTabPanel.h"
+#include "WeaponManager.h"
 
 using namespace vgui;
 
+class CSBuyMouseOverPanelButton : public BuyMouseOverPanelButton
+{
+private:
+	typedef BuyMouseOverPanelButton BaseClass;
+public:
+	CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel) : BaseClass(parent, panelName, panel)
+	{
+		
+	}
+	void UpdateWeapon(const char *weapon);
+	virtual void Paint() override;
+
+	using WeaponBuyTeam = CWeaponManager::WeaponBuyTeam;
+	void SetTeam(WeaponBuyTeam team) 
+	{ 
+		m_iTeam = team; 
+	}
+	WeaponBuyTeam m_iTeam;
+};
+
 class CCSBuySubMenu : public CBuySubMenu
 {
+public:
+	using WeaponBuyTeam = CWeaponManager::WeaponBuyTeam;
+	using WeaponBuyMenuType = CWeaponManager::WeaponBuyMenuType;
 private:
 	DECLARE_CLASS_SIMPLE(CCSBuySubMenu, CBuySubMenu);
 
@@ -17,26 +43,34 @@ public:
 	CCSBuySubMenu(vgui::Panel *parent, const char *name = "BuySubMenu");
 
 protected:
-	virtual void OnCommand(const char *command);
-	virtual void PerformLayout(void);
-	virtual void OnSizeChanged(int newWide, int newTall);
-	virtual void OnDisplay(void);
+	virtual CSBuyMouseOverPanelButton *CreateNewMouseOverPanelButton(EditablePanel *panel) override;
+	virtual CCSBuySubMenu *CreateNewSubMenu(const char *name = "BuySubMenu") override;
 
 public:
-	void UpdateLoadout(void);
-
-protected:
-	virtual MouseOverPanelButton *CreateNewMouseOverPanelButton(EditablePanel *panel) override;
-	virtual CBuySubMenu *CreateNewSubMenu(const char *name = "BuySubMenu") override;
-
-public:
-	virtual void SetupNextSubPanel(const char *fileName);
-
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
+	virtual void OnCommand(const char *command) override;
+
+	virtual void SetupItems(CWeaponManager::WeaponBuyMenuType type);
+	virtual void SetupPage(size_t page);
+	virtual void SetTeam(WeaponBuyTeam team);
+	virtual void SelectWeapon(const char *weapon);
 
 protected:
+	struct ItemInfo
+	{
+		std::string name;
+		std::string command;
+	};
+	std::vector<ItemInfo> m_BuyItemList;
+	size_t m_iCurrentPage;
+	WeaponBuyTeam m_iTeam;
+
+protected:
+	vgui::Label *m_pTitleLabel;
 	// Left Column
-	BuyMouseOverPanelButton * m_pSlotButtons[10]; // slot0 ... slot10
+	NewTabPanel *m_pShowCTWeapon;
+	NewTabPanel *m_pShowTERWeapon;
+	CSBuyMouseOverPanelButton * m_pSlotButtons[10]; // slot0 ... slot10
 	vgui::Button *m_pPrevBtn; // prevpage
 	vgui::Button *m_pNextBtn; // nextpage
 
@@ -51,9 +85,7 @@ protected:
 
 								  // Lower Weapon Slot
 	vgui::ImagePanel *pwpnBG;
-	vgui::ImagePanel *pammoBG;
 	vgui::ImagePanel *swpnBG;
-	vgui::ImagePanel *sammoBG;
 	vgui::ImagePanel *hgrenBG;
 	vgui::ImagePanel *sgrenBG;
 	vgui::ImagePanel *fgrenBG;
@@ -62,13 +94,28 @@ protected:
 	vgui::ImagePanel *nvBG;
 	vgui::ImagePanel *kevBG;
 
+	vgui::ImagePanel *pammoBG;
+	vgui::ImagePanel *sammoBG;
+
+	vgui::ImagePanel *primaryBG;
+	vgui::ImagePanel *secondaryBG;
+	vgui::ImagePanel *knifeBG;
+	vgui::ImagePanel *grenadeBG;
+	vgui::ImagePanel *equipBG;
+
 	// Right Fav List
 	vgui::Button *m_pFavButtons[5]; // fav0 ... fav4
 	vgui::Button *m_pFavSaveButtons[5]; // fav_save0 .. fav_save4
 	vgui::CheckButton *m_pFavDirectBuy; // fav_direct_buy_ckbtn
 
-	vgui::Label *moneyText;
+	vgui::Label *account_num;
 	vgui::Label *buytime_num;
+	vgui::Label *moneyText;
+
+	vgui::TextEntry *freezetime;
+	vgui::TextEntry *account;
+	vgui::TextEntry *buytime;
+	vgui::TextEntry *moneyBack;
 
 	// ZBS
 	vgui::Label *m_pUpgradeTitle;
@@ -93,6 +140,7 @@ private:
 public:
 	CCSBuySubMenu_DefaultMode(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name){}
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
+	virtual void SelectWeapon(const char *weapon) override;
 };
 
 class CCSBuySubMenu_ZombieMod : public CCSBuySubMenu
