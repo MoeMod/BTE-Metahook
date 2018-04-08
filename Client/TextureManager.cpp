@@ -42,6 +42,7 @@ CTextureManager::CTextureManager(void)
 	m_TexturesNameList.clear();
 	m_TexturesIdList.clear();
 	m_TexturesReplaceList.clear();
+	m_UpdateFuncs.clear();
 
 	LoadTextureReplaceList();
 	
