@@ -1103,6 +1103,9 @@
     <ClCompile Include="StartupGraphic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Client\VGUI\BuyMenu\buypresetbutton.cpp">
+      <Filter>Client\VGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -2982,6 +2985,9 @@
     </ClInclude>
     <ClInclude Include="vgui2\cso_controls\DarkTextEntry.h">
       <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\BuyMenu\buypresetbutton.h">
+      <Filter>Client\VGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

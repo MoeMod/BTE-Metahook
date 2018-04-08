@@ -190,6 +190,7 @@
     <ClCompile Include="Client\Studio\studio_util.cpp" />
     <ClCompile Include="Client\svc_hook.cpp" />
     <ClCompile Include="Client\TextureManager.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\buypresetbutton.cpp" />
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymenu.cpp" />
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.cpp" />
     <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp" />
@@ -522,6 +523,7 @@
     <ClInclude Include="Client\VGuiLibrary.h" />
     <ClInclude Include="Client\VGUI\BackGroundPanel.h" />
     <ClInclude Include="Client\VGUI\BuyMenu\buymouseoverpanelbutton.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\buypresetbutton.h" />
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymenu.h" />
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.h" />
     <ClInclude Include="Client\VGUI\CSBackGroundPanel.h" />

@@ -6,8 +6,11 @@
 
 #include "game_controls\buysubmenu.h"
 #include "buymouseoverpanelbutton.h"
+#include "BuyPresetButton.h"
 #include "cso_controls/NewTabButton.h"
 #include "WeaponManager.h"
+
+#include "util/iniParser.h"
 
 using namespace vgui;
 
@@ -56,6 +59,7 @@ public:
 	virtual void SetupPage(size_t page);
 	virtual void SetTeam(WeaponBuyTeam team);
 	virtual void SelectWeapon(const char *weapon);
+	virtual void ReadFavoriteWeapons();
 
 protected:
 	struct ItemInfo
@@ -64,6 +68,9 @@ protected:
 		std::string command;
 	};
 	std::vector<ItemInfo> m_BuyItemList;
+	ItemInfo m_FavoriteItems[5][4];
+	ItemInfo m_RebuyItems[4];
+	CIniParser m_iniFavorite;
 	size_t m_iCurrentPage;
 	WeaponBuyTeam m_iTeam;
 
@@ -106,7 +113,7 @@ protected:
 	vgui::ImagePanel *equipBG;
 
 	// Right Fav List
-	vgui::Button *m_pFavButtons[5]; // fav0 ... fav4
+	BuyPresetButton *m_pFavButtons[5]; // fav0 ... fav4
 	vgui::Button *m_pFavSaveButtons[5]; // fav_save0 .. fav_save4
 	vgui::CheckButton *m_pFavDirectBuy; // fav_direct_buy_ckbtn
 

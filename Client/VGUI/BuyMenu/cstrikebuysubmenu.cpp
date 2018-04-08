@@ -15,6 +15,7 @@
 #include "cso_controls/ButtonGlow.h"
 #include "cso_controls/DarkTextEntry.h"
 
+
 #include "WeaponManager.h"
 
 #include <string>
@@ -70,6 +71,9 @@ void CSBuyMouseOverPanelButton::Paint()
 
 CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMenu(parent, name)
 {
+	m_iniFavorite.OpenFile("quickbuy.ini");
+	ReadFavoriteWeapons();
+
 	m_pTitleLabel = new vgui::Label(this, "CaptionLabel", "#CSO_WeaponSelectMenu");
 
 	char buffer[64];
@@ -116,7 +120,7 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	for (int i = 0; i < 5; i++)
 	{
 		sprintf(buffer, "fav%d", i);
-		m_pFavButtons[i] = new vgui::Button(this, buffer, "");
+		m_pFavButtons[i] = new BuyPresetButton(this, buffer);
 		sprintf(buffer, "fav_save%d", i);
 		m_pFavSaveButtons[i] = new vgui::Button(this, buffer, "#CSO_FavSave");
 	}
@@ -201,11 +205,13 @@ void CCSBuySubMenu::OnCommand(const char *command)
 			gEngfuncs.pfnClientCmd("sv_create_psb 10397 m4a1;sv_create_psb 10397 usp;sv_create_psb 10397 hegrenade;sv_create_psb 10397 knife;secammo;primammo;vesthelm;defuser");
 		else
 			gEngfuncs.pfnClientCmd("sv_create_psb 10397 ak47;sv_create_psb 10397 glock18;sv_create_psb 10397 hegrenade;sv_create_psb 10397 knife;secammo;primammo;vesthelm");
+		BaseClass::OnCommand("vguicancel");
 		return;
 	}
 	else if (!Q_strcmp(command, "rebuy_in"))
 	{
 		gEngfuncs.pfnClientCmd("bte_wpn_rebuy;rebuy;secammo;primammo");
+		BaseClass::OnCommand("vguicancel");
 		return;
 	}
 	else if (!Q_strcmp(command, "prevpage"))
@@ -230,7 +236,15 @@ void CCSBuySubMenu::PerformLayout()
 	GetSize(w, h);
 	int w2, h2;
 	m_pTitleLabel->GetSize(w2, h2);
-	m_pTitleLabel->SetPos(w / 2 - w2 / 2, 22);
+	m_pTitleLabel->SetPos(w / 2 - w2 / 2, 12);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		m_pFavButtons[i]->SetPrimaryWeapon(m_FavoriteItems[i][0].name.c_str());
+		m_pFavButtons[i]->SetSecondaryWeapon(m_FavoriteItems[i][1].name.c_str());
+		m_pFavButtons[i]->SetKnifeWeapon(m_FavoriteItems[i][2].name.c_str());
+	}
+	
 }
 
 void CCSBuySubMenu::OnThink()
@@ -379,6 +393,37 @@ void CCSBuySubMenu::SelectWeapon(const char *weapon)
 	gEngfuncs.pfnClientCmd(szBuffer);
 }
 
+void CCSBuySubMenu::ReadFavoriteWeapons()
+{
+	for(int i:xrange(1, 6))
+	{
+		std::string app("QuickBuy");
+		app += std::to_string(i);
+
+		auto &keyvalue = m_iniFavorite[app];
+
+		--i;
+		m_FavoriteItems[i][0].name =  keyvalue["Primary"] ;
+		m_FavoriteItems[i][1].name =  keyvalue["Secondary"];
+		m_FavoriteItems[i][2].name =  keyvalue["Knife"];
+		m_FavoriteItems[i][3].name =  keyvalue["Grenade"];
+		for (auto &item : m_FavoriteItems[i])
+		{
+			item.command = (std::string("VGUI_BuyMenu_BuyWeapon ") += item.name);
+		}
+	}
+
+	auto &keyvalue = m_iniFavorite[std::string("QuickBuy0")];
+	m_RebuyItems[0].name = keyvalue["Primary"];
+	m_RebuyItems[1].name = keyvalue["Secondary"];
+	m_RebuyItems[2].name = keyvalue["Knife"];
+	m_RebuyItems[3].name = keyvalue["Grenade"];
+	for (auto &item : m_RebuyItems)
+	{
+		item.command = (std::string("VGUI_BuyMenu_BuyWeapon ") += item.name);
+	}
+}
+
 CSBuyMouseOverPanelButton *CCSBuySubMenu::CreateNewMouseOverPanelButton(EditablePanel *panel)
 {
 	return new CSBuyMouseOverPanelButton(this, NULL, panel);
@@ -406,6 +451,12 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 
 	m_pTitleLabel->SetFont(scheme()->GetIScheme(m_pTitleLabel->GetScheme())->GetFont("Title", IsProportional()));
 	m_pTitleLabel->SizeToContents();
+
+	const wchar key[5] = { L'S',L'D', L'F', L'G', L'H' };
+	for (int i = 0; i < 5; ++i)
+	{
+		m_pFavButtons[i]->SetHotkey(key[i]);
+	}
 }
 
 void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
@@ -460,10 +511,10 @@ void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName
 	m_pEditDescBg->SetVisible(false);
 	m_pEquipSample->SetVisible(false);
 
-	// hide money & buy time
-	for(auto pPanel : { account_num ,buytime_num ,moneyText })
+	// hide money
+	for(auto pPanel : { account_num ,moneyText })
 		pPanel->SetVisible(false);
-	for (auto pPanel : { freezetime, account, buytime, moneyBack })
+	for (auto pPanel : { freezetime, account, moneyBack })
 		pPanel->SetVisible(false);
 }
 
