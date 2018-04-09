@@ -33,6 +33,7 @@ protected:
 	void SetupControlSettings();
 public:
 	void SetTeam(int iTeam);
+	void UpdateGameMode();
 
 public:
 	virtual void Init(void);

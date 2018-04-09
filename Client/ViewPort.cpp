@@ -515,3 +515,8 @@ bool CViewport::AllowedToPrintText(void)
 
 	return true;
 }
+
+void CViewport::UpdateGameMode()
+{
+	m_pBuyMenu->UpdateGameMode();
+}

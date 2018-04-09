@@ -5,36 +5,14 @@
 #endif
 
 #include "game_controls\buysubmenu.h"
-#include "buymouseoverpanelbutton.h"
 #include "BuyPresetButton.h"
+#include "buymouseoverpanelbutton.h"
 #include "cso_controls/NewTabButton.h"
 #include "WeaponManager.h"
 
 #include "util/iniParser.h"
 
 using namespace vgui;
-
-
-class CSBuyMouseOverPanel : public NewMouseOverPanel
-{
-	typedef NewMouseOverPanel BaseClass;
-
-public:
-	CSBuyMouseOverPanel(vgui::Panel *parent, const char *panelName) : NewMouseOverPanel(parent, panelName)
-	{
-		SetMouseInputEnabled(false);
-		SetKeyBoardInputEnabled(false);
-		infolabel = new Label(this, "infolabel", "");
-		classimage = new ImagePanel(this, "infolabel");
-		classimage->SetShouldScaleImage(true);
-	}
-
-public:
-	vgui::Label *infolabel;
-	vgui::ImagePanel *classimage;
-	virtual void PerformLayout(void) override;
-	void UpdateWeapon(const char *weapon = "");
-};
 
 class CSBuyMouseOverPanelButton : public BuyMouseOverPanelButton
 {
@@ -84,6 +62,7 @@ public:
 
 	virtual void ReadFavoriteSets();
 	virtual void SaveFavoriteSets();
+	virtual void UpdateFavoriteSetsControls();
 	virtual void OnSelectFavoriteWeapons(int iSet);
 	virtual void OnSaveFavoriteWeapons(int iSet);
 
@@ -148,6 +127,7 @@ protected:
 	vgui::ImagePanel *dfBG;
 	vgui::ImagePanel *nvBG;
 	vgui::ImagePanel *kevBG;
+	vgui::ImagePanel *newknifeBG;
 
 	vgui::ImagePanel *pammoBG;
 	vgui::ImagePanel *sammoBG;
@@ -195,6 +175,8 @@ private:
 public:
 	CCSBuySubMenu_DefaultMode(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name){}
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
+	virtual void PerformLayout() override;
+	virtual void SetupPage(size_t iPage) override;
 	virtual void OnSelectWeapon(const char *weapon) override;
 	virtual void OnSelectFavoriteWeapons(int iSet) override;
 };
@@ -207,6 +189,7 @@ private:
 public:
 	CCSBuySubMenu_ZombieMod(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name) {}
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
+	virtual void OnSelectWeapon(const char *weapon) override;
 };
 
 class CCSBuySubMenu_DeathMatch : public CCSBuySubMenu

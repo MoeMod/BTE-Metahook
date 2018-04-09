@@ -28,12 +28,6 @@ public:
 
 		this->SetPos(ScreenWidth - 1024 + 854, 20);
 	}
-	virtual void Paint() override
-	{
-		
-		
-		BaseClass::Paint();
-	}
 	virtual void ApplySchemeSettings(vgui::IScheme *pScheme) override
 	{
 		BaseClass::ApplySchemeSettings(pScheme);

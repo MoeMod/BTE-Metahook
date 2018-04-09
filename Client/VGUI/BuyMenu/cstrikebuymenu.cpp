@@ -1,4 +1,6 @@
 #include "hud.h"
+#include "exportfuncs.h"
+#include "BTE_Const.h"
 #include "ViewPort.h"
 #include "cdll_dll.h"
 #include "cl_util.h"
@@ -18,12 +20,6 @@ CCSBaseBuyMenu::CCSBaseBuyMenu() : CBuyMenu()
 {
 	SetTitle("#Cstrike_Buy_Menu", true);
 	SetProportional(true);
-
-	if (m_pMainMenu)
-		delete m_pMainMenu;
-
-	m_pMainMenu = new CCSBuySubMenu_DefaultMode(this);
-	SetupControlSettings();
 }
 
 void CCSBaseBuyMenu::SetupControlSettings()
@@ -33,8 +29,7 @@ void CCSBaseBuyMenu::SetupControlSettings()
 
 	if (m_pMainMenu)
 	{
-		m_pMainMenu->LoadControlSettings("Resource/UI/cso_buysubmenu.res", "GAME");
-		m_pMainMenu->LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
+		m_pMainMenu->LoadControlSettings("Resource/UI/cso_buysubmenu_ver2.res", "GAME");
 		m_pMainMenu->SetVisible(false);
 	}
 	
@@ -52,7 +47,8 @@ void CCSBaseBuyMenu::SetVisible(bool state)
 			defaultButton->RequestFocus();
 
 		SetMouseInputEnabled(true);
-		m_pMainMenu->SetMouseInputEnabled(true);
+		if(m_pMainMenu)
+			m_pMainMenu->SetMouseInputEnabled(true);
 	}
 }
 
@@ -165,6 +161,8 @@ void CCSBaseBuyMenu::ActivateMenu(int iMenu)
 
 void CCSBaseBuyMenu::SetTeam(int iTeam)
 {
+	if (!m_pMainMenu)
+		return;
 	m_iTeam = iTeam;
 	if(iTeam == TEAM_TERRORIST)
 		m_pMainMenu->OnCommand("VGUI_BuyMenu_SetTeam 2");
@@ -172,4 +170,20 @@ void CCSBaseBuyMenu::SetTeam(int iTeam)
 		m_pMainMenu->OnCommand("VGUI_BuyMenu_SetTeam 1");
 	else
 		m_pMainMenu->OnCommand("VGUI_BuyMenu_SetTeam 0");
+}
+
+void CCSBaseBuyMenu::UpdateGameMode()
+{
+	if (m_pMainMenu)
+		delete m_pMainMenu;
+
+	if (IS_ZOMBIE_MODE && (g_iMod != MOD_ZB4))
+		m_pMainMenu = new CCSBuySubMenu_ZombieMod(this);
+	else if ((g_iMod == MOD_ZB4) || (g_iMod == MOD_TDM) || (g_iMod == MOD_DM))
+		m_pMainMenu = new CCSBuySubMenu_DeathMatch(this);
+	else
+		m_pMainMenu = new CCSBuySubMenu_DefaultMode(this);
+
+
+	SetupControlSettings();
 }

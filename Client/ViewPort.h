@@ -84,6 +84,8 @@ public:
 
 	bool AllowedToPrintText(void);
 
+	void UpdateGameMode();
+
 private:
 	float m_flCurrentTime;
 	bool m_bInitialied;

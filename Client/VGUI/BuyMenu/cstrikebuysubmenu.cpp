@@ -15,6 +15,7 @@
 #include "cso_controls/ButtonGlow.h"
 #include "cso_controls/DarkTextEntry.h"
 
+#include "cstrikebuymouseoverpanel.h"
 
 #include "WeaponManager.h"
 
@@ -28,35 +29,6 @@ static const Color COL_TR = { 216, 182, 183, 255 };
 
 static const char *EQUIPMENT_BUYLIST[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
 static const char *EQUIPMENT_BUYLIST_CMD[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
-
-void CSBuyMouseOverPanel::PerformLayout(void)
-{
-	BaseClass::PerformLayout();
-	int w, h;
-	GetParent()->GetSize(w, h);
-	float scale = h / 480.0;
-
-	SetBounds(216 * scale, 60 * scale, 152 * scale, 145 * scale);
-	infolabel->SetBounds(33.75 * scale, 60 * scale, 84 * scale, 98 * scale);
-	classimage->SetBounds(33.75 * scale, 0 * scale, 147 * scale, 51 * scale);
-}
-
-extern wchar_t *GetWeaponInfoFormat(int iSlot, const char *pItem); // BTEPanel.cpp
-
-void CSBuyMouseOverPanel::UpdateWeapon(const char *weapon)
-{
-	bool bEnabled = weapon && weapon[0];
-	infolabel->SetVisible(bEnabled);
-	classimage->SetVisible(bEnabled);
-
-	if (bEnabled)
-	{
-		infolabel->SetText(GetWeaponInfoFormat(0, weapon));
-		char szBuffer[64];
-		sprintf(szBuffer, "gfx\\vgui\\%s", weapon);
-		classimage->SetImage(szBuffer);
-	}
-}
 
 CSBuyMouseOverPanelButton::CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel)
 	: BaseClass(parent, panelName, panel)
@@ -90,9 +62,6 @@ void CSBuyMouseOverPanelButton::Paint()
 
 CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMenu(parent, name)
 {
-	m_iniFavorite.OpenFile("quickbuy.ini");
-	ReadFavoriteSets();
-
 	m_pTitleLabel = new vgui::Label(this, "CaptionLabel", "#CSO_WeaponSelectMenu");
 
 	char buffer[64];
@@ -115,7 +84,7 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	m_pAutobuyButton = new ButtonGlow(this, "AutobuyButton", "#CSO_AutoBuy2");
 
 	m_pBasketClear = new vgui::Button(this, "BasketClear", "#CSO_BasketClear");
-	m_pBasketBuy = new vgui::Button(this, "BasketBuy", "#CSO_BasketBuy");
+	m_pBasketBuy = new ButtonGlow(this, "BasketBuy", "#CSO_BasketBuy");
 	m_pQuitButton = new vgui::Button(this, "QuitButton", "#CSO_BuyQuit");
 
 	pwpnBG = new vgui::ImagePanel(this, "pwpnBG");
@@ -129,6 +98,7 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	dfBG = new vgui::ImagePanel(this, "dfBG");
 	nvBG = new vgui::ImagePanel(this, "nvBG");
 	kevBG = new vgui::ImagePanel(this, "kevBG");
+	newknifeBG = new vgui::ImagePanel(this, "newknifeBG");
 
 	primaryBG = new vgui::ImagePanel(this, "primaryBG");
 	secondaryBG = new vgui::ImagePanel(this, "secondaryBG");
@@ -152,6 +122,7 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	account = new DarkTextEntry(this, "account");
 	buytime = new DarkTextEntry(this, "buytime");
 	moneyBack = new DarkTextEntry(this, "moneyBack");
+	freezetime = new DarkTextEntry(this, "freezetime");
 
 	m_pUpgradeTitle = new vgui::Label(this, "UpgradeTitle", "");
 	m_pOppZombiUpgradeTitle = new vgui::Label(this, "OppZombiUpgradeTitle", "");
@@ -164,6 +135,9 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	m_pEditDescLabel_DM = new vgui::Label(this, "EditDescLabel_DM", "#CSO_BuySubMenu_EditDesc");
 	m_pEditDescBg = new vgui::ImagePanel(this, "EditDescBg");
 	m_pEquipSample = new vgui::ImagePanel(this, "EquipSample");
+
+	m_iniFavorite.OpenFile("quickbuy.ini");
+	ReadFavoriteSets();
 
 	SetupItems(WeaponBuyMenuType::NONE);
 }
@@ -204,7 +178,7 @@ void CCSBuySubMenu::OnCommand(const char *command)
 	}
 	else if (!strncmp(command, "favSav", 6) && command[7] == '\0')
 	{
-		int n = command[6] - '\0';
+		int n = command[6] - '0';
 		OnSaveFavoriteWeapons(n);
 		return;
 	}
@@ -245,6 +219,12 @@ void CCSBuySubMenu::OnCommand(const char *command)
 		BaseClass::OnCommand("vguicancel");
 		return;
 	}
+	else if (!Q_strcmp(command, "basketbuy"))
+	{
+		OnBuySelectedItems();
+		BaseClass::OnCommand("vguicancel");
+		return;
+	}
 	else if (!Q_strcmp(command, "prevpage"))
 	{
 		SetupPage(m_iCurrentPage - 1);
@@ -269,13 +249,12 @@ void CCSBuySubMenu::PerformLayout()
 	m_pTitleLabel->GetSize(w2, h2);
 	m_pTitleLabel->SetPos(w / 2 - w2 / 2, 12);
 
-	for (int i = 0; i < 5; ++i)
+	float scale = h / 420.0;
+	for (int i = 0; i < 10; ++i)
 	{
-		m_pFavButtons[i]->SetPrimaryWeapon(m_FavoriteItems[i].Primary.c_str());
-		m_pFavButtons[i]->SetSecondaryWeapon(m_FavoriteItems[i].Secondary.c_str());
-		m_pFavButtons[i]->SetKnifeWeapon(m_FavoriteItems[i].Melee.c_str());
+		m_pSlotButtons[i]->GetClassPanel()->SetBounds(216 * scale, 60 * scale, 152 * scale, 145 * scale);
 	}
-	
+	newknifeBG->SetBounds(505 * scale, 327 * scale, 75 * scale, 50 * scale); // fix that not in .res
 }
 
 void CCSBuySubMenu::OnThink()
@@ -348,7 +327,7 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 
 void CCSBuySubMenu::SetupPage(size_t iPage)
 {
-	int totalpages = m_BuyItemList.size() / 9 + 1;
+	int totalpages = (m_BuyItemList.size() - 1) / 9 + 1;
 	if (iPage <= 0) iPage = 0;
 	else if (iPage >= totalpages)
 		iPage = totalpages - 1;
@@ -382,8 +361,8 @@ void CCSBuySubMenu::SetupPage(size_t iPage)
 		}
 	}
 	
-	m_pSlotButtons[9]->SetText("#CSO_EndWpnBuy");
-	m_pSlotButtons[9]->SetCommand("vguicancel");
+	m_pSlotButtons[9]->SetText("#CSO_Basket_Back");
+	m_pSlotButtons[9]->SetCommand("VGUI_BuyMenu_Show");
 	m_pSlotButtons[9]->SetHotkey('0');
 
 }
@@ -453,6 +432,7 @@ void CCSBuySubMenu::ReadFavoriteSets()
 		keyvalue["Grenade"],
 		0,0,0,0, ArmorType::ARMOR_HELMET
 	};
+	UpdateFavoriteSetsControls(); // update images
 }
 
 void CCSBuySubMenu::SaveFavoriteSets()
@@ -477,6 +457,34 @@ void CCSBuySubMenu::SaveFavoriteSets()
 	keyvalue["Grenade"] = m_SelectedItems.HEGrenade;
 
 	m_iniFavorite.SaveFile();
+	UpdateFavoriteSetsControls(); // update images
+}
+
+void CCSBuySubMenu::UpdateFavoriteSetsControls()
+{
+	for (int i = 0; i < 5; ++i)
+	{
+		m_pFavButtons[i]->SetPrimaryWeapon(m_FavoriteItems[i].Primary.c_str());
+		m_pFavButtons[i]->SetSecondaryWeapon(m_FavoriteItems[i].Secondary.c_str());
+		m_pFavButtons[i]->SetKnifeWeapon(m_FavoriteItems[i].Melee.c_str());
+	}
+
+	pwpnBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Primary).c_str());
+	swpnBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Secondary).c_str());
+	hgrenBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.HEGrenade).c_str());
+	newknifeBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Melee).c_str());
+
+	fgrenBG->SetImage(m_SelectedItems.nFlashBang ? "gfx\\vgui\\flash" : "");
+	sgrenBG->SetImage(m_SelectedItems.nSmokeGrenade ? "gfx\\vgui\\sgren" : "");
+	dfBG->SetImage(m_SelectedItems.bDefuser ? "gfx\\vgui\\defuser" : "");
+	nvBG->SetImage(m_SelectedItems.bDefuser ? "gfx\\vgui\\nvgs" : "");
+
+	switch (m_SelectedItems.iKelmet)
+	{
+	case ArmorType::NONE: kevBG->SetImage(""); break;
+	case ArmorType::ARMOR: kevBG->SetImage("gfx\\vgui\\kevlar"); break;
+	case ArmorType::ARMOR_HELMET: kevBG->SetImage("gfx\\vgui\\kevlar_helmet"); break;
+	}
 }
 
 void CCSBuySubMenu::OnSelectFavoriteWeapons(int i)
@@ -485,6 +493,7 @@ void CCSBuySubMenu::OnSelectFavoriteWeapons(int i)
 	m_SelectedItems = m_FavoriteItems[i];
 	if (m_pFavDirectBuy->IsSelected())
 		OnBuySelectedItems();
+	UpdateFavoriteSetsControls();
 }
 
 void CCSBuySubMenu::OnSaveFavoriteWeapons(int i)
@@ -543,11 +552,17 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 	{
 		m_pFavButtons[i]->SetHotkey(key[i]);
 	}
+
+	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG,newknifeBG })
+	{
+		pPanel->SetShouldScaleImage(true);
+	}
 }
 
 void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
+	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu_ver2.res", "GAME");
 
 	// hide zbs
 	m_pUpgradeTitle->SetVisible(false);
@@ -570,8 +585,18 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 	m_pFavDirectBuy->SetVisible(false);
 	m_pFavDirectBuy->SetSelected(true);
 
+	for (vgui::Button * pPanel : m_pFavSaveButtons)
+	{
+		pPanel->SetVisible(false);
+	}
+
 	// hide set
-	for (vgui::Panel * pPanel : { primaryBG, secondaryBG, knifeBG, grenadeBG, equipBG })
+	for (vgui::ImagePanel * pPanel : { primaryBG, secondaryBG, knifeBG, grenadeBG, equipBG })
+	{
+		pPanel->SetVisible(false);
+	}
+
+	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG,newknifeBG })
 	{
 		pPanel->SetVisible(false);
 	}
@@ -583,9 +608,23 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 	moneyBack->SetVisible(false);
 }
 
+void CCSBuySubMenu_DefaultMode::PerformLayout()
+{
+	BaseClass::PerformLayout();
+	int w, h;
+	GetSize(w, h);
+	float scale = h / 420.0;
+	for (int i = 0; i < 10; ++i)
+	{
+		m_pSlotButtons[i]->SetPos(16 * scale, (50 + i * 25) * scale);
+	}
+}
+
 void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
+	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu.res", "GAME");
+	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
 
 	// hide zbs
 	m_pUpgradeTitle->SetVisible(false);
@@ -610,6 +649,7 @@ void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName
 void CCSBuySubMenu_DeathMatch::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
+	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
 
 	// hide zbs
 	m_pUpgradeTitle->SetVisible(false);
@@ -634,6 +674,14 @@ void CCSBuySubMenu_DeathMatch::LoadControlSettings(const char *dialogResourceNam
 	m_pAutobuyButton->SetVisible(false);
 }
 
+void CCSBuySubMenu_DefaultMode::SetupPage(size_t iPage)
+{
+	BaseClass::SetupPage(iPage);
+	m_pSlotButtons[9]->SetText("#CSO_EndWpnBuy");
+	m_pSlotButtons[9]->SetCommand("vguicancel");
+	m_pSlotButtons[9]->SetHotkey('0');
+}
+
 void CCSBuySubMenu_DefaultMode::OnSelectWeapon(const char *weapon)
 {
 	BaseClass::OnSelectWeapon(weapon);
@@ -643,4 +691,10 @@ void CCSBuySubMenu_DefaultMode::OnSelectWeapon(const char *weapon)
 void CCSBuySubMenu_DefaultMode::OnSelectFavoriteWeapons(int iSet)
 {
 	BaseClass::OnSelectFavoriteWeapons(iSet);
+}
+
+void CCSBuySubMenu_ZombieMod::OnSelectWeapon(const char *weapon)
+{
+	BaseClass::OnSelectWeapon(weapon);
+	OnCommand("vguicancel");
 }

@@ -37,13 +37,14 @@ CHudBase::CHudBase()
 cvar_t *hud_draw;
 cvar_t *cl_shadows = NULL;
 
-void Cmd_Buy_Advanced(void);
+//void Cmd_Buy_Advanced(void);
 
 int MsgFunc_PlayerSpawn(const char *pszName, int iSize, void *pbuf)
 {
 	if (IS_ZOMBIE_MODE)
 	{
-		Cmd_Buy_Advanced();
+		g_pViewPort->ShowVGUIMenu(MENU_BUY);
+		//Cmd_Buy_Advanced();
 	}
 	if (g_iMod == MOD_ZB3)
 	{
