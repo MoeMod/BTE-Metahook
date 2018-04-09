@@ -14,7 +14,7 @@
 class HudBuffClassDamagePanel : public vgui::EditablePanel
 {
 public:
-	DECLARE_CLASS_SIMPLE(HudBuffClassDamagePanel, ImagePanel);
+	DECLARE_CLASS_SIMPLE(HudBuffClassDamagePanel, EditablePanel);
 	HudBuffClassDamagePanel() : EditablePanel(nullptr, "SimpleDamageMeterPanel")
 	{
 		SetParent(enginevguifuncs->GetPanel(PANEL_CLIENTDLL));
@@ -23,21 +23,24 @@ public:
 		m_pLabelB = new vgui::Label(this, "myDamageTotal", "");
 		LoadControlSettings("Resource\\hud\\simpledamagemeter.res");
 
-		IScheme *pSchemeA = scheme()->GetIScheme(m_pLabelA->GetScheme());
-		if (pSchemeA)
-		{
-			m_pLabelA->SetFont(pSchemeA->GetFont("ChatDefault"));
-		}
-		m_pLabelA->SetFgColor({ 255, 255, 255, 255 });
-		
-		IScheme *pSchemeB = scheme()->GetIScheme(m_pLabelB->GetScheme());
-		if (pSchemeB)
-		{
-			m_pLabelB->SetFont(pSchemeB->GetFont("ChatDefault"));
+		m_pLabelA->SetAssociatedControl(NULL);
+		m_pLabelB->SetAssociatedControl(NULL);
 
-		}
-		m_pLabelB->SetFgColor({ 255, 73, 176, 255 });
 		this->SetPos(ScreenWidth - 1024 + 854, 20);
+	}
+	virtual void Paint() override
+	{
+		
+		
+		BaseClass::Paint();
+	}
+	virtual void ApplySchemeSettings(vgui::IScheme *pScheme) override
+	{
+		BaseClass::ApplySchemeSettings(pScheme);
+		m_pLabelA->SetFont(pScheme->GetFont("ChatDefault"));
+		m_pLabelB->SetFont(pScheme->GetFont("ChatDefault"));
+		m_pLabelA->SetFgColor({ 255, 255, 255, 255 });
+		m_pLabelB->SetFgColor({ 255, 73, 176, 255 });
 	}
 	vgui::Label *m_pLabelA;
 	vgui::Label *m_pLabelB;
