@@ -72,7 +72,7 @@ void CSBuyMouseOverPanelButton::Paint()
 CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMenu(parent, name)
 {
 	m_iniFavorite.OpenFile("quickbuy.ini");
-	ReadFavoriteWeapons();
+	ReadFavoriteSets();
 
 	m_pTitleLabel = new vgui::Label(this, "CaptionLabel", "#CSO_WeaponSelectMenu");
 
@@ -177,9 +177,21 @@ void CCSBuySubMenu::OnCommand(const char *command)
 		GotoNextSubPanel();
 		return;
 	}
+	else if (!strncmp(command, "fav", 3) && command[4] == '\0')
+	{
+		int n = command[3] - '\0';
+		OnSelectFavoriteWeapons(n);
+		return;
+	}
+	else if (!strncmp(command, "favSav", 6) && command[7] == '\0')
+	{
+		int n = command[6] - '\0';
+		OnSaveFavoriteWeapons(n);
+		return;
+	}
 	else if (!strncmp(command, "VGUI_BuyMenu_BuyWeapon", 22))
 	{
-		SelectWeapon(command + 22);
+		OnSelectWeapon(command + 22);
 		return;
 	}
 	else if (!Q_strcmp(command, "showctwpn"))
@@ -240,9 +252,9 @@ void CCSBuySubMenu::PerformLayout()
 
 	for (int i = 0; i < 5; ++i)
 	{
-		m_pFavButtons[i]->SetPrimaryWeapon(m_FavoriteItems[i][0].name.c_str());
-		m_pFavButtons[i]->SetSecondaryWeapon(m_FavoriteItems[i][1].name.c_str());
-		m_pFavButtons[i]->SetKnifeWeapon(m_FavoriteItems[i][2].name.c_str());
+		m_pFavButtons[i]->SetPrimaryWeapon(m_FavoriteItems[i].Primary.c_str());
+		m_pFavButtons[i]->SetSecondaryWeapon(m_FavoriteItems[i].Secondary.c_str());
+		m_pFavButtons[i]->SetKnifeWeapon(m_FavoriteItems[i].Melee.c_str());
 	}
 	
 }
@@ -385,7 +397,7 @@ void CCSBuySubMenu::SetTeam(WeaponBuyTeam team)
 
 }
 
-void CCSBuySubMenu::SelectWeapon(const char *weapon)
+void CCSBuySubMenu::OnSelectWeapon(const char *weapon)
 {
 	char szBuffer[64];
 
@@ -393,7 +405,7 @@ void CCSBuySubMenu::SelectWeapon(const char *weapon)
 	gEngfuncs.pfnClientCmd(szBuffer);
 }
 
-void CCSBuySubMenu::ReadFavoriteWeapons()
+void CCSBuySubMenu::ReadFavoriteSets()
 {
 	for(int i:xrange(1, 6))
 	{
@@ -403,25 +415,70 @@ void CCSBuySubMenu::ReadFavoriteWeapons()
 		auto &keyvalue = m_iniFavorite[app];
 
 		--i;
-		m_FavoriteItems[i][0].name =  keyvalue["Primary"] ;
-		m_FavoriteItems[i][1].name =  keyvalue["Secondary"];
-		m_FavoriteItems[i][2].name =  keyvalue["Knife"];
-		m_FavoriteItems[i][3].name =  keyvalue["Grenade"];
-		for (auto &item : m_FavoriteItems[i])
-		{
-			item.command = (std::string("VGUI_BuyMenu_BuyWeapon ") += item.name);
-		}
+		
+		m_FavoriteItems[i] = { 
+			keyvalue["Primary"] ,
+			keyvalue["Secondary"] ,
+			keyvalue["Knife"],
+			keyvalue["Grenade"],
+			0,0,0,0, ArmorType::ARMOR_HELMET 
+		};
 	}
 
 	auto &keyvalue = m_iniFavorite[std::string("QuickBuy0")];
-	m_RebuyItems[0].name = keyvalue["Primary"];
-	m_RebuyItems[1].name = keyvalue["Secondary"];
-	m_RebuyItems[2].name = keyvalue["Knife"];
-	m_RebuyItems[3].name = keyvalue["Grenade"];
-	for (auto &item : m_RebuyItems)
+	m_SelectedItems = {
+		keyvalue["Primary"] ,
+		keyvalue["Secondary"] ,
+		keyvalue["Knife"],
+		keyvalue["Grenade"],
+		0,0,0,0, ArmorType::ARMOR_HELMET
+	};
+}
+
+void CCSBuySubMenu::SaveFavoriteSets()
+{
+	for (int i : xrange(1, 6))
 	{
-		item.command = (std::string("VGUI_BuyMenu_BuyWeapon ") += item.name);
+		std::string app("QuickBuy");
+		app += std::to_string(i);
+		--i;
+
+		auto &keyvalue = m_iniFavorite[app];
+		keyvalue["Primary"] = m_FavoriteItems[i].Primary;
+		keyvalue["Secondary"] = m_FavoriteItems[i].Secondary;
+		keyvalue["Knife"] = m_FavoriteItems[i].Melee;
+		keyvalue["Grenade"] = m_FavoriteItems[i].HEGrenade;
 	}
+
+	auto &keyvalue = m_iniFavorite[std::string("QuickBuy0")];
+	keyvalue["Primary"] = m_SelectedItems.Primary;
+	keyvalue["Secondary"] = m_SelectedItems.Secondary;
+	keyvalue["Knife"] = m_SelectedItems.Melee;
+	keyvalue["Grenade"] = m_SelectedItems.HEGrenade;
+
+	m_iniFavorite.SaveFile();
+}
+
+void CCSBuySubMenu::OnSelectFavoriteWeapons(int i)
+{
+	m_SelectedItems = m_FavoriteItems[i];
+	if (m_pFavDirectBuy->IsSelected())
+		OnBuySelectedItems();
+}
+
+void CCSBuySubMenu::OnSaveFavoriteWeapons(int i)
+{
+	m_FavoriteItems[i] = m_SelectedItems;
+	SaveFavoriteSets();
+}
+
+void CCSBuySubMenu::OnBuySelectedItems()
+{
+	// TODO
+	gEngfuncs.pfnClientCmd("sv_create_psb 10397 m4a1;sv_create_psb 10397 usp;sv_create_psb 10397 hegrenade;sv_create_psb 10397 knife;secammo;primammo;vesthelm;defuser");
+	std::string szCmd;
+
+	OnCommand("vguicancel");
 }
 
 CSBuyMouseOverPanelButton *CCSBuySubMenu::CreateNewMouseOverPanelButton(EditablePanel *panel)
@@ -480,6 +537,9 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 	m_pBasketClear->SetVisible(false);
 	m_pBasketBuy->SetVisible(false);
 	m_pQuitButton->SetVisible(false);
+
+	m_pFavDirectBuy->SetVisible(false);
+	m_pFavDirectBuy->SetSelected(true);
 
 	// hide set
 	for (vgui::Panel * pPanel : { primaryBG, secondaryBG, knifeBG, grenadeBG, equipBG })
@@ -545,9 +605,13 @@ void CCSBuySubMenu_DeathMatch::LoadControlSettings(const char *dialogResourceNam
 	m_pAutobuyButton->SetVisible(false);
 }
 
-void CCSBuySubMenu_DefaultMode::SelectWeapon(const char *weapon)
+void CCSBuySubMenu_DefaultMode::OnSelectWeapon(const char *weapon)
 {
-	
-	BaseClass::SelectWeapon(weapon);
-	BaseClass::OnCommand("vguicancel");
+	BaseClass::OnSelectWeapon(weapon);
+	OnCommand("vguicancel");
+}
+
+void CCSBuySubMenu_DefaultMode::OnSelectFavoriteWeapons(int iSet)
+{
+	BaseClass::OnSelectFavoriteWeapons(iSet);
 }

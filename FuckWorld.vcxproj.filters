@@ -1104,7 +1104,7 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Client\VGUI\BuyMenu\buypresetbutton.cpp">
-      <Filter>Client\VGUI</Filter>
+      <Filter>Client\VGUI\BuyMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2987,7 +2987,7 @@
       <Filter>vgui2\cso_controls</Filter>
     </ClInclude>
     <ClInclude Include="Client\VGUI\BuyMenu\buypresetbutton.h">
-      <Filter>Client\VGUI</Filter>
+      <Filter>Client\VGUI\BuyMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

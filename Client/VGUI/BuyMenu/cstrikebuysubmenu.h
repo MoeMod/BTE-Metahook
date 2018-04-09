@@ -58,18 +58,43 @@ public:
 	virtual void SetupItems(CWeaponManager::WeaponBuyMenuType type);
 	virtual void SetupPage(size_t page);
 	virtual void SetTeam(WeaponBuyTeam team);
-	virtual void SelectWeapon(const char *weapon);
-	virtual void ReadFavoriteWeapons();
+	
+	virtual void OnSelectWeapon(const char *weapon);
+
+	virtual void ReadFavoriteSets();
+	virtual void SaveFavoriteSets();
+	virtual void OnSelectFavoriteWeapons(int iSet);
+	virtual void OnSaveFavoriteWeapons(int iSet);
+
+	virtual void OnBuySelectedItems();
 
 protected:
+	enum class ArmorType
+	{
+		NONE,
+		ARMOR,
+		ARMOR_HELMET
+	};
+	struct FavoriteSet
+	{
+		std::string Primary;
+		std::string Secondary;
+		std::string Melee;
+		std::string HEGrenade;
+		int nFlashBang;
+		int nSmokeGrenade;
+		int bDefuser;
+		int bNightVision;
+		ArmorType iKelmet;
+	};
 	struct ItemInfo
 	{
 		std::string name;
 		std::string command;
 	};
 	std::vector<ItemInfo> m_BuyItemList;
-	ItemInfo m_FavoriteItems[5][4];
-	ItemInfo m_RebuyItems[4];
+	FavoriteSet m_FavoriteItems[5];
+	FavoriteSet m_SelectedItems;
 	CIniParser m_iniFavorite;
 	size_t m_iCurrentPage;
 	WeaponBuyTeam m_iTeam;
@@ -149,7 +174,8 @@ private:
 public:
 	CCSBuySubMenu_DefaultMode(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name){}
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
-	virtual void SelectWeapon(const char *weapon) override;
+	virtual void OnSelectWeapon(const char *weapon) override;
+	virtual void OnSelectFavoriteWeapons(int iSet) override;
 };
 
 class CCSBuySubMenu_ZombieMod : public CCSBuySubMenu
