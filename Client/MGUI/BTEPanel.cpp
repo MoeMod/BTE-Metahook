@@ -127,7 +127,7 @@ void MakeWeaponList();
 int iMonthWeaponBG, iMonthWeaponBG2;
 Tga iMonthWeaponBGLabel;
 
-wchar_t *GetWeaponInfoFormat(int iSlot, char *pItem)
+wchar_t *GetWeaponInfoFormat(int iSlot, const char *pItem)
 {
 	const char *pTemp = AliasWeaponName(pItem);
 	auto &Item = WeaponManager()[pItem];

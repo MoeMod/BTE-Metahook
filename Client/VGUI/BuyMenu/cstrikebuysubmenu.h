@@ -14,16 +14,35 @@
 
 using namespace vgui;
 
+
+class CSBuyMouseOverPanel : public NewMouseOverPanel
+{
+	typedef NewMouseOverPanel BaseClass;
+
+public:
+	CSBuyMouseOverPanel(vgui::Panel *parent, const char *panelName) : NewMouseOverPanel(parent, panelName)
+	{
+		SetMouseInputEnabled(false);
+		SetKeyBoardInputEnabled(false);
+		infolabel = new Label(this, "infolabel", "");
+		classimage = new ImagePanel(this, "infolabel");
+		classimage->SetShouldScaleImage(true);
+	}
+
+public:
+	vgui::Label *infolabel;
+	vgui::ImagePanel *classimage;
+	virtual void PerformLayout(void) override;
+	void UpdateWeapon(const char *weapon = "");
+};
+
 class CSBuyMouseOverPanelButton : public BuyMouseOverPanelButton
 {
 private:
 	typedef BuyMouseOverPanelButton BaseClass;
 public:
-	CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel) : BaseClass(parent, panelName, panel)
-	{
-		
-	}
-	void UpdateWeapon(const char *weapon);
+	CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel);
+	
 	virtual void Paint() override;
 
 	using WeaponBuyTeam = CWeaponManager::WeaponBuyTeam;
@@ -32,6 +51,8 @@ public:
 		m_iTeam = team; 
 	}
 	WeaponBuyTeam m_iTeam;
+	void UpdateWeapon(const char *weapon = "");
+	
 };
 
 class CCSBuySubMenu : public CBuySubMenu

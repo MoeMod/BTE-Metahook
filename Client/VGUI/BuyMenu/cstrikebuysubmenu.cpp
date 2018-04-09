@@ -29,29 +29,48 @@ static const Color COL_TR = { 216, 182, 183, 255 };
 static const char *EQUIPMENT_BUYLIST[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
 static const char *EQUIPMENT_BUYLIST_CMD[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
 
+void CSBuyMouseOverPanel::PerformLayout(void)
+{
+	BaseClass::PerformLayout();
+	int w, h;
+	GetParent()->GetSize(w, h);
+	float scale = h / 480.0;
+
+	SetBounds(216 * scale, 60 * scale, 152 * scale, 145 * scale);
+	infolabel->SetBounds(33.75 * scale, 60 * scale, 84 * scale, 98 * scale);
+	classimage->SetBounds(33.75 * scale, 0 * scale, 147 * scale, 51 * scale);
+}
+
+extern wchar_t *GetWeaponInfoFormat(int iSlot, const char *pItem); // BTEPanel.cpp
+
+void CSBuyMouseOverPanel::UpdateWeapon(const char *weapon)
+{
+	bool bEnabled = weapon && weapon[0];
+	infolabel->SetVisible(bEnabled);
+	classimage->SetVisible(bEnabled);
+
+	if (bEnabled)
+	{
+		infolabel->SetText(GetWeaponInfoFormat(0, weapon));
+		char szBuffer[64];
+		sprintf(szBuffer, "gfx\\vgui\\%s", weapon);
+		classimage->SetImage(szBuffer);
+	}
+}
+
+CSBuyMouseOverPanelButton::CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel)
+	: BaseClass(parent, panelName, panel)
+{
+	if (m_pPanel)
+		delete m_pPanel;
+	m_pPanel = new CSBuyMouseOverPanel(parent, "ItemInfo");
+}
+
 void CSBuyMouseOverPanelButton::UpdateWeapon(const char *weapon)
 {
-	m_pPanel->LoadControlSettings("classes/default.res", "GAME");
-	Panel *infoPanel = m_pPanel->FindChildByName("infolabel");
-	if (infoPanel)
-	{
-		Label *infoLabel = dynamic_cast<Label *>(infoPanel);
-		if (infoLabel)
-		{
-			infoLabel->SetText(GetWeaponDescription(weapon));
-		}
-	}
-	Panel *imagePanel = m_pPanel->FindChildByName("classimage");
-	if (infoPanel)
-	{
-		ImagePanel *image = dynamic_cast<ImagePanel *>(infoPanel);
-		if (image)
-		{
-			char szBuffer[64];
-			sprintf(szBuffer, "gfx\\vgui\\%s", weapon);
-			image->SetImage(szBuffer);
-		}
-	}
+	CSBuyMouseOverPanel *panel = dynamic_cast<CSBuyMouseOverPanel *>(m_pPanel);
+	if (panel)
+		panel->UpdateWeapon(weapon);
 }
 
 void CSBuyMouseOverPanelButton::Paint()
@@ -179,7 +198,7 @@ void CCSBuySubMenu::OnCommand(const char *command)
 	}
 	else if (!strncmp(command, "fav", 3) && command[4] == '\0')
 	{
-		int n = command[3] - '\0';
+		int n = command[3] - '0';
 		OnSelectFavoriteWeapons(n);
 		return;
 	}
@@ -288,6 +307,7 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 			m_pSlotButtons[i]->SetCommand(szCommands[i]);
 			m_pSlotButtons[i]->SetHotkey('0' + i + 1);
 			m_pSlotButtons[i]->SetVisible(true);
+			m_pSlotButtons[i]->UpdateWeapon("");
 		}
 		m_pSlotButtons[9]->SetHotkey('0');
 		m_pPrevBtn->SetVisible(false);
@@ -461,6 +481,7 @@ void CCSBuySubMenu::SaveFavoriteSets()
 
 void CCSBuySubMenu::OnSelectFavoriteWeapons(int i)
 {
+	Assert(i >= 0 && i < 5);
 	m_SelectedItems = m_FavoriteItems[i];
 	if (m_pFavDirectBuy->IsSelected())
 		OnBuySelectedItems();
@@ -468,15 +489,23 @@ void CCSBuySubMenu::OnSelectFavoriteWeapons(int i)
 
 void CCSBuySubMenu::OnSaveFavoriteWeapons(int i)
 {
+	Assert(i >= 0 && i < 5);
 	m_FavoriteItems[i] = m_SelectedItems;
 	SaveFavoriteSets();
 }
 
 void CCSBuySubMenu::OnBuySelectedItems()
 {
-	// TODO
-	gEngfuncs.pfnClientCmd("sv_create_psb 10397 m4a1;sv_create_psb 10397 usp;sv_create_psb 10397 hegrenade;sv_create_psb 10397 knife;secammo;primammo;vesthelm;defuser");
-	std::string szCmd;
+	std::string szCommand;
+	for(const std::string &wpn : { m_SelectedItems.Primary,m_SelectedItems.Secondary,m_SelectedItems.Melee,m_SelectedItems.HEGrenade })
+		if (wpn.size())
+		{
+			szCommand += "sv_create_psb 10397 ";
+			szCommand += wpn;
+			szCommand += ';';
+		}
+	szCommand += "secammo;primammo;vesthelm;defuser";
+	gEngfuncs.pfnClientCmd(const_cast<char *>(szCommand.c_str()));
 
 	OnCommand("vguicancel");
 }
