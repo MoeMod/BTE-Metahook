@@ -398,10 +398,16 @@ void CCSBuySubMenu::SetTeam(WeaponBuyTeam team)
 
 void CCSBuySubMenu::OnSelectWeapon(const char *weapon)
 {
-	char szBuffer[64];
-
-	sprintf(szBuffer, "sv_create_psb 10397 %s", weapon);
-	gEngfuncs.pfnClientCmd(szBuffer);
+	switch (WeaponManager()[weapon].iSlot)
+	{
+	case 1: m_SelectedItems.Primary = weapon; break;
+	case 2: m_SelectedItems.Secondary = weapon; break;
+	case 3: m_SelectedItems.Melee = weapon; break;
+	case 4: m_SelectedItems.HEGrenade = weapon; break;
+	}
+	SetupItems(WeaponBuyMenuType::NONE);
+	UpdateFavoriteSetsControls();
+	SaveFavoriteSets();
 }
 
 void CCSBuySubMenu::ReadFavoriteSets()
@@ -412,10 +418,8 @@ void CCSBuySubMenu::ReadFavoriteSets()
 		app += std::to_string(i);
 
 		auto &keyvalue = m_iniFavorite[app];
-
-		--i;
 		
-		m_FavoriteItems[i] = { 
+		m_FavoriteItems[i - 1] = { 
 			keyvalue["Primary"] ,
 			keyvalue["Secondary"] ,
 			keyvalue["Knife"],
@@ -493,7 +497,7 @@ void CCSBuySubMenu::OnSelectFavoriteWeapons(int i)
 	m_SelectedItems = m_FavoriteItems[i];
 	if (m_pFavDirectBuy->IsSelected())
 		OnBuySelectedItems();
-	UpdateFavoriteSetsControls();
+	SaveFavoriteSets();
 }
 
 void CCSBuySubMenu::OnSaveFavoriteWeapons(int i)
@@ -556,6 +560,7 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG,newknifeBG })
 	{
 		pPanel->SetShouldScaleImage(true);
+		pPanel->SetShouldCenterImage(true);
 	}
 }
 
@@ -684,7 +689,10 @@ void CCSBuySubMenu_DefaultMode::SetupPage(size_t iPage)
 
 void CCSBuySubMenu_DefaultMode::OnSelectWeapon(const char *weapon)
 {
-	BaseClass::OnSelectWeapon(weapon);
+	char szBuffer[64];
+
+	sprintf(szBuffer, "sv_create_psb 10397 %s", weapon);
+	gEngfuncs.pfnClientCmd(szBuffer);
 	OnCommand("vguicancel");
 }
 
@@ -696,5 +704,4 @@ void CCSBuySubMenu_DefaultMode::OnSelectFavoriteWeapons(int iSet)
 void CCSBuySubMenu_ZombieMod::OnSelectWeapon(const char *weapon)
 {
 	BaseClass::OnSelectWeapon(weapon);
-	OnCommand("vguicancel");
 }
