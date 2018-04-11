@@ -27,8 +27,8 @@ static const Color COL_NONE = { 255, 255, 255, 255 };
 static const Color COL_CT = { 192, 205, 224, 255 };
 static const Color COL_TR = { 216, 182, 183, 255 };
 
-static const char *EQUIPMENT_BUYLIST[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
-static const char *EQUIPMENT_BUYLIST_CMD[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
+static const char *EQUIPMENT_BUYLIST[] = { "vest","vesthelm","flash","VGUI_BuyMenu_BuyWeapon hegrenade","sgren","defuser","nvgs" };
+static const char *EQUIPMENT_BUYLIST_CMD[] = { "vest","vesthelm","flash","VGUI_BuyMenu_BuyWeapon hegrenade","sgren","defuser","nvgs" };
 
 CSBuyMouseOverPanelButton::CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel)
 	: BaseClass(parent, panelName, panel)
@@ -87,6 +87,12 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	m_pBasketBuy = new ButtonGlow(this, "BasketBuy", "#CSO_BasketBuy");
 	m_pQuitButton = new vgui::Button(this, "QuitButton", "#CSO_BuyQuit");
 
+	primaryBG = new vgui::ImagePanel(this, "primaryBG");
+	secondaryBG = new vgui::ImagePanel(this, "secondaryBG");
+	knifeBG = new vgui::ImagePanel(this, "knifeBG");
+	grenadeBG = new vgui::ImagePanel(this, "grenadeBG");
+	equipBG = new vgui::ImagePanel(this, "equipBG");
+
 	pwpnBG = new vgui::ImagePanel(this, "pwpnBG");
 	pammoBG = new vgui::ImagePanel(this, "pammoBG");
 	swpnBG = new vgui::ImagePanel(this, "swpnBG");
@@ -99,12 +105,6 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	nvBG = new vgui::ImagePanel(this, "nvBG");
 	kevBG = new vgui::ImagePanel(this, "kevBG");
 	newknifeBG = new vgui::ImagePanel(this, "newknifeBG");
-
-	primaryBG = new vgui::ImagePanel(this, "primaryBG");
-	secondaryBG = new vgui::ImagePanel(this, "secondaryBG");
-	knifeBG = new vgui::ImagePanel(this, "knifeBG");
-	grenadeBG = new vgui::ImagePanel(this, "grenadeBG");
-	equipBG = new vgui::ImagePanel(this, "equipBG");
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -182,9 +182,9 @@ void CCSBuySubMenu::OnCommand(const char *command)
 		OnSaveFavoriteWeapons(n);
 		return;
 	}
-	else if (!strncmp(command, "VGUI_BuyMenu_BuyWeapon", 22))
+	else if (!strncmp(command, "VGUI_BuyMenu_BuyWeapon ", 23))
 	{
-		OnSelectWeapon(command + 22);
+		OnSelectWeapon(command + 23);
 		return;
 	}
 	else if (!Q_strcmp(command, "showctwpn"))
@@ -412,6 +412,15 @@ void CCSBuySubMenu::OnSelectWeapon(const char *weapon)
 
 void CCSBuySubMenu::ReadFavoriteSets()
 {
+	auto &keyvalue = m_iniFavorite[std::string("QuickBuy0")];
+	m_SelectedItems = {
+		keyvalue["Primary"] ,
+		keyvalue["Secondary"] ,
+		keyvalue["Knife"],
+		keyvalue["Grenade"],
+		0,0,0,0, ArmorType::ARMOR_HELMET
+	};
+
 	for(int i:xrange(1, 6))
 	{
 		std::string app("QuickBuy");
@@ -428,14 +437,6 @@ void CCSBuySubMenu::ReadFavoriteSets()
 		};
 	}
 
-	auto &keyvalue = m_iniFavorite[std::string("QuickBuy0")];
-	m_SelectedItems = {
-		keyvalue["Primary"] ,
-		keyvalue["Secondary"] ,
-		keyvalue["Knife"],
-		keyvalue["Grenade"],
-		0,0,0,0, ArmorType::ARMOR_HELMET
-	};
 	UpdateFavoriteSetsControls(); // update images
 }
 
@@ -486,8 +487,8 @@ void CCSBuySubMenu::UpdateFavoriteSetsControls()
 	switch (m_SelectedItems.iKelmet)
 	{
 	case ArmorType::NONE: kevBG->SetImage(""); break;
-	case ArmorType::ARMOR: kevBG->SetImage("gfx\\vgui\\kevlar"); break;
-	case ArmorType::ARMOR_HELMET: kevBG->SetImage("gfx\\vgui\\kevlar_helmet"); break;
+	case ArmorType::ARMOR: kevBG->SetImage("gfx\\vgui\\vest"); break;
+	case ArmorType::ARMOR_HELMET: kevBG->SetImage("gfx\\vgui\\vesthelm"); break;
 	}
 }
 
@@ -557,11 +558,12 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 		m_pFavButtons[i]->SetHotkey(key[i]);
 	}
 
-	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG,newknifeBG })
+	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG, newknifeBG })
 	{
 		pPanel->SetShouldScaleImage(true);
 		pPanel->SetShouldCenterImage(true);
 	}
+	UpdateFavoriteSetsControls();
 }
 
 void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)

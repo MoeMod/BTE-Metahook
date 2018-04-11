@@ -354,6 +354,7 @@
     <ClCompile Include="util\calcbody.cpp" />
     <ClCompile Include="util\calcscreen.cpp" />
     <ClCompile Include="util\Encode.cpp" />
+    <ClCompile Include="util\IceKey.cpp" />
     <ClCompile Include="util\iniparser.cpp" />
     <ClCompile Include="util\md5.cpp" />
     <ClCompile Include="util\perf_counter.cpp" />
@@ -975,6 +976,7 @@
     <ClInclude Include="util\calcbody.h" />
     <ClInclude Include="util\calcscreen.h" />
     <ClInclude Include="util\Encode.h" />
+    <ClInclude Include="util\IceKey.h" />
     <ClInclude Include="util\IDA.h" />
     <ClInclude Include="util\iniparser.h" />
     <ClInclude Include="util\md5.h" />

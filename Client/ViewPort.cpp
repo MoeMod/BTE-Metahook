@@ -194,7 +194,7 @@ bool CViewport::ShowVGUIMenu(int iMenu)
 
 	switch (iMenu)
 	{
-	case MENU_CLASS_T:
+	/*case MENU_CLASS_T:
 	{
 		g_TeamMenu.Show();
 		g_TeamMenu.SwitchTeam(1);
@@ -206,7 +206,7 @@ bool CViewport::ShowVGUIMenu(int iMenu)
 		g_TeamMenu.Show();
 		g_TeamMenu.SwitchTeam(2);
 		return true;
-	}
+	}*/
 
 	case MENU_BUY:
 	case MENU_BUY_PISTOL:

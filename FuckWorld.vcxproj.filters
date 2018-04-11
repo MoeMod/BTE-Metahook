@@ -75,36 +75,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Library">
-      <UniqueIdentifier>{5944a37f-4720-4d9a-ab41-352d61c49c4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\gl">
-      <UniqueIdentifier>{f9e29d01-9232-4549-80ef-62cf4c96b21a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\bink">
-      <UniqueIdentifier>{aecbefbf-2584-4031-b912-c8c86d57feda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\freetype">
-      <UniqueIdentifier>{caf222fa-481d-42a0-90b1-0a7f4155a1eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\freetype\freetype">
-      <UniqueIdentifier>{1e5250c0-b4d6-4a2b-bc01-3b83ab9ced05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\freetype\freetype\config">
-      <UniqueIdentifier>{5c2e0d2d-854d-4217-83b2-5ebd6beb1dba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\freetype\freetype\internal">
-      <UniqueIdentifier>{80b317df-7ca5-451b-9999-aa316a6e0a0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\freetype\freetype\internal\services">
-      <UniqueIdentifier>{e70d6c96-d43f-41fd-b810-9711de3d1f67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\openssl">
-      <UniqueIdentifier>{c7a6a030-4a66-45b4-bf3a-b91dd17abee1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\shcore">
-      <UniqueIdentifier>{13f49f88-62e1-4b6c-9c26-7902cc1d786d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Client\MGUI">
       <UniqueIdentifier>{22d32e75-5b91-466f-800b-5b0936c5757a}</UniqueIdentifier>
     </Filter>
@@ -158,6 +128,36 @@
     </Filter>
     <Filter Include="vgui2\cso_controls">
       <UniqueIdentifier>{859fd20d-e470-4cc2-a4bd-9c1018d58614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library">
+      <UniqueIdentifier>{5944a37f-4720-4d9a-ab41-352d61c49c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\gl">
+      <UniqueIdentifier>{f9e29d01-9232-4549-80ef-62cf4c96b21a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\bink">
+      <UniqueIdentifier>{aecbefbf-2584-4031-b912-c8c86d57feda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\freetype">
+      <UniqueIdentifier>{caf222fa-481d-42a0-90b1-0a7f4155a1eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\freetype\freetype">
+      <UniqueIdentifier>{1e5250c0-b4d6-4a2b-bc01-3b83ab9ced05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\freetype\freetype\config">
+      <UniqueIdentifier>{5c2e0d2d-854d-4217-83b2-5ebd6beb1dba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\freetype\freetype\internal">
+      <UniqueIdentifier>{80b317df-7ca5-451b-9999-aa316a6e0a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\freetype\freetype\internal\services">
+      <UniqueIdentifier>{e70d6c96-d43f-41fd-b810-9711de3d1f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\openssl">
+      <UniqueIdentifier>{c7a6a030-4a66-45b4-bf3a-b91dd17abee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Library\shcore">
+      <UniqueIdentifier>{13f49f88-62e1-4b6c-9c26-7902cc1d786d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1109,6 +1109,9 @@
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanel.cpp">
       <Filter>Client\VGUI\BuyMenu</Filter>
     </ClCompile>
+    <ClCompile Include="util\IceKey.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -1859,487 +1862,487 @@
       <Filter>Client</Filter>
     </ClInclude>
     <ClInclude Include="Library\gl\glext.h">
-      <Filter>Library\gl</Filter>
+      <Filter>Renderer\Library\gl</Filter>
     </ClInclude>
     <ClInclude Include="Library\gl\gl.h">
-      <Filter>Library\gl</Filter>
+      <Filter>Renderer\Library\gl</Filter>
     </ClInclude>
     <ClInclude Include="Library\bink\rad3d.h">
-      <Filter>Library\bink</Filter>
+      <Filter>Renderer\Library\bink</Filter>
     </ClInclude>
     <ClInclude Include="Library\bink\radbase.h">
-      <Filter>Library\bink</Filter>
+      <Filter>Renderer\Library\bink</Filter>
     </ClInclude>
     <ClInclude Include="Library\bink\bink.h">
-      <Filter>Library\bink</Filter>
+      <Filter>Renderer\Library\bink</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\ft2build.h">
-      <Filter>Library\freetype</Filter>
+      <Filter>Renderer\Library\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftpfr.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftrender.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftsizes.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftsnames.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftstroke.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftsynth.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftsystem.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\fttrigon.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\fttypes.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftwinfnt.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftxf86.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\t1tables.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ttnameid.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\tttables.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\tttags.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ttunpat.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\freetype.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftadvanc.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftbbox.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftbdf.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftbitmap.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftbzip2.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftcache.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftchapters.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftcid.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\fterrdef.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\fterrors.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftgasp.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftglyph.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftgxval.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftgzip.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftimage.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftincrem.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftlcdfil.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftlist.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftlzw.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftmac.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftmm.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftmodapi.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftmoderr.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftotval.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\ftoutln.h">
-      <Filter>Library\freetype\freetype</Filter>
+      <Filter>Renderer\Library\freetype\freetype</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\config\ftmodule.h">
-      <Filter>Library\freetype\freetype\config</Filter>
+      <Filter>Renderer\Library\freetype\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\config\ftoption.h">
-      <Filter>Library\freetype\freetype\config</Filter>
+      <Filter>Renderer\Library\freetype\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\config\ftstdlib.h">
-      <Filter>Library\freetype\freetype\config</Filter>
+      <Filter>Renderer\Library\freetype\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\config\ftconfig.h">
-      <Filter>Library\freetype\freetype\config</Filter>
+      <Filter>Renderer\Library\freetype\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\config\ftheader.h">
-      <Filter>Library\freetype\freetype\config</Filter>
+      <Filter>Renderer\Library\freetype\freetype\config</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftdebug.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftdriver.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftgloadr.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftmemory.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftobjs.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftpic.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftrfork.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftserv.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftstream.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\fttrace.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftvalid.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\internal.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\psaux.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\pshints.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\sfnt.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\t1types.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\tttypes.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\autohint.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\ftcalc.h">
-      <Filter>Library\freetype\freetype\internal</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svgxval.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svkern.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svmm.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svotval.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svpfr.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svpostnm.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svpscmap.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svpsinfo.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svsfnt.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svttcmap.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svtteng.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svttglyf.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svwinfnt.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svxf86nm.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svbdf.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svcid.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\freetype\freetype\internal\services\svgldict.h">
-      <Filter>Library\freetype\freetype\internal\services</Filter>
+      <Filter>Renderer\Library\freetype\freetype\internal\services</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\blowfish.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\bn.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\buffer.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\cast.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\comp.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\conf.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\conf_api.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\crypto.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\des.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\des_old.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\dh.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\dsa.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\dso.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\dtls1.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\e_os2.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ebcdic.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ec.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ecdh.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ecdsa.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\engine.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\err.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\evp.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\hmac.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\idea.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\krb5_asn.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\kssl.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\lhash.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\md2.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\md4.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\md5.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\obj_mac.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\objects.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ocsp.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\opensslconf.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\opensslv.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ossl_typ.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\pem.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\pem2.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\pkcs7.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\pkcs12.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\pq_compat.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\pqueue.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\rand.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\rc2.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\rc4.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ripemd.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\rsa.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\safestack.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\sha.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ssl.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ssl2.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ssl3.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ssl23.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\stack.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\store.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\symhacks.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\tls1.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\tmdiff.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\txt_db.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ui.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\ui_compat.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\x509.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\x509_vfy.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\x509v3.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\aes.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\asn1.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\asn1_mac.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\asn1t.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\openssl\bio.h">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </ClInclude>
     <ClInclude Include="Library\gl\glut.h">
-      <Filter>Library\gl</Filter>
+      <Filter>Renderer\Library\gl</Filter>
     </ClInclude>
     <ClInclude Include="Client\svc_hook.h">
       <Filter>Client</Filter>
     </ClInclude>
     <ClInclude Include="Library\shcore\shcore.h">
-      <Filter>Library\shcore</Filter>
+      <Filter>Renderer\Library\shcore</Filter>
     </ClInclude>
     <ClInclude Include="Client\events.h">
       <Filter>Client</Filter>
@@ -2995,6 +2998,9 @@
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanel.h">
       <Filter>Client\VGUI\BuyMenu</Filter>
     </ClInclude>
+    <ClInclude Include="util\IceKey.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc">
@@ -3014,22 +3020,22 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="Library\bink\binkw32.lib">
-      <Filter>Library\bink</Filter>
+      <Filter>Renderer\Library\bink</Filter>
     </Library>
     <Library Include="Library\freetype\freetype249.lib">
-      <Filter>Library\freetype</Filter>
+      <Filter>Renderer\Library\freetype</Filter>
     </Library>
     <Library Include="Library\openssl\ssleay32.lib">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </Library>
     <Library Include="Library\gl\glut32.lib">
-      <Filter>Library\gl</Filter>
+      <Filter>Renderer\Library\gl</Filter>
     </Library>
     <Library Include="Library\openssl\libeay32.lib">
-      <Filter>Library\openssl</Filter>
+      <Filter>Renderer\Library\openssl</Filter>
     </Library>
     <Library Include="Library\shcore\shcore.lib">
-      <Filter>Library\shcore</Filter>
+      <Filter>Renderer\Library\shcore</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
