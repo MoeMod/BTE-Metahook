@@ -1,0 +1,42 @@
+
+#ifndef DARKTEXTENTRY_H
+#define DARKTEXTENTRY_H
+
+#ifdef _WIN32
+#pragma once
+#endif
+
+#include <VGUI/IBorder.h>
+#include <VGUI/IScheme.h>
+#include <KeyValues.h>
+
+#include <vgui_controls/TextEntry.h>
+#include <vgui_controls/ImagePanel.h>
+
+class DarkTextEntry : public vgui::TextEntry
+{
+	DECLARE_CLASS_SIMPLE(DarkTextEntry, TextEntry);
+
+public:
+	DarkTextEntry(vgui::Panel *parent, const char *panelName) :
+		TextEntry(parent, panelName) {}
+
+	virtual void ApplySchemeSettings(vgui::IScheme *pScheme) override
+	{
+		BaseClass::ApplySchemeSettings(pScheme);
+		m_bImageBackground = true;
+		m_pTopBackground[0] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_top_left@n", true);
+		m_pTopBackground[1] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_top_center@n", true);
+		m_pTopBackground[2] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_top_right@n", true);
+		m_pCenterBackground[0] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_center_left@n", true);
+		m_pCenterBackground[1] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_center_center@n", true);
+		m_pCenterBackground[2] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_center_right@n", true);
+		m_pBottomBackground[0] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_bottom_left@n", true);
+		m_pBottomBackground[1] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_bottom_center@n", true);
+		m_pBottomBackground[2] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_bottom_Right@n", true);
+
+		SetFgColor(GetSchemeColor("LabelDimText", pScheme));
+	}
+};
+
+#endif

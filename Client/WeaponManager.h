@@ -5,7 +5,7 @@
 class CWeaponManager
 {
 public:
-	enum WeaponBuyMenuType
+	enum class WeaponBuyMenuType
 	{
 		NONE = -1,
 		PISTOL = 0,
@@ -17,7 +17,7 @@ public:
 		KNIFE
 	};
 
-	enum WeaponBuyTeam
+	enum class WeaponBuyTeam
 	{
 		ALL,
 		CT,
@@ -168,29 +168,37 @@ public:
 
 	//inline std::unordered_map<std::string, CustomWeapon *> &GetList() { return m_DataMap; }
 	// supports Range-based for()
-	struct FakeIterator
+	struct iterator
 	{
 		std::unordered_map<std::string, CustomWeapon *>::iterator m_it;
-		inline FakeIterator(std::unordered_map<std::string, CustomWeapon *>::iterator it)
+		inline iterator(std::unordered_map<std::string, CustomWeapon *>::iterator it)
 		{
 			m_it = it;
 		}
-		inline bool operator!=(const FakeIterator &Other)
+		inline bool operator!=(const iterator &Other)
 		{
 			return m_it != Other.m_it;
+		}
+		inline bool operator==(const iterator &Other)
+		{
+			return m_it == Other.m_it;
 		}
 		inline CustomWeapon &operator*()
 		{
 			return *m_it->second;
 		}
-		inline const FakeIterator &operator++()
+		inline CustomWeapon *operator->()
+		{
+			return m_it->second;
+		}
+		inline const iterator &operator++()
 		{
 			m_it++;
 			return *this;
 		}
 	};
-	inline FakeIterator begin() { return m_DataMap.begin(); }
-	inline FakeIterator end() { return m_DataMap.end(); }
+	inline iterator begin() { return m_DataMap.begin(); }
+	inline iterator end() { return m_DataMap.end(); }
 
 private:
 	static CustomWeapon LoadWeaponData(const char *szName);
@@ -218,6 +226,6 @@ private:
 
 CWeaponManager &WeaponManager();
 
-char *AliasWeaponName(char *name);
-wchar_t *GetWeaponNameFormat(char *name);
-wchar_t *GetWeaponDescription(char *pItem);
+const char *AliasWeaponName(const char *name);
+wchar_t *GetWeaponNameFormat(const char *name);
+wchar_t *GetWeaponDescription(const char *pItem);

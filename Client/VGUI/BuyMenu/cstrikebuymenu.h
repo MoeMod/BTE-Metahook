@@ -27,7 +27,13 @@ class CCSBaseBuyMenu : public CBuyMenu
 	typedef CBuyMenu BaseClass;
 
 public:
-	CCSBaseBuyMenu(const char *subPanelName);
+	CCSBaseBuyMenu();
+
+protected:
+	void SetupControlSettings();
+public:
+	void SetTeam(int iTeam);
+	void UpdateGameMode();
 
 public:
 	virtual void Init(void);
@@ -41,27 +47,6 @@ public:
 public:
 	virtual void PaintBackground(void);
 	virtual void PerformLayout(void);
-	virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
-};
-
-class CCSBuyMenu_CT : public CCSBaseBuyMenu
-{
-private:
-	typedef vgui::WizardPanel BaseClass;
-
-public:
-	CCSBuyMenu_CT(void);
-
-};
-
-class CCSBuyMenu_TER : public CCSBaseBuyMenu
-{
-private:
-	typedef vgui::WizardPanel BaseClass;
-
-public:
-	CCSBuyMenu_TER(void);
-
 };
 
 #endif

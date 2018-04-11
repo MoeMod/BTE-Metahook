@@ -84,7 +84,7 @@ public:
 
 		m_pPanel->LoadControlSettings(classPage, "GAME");
 
-		//m_pPanel->LoadControlSettings("classes/default.res", "GAME");
+		m_pPanel->LoadControlSettings("classes/default.res", "GAME");
 
 		return true;
 	}

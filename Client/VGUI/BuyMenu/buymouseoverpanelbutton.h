@@ -7,7 +7,7 @@
 
 #include <KeyValues.h>
 #include <FileSystem.h>
-#include "newmouseoverpanelbutton.h"
+#include "../newmouseoverpanelbutton.h"
 #include "hud.h"
 #include "shared_util.h"
 #include <vgui/ISurface.h>

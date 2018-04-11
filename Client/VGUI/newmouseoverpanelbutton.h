@@ -268,7 +268,7 @@ public:
 					vgui::surface()->GetCharABCwide(font, key, a, b, c);
 					charWide = a + b + c;
 
-					vgui::surface()->DrawSetTextColor(GetFgColor());
+					vgui::surface()->DrawSetTextColor({ 255,255,255,255 });
 					vgui::surface()->DrawSetTextFont(font);
 					vgui::surface()->DrawSetTextPos(keyX + (keyWide - charWide) / 2, keyY + (keyTall - charTall) / 2);
 					vgui::surface()->DrawUnicodeChar(key);
@@ -298,6 +298,7 @@ public:
 
 	void SetHotkey(wchar_t ch)
 	{
+		m_cHotkey = ch;
 		BaseClass::SetHotkey(towlower(ch));
 	}
 

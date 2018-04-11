@@ -2132,6 +2132,8 @@ int MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf)
 	{
 		g_iMod = iMod / 10;
 		BTEPanel_BuyMenu_Reset();		
+
+		g_pViewPort->UpdateGameMode();
 	}
 
 	if(g_iMod == MOD_ZB4)

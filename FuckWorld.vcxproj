@@ -190,9 +190,11 @@
     <ClCompile Include="Client\Studio\studio_util.cpp" />
     <ClCompile Include="Client\svc_hook.cpp" />
     <ClCompile Include="Client\TextureManager.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\buypresetbutton.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymenu.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanel.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.cpp" />
     <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp" />
-    <ClCompile Include="Client\VGUI\cstrikebuymenu.cpp" />
-    <ClCompile Include="Client\VGUI\cstrikebuysubmenu.cpp" />
     <ClCompile Include="Client\VGUI\vgui_int.cpp" />
     <ClCompile Include="Client\ViewPort.cpp" />
     <ClCompile Include="Client\ViewPort_Interface.cpp" />
@@ -342,6 +344,7 @@
     <ClCompile Include="SourceSDK\tier1\utlstring.cpp" />
     <ClCompile Include="SourceSDK\tier1\utlsymbol.cpp" />
     <ClCompile Include="SourceSDK\vstdlib\random.cpp" />
+    <ClCompile Include="StartupGraphic.cpp" />
     <ClCompile Include="sys.cpp" />
     <ClCompile Include="texdraw.cpp" />
     <ClCompile Include="TriAPI.cpp" />
@@ -351,6 +354,7 @@
     <ClCompile Include="util\calcbody.cpp" />
     <ClCompile Include="util\calcscreen.cpp" />
     <ClCompile Include="util\Encode.cpp" />
+    <ClCompile Include="util\IceKey.cpp" />
     <ClCompile Include="util\iniparser.cpp" />
     <ClCompile Include="util\md5.cpp" />
     <ClCompile Include="util\perf_counter.cpp" />
@@ -520,10 +524,12 @@
     <ClInclude Include="Client\TextureManager.h" />
     <ClInclude Include="Client\VGuiLibrary.h" />
     <ClInclude Include="Client\VGUI\BackGroundPanel.h" />
-    <ClInclude Include="Client\VGUI\buymouseoverpanelbutton.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\buymouseoverpanelbutton.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\buypresetbutton.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymenu.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanel.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.h" />
     <ClInclude Include="Client\VGUI\CSBackGroundPanel.h" />
-    <ClInclude Include="Client\VGUI\cstrikebuymenu.h" />
-    <ClInclude Include="Client\VGUI\cstrikebuysubmenu.h" />
     <ClInclude Include="Client\VGUI\newmouseoverpanelbutton.h" />
     <ClInclude Include="Client\VGUI\vgui_int.h" />
     <ClInclude Include="Client\ViewPort.h" />
@@ -961,6 +967,7 @@
     <ClInclude Include="SourceSDK\vstdlib\random.h" />
     <ClInclude Include="SourceSDK\vstdlib\vstdlib.h" />
     <ClInclude Include="SourceSDK\winlite.h" />
+    <ClInclude Include="StartupGraphic.h" />
     <ClInclude Include="texdraw.h" />
     <ClInclude Include="TriAPI.h" />
     <ClInclude Include="UnicodeVoice.h" />
@@ -969,6 +976,7 @@
     <ClInclude Include="util\calcbody.h" />
     <ClInclude Include="util\calcscreen.h" />
     <ClInclude Include="util\Encode.h" />
+    <ClInclude Include="util\IceKey.h" />
     <ClInclude Include="util\IDA.h" />
     <ClInclude Include="util\iniparser.h" />
     <ClInclude Include="util\md5.h" />
@@ -976,6 +984,9 @@
     <ClInclude Include="util\STLHelper.h" />
     <ClInclude Include="util\util.h" />
     <ClInclude Include="vgui2\bitmap.h" />
+    <ClInclude Include="vgui2\cso_controls\ButtonGlow.h" />
+    <ClInclude Include="vgui2\cso_controls\DarkTextEntry.h" />
+    <ClInclude Include="vgui2\cso_controls\NewTabButton.h" />
     <ClInclude Include="vgui2\HtmlWindow.h" />
     <ClInclude Include="vgui2\Memorybitmap.h" />
     <ClInclude Include="vgui2\vgui2.h" />

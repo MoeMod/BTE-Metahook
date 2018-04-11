@@ -89,6 +89,8 @@ void CBasicIniParser<MapType>::OpenFile(const std::string &filename)
 			}
 		}
 	}
+	if (!strAppName.empty())
+		m_DataMap.emplace(std::move(strAppName), std::move(KeyList));
 }
 
 template<class MapType>
