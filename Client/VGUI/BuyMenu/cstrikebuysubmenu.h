@@ -6,32 +6,13 @@
 
 #include "game_controls\buysubmenu.h"
 #include "BuyPresetButton.h"
-#include "buymouseoverpanelbutton.h"
+#include "cstrikebuymouseoverpanelbutton.h"
 #include "cso_controls/NewTabButton.h"
 #include "WeaponManager.h"
 
 #include "util/iniParser.h"
 
 using namespace vgui;
-
-class CSBuyMouseOverPanelButton : public BuyMouseOverPanelButton
-{
-private:
-	typedef BuyMouseOverPanelButton BaseClass;
-public:
-	CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel);
-	
-	virtual void Paint() override;
-
-	using WeaponBuyTeam = CWeaponManager::WeaponBuyTeam;
-	void SetTeam(WeaponBuyTeam team) 
-	{ 
-		m_iTeam = team; 
-	}
-	WeaponBuyTeam m_iTeam;
-	void UpdateWeapon(const char *weapon = "");
-	
-};
 
 class CCSBuySubMenu : public CBuySubMenu
 {

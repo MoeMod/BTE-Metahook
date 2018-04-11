@@ -24,6 +24,10 @@ Button *g_lastButton = NULL;
 
 CViewport *g_pViewPort = NULL;
 
+const Color COL_NONE = { 255, 255, 255, 255 };
+const Color COL_CT = { 192, 205, 224, 255 };
+const Color COL_TR = { 216, 182, 183, 255 };
+
 CViewport::CViewport()
 {
 	m_bInitialied = false;

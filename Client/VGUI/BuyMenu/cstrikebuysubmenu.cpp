@@ -15,50 +15,14 @@
 #include "cso_controls/ButtonGlow.h"
 #include "cso_controls/DarkTextEntry.h"
 
-#include "cstrikebuymouseoverpanel.h"
-
 #include "WeaponManager.h"
 
 #include <string>
 
 using namespace vgui;
 
-static const Color COL_NONE = { 255, 255, 255, 255 };
-static const Color COL_CT = { 192, 205, 224, 255 };
-static const Color COL_TR = { 216, 182, 183, 255 };
-
 static const char *EQUIPMENT_BUYLIST[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
 static const char *EQUIPMENT_BUYLIST_CMD[] = { "vest","vesthelm","flash","VGUI_BuyMenu_BuyWeapon hegrenade","sgren","defuser","nvgs" };
-
-CSBuyMouseOverPanelButton::CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel)
-	: BaseClass(parent, panelName, panel)
-{
-	if (m_pPanel)
-		delete m_pPanel;
-	m_pPanel = new CSBuyMouseOverPanel(parent, "ItemInfo");
-}
-
-void CSBuyMouseOverPanelButton::UpdateWeapon(const char *weapon)
-{
-	CSBuyMouseOverPanel *panel = dynamic_cast<CSBuyMouseOverPanel *>(m_pPanel);
-	if (panel)
-		panel->UpdateWeapon(weapon);
-}
-
-void CSBuyMouseOverPanelButton::Paint()
-{
-	Color col = COL_NONE;
-	if (m_iTeam == WeaponBuyTeam::TR)
-	{
-		col = COL_TR;
-	}
-	else if (m_iTeam == WeaponBuyTeam::CT)
-	{
-		col = COL_CT;
-	}
-	SetFgColor(col);
-	BaseClass::Paint();
-}
 
 CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMenu(parent, name)
 {

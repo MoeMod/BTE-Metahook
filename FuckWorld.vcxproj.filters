@@ -1112,6 +1112,9 @@
     <ClCompile Include="util\IceKey.cpp">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanelbutton.cpp">
+      <Filter>Client\VGUI\BuyMenu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -3000,6 +3003,9 @@
     </ClInclude>
     <ClInclude Include="util\IceKey.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanelbutton.h">
+      <Filter>Client\VGUI\BuyMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
