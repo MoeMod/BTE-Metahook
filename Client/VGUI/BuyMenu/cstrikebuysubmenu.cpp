@@ -27,7 +27,7 @@ static const Color COL_NONE = { 255, 255, 255, 255 };
 static const Color COL_CT = { 192, 205, 224, 255 };
 static const Color COL_TR = { 216, 182, 183, 255 };
 
-static const char *EQUIPMENT_BUYLIST[] = { "vest","vesthelm","flash","VGUI_BuyMenu_BuyWeapon hegrenade","sgren","defuser","nvgs" };
+static const char *EQUIPMENT_BUYLIST[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
 static const char *EQUIPMENT_BUYLIST_CMD[] = { "vest","vesthelm","flash","VGUI_BuyMenu_BuyWeapon hegrenade","sgren","defuser","nvgs" };
 
 CSBuyMouseOverPanelButton::CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel)
@@ -233,6 +233,11 @@ void CCSBuySubMenu::OnCommand(const char *command)
 	else if (!Q_strcmp(command, "nextpage"))
 	{
 		SetupPage(m_iCurrentPage + 1);
+		return;
+	}
+	else if (!Q_strcmp(command, "basketclear"))
+	{
+		OnClearSelectedItems();
 		return;
 	}
 
@@ -508,6 +513,18 @@ void CCSBuySubMenu::OnSaveFavoriteWeapons(int i)
 	SaveFavoriteSets();
 }
 
+void CCSBuySubMenu::OnClearSelectedItems()
+{
+	m_SelectedItems = {
+		"" ,
+		"" ,
+		"" ,
+		"" ,
+		0,0,0,0, ArmorType::ARMOR_HELMET
+	};
+	UpdateFavoriteSetsControls();
+}
+
 void CCSBuySubMenu::OnBuySelectedItems()
 {
 	std::string szCommand;
@@ -613,6 +630,7 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 
 	moneyText->SetVisible(false);
 	moneyBack->SetVisible(false);
+	freezetime->SetVisible(false);
 }
 
 void CCSBuySubMenu_DefaultMode::PerformLayout()
@@ -656,6 +674,7 @@ void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName
 void CCSBuySubMenu_DeathMatch::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
+	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu.res", "GAME");
 	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
 
 	// hide zbs

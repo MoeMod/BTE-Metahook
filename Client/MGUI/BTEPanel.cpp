@@ -840,7 +840,7 @@ void Cmd_TeamSuit()
 void BTEBuyMenu_Init(void)
 {
 	//gEngfuncs.pfnAddCommand("buy", Cmd_Buy);
-	gEngfuncs.pfnAddCommand("buyequip", Cmd_BuyEquip);
+	//gEngfuncs.pfnAddCommand("buyequip", Cmd_BuyEquip);
 	gEngfuncs.pfnAddCommand("teamsuit", Cmd_TeamSuit);
 
 	memset(szFavWpn, 0, sizeof(szFavWpn));

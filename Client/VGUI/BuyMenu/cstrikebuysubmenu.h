@@ -66,6 +66,7 @@ public:
 	virtual void OnSelectFavoriteWeapons(int iSet);
 	virtual void OnSaveFavoriteWeapons(int iSet);
 
+	virtual void OnClearSelectedItems();
 	virtual void OnBuySelectedItems();
 
 protected:
