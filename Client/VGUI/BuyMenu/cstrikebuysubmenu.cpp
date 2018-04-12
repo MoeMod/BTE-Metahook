@@ -236,16 +236,17 @@ void CCSBuySubMenu::PerformLayout()
 		vgui::scheme()->GetProportionalScaledValue(50)
 	);
 
-	BaseClass::PerformLayout();
-
-	/*
 	for (int i = 0; i < 10; ++i)
 	{
-		m_pSlotButtons[i]->GetClassPanel()->SetBounds(216 * scale, 60 * scale, 152 * scale, 145 * scale);
-	}*/
-	
+		m_pSlotButtons[i]->GetClassPanel()->SetBounds(
+			vgui::scheme()->GetProportionalScaledValue(216),
+			vgui::scheme()->GetProportionalScaledValue(60),
+			vgui::scheme()->GetProportionalScaledValue(152),
+			vgui::scheme()->GetProportionalScaledValue(145)
+		); 
+	}
 
-
+	BaseClass::PerformLayout();
 }
 
 void CCSBuySubMenu::OnThink()

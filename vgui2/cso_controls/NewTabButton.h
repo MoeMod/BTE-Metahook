@@ -33,7 +33,7 @@ public:
 		// set up the scheme settings
 		Button::ApplySchemeSettings(pScheme);
 
-		SetFont(pScheme->GetFont("ScoreBoard"));
+		GetTextImage()->SetDrawWidth(vgui::scheme()->GetProportionalScaledValue(2));
 
 		int wide, tall;
 		int contentWide, contentTall;
