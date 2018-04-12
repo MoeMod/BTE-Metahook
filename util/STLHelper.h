@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <algorithm>
 #include <numeric>
 #include <tuple>
+#include <vector>
 #include <iterator>
 
 inline std::string ToLower(std::string sz)
@@ -24,6 +26,15 @@ inline std::string Trim(std::string sz)
 	sz.erase(0, sz.find_first_not_of(delim));
 	sz.erase(sz.find_last_not_of(delim) + 1);
 	return sz;
+}
+
+template<class...Args>
+inline std::string MakeString(const Args &...args)
+{
+	std::ostringstream oss;
+	// (oss << ... << args);
+	int p[] = { ((oss << args), 0)... };
+	return oss.str();
 }
 
 template<class T>

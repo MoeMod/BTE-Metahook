@@ -20,6 +20,8 @@
 
 #include <string>
 
+#include "util/STLHelper.h"
+
 using namespace vgui;
 
 class BuyPresetImagePanel : public EditablePanel
@@ -411,13 +413,13 @@ void BuyPresetButton::SetKnifeWeapon(IImage *image)
 
 void BuyPresetButton::SetPrimaryWeapon(const char *name)
 {
-	return SetPrimaryWeapon(vgui::scheme()->GetImage((std::string("gfx\\vgui\\")+=name).c_str(), true));
+	return SetPrimaryWeapon(vgui::scheme()->GetImage(MakeString("gfx\\vgui\\", name).c_str(), true));
 }
 void BuyPresetButton::SetSecondaryWeapon(const char *name)
 {
-	return SetSecondaryWeapon(vgui::scheme()->GetImage((std::string("gfx\\vgui\\") += name).c_str(), true));
+	return SetSecondaryWeapon(vgui::scheme()->GetImage(MakeString("gfx\\vgui\\", name).c_str(), true));
 }
 void BuyPresetButton::SetKnifeWeapon(const char *name)
 {
-	return SetKnifeWeapon(vgui::scheme()->GetImage((std::string("gfx\\vgui\\") += name).c_str(), true));
+	return SetKnifeWeapon(vgui::scheme()->GetImage(MakeString("gfx\\vgui\\", name).c_str(), true));
 }

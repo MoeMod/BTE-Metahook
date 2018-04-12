@@ -288,7 +288,7 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 					continue;
 			}
 
-			m_BuyItemList.push_back(ItemInfo{ name, (std::string("VGUI_BuyMenu_BuyWeapon ") += name) });
+			m_BuyItemList.push_back(ItemInfo{ name, MakeString("VGUI_BuyMenu_BuyWeapon ", name) });
 		}
 		SetupPage(0);
 	}
@@ -392,8 +392,8 @@ void CCSBuySubMenu::ReadFavoriteSets()
 
 	for(int i:xrange(1, 6))
 	{
-		std::string app("QuickBuy");
-		app += std::to_string(i);
+		std::string app = MakeString("QuickBuy ", i);
+		
 
 		auto &keyvalue = m_iniFavorite[app];
 		
@@ -413,8 +413,7 @@ void CCSBuySubMenu::SaveFavoriteSets()
 {
 	for (int i : xrange(1, 6))
 	{
-		std::string app("QuickBuy");
-		app += std::to_string(i);
+		std::string app = MakeString("QuickBuy ", i);
 		--i;
 
 		auto &keyvalue = m_iniFavorite[app];
@@ -443,10 +442,12 @@ void CCSBuySubMenu::UpdateFavoriteSetsControls()
 		m_pFavButtons[i]->SetKnifeWeapon(m_FavoriteItems[i].Melee.c_str());
 	}
 
-	pwpnBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Primary).c_str());
-	swpnBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Secondary).c_str());
-	hgrenBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.HEGrenade).c_str());
-	newknifeBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Melee).c_str());
+	pwpnBG->SetImage(MakeString("gfx\\vgui\\", m_SelectedItems.Primary).c_str());
+	swpnBG->SetImage(MakeString("gfx\\vgui\\", m_SelectedItems.Secondary).c_str());
+	hgrenBG->SetImage(MakeString("gfx\\vgui\\", m_SelectedItems.HEGrenade).c_str());
+	newknifeBG->SetImage(MakeString("gfx\\vgui\\", m_SelectedItems.Melee).c_str());
+
+	
 
 	fgrenBG->SetImage(m_SelectedItems.nFlashBang ? "gfx\\vgui\\flash" : "");
 	sgrenBG->SetImage(m_SelectedItems.nSmokeGrenade ? "gfx\\vgui\\sgren" : "");
