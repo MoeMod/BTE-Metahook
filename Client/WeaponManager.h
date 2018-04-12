@@ -165,6 +165,7 @@ public:
 		m_pPlayerWeapon[idx][iSlot] = &Other;
 		return *m_pPlayerWeapon[idx][iSlot];
 	}
+	bool FCanBuyWeapon(const char *name);
 
 	//inline std::unordered_map<std::string, CustomWeapon *> &GetList() { return m_DataMap; }
 	// supports Range-based for()

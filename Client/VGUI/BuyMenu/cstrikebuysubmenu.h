@@ -9,6 +9,7 @@
 #include "cstrikebuymouseoverpanelbutton.h"
 #include "cso_controls/NewTabButton.h"
 #include "WeaponManager.h"
+#include "WeaponImagePanel.h"
 
 #include "util/iniParser.h"
 
@@ -100,16 +101,16 @@ protected:
 	vgui::Button *m_pQuitButton;  // vguicancel
 
 								  // Lower Weapon Slot
-	vgui::ImagePanel *pwpnBG;
-	vgui::ImagePanel *swpnBG;
-	vgui::ImagePanel *hgrenBG;
+	WeaponImagePanel *pwpnBG;
+	WeaponImagePanel *swpnBG;
+	WeaponImagePanel *hgrenBG;
 	vgui::ImagePanel *sgrenBG;
 	vgui::ImagePanel *fgrenBG;
 	vgui::ImagePanel *fgren2BG;
 	vgui::ImagePanel *dfBG;
 	vgui::ImagePanel *nvBG;
 	vgui::ImagePanel *kevBG;
-	vgui::ImagePanel *newknifeBG;
+	WeaponImagePanel *newknifeBG;
 
 	vgui::ImagePanel *pammoBG;
 	vgui::ImagePanel *sammoBG;

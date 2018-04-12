@@ -195,6 +195,7 @@
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanel.cpp" />
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanelbutton.cpp" />
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\WeaponImagePanel.cpp" />
     <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp" />
     <ClCompile Include="Client\VGUI\vgui_int.cpp" />
     <ClCompile Include="Client\ViewPort.cpp" />
@@ -531,6 +532,7 @@
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanel.h" />
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanelbutton.h" />
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\WeaponImagePanel.h" />
     <ClInclude Include="Client\VGUI\CSBackGroundPanel.h" />
     <ClInclude Include="Client\VGUI\newmouseoverpanelbutton.h" />
     <ClInclude Include="Client\VGUI\vgui_int.h" />

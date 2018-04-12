@@ -57,18 +57,18 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	grenadeBG = new vgui::ImagePanel(this, "grenadeBG");
 	equipBG = new vgui::ImagePanel(this, "equipBG");
 
-	pwpnBG = new vgui::ImagePanel(this, "pwpnBG");
+	pwpnBG = new WeaponImagePanel(this, "pwpnBG");
 	pammoBG = new vgui::ImagePanel(this, "pammoBG");
-	swpnBG = new vgui::ImagePanel(this, "swpnBG");
+	swpnBG = new WeaponImagePanel(this, "swpnBG");
 	sammoBG = new vgui::ImagePanel(this, "sammoBG");
-	hgrenBG = new vgui::ImagePanel(this, "hgrenBG");
+	hgrenBG = new WeaponImagePanel(this, "hgrenBG");
 	sgrenBG = new vgui::ImagePanel(this, "sgrenBG");
 	fgrenBG = new vgui::ImagePanel(this, "fgrenBG");
 	fgren2BG = new vgui::ImagePanel(this, "fgren2BG");
 	dfBG = new vgui::ImagePanel(this, "dfBG");
 	nvBG = new vgui::ImagePanel(this, "nvBG");
 	kevBG = new vgui::ImagePanel(this, "kevBG");
-	newknifeBG = new vgui::ImagePanel(this, "newknifeBG");
+	newknifeBG = new WeaponImagePanel(this, "newknifeBG");
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -392,7 +392,7 @@ void CCSBuySubMenu::ReadFavoriteSets()
 
 	for(int i:xrange(1, 6))
 	{
-		std::string app = MakeString("QuickBuy ", i);
+		std::string app = MakeString("QuickBuy", i);
 		
 
 		auto &keyvalue = m_iniFavorite[app];
@@ -413,7 +413,7 @@ void CCSBuySubMenu::SaveFavoriteSets()
 {
 	for (int i : xrange(1, 6))
 	{
-		std::string app = MakeString("QuickBuy ", i);
+		std::string app = MakeString("QuickBuy", i);
 		--i;
 
 		auto &keyvalue = m_iniFavorite[app];
@@ -442,10 +442,10 @@ void CCSBuySubMenu::UpdateFavoriteSetsControls()
 		m_pFavButtons[i]->SetKnifeWeapon(m_FavoriteItems[i].Melee.c_str());
 	}
 
-	pwpnBG->SetImage(MakeString("gfx\\vgui\\", m_SelectedItems.Primary).c_str());
-	swpnBG->SetImage(MakeString("gfx\\vgui\\", m_SelectedItems.Secondary).c_str());
-	hgrenBG->SetImage(MakeString("gfx\\vgui\\", m_SelectedItems.HEGrenade).c_str());
-	newknifeBG->SetImage(MakeString("gfx\\vgui\\", m_SelectedItems.Melee).c_str());
+	pwpnBG->SetWeapon(m_SelectedItems.Primary.c_str());
+	swpnBG->SetWeapon(m_SelectedItems.Secondary.c_str());
+	hgrenBG->SetWeapon(m_SelectedItems.HEGrenade.c_str());
+	newknifeBG->SetWeapon(m_SelectedItems.Melee.c_str());
 
 	
 
@@ -540,11 +540,17 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 		m_pFavButtons[i]->SetHotkey(key[i]);
 	}
 
-	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG, newknifeBG })
+	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, newknifeBG })
 	{
 		pPanel->SetShouldScaleImage(true);
 		pPanel->SetShouldCenterImage(true);
 	}
+	for (vgui::ImagePanel * pPanel : { sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG })
+	{
+		pPanel->SetShouldScaleImage(true);
+		pPanel->SetShouldCenterImage(true);
+	}
+
 	UpdateFavoriteSetsControls();
 }
 
@@ -585,7 +591,11 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 		pPanel->SetVisible(false);
 	}
 
-	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG,newknifeBG })
+	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, newknifeBG })
+	{
+		pPanel->SetVisible(false);
+	}
+	for (vgui::ImagePanel * pPanel : { sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG })
 	{
 		pPanel->SetVisible(false);
 	}
