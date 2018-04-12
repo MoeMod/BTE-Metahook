@@ -14,11 +14,11 @@
 extern IFileSystem *&g_pFileSystem;
 
 template<class MapType>
-class CBasicIniParser : public IEnumerableProxy<MapType>
+class CBasicIniParser
 {
 public:
-	CBasicIniParser() :IEnumerableProxy(m_DataMap){}
-	CBasicIniParser(const std::string &filename) :IEnumerableProxy(m_DataMap)
+	CBasicIniParser(){}
+	CBasicIniParser(const std::string &filename)
 	{
 		OpenFile(filename);
 	}
@@ -32,6 +32,15 @@ public:
 
 	using iterator = typename MapType::iterator;
 	using KeyListType = typename Template_GetArg<1, MapType>::type;
+	iterator begin()
+	{
+		return m_DataMap.begin();
+	}
+	iterator end()
+	{
+		return m_DataMap.end();
+	}
+
 	auto operator[](const std::string &szAppName) -> KeyListType &
 	{
 		return m_DataMap[szAppName];
