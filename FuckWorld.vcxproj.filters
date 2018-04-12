@@ -3013,6 +3013,12 @@
     <ClInclude Include="Client\VGUI\BuyMenu\WeaponImagePanel.h">
       <Filter>Client\VGUI\BuyMenu</Filter>
     </ClInclude>
+    <ClInclude Include="vgui2\cso_controls\ColoredButton.h">
+      <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\cso_controls\DarkAlphaTextEntry.h">
+      <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc">

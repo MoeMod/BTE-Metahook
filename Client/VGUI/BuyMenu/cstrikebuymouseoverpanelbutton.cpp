@@ -34,6 +34,8 @@ CSBuyMouseOverPanelButton::CSBuyMouseOverPanelButton(vgui::Panel *parent, const 
 	m_pPanel = new CSBuyMouseOverPanel(parent, "ItemInfo");
 
 	m_pWeaponImage = new vgui::ImagePanel(this, "WeaponImage");
+	m_pWeaponImage->SetShouldScaleImage(true);
+	m_pWeaponImage->SetShouldCenterImage(true);
 }
 
 void CSBuyMouseOverPanelButton::UpdateWeapon(const char *weapon)

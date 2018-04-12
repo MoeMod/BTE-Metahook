@@ -210,20 +210,42 @@ void CCSBuySubMenu::OnCommand(const char *command)
 
 void CCSBuySubMenu::PerformLayout()
 {
-	BaseClass::PerformLayout();
-
+	// fix these not in .res
 	int  w, h;
 	GetSize(w, h);
 	int w2, h2;
 	m_pTitleLabel->GetSize(w2, h2);
-	m_pTitleLabel->SetPos(w / 2 - w2 / 2, 12);
+	m_pTitleLabel->SetPos(w / 2 - w2 / 2, vgui::scheme()->GetProportionalScaledValue(12));
 
-	float scale = h / 420.0;
+	m_pShowTERWeapon->SetBounds(
+		vgui::scheme()->GetProportionalScaledValue(12), 
+		vgui::scheme()->GetProportionalScaledValue(35), 
+		vgui::scheme()->GetProportionalScaledValue(98), 
+		vgui::scheme()->GetProportionalScaledValue(16)
+	);
+	m_pShowCTWeapon->SetBounds(
+		vgui::scheme()->GetProportionalScaledValue(108), 
+		vgui::scheme()->GetProportionalScaledValue(35), 
+		vgui::scheme()->GetProportionalScaledValue(98), 
+		vgui::scheme()->GetProportionalScaledValue(16)
+	);
+	newknifeBG->SetBounds(
+		vgui::scheme()->GetProportionalScaledValue(505), 
+		vgui::scheme()->GetProportionalScaledValue(327), 
+		vgui::scheme()->GetProportionalScaledValue(75), 
+		vgui::scheme()->GetProportionalScaledValue(50)
+	);
+
+	BaseClass::PerformLayout();
+
+	/*
 	for (int i = 0; i < 10; ++i)
 	{
 		m_pSlotButtons[i]->GetClassPanel()->SetBounds(216 * scale, 60 * scale, 152 * scale, 145 * scale);
-	}
-	newknifeBG->SetBounds(505 * scale, 327 * scale, 75 * scale, 50 * scale); // fix that not in .res
+	}*/
+	
+
+
 }
 
 void CCSBuySubMenu::OnThink()
@@ -264,8 +286,6 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 	}
 	else
 	{
-		WeaponBuyTeam team = g_iTeam == 1 ? WeaponBuyTeam::CT : WeaponBuyTeam::TR;
-
 		if (type == WeaponBuyMenuType::EQUIP)
 		{
 			for (int i = 0; i < 7; ++i)
@@ -278,7 +298,7 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 		{
 			if (type != x.iMenu)
 				continue;
-			if (x.iTeam != WeaponBuyTeam::ALL && team != x.iTeam)
+			if (x.iTeam != WeaponBuyTeam::ALL && m_iTeam != x.iTeam)
 				continue;
 			const char *name = x.szName;
 
@@ -330,7 +350,7 @@ void CCSBuySubMenu::SetupPage(size_t iPage)
 		}
 	}
 	
-	m_pSlotButtons[9]->SetText("#CSO_Basket_Back");
+	m_pSlotButtons[9]->SetText("#CSO_PrevWpnBuy");
 	m_pSlotButtons[9]->SetCommand("VGUI_BuyMenu_Show");
 	m_pSlotButtons[9]->SetHotkey('0');
 
@@ -551,6 +571,9 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 		pPanel->SetShouldCenterImage(true);
 	}
 
+	m_pShowCTWeapon->SetCommand("showctwpn");
+	m_pShowTERWeapon->SetCommand("showterwpn");
+
 	UpdateFavoriteSetsControls();
 }
 
@@ -611,19 +634,18 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 void CCSBuySubMenu_DefaultMode::PerformLayout()
 {
 	BaseClass::PerformLayout();
-	int w, h;
-	GetSize(w, h);
-	float scale = h / 420.0;
 	for (int i = 0; i < 10; ++i)
 	{
-		m_pSlotButtons[i]->SetPos(16 * scale, (50 + i * 25) * scale);
+		m_pSlotButtons[i]->SetPos(
+			vgui::scheme()->GetProportionalScaledValue(16),
+			vgui::scheme()->GetProportionalScaledValue(50 + i * 25)
+		);
 	}
 }
 
 void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
-	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu.res", "GAME");
 	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
 
 	// hide zbs

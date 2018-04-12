@@ -19,6 +19,8 @@
 
 #include <keydefs.h>
 
+#include "cso_controls/DarkAlphaTextEntry.h"
+
 #include "FileSystem.h"
 
 using namespace vgui;
@@ -112,13 +114,13 @@ CSkillKeyPopupDlg::CSkillKeyPopupDlg(vgui::Panel *parent) : BaseClass(NULL, "Ski
 	Button *m_pNextBtn = new Button(this, "NextBtn", ">");
 	m_pNextBtn->SetCommand("Next");
 
-	m_pZombieTypeBG = new TextEntry(this, "ZombieTypeBG");
+	m_pZombieTypeBG = new DarkAlphaTextEntry(this, "ZombieTypeBG");
 	m_pZombieTypeBG->SetMouseInputEnabled(false);
 	m_pZombieType = new Label(this, "ZombieType", "");
 
 	for (int i = 0; i < 4; i++)
 	{
-		m_pZombieSlotBg[i] = new TextEntry(this, va("ZombieSlotBg%d", i + 1));
+		m_pZombieSlotBg[i] = new DarkAlphaTextEntry(this, va("ZombieSlotBg%d", i + 1));
 		m_pZombieSlotBg[i]->SetMouseInputEnabled(false);
 		
 		m_pZombieSlot[i] = new ImagePanel(this, va("ZombieSlot%d", i + 1));
@@ -129,7 +131,7 @@ CSkillKeyPopupDlg::CSkillKeyPopupDlg(vgui::Panel *parent) : BaseClass(NULL, "Ski
 			m_pZombieSkillKey[i]->AddItem(m_szZombieKeyInfo[j], NULL);
 		}
 
-		m_pHumanSlotBg[i] = new TextEntry(this, va("HumanSlotBg%d", i + 1));
+		m_pHumanSlotBg[i] = new DarkAlphaTextEntry(this, va("HumanSlotBg%d", i + 1));
 		m_pHumanSlotBg[i]->SetMouseInputEnabled(false);
 		m_pHumanSlot[i] = new ImagePanel(this, va("HumanSlot%d", i + 1));
 		m_pHumanSkill[i] = new CSkillKeyPopupDlgComboBox(this, va("HumanSkill%d", i + 1), 4, false);

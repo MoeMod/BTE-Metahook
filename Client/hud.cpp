@@ -43,8 +43,8 @@ int MsgFunc_PlayerSpawn(const char *pszName, int iSize, void *pbuf)
 {
 	if (IS_ZOMBIE_MODE)
 	{
-		//g_pViewPort->ShowVGUIMenu(MENU_BUY);
-		Cmd_Buy_Advanced();
+		g_pViewPort->ShowVGUIMenu(MENU_BUY);
+		//Cmd_Buy_Advanced();
 	}
 	if (g_iMod == MOD_ZB3)
 	{

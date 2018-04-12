@@ -989,6 +989,8 @@
     <ClInclude Include="util\util.h" />
     <ClInclude Include="vgui2\bitmap.h" />
     <ClInclude Include="vgui2\cso_controls\ButtonGlow.h" />
+    <ClInclude Include="vgui2\cso_controls\ColoredButton.h" />
+    <ClInclude Include="vgui2\cso_controls\DarkAlphaTextEntry.h" />
     <ClInclude Include="vgui2\cso_controls\DarkTextEntry.h" />
     <ClInclude Include="vgui2\cso_controls\NewTabButton.h" />
     <ClInclude Include="vgui2\HtmlWindow.h" />

@@ -1,5 +1,5 @@
-#ifndef NEWTABPANELH
-#define NEWTABPANELH
+#ifndef NEWTABBUTTON_H
+#define NEWTABBUTTON_H
 
 #ifdef _WIN32
 #pragma once
@@ -12,50 +12,20 @@
 #include <vgui_controls/Button.h>
 #include <vgui_controls/ImagePanel.h>
 
-class ColoredButton : public vgui::Button
+class NewTabButton : public vgui::Button
 {
-	DECLARE_CLASS_SIMPLE(ColoredButton, Button);
-
-	Color _replaceColor;
-public:
-	ColoredButton(vgui::Panel *parent, const char *panelName, const char *text) :
-		Button(parent, panelName, text) {}
-
-	void SetTextColor(Color col)
-	{
-		_replaceColor = col;
-	}
-
-	virtual Color GetButtonFgColor()
-	{
-		return _replaceColor;
-	}
-};
-
-class NewTabButton : public ColoredButton
-{
-	DECLARE_CLASS_SIMPLE(NewTabButton, ColoredButton);
+	typedef vgui::Button BaseClass;
 
 private:
-	bool _active;
-	
+	Color _replaceColor;
 	int m_bMaxTabWidth;
-	vgui::IBorder *m_pActiveBorder;
-	vgui::IBorder *m_pNormalBorder;
 
 public:
 	NewTabButton(vgui::Panel *parent, const char *panelName, const char *text, int maxTabWidth = 64) :
-		ColoredButton( parent, panelName, text)
+		BaseClass(parent, panelName, text)
 	{
 		SetCommand(new KeyValues("TabPressed"));
-		_active = false;
 		m_bMaxTabWidth = maxTabWidth;
-		m_pActiveBorder = m_pNormalBorder = NULL;
-	}
-
-	virtual void Paint()
-	{
-		BaseClass::Paint();
 	}
 
 	virtual void ApplySchemeSettings(vgui::IScheme *pScheme)
@@ -63,8 +33,7 @@ public:
 		// set up the scheme settings
 		Button::ApplySchemeSettings(pScheme);
 
-		m_pActiveBorder = pScheme->GetBorder("TabActiveBorder");
-		m_pNormalBorder = pScheme->GetBorder("TabBorder");
+		SetFont(pScheme->GetFont("ScoreBoard"));
 
 		int wide, tall;
 		int contentWide, contentTall;
@@ -73,83 +42,62 @@ public:
 
 		wide = max(m_bMaxTabWidth, contentWide + 10);  // 10 = 5 pixels margin on each side
 		SetSize(wide, tall);
-		
-		_imageBackground = true;
-		_depressedImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_left_c", true);
-		_depressedImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_center_c", true);
-		_depressedImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_right_c", true);
-		_defaultImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_left_n", true);
-		_defaultImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_center_n", true);
-		_defaultImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_right_n", true);
-		_armedImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_left_o", true);
-		_armedImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_center_o", true);
-		_armedImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_big_abled_right_o", true);
-	}
 
-	vgui::IBorder *GetBorder(bool depressed, bool armed, bool selected, bool keyfocus)
-	{
-		if (_active && m_pActiveBorder)
-		{
-			return m_pActiveBorder;
-		}
-		if(m_pNormalBorder)
-			return m_pNormalBorder;
-		return BaseClass::GetBorder(depressed, armed, selected, keyfocus);
+		SetDefaultBorder(pScheme->GetBorder("TabBorder"));
+		SetKeyFocusBorder(pScheme->GetBorder("TabBorder"));
+		SetDepressedBorder(pScheme->GetBorder("TabActiveBorder"));
+
+		/*_imageBackground = true;
+		_depressedImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_abled_left_c", true);
+		_depressedImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_abled_center_c", true);
+		_depressedImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_abled_right_c", true);
+		_defaultImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_disabled_left_n", true);
+		_defaultImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_disabled_center_n", true);
+		_defaultImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_disabled_right_n", true);
+		_armedImage[0] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_abled_left_o", true);
+		_armedImage[1] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_abled_center_o", true);
+		_armedImage[2] = vgui::scheme()->GetImage("resource/control/tabbutton/tab_small_abled_right_o", true);*/
+
+		_imageBackground = true;
+		_depressedImage[0] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.LeftC"), true);
+		_depressedImage[1] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.CenterC"), true);
+		_depressedImage[2] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.RightC"), true);
+		_defaultImage[0] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.LeftN"), true);
+		_defaultImage[1] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.CenterN"), true);
+		_defaultImage[2] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.RightN"), true);
+		_armedImage[0] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.LeftO"), true);
+		_armedImage[1] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.CenterO"), true);
+		_armedImage[2] = vgui::scheme()->GetImage(pScheme->GetResourceString("PropertyTab.RightO"), true);
 	}
 
 	virtual void SetActive(bool state)
 	{
-		_active = state;
+		ForceDepressed(state);
+
 		InvalidateLayout();
 		Repaint();
 	}
 
-    virtual bool CanBeDefaultButton(void)
-    {
-        return false;
-    }
-
-	//Fire action signal when mouse is pressed down instead  of on release.
-	virtual void OnMousePressed(vgui::MouseCode code)
+	virtual bool CanBeDefaultButton(void)
 	{
-		// check for context menu open
-		if (!IsEnabled())
-			return;
-		
-		if (!IsMouseClickEnabled(code))
-			return;
-		
-		if (IsUseCaptureMouseEnabled())
-		{
-			{
-				RequestFocus();
-				FireActionSignal();
-				SetSelected(true);
-				Repaint();
-			}
-			
-			// lock mouse input to going to this button
-			vgui::input()->SetMouseCapture(GetVPanel());
-		}
-	}
-
-	virtual void OnMouseReleased(vgui::MouseCode code)
-	{
-		// ensure mouse capture gets released
-		if (IsUseCaptureMouseEnabled())
-		{
-			vgui::input()->SetMouseCapture(NULL);
-		}
-
-		// make sure the button gets unselected
-		SetSelected(false);
-		Repaint();
-
+		return false;
 	}
 
 	virtual void PerformLayout()
 	{
 		BaseClass::PerformLayout();
+	}
+
+	virtual Color GetButtonFgColor()
+	{
+		if (IsDepressed())
+			return _replaceColor;
+		return GetDisabledFgColor1();
+	}
+
+	void SetTextColor(Color col)
+	{
+		_replaceColor = col;
 	}
 };
 
