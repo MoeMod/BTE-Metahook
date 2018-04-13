@@ -159,6 +159,9 @@
     <Filter Include="Renderer\Library\shcore">
       <UniqueIdentifier>{13f49f88-62e1-4b6c-9c26-7902cc1d786d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameUI\CollectSkinOverdraftLottery">
+      <UniqueIdentifier>{ebe2771e-5d94-40fe-8434-f39faae9e1f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseUI.cpp">
@@ -403,9 +406,6 @@
     </ClCompile>
     <ClCompile Include="GameUI\SkillKeyPopupDlg.cpp">
       <Filter>GameUI\OptionsDialog</Filter>
-    </ClCompile>
-    <ClCompile Include="GameUI\BackgroundMenuButton.cpp">
-      <Filter>GameUI</Filter>
     </ClCompile>
     <ClCompile Include="GameUI\ToolBar.cpp">
       <Filter>GameUI\Controls</Filter>
@@ -1118,6 +1118,15 @@
     <ClCompile Include="Client\VGUI\BuyMenu\WeaponImagePanel.cpp">
       <Filter>Client\VGUI\BuyMenu</Filter>
     </ClCompile>
+    <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.cpp">
+      <Filter>GameUI\CollectSkinOverdraftLottery</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\BackgroundMenuButton.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui2\cso_controls\TexturedButton.cpp">
+      <Filter>vgui2\cso_controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -1467,9 +1476,6 @@
     </ClInclude>
     <ClInclude Include="GameUI\SkillKeyPopupDlg.h">
       <Filter>GameUI\OptionsDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="GameUI\BackgroundMenuButton.h">
-      <Filter>GameUI</Filter>
     </ClInclude>
     <ClInclude Include="GameUI\ToolBar.h">
       <Filter>GameUI\Controls</Filter>
@@ -3017,6 +3023,18 @@
       <Filter>vgui2\cso_controls</Filter>
     </ClInclude>
     <ClInclude Include="vgui2\cso_controls\DarkAlphaTextEntry.h">
+      <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.h">
+      <Filter>GameUI\CollectSkinOverdraftLottery</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\BackgroundMenuButton.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\cso_controls\TexturedButton.h">
+      <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui2\cso_controls\BluedPopupDialog.h">
       <Filter>vgui2\cso_controls</Filter>
     </ClInclude>
   </ItemGroup>

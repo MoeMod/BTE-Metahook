@@ -13,16 +13,6 @@
 #include "UtlVector.h"
 //#include "tier1/CommandBuffer.h"
 
-#include "GameUI/CSBTEAboutDialog.h"
-#include "GameUI/CSBTEUpdateDialog.h"
-#include "GameUI/CSBTEMyWpnEditor.h"
-#include "GameUI/CSBTEMapLoading.h"
-#include "GameUI/CSBTEEscPanel.h"
-#include "GameUI/CSBTEGameMenu.h"
-#include "GameUI/CSBTEZombieDNA.h"
-#include "GameUI/CSBTEWelcomeDialog.h"
-#include "GameUI/CSBTEWpnDataEditor.h"
-
 #include "GL_BinkTexture.h"
 
 class CGameMenu;
@@ -30,6 +20,9 @@ class CBackgroundMenuButton;
 class CBinkPanel;
 class CBackGroundPanel;
 class CToolBar;
+
+class CCSBTEEscPanel;
+class CCSBTEWelcomeDialog;
 
 class CFooterPanel : public vgui::EditablePanel
 {
@@ -107,6 +100,8 @@ private:
 	int m_nOffsetY;
 };
 
+class CCSOLLuckyItemPopupDialog;
+
 class CGameMenuItem : public vgui::MenuItem
 {
 	DECLARE_CLASS_SIMPLE(CGameMenuItem, vgui::MenuItem);
@@ -150,12 +145,43 @@ public:
 	void OnOpenCreateMultiplayerGameDialog(void);
 	void OnOpenQuitConfirmationDialog(void);
 	void OnOpenOptionsDialog(void);
-	void OnOpenCSBTEAboutDialog(void);
+
+	/*void OnOpenCSBTEAboutDialog(void);
 	void OnOpenCSBTEUpdateDialog(void);
 	void OnOpenCSBTEModeSelection(void);
 	void OnOpenCSBTEMyWpnEditor(void);
 	void OnOpenCSBTEWpnDataEditor(void);
-	void OnOpenCSBTEZombieDNA(void);
+	void OnOpenCSBTEZombieDNA(void);*/
+	template<class T>
+	T *CreateSubDialog(const char *name)
+	{
+		return new T(this, name);
+	}
+	template<class T>
+	T *CreateSubDialog()
+	{
+		return new T(this, typeid(T).name() + 7); // "class CMiao" -> "Miao"
+	}
+	template<class T>
+	vgui::DHANDLE<T> &GetSubPanelHandle()
+	{
+		static vgui::DHANDLE<T> x;
+		return x;
+	}
+	template<class T, class...Args>
+	void OnOpenSubDialog(const Args &...args)
+	{
+		auto &handle = GetSubPanelHandle<T>();
+		if (!handle.Get())
+		{
+			handle = CreateSubDialog<T>(args...);
+			PositionDialog(handle);
+		}
+		handle->SetVisible(true);
+		handle->Activate();
+	}
+
+
 	void OnSizeChanged(int newWide, int newTall);
 	void OnGameUIHidden(void);
 
@@ -234,13 +260,15 @@ private:
 	vgui::DHANDLE<vgui::PropertyDialog> m_hOptionsDialog;
 	vgui::DHANDLE<vgui::Frame> m_hCreateMultiplayerGameDialog;
 	vgui::DHANDLE<vgui::QueryBox> m_hQuitQueryBox;
-	vgui::DHANDLE<CCSBTEAboutDialog> m_hCSBTEAboutDialog;
+	vgui::DHANDLE<CCSBTEEscPanel>m_hCSBTEEscPanel;
+	vgui::DHANDLE<CCSBTEWelcomeDialog> m_hCSBTEWelcomeDialog;
+	/*vgui::DHANDLE<CCSBTEAboutDialog> m_hCSBTEAboutDialog;
 	vgui::DHANDLE<CCSBTEUpdateDialog> m_hCSBTEUpdateDialog;
 	vgui::DHANDLE<CCSBTEMyWpnEditor> m_hCSBTEMyWpnEditor;
 	vgui::DHANDLE<CCSBTEWpnDataEditor> m_hCSBTEWpnDataEditor;
 	vgui::DHANDLE<CCSBTEZombieDNA> m_hCSBTEZombieDNA;
-	vgui::DHANDLE<CCSBTEEscPanel>m_hCSBTEEscPanel;
-	vgui::DHANDLE<CCSBTEWelcomeDialog> m_hCSBTEWelcomeDialog;
+	
+	vgui::DHANDLE<CCSOLLuckyItemPopupDialog> m_hCSOLLuckyItemPopupDialog;*/
 	
 	vgui::AnimationController *m_pConsoleAnimationController;
 	KeyValues *m_pConsoleControlSettings;
