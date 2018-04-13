@@ -15,6 +15,7 @@
 
 #include "MGUI/mgui.h"
 #include "MGUI/BTEPanel.h"
+#include "MGUI/NormalZombieMenu.h"
 #include "MGUI/TeamMenu.h"
 
 using namespace vgui;
@@ -192,13 +193,28 @@ void CViewport::HideAllVGUIMenu(void)
 	//ShowPanel(m_pTextWindow, false);
 }
 
+extern MGUI_Panel *pTeamSuitPanel;
+extern MGUI_Panel *pBuyMenuPanel;
+void MGUI_CloseAll()
+{
+	if (pTeamSuitPanel)
+		pTeamSuitPanel->m_iClosing = TRUE;
+	if (pBuyMenuPanel)
+		pBuyMenuPanel->m_iClosing = TRUE;
+	g_TeamMenu.Close();
+	g_NormalZombieMenu.Close();
+	//UpdateItems();
+	g_mgui_candraw = 0;
+}
+
 bool CViewport::ShowVGUIMenu(int iMenu)
 {
+	MGUI_CloseAll();
 	CViewPortPanel *panel = NULL;
 
 	switch (iMenu)
 	{
-	/*case MENU_CLASS_T:
+	case MENU_CLASS_T:
 	{
 		g_TeamMenu.Show();
 		g_TeamMenu.SwitchTeam(1);
@@ -210,7 +226,7 @@ bool CViewport::ShowVGUIMenu(int iMenu)
 		g_TeamMenu.Show();
 		g_TeamMenu.SwitchTeam(2);
 		return true;
-	}*/
+	}
 	case MENU_BUY:
 	case MENU_BUY_PISTOL:
 	case MENU_BUY_SHOTGUN:
