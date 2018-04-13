@@ -15,6 +15,8 @@ public:
 protected:
 	virtual void OnCommand(const char *command) override;
 	virtual vgui::Panel *CreateControlByName(const char *controlName) override;
+
+	void OnOpenDecoder();
 private:
 	struct impl_t;
 	std::unique_ptr<impl_t> pimpl;

@@ -73,7 +73,7 @@ void CBinkPanel::OnThink(void)
 				if (m_bLoop)
 					Play();
 				else
-					Stop();
+					Pause();
 			}
 		}
 	}

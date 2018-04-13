@@ -222,6 +222,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.cpp" />
+    <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameBotPage.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameDialog.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameGameplayPage.cpp" />
@@ -558,6 +559,7 @@
     <ClInclude Include="GameUI\BinkPanel.h" />
     <ClInclude Include="GameUI\BitmapImagePanel.h" />
     <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.h" />
+    <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameBotPage.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameDialog.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameGameplayPage.h" />
@@ -992,6 +994,7 @@
     <ClInclude Include="util\util.h" />
     <ClInclude Include="vgui2\bitmap.h" />
     <ClInclude Include="vgui2\cso_controls\BluedPopupDialog.h" />
+    <ClInclude Include="vgui2\cso_controls\ForceColoredLabel.h" />
     <ClInclude Include="vgui2\cso_controls\TexturedButton.h" />
     <ClInclude Include="vgui2\cso_controls\ButtonGlow.h" />
     <ClInclude Include="vgui2\cso_controls\ColoredButton.h" />
@@ -1093,7 +1096,6 @@
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BugReport\BugReport.aps" />
     <None Include="CSBTE.ico" />
   </ItemGroup>
   <ItemGroup>
