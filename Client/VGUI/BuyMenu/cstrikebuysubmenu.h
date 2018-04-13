@@ -173,6 +173,7 @@ public:
 	CCSBuySubMenu_ZombieMod(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name) {}
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
 	virtual void OnSelectWeapon(const char *weapon) override;
+	virtual void SetupItems(CWeaponManager::WeaponBuyMenuType type) override;
 };
 
 class CCSBuySubMenu_DeathMatch : public CCSBuySubMenu

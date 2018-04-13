@@ -33,7 +33,8 @@ public:
 		// set up the scheme settings
 		Button::ApplySchemeSettings(pScheme);
 
-		GetTextImage()->SetDrawWidth(vgui::scheme()->GetProportionalScaledValue(2));
+		//GetTextImage()->SetDrawWidth(vgui::scheme()->GetProportionalScaledValue(1));
+		SetTextInset(6, 2);
 
 		int wide, tall;
 		int contentWide, contentTall;
@@ -83,15 +84,48 @@ public:
 		return false;
 	}
 
-	virtual void PerformLayout()
+	virtual void PaintBackground() override
 	{
-		BaseClass::PerformLayout();
+		if (_imageBackground)
+		{
+			int wide, tall;
+			GetSize(wide, tall);
+
+			const int iOffset = 0;
+			vgui::IImage **ppimage;
+			
+			int y = vgui::scheme()->GetProportionalScaledValue(2);
+
+			if (IsDepressed())
+			{
+				ppimage = _depressedImage;
+				y = 0;
+			}
+			else if (IsArmed())
+				ppimage = _armedImage;
+			else
+				ppimage = _defaultImage;
+
+			ppimage[0]->SetPos(0, y);
+			ppimage[0]->SetSize(10, tall);
+			ppimage[0]->Paint();
+			ppimage[1]->SetPos(10, y);
+			ppimage[1]->SetSize(wide - 20 - iOffset, tall);
+			ppimage[1]->Paint();
+			ppimage[2]->SetPos(wide - 10 - iOffset, y);
+			ppimage[2]->SetSize(10 - iOffset, tall);
+			ppimage[2]->Paint();
+			return;
+		}
+		BaseClass::PaintBackground();
 	}
 
 	virtual Color GetButtonFgColor()
 	{
 		if (IsDepressed())
 			return _replaceColor;
+		else if (IsArmed())
+			GetFgColor();
 		return GetDisabledFgColor1();
 	}
 

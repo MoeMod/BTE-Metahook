@@ -41,8 +41,11 @@ public:
 		m_pKnifeWeapon = new WeaponImagePanel(this, "knife");
 
 		m_pPrimaryWeapon->SetShouldScaleImage(true);
+		m_pPrimaryWeapon->SetShouldCenterImage(true);
 		m_pSecondaryWeapon->SetShouldScaleImage(true);
+		m_pSecondaryWeapon->SetShouldCenterImage(true);
 		m_pKnifeWeapon->SetShouldScaleImage(true);
+		m_pKnifeWeapon->SetShouldCenterImage(true);
 	}
 
 	void ClearWeapons(void)
@@ -73,8 +76,8 @@ public:
 		GetSize(w, h);
 		float scale = w / 175.0;
 		m_pPrimaryWeapon->SetBounds(25 * scale, 0 * scale, 100 * scale, 38 * scale);
-		m_pSecondaryWeapon->SetBounds(122 * scale, 0 * scale, 50 * scale, 19 * scale);
-		m_pKnifeWeapon->SetBounds(122 * scale, 19 * scale, 50 * scale, 19 * scale);
+		m_pSecondaryWeapon->SetBounds(125 * scale, 0 * scale, 50 * scale, 19 * scale);
+		m_pKnifeWeapon->SetBounds(125 * scale, 19 * scale, 50 * scale, 19 * scale);
 	}
 
 private:

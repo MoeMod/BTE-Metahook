@@ -216,16 +216,16 @@ void CCSBuySubMenu::PerformLayout()
 	int w2, h2;
 	m_pTitleLabel->GetSize(w2, h2);
 	m_pTitleLabel->SetPos(w / 2 - w2 / 2, vgui::scheme()->GetProportionalScaledValue(12));
-
+	
 	m_pShowTERWeapon->SetBounds(
 		vgui::scheme()->GetProportionalScaledValue(12), 
-		vgui::scheme()->GetProportionalScaledValue(35), 
+		vgui::scheme()->GetProportionalScaledValue(32), 
 		vgui::scheme()->GetProportionalScaledValue(98), 
 		vgui::scheme()->GetProportionalScaledValue(16)
 	);
 	m_pShowCTWeapon->SetBounds(
 		vgui::scheme()->GetProportionalScaledValue(108), 
-		vgui::scheme()->GetProportionalScaledValue(35), 
+		vgui::scheme()->GetProportionalScaledValue(32), 
 		vgui::scheme()->GetProportionalScaledValue(98), 
 		vgui::scheme()->GetProportionalScaledValue(16)
 	);
@@ -561,16 +561,22 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 		m_pFavButtons[i]->SetHotkey(key[i]);
 	}
 
+	float scale = vgui::scheme()->GetProportionalScaledValue(4096) / 4096.0f;
 	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, newknifeBG })
 	{
 		pPanel->SetShouldScaleImage(true);
 		pPanel->SetShouldCenterImage(true);
 	}
+	hgrenBG->SetScaleAmount(0.54f * scale);
+	swpnBG->SetScaleAmount(0.375f * scale);
+	newknifeBG->SetScaleAmount(0.375f * scale);
 	for (vgui::ImagePanel * pPanel : { sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG })
 	{
 		pPanel->SetShouldScaleImage(true);
 		pPanel->SetShouldCenterImage(true);
+		pPanel->SetScaleAmount(0.54f * scale);
 	}
+	
 
 	m_pShowCTWeapon->SetCommand("showctwpn");
 	m_pShowTERWeapon->SetCommand("showterwpn");
@@ -723,4 +729,21 @@ void CCSBuySubMenu_DefaultMode::OnSelectFavoriteWeapons(int iSet)
 void CCSBuySubMenu_ZombieMod::OnSelectWeapon(const char *weapon)
 {
 	BaseClass::OnSelectWeapon(weapon);
+}
+
+void CCSBuySubMenu_ZombieMod::SetupItems(WeaponBuyMenuType type)
+{
+	BaseClass::SetupItems(type);
+
+	if (type == WeaponBuyMenuType::NONE)
+	{
+		for (int i : {5,6})
+		{
+			m_pSlotButtons[i]->SetText("");
+			m_pSlotButtons[i]->SetCommand("VGUI_BuyMenu_Show");
+			m_pSlotButtons[i]->SetVisible(true);
+			m_pSlotButtons[i]->SetHotkey('0' + i + 1);
+		}
+		m_pSlotButtons[9]->SetCommand("VGUI_BuyMenu_Show");
+	}
 }

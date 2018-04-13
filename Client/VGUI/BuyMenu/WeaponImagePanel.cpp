@@ -34,7 +34,9 @@ void WeaponImagePanel::SetWeapon(const char *name)
 		return SetWeapon(nullptr);
 	}
 
-	SetImage(vgui::scheme()->GetImage(MakeString("gfx\\vgui\\", name).c_str(), true));
+	vgui::IImage *image = vgui::scheme()->GetImage(MakeString("gfx\\vgui\\", name).c_str(), true);
+	SetImage(image);
+
 	m_bBanned = !WeaponManager().FCanBuyWeapon(name);
 }
 
