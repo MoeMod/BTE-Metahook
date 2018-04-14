@@ -1130,6 +1130,9 @@
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.cpp">
       <Filter>GameUI\CollectSkinOverdraftLottery</Filter>
     </ClCompile>
+    <ClCompile Include="Client\CubeMapManager.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -3045,6 +3048,9 @@
     </ClInclude>
     <ClInclude Include="vgui2\cso_controls\ForceColoredLabel.h">
       <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\CubeMapManager.h">
+      <Filter>Client</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

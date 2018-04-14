@@ -127,6 +127,7 @@
     <ClCompile Include="client.cpp" />
     <ClCompile Include="Client\com_weapons.cpp" />
     <ClCompile Include="Client\CounterStrikeViewport.cpp" />
+    <ClCompile Include="Client\CubeMapManager.cpp" />
     <ClCompile Include="Client\EButtonManager.cpp" />
     <ClCompile Include="Client\events.cpp" />
     <ClCompile Include="Client\ev_common.cpp" />
@@ -463,6 +464,7 @@
     <ClInclude Include="Client\cl_util.h" />
     <ClInclude Include="Client\com_weapons.h" />
     <ClInclude Include="Client\CounterStrikeViewport.h" />
+    <ClInclude Include="Client\CubeMapManager.h" />
     <ClInclude Include="Client\EButtonManager.h" />
     <ClInclude Include="Client\events.h" />
     <ClInclude Include="Client\eventscripts.h" />
