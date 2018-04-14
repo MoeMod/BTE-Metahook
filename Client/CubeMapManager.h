@@ -3,7 +3,9 @@
 #define MAX_SHADER_ENV 10
 #define MAX_SHADER_CUBEMAP 10
 
-#include "TextureManager.h"
+#include <memory>
+
+typedef unsigned int GLuint;
 
 class CCubeMapManager
 {
@@ -21,7 +23,14 @@ private:
 
 public:
 	char *m_pszEnvName[MAX_SHADER_ENV];
-	const CTextureManager::CTextureDetail *m_EnvTexture[MAX_SHADER_ENV][6];
+	struct CubeMapTextureDetail
+	{
+		std::unique_ptr<byte[]> data;
+		int w;
+		int h;
+	};
+	GLuint m_EnvTextureId[MAX_SHADER_ENV];
+	CubeMapTextureDetail m_EnvTextures[MAX_SHADER_ENV][6];
 
 	struct CubeMapData
 	{

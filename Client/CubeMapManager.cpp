@@ -13,6 +13,7 @@
 #include <gl/glext.h>
 #include <pbo.h>
 #include "CubeMapManager.h"
+#include "LoadTGA.h"
 
 CCubeMapManager gCubeMapManager;
 
@@ -64,7 +65,6 @@ void CCubeMapManager::LoadData()
 		return;
 	int iCachedID;
 	char szBuffer[256];
-
 	
 	while (fscanf(fp, "%d %s", &iCachedID, szBuffer) != EOF)
 	{
@@ -74,18 +74,41 @@ void CCubeMapManager::LoadData()
 		m_pszEnvName[iCachedID] = new char[strlen(szBuffer) + 1];
 		strcpy(m_pszEnvName[iCachedID], szBuffer);
 
+		
+		qglGenTextures(1, &m_EnvTextureId[iCachedID]);
+		qglBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvTextureId[iCachedID]);
+
 		for (int j = 0; j < 6; j++)
 		{
 			int iTexIndex = vgui::surface()->CreateNewTextureID();
 			sprintf(szBuffer, "gfx\\env\\%s%s.tga", m_pszEnvName[iCachedID], g_envsuf[j]);
-			//if (!Image_LoadImage(szBuffer, &ImageData, &iTexIndex))
-			//	LogToFile("CCubeMapManager::LoadData() : Fail Load %s", szBuffer);
-			m_EnvTexture[iCachedID][j] = &TextureManager()[szBuffer];
 
+			int w, h;
+			if (!GetTGASize(szBuffer, &w, &h))
+				continue;
+			int buffersize = w * h * 4;
+
+			m_EnvTextures[iCachedID][j].data.reset(new byte[buffersize]);
+			LoadTGA(szBuffer, m_EnvTextures[iCachedID][j].data.get(), buffersize, &w, &h);
+
+			m_EnvTextures[iCachedID][j].w = w;
+			m_EnvTextures[iCachedID][j].h = w;
+
+			qglTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X_EXT + j,
+				0,                  //level 
+				GL_RGB8,            //internal format 
+				w,                 //width 
+				h,                 //height 
+				0,                  //border 
+				GL_RGBA,             //format 
+				GL_UNSIGNED_BYTE,   //type 
+				m_EnvTextures[iCachedID][j].data.get()); // pixel data 
 		}
 
+		qglBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 		//gEngfuncs.pfnConsolePrint(va("Add env [%d] %s \n", iCachedID, m_pszEnvName[iCachedID]));
 	}
+
 	fclose(fp);
 
 	_finddata_t fileDir;
@@ -143,61 +166,47 @@ bool CCubeMapManager::CheckTexture()
 	if (iCubeMapID>=10)
 		return false;*/
 	
-	return false;
+	return true;
 }
 
 
 void CCubeMapManager::SetupTexture()
 {
-	int iCubeMapID = 5;
+	int iCubeMapID = 3;
 	
-	/*qglEnable(GL_TEXTURE_CUBE_MAP);
+	qglEnable(GL_TEXTURE_CUBE_MAP);
+	qglEnable(GL_TEXTURE_CUBE_MAP_EXT);
 
-	static GLuint textureID = -1;
-	if (textureID == -1)
-		qglGenTextures(1, &textureID);
-
+	auto textureID = m_EnvTextureId[iCubeMapID];
 	qglBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
-	for (GLuint i = 0; i < 6; i++)
-	{
-		auto &Texture = *m_EnvTexture[iCubeMapID][i];
-
-		qglBindTexture(GL_TEXTURE_2D, Texture);
-
-		/// copy from framebuffer (here, the FBO!) to the bound texture
-		qglCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X_EXT + i, 0, 0, 0, 0, 0, Texture.w(), Texture.h());
-
-		/// unbind the FBO
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
-	qglBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-	glTexEnvi(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_ENV, GL_REPLACE);
+	//glTexEnvi(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_ENV, GL_REPLACE);
 	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	/*qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);
-	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_GENERATE_MIPMAP, GL_TRUE);
+	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);*/
 
-	qglTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-	qglTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_ENV, GL_DECAL);
-	
-	qglTexEnvi(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_ENV, GL_MODULATE);
-	qglTexEnvi(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
-	qglTexEnvi(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
-	qglTexEnvi(GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
+	qglTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_EXT);
+	qglTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_EXT);
+	qglTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_EXT);
+	qglEnable(GL_TEXTURE_GEN_S);
+	qglEnable(GL_TEXTURE_GEN_T);
+	qglEnable(GL_TEXTURE_GEN_R);
 
-	qglDisable(GL_TEXTURE_CUBE_MAP);*/
-	auto &Texture = *m_EnvTexture[iCubeMapID][0];
-	qglBindTexture(GL_TEXTURE_2D, Texture);
+	//qglDisable(GL_TEXTURE_CUBE_MAP);
+	//auto &Texture = *m_EnvTexture[iCubeMapID][0];
+	//qglBindTexture(GL_TEXTURE_2D, Texture);
 }
 
 
 void CCubeMapManager::UnloadTexture()
 {
+	qglDisable(GL_TEXTURE_GEN_S);
+	qglDisable(GL_TEXTURE_GEN_T);
+	qglDisable(GL_TEXTURE_GEN_R);
+
 	qglBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	qglDisable(GL_TEXTURE_CUBE_MAP_EXT);
 	qglDisable(GL_TEXTURE_CUBE_MAP);
 }
