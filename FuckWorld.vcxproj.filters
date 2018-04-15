@@ -3052,6 +3052,9 @@
     <ClInclude Include="Client\CubeMapManager.h">
       <Filter>Client</Filter>
     </ClInclude>
+    <ClInclude Include="vgui2\cso_controls\SelectedImage.h">
+      <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc">

@@ -1332,27 +1332,6 @@ void CStudioModelRenderer::StudioRenderModel(void)
 			gEngfuncs.pTriAPI->RenderMode(kRenderNormal);
 		return;
 	}
-	if (gCubeMapManager.CheckTexture())
-	{
-		m_pCurrentEntity->curstate.renderfx = kRenderFxNone;
-		StudioRenderFinal();
-
-		if (!IEngineStudio.IsHardware())
-			gEngfuncs.pTriAPI->RenderMode(kRenderTransAdd);
-
-		IEngineStudio.SetForceFaceFlags(STUDIO_NF_ADDITIVE);
-
-		gCubeMapManager.SetupTexture();
-		IEngineStudio.SetChromeOrigin();
-		m_pCurrentEntity->curstate.renderfx = kRenderFxGlowShell;
-
-		StudioRenderFinal();
-
-		gCubeMapManager.UnloadTexture();
-		if (!IEngineStudio.IsHardware())
-			gEngfuncs.pTriAPI->RenderMode(kRenderNormal);
-	}
-	
 
 	StudioRenderFinal();
 	

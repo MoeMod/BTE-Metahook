@@ -16,6 +16,9 @@ public:
 	bool CheckTexture();
 	void SetupTexture();
 	void UnloadTexture();
+	float GetAdjustedBright(float in);
+	void SetEnabled(bool x) { m_bEnabled = x; }
+	bool GetEnabled() { return m_bEnabled; }
 
 private:
 	void ClearData();
@@ -39,6 +42,8 @@ public:
 		float addBright;
 	};
 	CubeMapData *m_pCubeMapData[MAX_SHADER_CUBEMAP];
+	int m_iCubeMapID;
+	bool m_bEnabled;
 };
 
 extern CCubeMapManager gCubeMapManager;

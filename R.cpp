@@ -10,6 +10,9 @@
 #include "calcbody.h"
 #include "strtools.h"
 #include "pm_movevars.h"
+#include "triangleapi.h"
+
+#include "gl/glext.h"
 
 #include "Client/hud.h"
 #include "Client/HUD3D.h"
@@ -18,6 +21,7 @@
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
 #include "Client/TextureManager.h"
+#include "Client/CubemapManager.h"
 
 #include "R.h"
 
@@ -43,6 +47,7 @@ void(*g_pfnR_DrawSpriteModel)(cl_entity_t *);
 void(*g_pfnR_LoadSkys)(void) = NULL;
 
 mstudiotexture_t gCurrentTexture;
+PFNGLACTIVETEXTUREARBPROC glActiveTextureARB = NULL;
 
 void R_LightLambert(float light[3][4], float *normal, float *src, float *lambert)
 {
@@ -205,6 +210,18 @@ void R_StudioSetupSkin(studiohdr_t *phdr, int index)
 
 	gCurrentTexture = ptexture[index];
 	
+	if (gCubeMapManager.GetEnabled())
+	{
+		if (gCubeMapManager.CheckTexture())
+		{
+			gCubeMapManager.SetupTexture();
+		}
+		else
+		{
+			gCubeMapManager.UnloadTexture();
+		}
+	}
+
 	int iTexture = 0;
 	// models/p_zombibomb
 	if (strlen(IEngineStudio.GetCurrentEntity()->model->name) >= 18 && !strnicmp(IEngineStudio.GetCurrentEntity()->model->name + 9, "zombibomb", 9))
@@ -330,6 +347,7 @@ void R_InstallHook(void)
 	g_pMetaHookAPI->InlineHook(g_pfnR_LightLambert, R_LightLambert, (void *&)g_pfnR_LightLambert);
 	g_pMetaHookAPI->InlineHook((void *)0x1D448F0, R_DrawSpriteModel, (void *&)g_pfnR_DrawSpriteModel);
 	g_pMetaHookAPI->InlineHook(g_pfnR_LoadSkys, R_LoadSkys, (void *&)g_pfnR_LoadSkys);
+
 }
 
 #define R_STUDIOLIGHTING_SIG "\x51\xDB\x05\x2A\x2A\x2A\x2A\x8A\x4C\x24\x10\xB8\x01\x00\x00\x00\x84\xC8\xD9\x5C\x24\x00"
@@ -350,7 +368,7 @@ double g_dbStormgiantEffectTime = 0.0;
 
 void R_StudioLighting(float *lv, int bone, int flags, vec3_t normal)
 {
-
+	g_savedLighting.ambientlight = gCubeMapManager.GetAdjustedBright(g_savedLighting.ambientlight);
 	if ((g_iBTEWeapon == WPN_STORMGIANT) && flags & STUDIO_NF_ADDITIVE)
 	{
 		int r_ambientlight = g_savedLighting.ambientlight;
@@ -469,6 +487,7 @@ int Hook_R_StudioDrawModel(int flags)
 
 	if (curent == viewent)
 	{
+		gCubeMapManager.SetEnabled(true);
 		if (g_iBTEWeapon == WPN_BLOODHUNTER && g_iBloodhunterSecAnim)
 		{
 			//int frame = (cl.time - g_dbBloodhunterAnimTime) * 30.0;
@@ -516,17 +535,10 @@ int Hook_R_StudioDrawModel(int flags)
 
 			curent->curstate.body = iBackupBody;
 
+			gCubeMapManager.UnloadTexture();
+			gCubeMapManager.SetEnabled(false);
 			return iReturn;
 		}
-
-		/*
-		if (g_iCurrentWeapon == WEAPON_KNIFE)
-		{
-		if (!m_pCvarRightHand->value)
-		{
-		//m_pCvarRightHand->value = 0;
-		}
-		}*/
 	}
 	/*
 	if (IS_ZOMBIE_MODE && Q_strstr(curent->model->name, "supplybox") && vPlayer[gEngfuncs.GetLocalPlayer()->index].team == 1)
@@ -590,10 +602,10 @@ int Hook_R_StudioDrawModel(int flags)
 			gStudioInterface.StudioDrawModel(flags);
 			*curent = saveent;
 		}
-
 	}
 
-
+	gCubeMapManager.UnloadTexture();
+	gCubeMapManager.SetEnabled(false);
 	return iReturn;
 }
 

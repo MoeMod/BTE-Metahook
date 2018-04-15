@@ -28,6 +28,8 @@ inline std::string Trim(std::string sz)
 	return sz;
 }
 
+std::vector<std::string> ParseString(const std::string &sz);
+
 template<class...Args>
 inline std::string MakeString(const Args &...args)
 {
