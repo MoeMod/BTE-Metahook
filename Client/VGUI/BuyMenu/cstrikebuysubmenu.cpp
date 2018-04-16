@@ -11,6 +11,7 @@
 #include "vgui_controls/RichText.h"
 #include "vgui_controls/CheckButton.h"
 #include "vgui_controls/TextEntry.h"
+#include "vgui_controls/MessageBox.h"
 #include "buymouseoverpanelbutton.h"
 #include "cso_controls/ButtonGlow.h"
 #include "cso_controls/DarkTextEntry.h"
@@ -506,7 +507,7 @@ void CCSBuySubMenu::OnClearSelectedItems()
 		"" ,
 		"" ,
 		"" ,
-		0,0,0,0, ArmorType::ARMOR_HELMET
+		0,0,0,0, ArmorType::NONE
 	};
 	UpdateFavoriteSetsControls();
 }
@@ -678,7 +679,6 @@ void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName
 void CCSBuySubMenu_DeathMatch::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
-	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu.res", "GAME");
 	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
 
 	// hide zbs
@@ -724,6 +724,36 @@ void CCSBuySubMenu_DefaultMode::OnSelectWeapon(const char *weapon)
 void CCSBuySubMenu_DefaultMode::OnSelectFavoriteWeapons(int iSet)
 {
 	BaseClass::OnSelectFavoriteWeapons(iSet);
+}
+
+void CCSBuySubMenu_ZombieMod::OnCommand(const char *command)
+{
+	if (!Q_strcmp(command, "vest"))
+	{
+		m_SelectedItems.iKelmet = ArmorType::ARMOR;
+		UpdateFavoriteSetsControls();
+		BaseClass::SetupItems(WeaponBuyMenuType::NONE);
+		return;
+	}
+	else if (!Q_strcmp(command, "vesthelm"))
+	{
+		m_SelectedItems.iKelmet = ArmorType::ARMOR_HELMET;
+		UpdateFavoriteSetsControls();
+		BaseClass::SetupItems(WeaponBuyMenuType::NONE);
+		return;
+	}
+	else if (!Q_strcmp(command, "flash") || !Q_strcmp(command, "sgren") || !Q_strcmp(command, "defuser") || !Q_strcmp(command, "nvgs"))
+	{
+		auto msgbox = new vgui::MessageBox("#CSO_MODE_LOCK_H", "#CSO_MODE_LOCK_B", this);
+		msgbox->SetOKButtonText("#CSO_OKl_Btn");
+		msgbox->SetOKButtonVisible(true);
+		msgbox->SetBounds(GetWide() / 2 - 150, GetTall() / 2 - 100, 300, 200);
+		msgbox->DoModal();
+		msgbox->Activate();
+		BaseClass::SetupItems(WeaponBuyMenuType::NONE);
+		return;
+	}
+	BaseClass::OnCommand(command);
 }
 
 void CCSBuySubMenu_ZombieMod::OnSelectWeapon(const char *weapon)
