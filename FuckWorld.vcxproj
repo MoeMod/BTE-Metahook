@@ -997,6 +997,7 @@
     <ClInclude Include="vgui2\bitmap.h" />
     <ClInclude Include="vgui2\cso_controls\BluedPopupDialog.h" />
     <ClInclude Include="vgui2\cso_controls\ForceColoredLabel.h" />
+    <ClInclude Include="vgui2\cso_controls\CustomFontLabel.h" />
     <ClInclude Include="vgui2\cso_controls\SelectedImage.h" />
     <ClInclude Include="vgui2\cso_controls\TexturedButton.h" />
     <ClInclude Include="vgui2\cso_controls\ButtonGlow.h" />

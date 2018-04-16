@@ -18,6 +18,7 @@ protected:
 
 	void OnOpenDecoder();
 	void AddDecoder(const char *name);
+	void SelectDecoder(int n);
 private:
 	struct impl_t;
 	std::unique_ptr<impl_t> pimpl;

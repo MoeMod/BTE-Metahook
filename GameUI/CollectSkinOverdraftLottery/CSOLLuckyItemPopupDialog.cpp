@@ -11,11 +11,13 @@
 #include <vgui_controls/ComboBox.h>
 #include <vgui_controls/URLLabel.h>
 #include <vgui_controls/ImagePanel.h>
+#include <vgui_controls/TextImage.h>
 
 #include "cso_controls/TexturedButton.h"
 #include "cso_controls/ForceColoredLabel.h"
 #include "cso_controls/DarkTextEntry.h"
 #include "cso_controls/SelectedImage.h"
+#include "cso_controls/CustomFontLabel.h"
 
 #include "CSOLLuckyItemResultDialog.h"
 
@@ -29,8 +31,11 @@ struct CCSOLLuckyItemPopupDialog::impl_t
 
 	DarkTextEntry *DismantlerListBG;
 	PanelListPanel *m_pDecoderList;
+	DarkTextEntry *ItemListBG;
+	PanelListPanel *m_pItemList;
 	CIniParser m_iniData;
-	std::vector<std::string> m_Decoders;
+
+	std::vector<std::string> m_DecoderNames;
 };
 
 class DecoderItemPanel : public Button
@@ -54,10 +59,7 @@ public:
 		m_pText2->SetMouseInputEnabled(false);
 
 		m_pSelectedBackground = new SelectedImage(this, "CSBTESelectedBackground");
-		//m_pSelectedBackground->SetImage(scheme()->GetImage("resource/clanpoint_bg", false));
 		m_pSelectedBackground->SetBounds(0, 0, 225, 81);
-		//m_pSelectedBackground->SetVisible(false);
-		//m_pSelectedBackground->SetShouldScaleImage(true);
 		m_pSelectedBackground->SetMouseInputEnabled(false);
 
 		m_pItemBackground = new ImagePanel(this, "CSBTEItemBackground");
@@ -78,7 +80,13 @@ public:
 
 	virtual void PerformLayout() override
 	{
+		m_pSelectedBackground->SetVisible(!IsSelected() && IsDepressed());
 		return Panel::PerformLayout();
+	}
+
+	MESSAGE_FUNC_INT(OnPanelSelected, "PanelSelected", state)
+	{
+		ForceDepressed(state);
 	}
 
 private:
@@ -89,6 +97,57 @@ private:
 	SelectedImage *m_pSelectedBackground;
 };
 
+class ItemDescPanel : public Panel
+{
+	DECLARE_CLASS_SIMPLE(ItemDescPanel, Panel);
+public:
+	ItemDescPanel(Panel *parent, const char *name, const char *ItemName)
+		:Panel(parent, name)
+	{
+		m_pText = new Label(this, "Label", MakeString("#CSO_Item_Name_", ItemName).c_str());
+		m_pText->SetPaintBackgroundEnabled(false);
+		m_pText->SetBounds(0, 56, 200, 20);
+		m_pText->SetMouseInputEnabled(false);
+
+		wchar_t buffer[64];
+		swprintf(buffer, 64, g_pVGuiLocalize->Find("#CSO_Item_Remain_Amount_Format"), 10000);
+
+		m_pItemBackground = new ImagePanel(this, "CSBTEItemBackground");
+		m_pItemBackground->SetImage(scheme()->GetImage("gfx/ui/panel/basket_blank_slot", false));
+		m_pItemBackground->SetBounds(0, 0, 158, 56);
+		m_pItemBackground->SetShouldScaleImage(true);
+		m_pItemBackground->SetMouseInputEnabled(false);
+
+		m_pWeaponImage = new ImagePanel(this, "CSBTEWeaponImage");
+
+		IImage *pImage = scheme()->GetImage(MakeString("gfx/vgui/basket/", ItemName).c_str(), true);
+		if(!pImage)
+			pImage = scheme()->GetImage(MakeString("gfx/vgui/", ItemName).c_str(), true);
+		m_pWeaponImage->SetImage(pImage);
+		m_pWeaponImage->SetBounds(0, 0, 158, 56);
+		m_pWeaponImage->SetShouldScaleImage(true);
+		m_pWeaponImage->SetMouseInputEnabled(false);
+
+		SetSize(158, 80);
+		SetPaintBackgroundEnabled(false);
+	}
+
+	void SetItemName(const char *name)
+	{
+		m_pText->SetText(name);
+	}
+
+	void SetItemImage(const char *image)
+	{
+		m_pWeaponImage->SetImage(image);
+	}
+
+private:
+	Label * m_pText;
+	ImagePanel *m_pWeaponImage;
+	ImagePanel *m_pItemBackground;
+};
+
 CCSOLLuckyItemPopupDialog::CCSOLLuckyItemPopupDialog(Panel *parent, const char *panelName, bool showTaskbarIcon)
 	: BaseClass(parent, panelName, showTaskbarIcon), pimpl(std::make_unique<impl_t>())
 {
@@ -96,6 +155,9 @@ CCSOLLuckyItemPopupDialog::CCSOLLuckyItemPopupDialog(Panel *parent, const char *
 
 	pimpl->DismantlerListBG = new DarkTextEntry(this, "DismantlerListBG");
 	pimpl->m_pDecoderList = new PanelListPanel(this, "DismantlerContainerClipPanelName");
+
+	pimpl->ItemListBG = new DarkTextEntry(this, "ItemListBG");
+	pimpl->m_pItemList = new PanelListPanel(this, "ItemContainerClipPanelName");
 
 
 	pimpl->CloseBtn = new vgui::Button(this, "CloseBtn", "#CSO_ClosePopup", this, "vguicancel");
@@ -118,21 +180,97 @@ CCSOLLuckyItemPopupDialog::CCSOLLuckyItemPopupDialog(Panel *parent, const char *
 			AddDecoder(szDecoder.c_str());
 		}
 	}
+	if (pimpl->m_pDecoderList->GetItemCount())
+		SelectDecoder(0);
 
-	pimpl->m_pDecoderList->SetWide(260);
+	pimpl->m_pDecoderList->SetWide(pimpl->m_pDecoderList->GetWide() + 15);
+	pimpl->m_pItemList->SetWide(pimpl->m_pItemList->GetWide() + 15);
+	pimpl->m_pDecoderList->SetFirstColumnWidth(0);
+	pimpl->m_pItemList->SetFirstColumnWidth(0);
 }
 
 void CCSOLLuckyItemPopupDialog::AddDecoder(const char *name)
 {
-	if (std::find(pimpl->m_Decoders.begin(), pimpl->m_Decoders.end(), name) != pimpl->m_Decoders.end())
+	if (std::find(pimpl->m_DecoderNames.begin(), pimpl->m_DecoderNames.end(), name) != pimpl->m_DecoderNames.end())
 	{
 		return;
 	}
-	int i = pimpl->m_Decoders.size();
-	pimpl->m_Decoders.emplace_back(name);
+	int i = pimpl->m_DecoderNames.size();
+	pimpl->m_DecoderNames.emplace_back(name);
 	auto pPanel = new DecoderItemPanel(pimpl->m_pDecoderList, name, name);
+	pPanel->SetCommand(MakeString("SelectDecoder ", i).c_str());
+	pPanel->AddActionSignalTarget(this);
 	pimpl->m_pDecoderList->AddItem(nullptr, pPanel);
-	pimpl->m_pDecoderList->SetFirstColumnWidth(0);
+}
+
+void CCSOLLuckyItemPopupDialog::SelectDecoder(int i)
+{
+	pimpl->m_pDecoderList->SetSelectedPanel(pimpl->m_pDecoderList->GetItemPanel(i));
+
+	pimpl->m_pItemList->DeleteAllItems();
+	auto &DecoderName = pimpl->m_DecoderNames[i];
+
+	std::string AliasDecoderName = DecoderName;
+	if (!stricmp(DecoderName.c_str(), "CashDecoder"))
+		AliasDecoderName = "DecoderA";
+	else if (!stricmp(DecoderName.c_str(), "EventCashDecoder"))
+		AliasDecoderName = "EventDecoderA";
+
+	Label *pName = new CustomFontLabel(pimpl->m_pItemList, "Label", MakeString("#CSO_ItemBox_Name_", AliasDecoderName).c_str(), "DefaultTitle");
+	pName->SizeToContents();
+	pName->SetTall(pName->GetTall() + 10);
+	pName->SetContentAlignment(Label::a_northwest);
+
+	Label *pDesc = new Label(pimpl->m_pItemList, "Label", MakeString("#CSO_ItemBox_Desc_", AliasDecoderName).c_str());
+	pDesc->SizeToContents();
+	pDesc->SetTall(pDesc->GetTall() + 10);
+
+	pimpl->m_pItemList->AddItem(NULL, pName);
+	pimpl->m_pItemList->AddItem(NULL, pDesc);
+
+	vgui::Panel *backupPanel = NULL;
+	for (auto &kvp : pimpl->m_iniData)
+	{
+		auto &kv = kvp.second;
+		std::vector<std::string> MyDecoders = ParseString(kv["Decoder"]);
+		if (std::find(MyDecoders.begin(), MyDecoders.end(), DecoderName) == MyDecoders.end())
+			continue;
+
+		decltype(kv.find(std::declval<const char *>())) iter;
+		iter = kv.find("Display");
+		if (iter == kv.end() || !atoi(iter->second.c_str()))
+			continue;
+
+		ItemDescPanel *pItemDescPanel = new ItemDescPanel(pimpl->m_pItemList, "ItemDescPanel", kvp.first.c_str());
+		iter = kv.find("Image");
+		if (iter != kv.end())
+			pItemDescPanel->SetItemImage(iter->second.c_str());
+		iter = kv.find("Name");
+		if (iter != kv.end())
+			pItemDescPanel->SetItemName(iter->second.c_str());
+		
+		
+
+		if (backupPanel)
+		{
+			vgui::Panel *pPairPanel = new Panel(pimpl->m_pItemList);
+			backupPanel->SetParent(pPairPanel);
+			pItemDescPanel->SetParent(pPairPanel);
+			pPairPanel->SetSize(backupPanel->GetWide() + pItemDescPanel->GetWide(), max(backupPanel->GetTall(), pItemDescPanel->GetTall()));
+			pItemDescPanel->SetPos(backupPanel->GetWide() + 5, 0);
+			pimpl->m_pItemList->AddItem(NULL, pPairPanel);
+			backupPanel = nullptr;
+		}
+		else
+		{
+			backupPanel = pItemDescPanel;
+		}
+	}
+	if (backupPanel)
+	{
+		pimpl->m_pItemList->AddItem(NULL, backupPanel);
+		backupPanel = nullptr;
+	}
 }
 
 void CCSOLLuckyItemPopupDialog::OnCommand(const char *command)
@@ -144,6 +282,12 @@ void CCSOLLuckyItemPopupDialog::OnCommand(const char *command)
 	else if (!Q_stricmp(command, "BoxButton"))
 	{
 		OnOpenDecoder();
+		return;
+	}
+	else if (!strncmp(command, "SelectDecoder ", 14))
+	{
+		int i = atoi(command + 14);
+		SelectDecoder(i);
 		return;
 	}
 	BaseClass::OnCommand(command);
