@@ -76,7 +76,7 @@ struct Template_GetArg<n, T<Args...>>
 };
 
 template<size_t n, class Tuple>
-inline bool IsKeyEqualsToTupleElement(const std::string &sz, const Tuple &pair)
+inline bool IsKeyEqualsToTupleElement(const typename Template_GetArg<n, Tuple>::type &sz, const Tuple &pair)
 {
 	return sz == std::get<n>(pair);
 }

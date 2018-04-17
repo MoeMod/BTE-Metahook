@@ -224,6 +224,7 @@
     </ClCompile>
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.cpp" />
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.cpp" />
+    <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameBotPage.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameDialog.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameGameplayPage.cpp" />
@@ -562,6 +563,7 @@
     <ClInclude Include="GameUI\BitmapImagePanel.h" />
     <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.h" />
     <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.h" />
+    <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameBotPage.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameDialog.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameGameplayPage.h" />
@@ -990,6 +992,7 @@
     <ClInclude Include="util\IceKey.h" />
     <ClInclude Include="util\IDA.h" />
     <ClInclude Include="util\iniparser.h" />
+    <ClInclude Include="util\LinearMap.h" />
     <ClInclude Include="util\md5.h" />
     <ClInclude Include="util\perf_counter.h" />
     <ClInclude Include="util\STLHelper.h" />

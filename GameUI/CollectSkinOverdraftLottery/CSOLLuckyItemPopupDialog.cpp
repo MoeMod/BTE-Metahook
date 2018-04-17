@@ -22,6 +22,7 @@
 #include "CSOLLuckyItemResultDialog.h"
 
 #include "iniparser.h"
+#include "LinearMap.h"
 #include "vgui_controls/PanelListPanel.h"
 
 struct CCSOLLuckyItemPopupDialog::impl_t
@@ -33,7 +34,7 @@ struct CCSOLLuckyItemPopupDialog::impl_t
 	PanelListPanel *m_pDecoderList;
 	DarkTextEntry *ItemListBG;
 	PanelListPanel *m_pItemList;
-	CIniParser m_iniData;
+	CBasicIniParser< LinearMap<std::string, std::unordered_map<std::string, std::string>> > m_iniData;
 
 	std::vector<std::string> m_DecoderNames;
 	std::vector<int> m_DecoderMaxRatio;

@@ -1133,6 +1133,9 @@
     <ClCompile Include="Client\CubeMapManager.cpp">
       <Filter>Client</Filter>
     </ClCompile>
+    <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.cpp">
+      <Filter>GameUI\CollectSkinOverdraftLottery</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -3057,6 +3060,12 @@
     </ClInclude>
     <ClInclude Include="vgui2\cso_controls\CustomFontLabel.h">
       <Filter>vgui2\cso_controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.h">
+      <Filter>GameUI\CollectSkinOverdraftLottery</Filter>
+    </ClInclude>
+    <ClInclude Include="util\LinearMap.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
