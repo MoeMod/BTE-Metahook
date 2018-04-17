@@ -36,6 +36,9 @@ struct CCSOLLuckyItemPopupDialog::impl_t
 	CIniParser m_iniData;
 
 	std::vector<std::string> m_DecoderNames;
+	std::vector<int> m_DecoderMaxRatio;
+
+	int m_iSelectedDecoderId;
 };
 
 class DecoderItemPanel : public Button
@@ -109,9 +112,6 @@ public:
 		m_pText->SetBounds(0, 56, 200, 20);
 		m_pText->SetMouseInputEnabled(false);
 
-		wchar_t buffer[64];
-		swprintf(buffer, 64, g_pVGuiLocalize->Find("#CSO_Item_Remain_Amount_Format"), 10000);
-
 		m_pItemBackground = new ImagePanel(this, "CSBTEItemBackground");
 		m_pItemBackground->SetImage(scheme()->GetImage("gfx/ui/panel/basket_blank_slot", false));
 		m_pItemBackground->SetBounds(0, 0, 158, 56);
@@ -177,7 +177,9 @@ CCSOLLuckyItemPopupDialog::CCSOLLuckyItemPopupDialog(Panel *parent, const char *
 		auto szDecoders = kvp.second["Decoder"];
 		for (auto szDecoder : ParseString(szDecoders))
 		{
-			AddDecoder(szDecoder.c_str());
+			
+			int i = AddDecoder(szDecoder.c_str());
+			pimpl->m_DecoderMaxRatio[i] += std::stoi(kvp.second["Probability"]);
 		}
 	}
 	if (pimpl->m_pDecoderList->GetItemCount())
@@ -189,22 +191,26 @@ CCSOLLuckyItemPopupDialog::CCSOLLuckyItemPopupDialog(Panel *parent, const char *
 	pimpl->m_pItemList->SetFirstColumnWidth(0);
 }
 
-void CCSOLLuckyItemPopupDialog::AddDecoder(const char *name)
+int CCSOLLuckyItemPopupDialog::AddDecoder(const char *name)
 {
-	if (std::find(pimpl->m_DecoderNames.begin(), pimpl->m_DecoderNames.end(), name) != pimpl->m_DecoderNames.end())
+	auto iter = std::find(pimpl->m_DecoderNames.begin(), pimpl->m_DecoderNames.end(), name);
+	if (iter != pimpl->m_DecoderNames.end())
 	{
-		return;
+		return std::distance(pimpl->m_DecoderNames.begin(), iter);
 	}
 	int i = pimpl->m_DecoderNames.size();
 	pimpl->m_DecoderNames.emplace_back(name);
+	pimpl->m_DecoderMaxRatio.push_back(0);
 	auto pPanel = new DecoderItemPanel(pimpl->m_pDecoderList, name, name);
 	pPanel->SetCommand(MakeString("SelectDecoder ", i).c_str());
 	pPanel->AddActionSignalTarget(this);
 	pimpl->m_pDecoderList->AddItem(nullptr, pPanel);
+	return i;
 }
 
 void CCSOLLuckyItemPopupDialog::SelectDecoder(int i)
 {
+	pimpl->m_iSelectedDecoderId = i;
 	pimpl->m_pDecoderList->SetSelectedPanel(pimpl->m_pDecoderList->GetItemPanel(i));
 
 	pimpl->m_pItemList->DeleteAllItems();
@@ -238,7 +244,7 @@ void CCSOLLuckyItemPopupDialog::SelectDecoder(int i)
 
 		decltype(kv.find(std::declval<const char *>())) iter;
 		iter = kv.find("Display");
-		if (iter == kv.end() || !atoi(iter->second.c_str()))
+		if (iter == kv.end() || !std::stoi(iter->second))
 			continue;
 
 		ItemDescPanel *pItemDescPanel = new ItemDescPanel(pimpl->m_pItemList, "ItemDescPanel", kvp.first.c_str());
@@ -295,8 +301,75 @@ void CCSOLLuckyItemPopupDialog::OnCommand(const char *command)
 
 void CCSOLLuckyItemPopupDialog::OnOpenDecoder()
 {
+	int i = pimpl->m_iSelectedDecoderId;
+	int iMaxRatio = pimpl->m_DecoderMaxRatio[i];
+	if (!iMaxRatio)
+		return;
+	int iRandom = engine->pfnRandomLong(0, iMaxRatio - 1);
+	int iCur = 0;
+	auto iterSelectedItem = pimpl->m_iniData.end();
+	for(auto iter = pimpl->m_iniData.begin(); iter != pimpl->m_iniData.end(); ++iter)
+	{
+		auto &kv = iter->second;
+
+		std::vector<std::string> &&decoders = ParseString(kv["Decoder"]);
+		if (std::find(decoders.begin(), decoders.end(), pimpl->m_DecoderNames[i]) == decoders.end())
+			continue;
+
+		iCur += std::stoi(kv["Probability"]);
+		if (iCur >= iRandom)
+		{
+			iterSelectedItem = iter;
+			break;
+		}
+	}
+
+	Assert(iterSelectedItem != pimpl->m_iniData.end());
 	auto *pResultDialog = new CCSOLLuckyItemResultDialog(this);
+
+	auto &ItemName = iterSelectedItem->first;
+	auto &kv = iterSelectedItem->second;
+	auto iter = kv.end();
+	IImage *pImage = NULL;
+	if ((iter = kv.find("Image")) != kv.end())
+	{
+		pImage = vgui::scheme()->GetImage(iter->second.c_str(), true);
+	}
+	else
+	{
+		IImage *pImage = scheme()->GetImage(MakeString("gfx/vgui/basket/", ItemName).c_str(), true);
+		if (!pImage)
+			pImage = scheme()->GetImage(MakeString("gfx/vgui/", ItemName).c_str(), true);
+	}
+		
+	auto DisplayItemName = MakeString("#CSO_Item_Name_", ItemName);
+	if ((iter = kv.find("Name")) != kv.end())
+		DisplayItemName = iter->second;
+
+	auto DisplayItemDesc = MakeString("#CSO_Item_Desc_", ItemName);
+	if ((iter = kv.find("Desc")) != kv.end())
+		DisplayItemDesc = iter->second;
+
+	pResultDialog->SetAssociatedItem(DisplayItemName.c_str(), DisplayItemDesc.c_str(), pImage);
+
+	if ((iter = kv.find("Limit")) != kv.end())
+	{
+		wchar_t *format = vgui::localize()->Find(MakeString("#CSO_Gachapon_", iter->second, "_Text_Format").c_str());
+		static wchar_t NameBuffer[128];
+		if((iter = kv.find("Amount")) != kv.end())
+			swprintf(NameBuffer, format, std::stoi(iter->second));
+		else
+			swprintf(NameBuffer, format);
+
+		wchar_t *localizedName = vgui::localize()->Find(DisplayItemName.c_str());
+		if (localizedName)
+			pResultDialog->SetItemName(MakeStringW(localizedName, L" ", NameBuffer).c_str());
+	}
+
 	pResultDialog->Activate();
+
+	if((iter = kv.find("Type")) != kv.end())
+		pResultDialog->ActivateAnimation(std::stoi(iter->second));
 }
 
 vgui::Panel *CCSOLLuckyItemPopupDialog::CreateControlByName(const char *controlName)

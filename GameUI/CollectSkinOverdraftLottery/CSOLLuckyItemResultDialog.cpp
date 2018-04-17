@@ -20,8 +20,14 @@
 #include "GameUI/BasePanel.h"
 #include "GameUI/BinkPanel.h"
 
+#include "STLHelper.h"
+
 struct CCSOLLuckyItemResultDialog::impl_t
 {
+	vgui::TextEntry *ItemName;
+	vgui::TextEntry *ItemDescription;
+	vgui::ImagePanel *Item;
+
 	vgui::Button *MyInfoBtn;
 	vgui::Button *OKBtn;
 	vgui::ImagePanel *Effect;
@@ -35,7 +41,15 @@ CCSOLLuckyItemResultDialog::CCSOLLuckyItemResultDialog(Panel *parent, const char
 	pimpl->OKBtn = new vgui::Button(this, "OKBtn", "#CSO_OKl_Btn", this, "vguicancel");
 	pimpl->Effect = new vgui::ImagePanel(this, "Effect");
 
+	//pimpl->ItemName = new DarkTextEntry(this, "ItemName");
+	//pimpl->ItemDescription = new DarkTextEntry(this, "ItemDescription");
+	//pimpl->Item = new vgui::ImagePanel(this, "Item");
+
 	LoadControlSettings("Resource/res/popup_luckyitemresult_renewal.res");
+
+	pimpl->Item = dynamic_cast<vgui::ImagePanel *>(FindChildByName("Item"));
+	pimpl->ItemName = dynamic_cast<vgui::TextEntry *>(FindChildByName("ItemName"));
+	pimpl->ItemDescription = dynamic_cast<vgui::TextEntry *>(FindChildByName("ItemDescription"));
 
 	this->SetMenuButtonVisible(false);
 	this->SetCloseButtonVisible(false);
@@ -43,12 +57,8 @@ CCSOLLuckyItemResultDialog::CCSOLLuckyItemResultDialog(Panel *parent, const char
 	this->SetTitle("", false);
 
 	pimpl->bink = new CBinkPanel(this, "BinkPanel");
-	pimpl->bink->OpenBink("resource\\gachapon\\congratulation3.bik", BINKSURFACE32RA);
 	pimpl->bink->SetVisible(false);
 	pimpl->bink->SetZPos(233);
-
-	pimpl->Effect->SetImage("resource\\gachapon\\result_congratulation3");
-	pimpl->Effect->SetAlpha(0);
 }
 
 void CCSOLLuckyItemResultDialog::OnCommand(const char *command)
@@ -74,9 +84,9 @@ vgui::Panel *CCSOLLuckyItemResultDialog::CreateControlByName(const char *control
 	{
 		return new ForceColoredLabel(this, controlName, "");
 	}
-	else if (!Q_stricmp(controlName, "IMETextEntry") || !Q_stricmp(controlName, "TextEntry"))
+	else if (!Q_stricmp(controlName, "RoundPanel") || !Q_stricmp(controlName, "IMETextEntry") || !Q_stricmp(controlName, "TextEntry"))
 	{
-		return new DarkTextEntry(this, controlName);
+		return new DarkTextEntry(this, "DarkTextEntry");
 	}
 	return BaseClass::CreateControlByName(controlName);
 }
@@ -86,6 +96,19 @@ void CCSOLLuckyItemResultDialog::Activate(void)
 	BaseClass::Activate();
 	BasePanel()->PositionDialog(this);
 	input()->SetAppModalSurface(GetVPanel());
+
+	pimpl->bink->SetVisible(false);
+	pimpl->Effect->SetVisible(false);
+	pimpl->Effect->SetAlpha(0);
+}
+
+void CCSOLLuckyItemResultDialog::ActivateAnimation(int type)
+{
+	pimpl->bink->CloseBink();
+	pimpl->bink->OpenBink(MakeString("resource\\gachapon\\congratulation", type, ".bik").c_str(), BINKSURFACE32RA);
+	pimpl->Effect->SetImage(MakeString("resource\\gachapon\\result_congratulation", type).c_str());
+	engine->pfnClientCmd((char *)MakeString("speak events/congratulation", type).c_str());
+	//engine->pfnClientCmd("fmod sound/events/congratulation3.wav");
 
 	int w, h;
 	GetSize(w, h);
@@ -106,7 +129,7 @@ void CCSOLLuckyItemResultDialog::Activate(void)
 	TargetX -= 11;
 	TargetY -= 68;
 	TargetH = TargetW;
-	
+
 	// void RunAnimationCommand(vgui::Panel *panel, const char *variable, float targetValue, float startDelaySeconds, float durationSeconds, Interpolators_e interpolator, float animParameter = 0 );
 	GetAnimationController()->RunAnimationCommand(pimpl->bink, "xpos", TargetX, 2.5f, 1.0f, AnimationController::INTERPOLATOR_LINEAR);
 	GetAnimationController()->RunAnimationCommand(pimpl->bink, "ypos", TargetY, 2.5f, 1.0f, AnimationController::INTERPOLATOR_LINEAR);
@@ -115,8 +138,8 @@ void CCSOLLuckyItemResultDialog::Activate(void)
 	GetAnimationController()->RunAnimationCommand(pimpl->bink, "alpha", 0, 3.5f, 0.0f, AnimationController::INTERPOLATOR_SIMPLESPLINE);
 	GetAnimationController()->RunAnimationCommand(pimpl->Effect, "alpha", 255, 3.5f, 0.0f, AnimationController::INTERPOLATOR_SIMPLESPLINE);
 
-	engine->pfnClientCmd("speak events/congratulation3");
-	//engine->pfnClientCmd("fmod sound/events/congratulation3.wav");
+	pimpl->bink->SetVisible(true);
+	pimpl->Effect->SetVisible(true);
 }
 
 void CCSOLLuckyItemResultDialog::OnClose(void)
@@ -124,4 +147,27 @@ void CCSOLLuckyItemResultDialog::OnClose(void)
 	BaseClass::OnClose();
 
 	vgui::input()->SetAppModalSurface(NULL);
+}
+
+void CCSOLLuckyItemResultDialog::SetAssociatedItem(const char *name, const char *info, const char *image)
+{
+	pimpl->ItemName->SetText(name);
+	pimpl->ItemDescription->SetText(info);
+	pimpl->Item->SetImage(image);
+}
+
+void CCSOLLuckyItemResultDialog::SetAssociatedItem(const char *name, const char *info, vgui::IImage *image)
+{
+	pimpl->ItemName->SetText(name);
+	pimpl->ItemDescription->SetText(info);
+	pimpl->Item->SetImage(image);
+}
+
+void CCSOLLuckyItemResultDialog::SetItemName(const char *name)
+{
+	pimpl->ItemName->SetText(name);
+}
+void CCSOLLuckyItemResultDialog::SetItemName(const wchar_t *name)
+{
+	pimpl->ItemName->SetText(name);
 }

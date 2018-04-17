@@ -17,7 +17,7 @@ protected:
 	virtual vgui::Panel *CreateControlByName(const char *controlName) override;
 
 	void OnOpenDecoder();
-	void AddDecoder(const char *name);
+	int AddDecoder(const char *name);
 	void SelectDecoder(int n);
 private:
 	struct impl_t;

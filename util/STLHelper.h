@@ -28,12 +28,30 @@ inline std::string Trim(std::string sz)
 	return sz;
 }
 
+inline std::wstring Trim(std::wstring sz)
+{
+	const wchar_t *delim = L" \t";
+	sz.erase(0, sz.find_first_not_of(delim));
+	sz.erase(sz.find_last_not_of(delim) + 1);
+	return sz;
+}
+
 std::vector<std::string> ParseString(const std::string &sz);
+std::vector<std::wstring> ParseString(const std::wstring &sz);
 
 template<class...Args>
 inline std::string MakeString(const Args &...args)
 {
 	std::ostringstream oss;
+	// (oss << ... << args);
+	int p[] = { ((oss << args), 0)... };
+	return oss.str();
+}
+
+template<class...Args>
+inline std::wstring MakeStringW(const Args &...args)
+{
+	std::wostringstream oss;
 	// (oss << ... << args);
 	int p[] = { ((oss << args), 0)... };
 	return oss.str();
