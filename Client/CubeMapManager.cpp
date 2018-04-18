@@ -31,6 +31,7 @@ CCubeMapManager::CCubeMapManager()
 	{
 		m_pCubeMapData[i] = NULL;
 	}
+	m_bRendering = m_bEnabled = false;
 }
 
 CCubeMapManager::~CCubeMapManager()
@@ -78,7 +79,8 @@ void CCubeMapManager::LoadData()
 		strcpy(m_pszEnvName[iCachedID], szBuffer);
 
 		
-		qglGenTextures(1, &m_EnvTextureId[iCachedID]);
+		//qglGenTextures(1, &m_EnvTextureId[iCachedID]);
+		m_EnvTextureId[iCachedID] = vgui::surface()->CreateNewTextureID();
 		qglBindTexture(GL_TEXTURE_CUBE_MAP, m_EnvTextureId[iCachedID]);
 
 		for (int j = 0; j < 6; j++)
@@ -164,9 +166,11 @@ bool CCubeMapManager::CheckTexture()
 {
 	if (!m_bEnabled)
 		return false;
-	m_iCubeMapID = 0;
-	if (sscanf(gCurrentTexture.name + 3, "@%d", &m_iCubeMapID) < 1)
+	if(gCurrentTexture.name[3]!= '@')
 		return false;
+	char szNum[4];
+	strncpy(szNum, gCurrentTexture.name + 4, 3);
+	m_iCubeMapID = atoi(szNum);
 	
 	if (m_iCubeMapID >=10)
 		return false;
@@ -177,7 +181,7 @@ bool CCubeMapManager::CheckTexture()
 
 void CCubeMapManager::SetupTexture()
 {
-	
+	m_bRendering = true;
 	glActiveTextureARB(GL_TEXTURE1_ARB);
 	qglEnable(GL_TEXTURE_CUBE_MAP);
 	qglEnable(GL_TEXTURE_CUBE_MAP_EXT);
@@ -185,16 +189,21 @@ void CCubeMapManager::SetupTexture()
 	auto textureID = m_EnvTextureId[m_iCubeMapID];
 	qglBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
-	//glTexEnvi(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_ENV, GL_REPLACE);
-	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	
+	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	qglTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	qglTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_EXT);
-	qglTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_EXT);
-	qglTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_EXT);
+	static GLfloat params[] = { 1.0,0.0,0.0,0.0 };
+	gEngfuncs.GetViewAngles(params);
+	qglTexGenfv(GL_S, GL_OBJECT_PLANE, params);
+
+	qglTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
+	qglTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
+	qglTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
+
 	qglEnable(GL_TEXTURE_GEN_S);
 	qglEnable(GL_TEXTURE_GEN_T);
 	qglEnable(GL_TEXTURE_GEN_R);
@@ -202,14 +211,15 @@ void CCubeMapManager::SetupTexture()
 	qglEnable(GL_BLEND);
 	qglDisable(GL_ALPHA_TEST);
 	qglBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//qglTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	IEngineStudio.SetChromeOrigin();
+	qglTexEnvi(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_ENV, GL_BLEND);
 	glActiveTextureARB(GL_TEXTURE0_ARB);
-
 }
 
 void CCubeMapManager::UnloadTexture()
 {
+	if (!m_bEnabled || !m_bRendering)
+		return;
+
 	glActiveTextureARB(GL_TEXTURE1_ARB);
 
 	qglDisable(GL_TEXTURE_GEN_S);

@@ -338,9 +338,7 @@ void CCSOLLuckyItemPopupDialog::OnOpenDecoder()
 	}
 	else
 	{
-		IImage *pImage = scheme()->GetImage(MakeString("gfx/vgui/basket/", ItemName).c_str(), true);
-		if (!pImage)
-			pImage = scheme()->GetImage(MakeString("gfx/vgui/", ItemName).c_str(), true);
+		pImage = scheme()->GetImage(MakeString("gfx/vgui/basket/", ItemName).c_str(), true);
 	}
 		
 	auto DisplayItemName = MakeString("#CSO_Item_Name_", ItemName);
@@ -357,14 +355,21 @@ void CCSOLLuckyItemPopupDialog::OnOpenDecoder()
 	{
 		wchar_t *format = vgui::localize()->Find(MakeString("#CSO_Gachapon_", iter->second, "_Text_Format").c_str());
 		static wchar_t NameBuffer[128];
-		if((iter = kv.find("Amount")) != kv.end())
-			swprintf(NameBuffer, format, std::stoi(iter->second));
+		if (format)
+		{
+			if ((iter = kv.find("Amount")) != kv.end())
+				swprintf(NameBuffer, format, std::stoi(iter->second));
+			else
+				swprintf(NameBuffer, format);
+		}
 		else
-			swprintf(NameBuffer, format);
+		{
+			NameBuffer[0] = L'\0';
+		}
 
 		wchar_t *localizedName = vgui::localize()->Find(DisplayItemName.c_str());
 		if (localizedName)
-			pResultDialog->SetItemName(MakeStringW(localizedName, L" ", NameBuffer).c_str());
+			pResultDialog->SetItemName(MakeStringW(localizedName, NameBuffer).c_str());
 	}
 
 	pResultDialog->Activate();

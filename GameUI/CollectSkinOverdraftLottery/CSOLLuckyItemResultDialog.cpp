@@ -57,7 +57,6 @@ CCSOLLuckyItemResultDialog::CCSOLLuckyItemResultDialog(Panel *parent, const char
 	this->SetTitle("", false);
 
 	pimpl->bink = new CBinkPanel(this, "BinkPanel");
-	pimpl->bink->SetVisible(false);
 	pimpl->bink->SetZPos(233);
 }
 
@@ -104,6 +103,12 @@ void CCSOLLuckyItemResultDialog::Activate(void)
 
 void CCSOLLuckyItemResultDialog::ActivateAnimation(int type)
 {
+	if (!type)
+	{
+		pimpl->bink->SetVisible(false);
+		pimpl->Effect->SetVisible(false);
+		return;
+	}
 	pimpl->bink->CloseBink();
 	pimpl->bink->OpenBink(MakeString("resource\\gachapon\\congratulation", type, ".bik").c_str(), BINKSURFACE32RA);
 	pimpl->Effect->SetImage(MakeString("resource\\gachapon\\result_congratulation", type).c_str());

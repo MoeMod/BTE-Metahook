@@ -44,6 +44,7 @@ public:
 	CubeMapData *m_pCubeMapData[MAX_SHADER_CUBEMAP];
 	int m_iCubeMapID;
 	bool m_bEnabled;
+	bool m_bRendering;
 };
 
 extern CCubeMapManager gCubeMapManager;
