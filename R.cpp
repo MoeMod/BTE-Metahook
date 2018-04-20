@@ -479,6 +479,12 @@ int R_StudioCheckBBox(void)
 float g_flBloodhunterAnimTime = 0.0;
 int g_iBloodhunterSecAnim = 0;
 
+std::list<ExtraViewModel> m_vecExtraViewModels;
+void R_AddExtraViewModel(const ExtraViewModel &item)
+{
+	m_vecExtraViewModels.push_back(item);
+}
+
 int Hook_R_StudioDrawModel(int flags)
 {
 	cl_entity_s *viewent = IEngineStudio.GetViewEntity();
@@ -501,9 +507,41 @@ int Hook_R_StudioDrawModel(int flags)
 			curent->curstate.animtime = g_flBloodhunterAnimTime;
 			curent->curstate.framerate = 1.0;
 			curent->curstate.sequence = g_iBloodhunterSecAnim;
-
+			
 			gStudioInterface.StudioDrawModel(flags);
 			*curent = saveent;
+		}
+
+		if (m_vecExtraViewModels.size())
+		{
+			static cl_entity_t saveent;
+			saveent = *curent;
+
+			for (auto iter = m_vecExtraViewModels.begin(); iter != m_vecExtraViewModels.end();/**/)
+			{
+				curent->curstate.animtime = iter->m_flTimeStart;
+				curent->curstate.framerate = 1.0;
+				curent->curstate.sequence = iter->m_iSequence;
+				curent->curstate.rendermode = iter->rendermode;
+				curent->curstate.renderamt = iter->renderamt;
+
+				gStudioInterface.StudioDrawModel(flags);
+
+				if (cl.time >= iter->m_flTimeEnd)
+				{
+					iter = m_vecExtraViewModels.erase(iter);
+				}
+				else
+				{
+					++iter;
+				}
+			}
+			*curent = saveent;
+		}
+
+		if (g_iBTEWeapon == WPN_GUNKATA)
+		{
+			
 		}
 
 		if (g_iBTEWeapon == WPN_STORMGIANT)
