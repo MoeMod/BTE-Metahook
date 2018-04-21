@@ -51,6 +51,7 @@
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
 #include "Client/TextureManager.h"
+#include "Client/CubeMapManager.h"
 
 #include "Client/HUD/health.h"
 #include "Client/HUD/DrawTABPanel.h"
@@ -589,6 +590,7 @@ int HUD_VidInit(void)
 	gEngfuncs.pfnClientCmd("-duck;");
 
 	Weapon_VidInit();
+	gCubeMapManager.Reset();
 
 	return gExportfuncs.HUD_VidInit();
 }

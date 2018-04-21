@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <algorithm>
 #include <numeric>
 #include <tuple>
+#include <vector>
 #include <iterator>
 
 inline std::string ToLower(std::string sz)
@@ -26,24 +28,34 @@ inline std::string Trim(std::string sz)
 	return sz;
 }
 
-template<class T>
-class IEnumerableProxy
+inline std::wstring Trim(std::wstring sz)
 {
-public:
-	IEnumerableProxy(T &x) : m_Iterable(x){}
+	const wchar_t *delim = L" \t";
+	sz.erase(0, sz.find_first_not_of(delim));
+	sz.erase(sz.find_last_not_of(delim) + 1);
+	return sz;
+}
 
-	auto begin() -> decltype(std::declval<T>().begin()) { return m_Iterable.begin();}
-	auto end() -> decltype(std::declval<T>().end()) { return m_Iterable.end(); }
-	auto rbegin() -> decltype(std::declval<T>().rbegin()) { return m_Iterable.rbegin(); }
-	auto rend() -> decltype(std::declval<T>().rend()) { return m_Iterable.rend(); }
-	auto cbegin() -> decltype(std::declval<T>().cbegin()) { return m_Iterable.cbegin(); }
-	auto cend() -> decltype(std::declval<T>().cend()) { return m_Iterable.cend(); }
-	auto crbegin() -> decltype(std::declval<T>().crbegin()) { return m_Iterable.crbegin(); }
-	auto crend() -> decltype(std::declval<T>().crend()) { return m_Iterable.crend(); }
-	
-private:
-	T &m_Iterable;
-};
+std::vector<std::string> ParseString(const std::string &sz);
+std::vector<std::wstring> ParseString(const std::wstring &sz);
+
+template<class...Args>
+inline std::string MakeString(const Args &...args)
+{
+	std::ostringstream oss;
+	// (oss << ... << args);
+	int p[] = { ((oss << args), 0)... };
+	return oss.str();
+}
+
+template<class...Args>
+inline std::wstring MakeStringW(const Args &...args)
+{
+	std::wostringstream oss;
+	// (oss << ... << args);
+	int p[] = { ((oss << args), 0)... };
+	return oss.str();
+}
 
 template<size_t n, class First, class...Args>
 struct VA_GetArg
@@ -64,7 +76,7 @@ struct Template_GetArg<n, T<Args...>>
 };
 
 template<size_t n, class Tuple>
-inline bool IsKeyEqualsToTupleElement(const std::string &sz, const Tuple &pair)
+inline bool IsKeyEqualsToTupleElement(const typename Template_GetArg<n, Tuple>::type &sz, const Tuple &pair)
 {
 	return sz == std::get<n>(pair);
 }

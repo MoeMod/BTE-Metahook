@@ -18,7 +18,11 @@
 #include <vgui_controls/ImagePanel.h>
 #include <vgui_controls/EditablePanel.h>
 
+#include "WeaponImagePanel.h"
+
 #include <string>
+
+#include "util/STLHelper.h"
 
 using namespace vgui;
 
@@ -32,35 +36,38 @@ public:
 		SetMouseInputEnabled(false);
 		SetKeyBoardInputEnabled(false);
 
-		m_pPrimaryWeapon = new ImagePanel(this, "primary");
-		m_pSecondaryWeapon = new ImagePanel(this, "secondary");
-		m_pKnifeWeapon = new ImagePanel(this, "knife");
+		m_pPrimaryWeapon = new WeaponImagePanel(this, "primary");
+		m_pSecondaryWeapon = new WeaponImagePanel(this, "secondary");
+		m_pKnifeWeapon = new WeaponImagePanel(this, "knife");
 
 		m_pPrimaryWeapon->SetShouldScaleImage(true);
+		m_pPrimaryWeapon->SetShouldCenterImage(true);
 		m_pSecondaryWeapon->SetShouldScaleImage(true);
+		m_pSecondaryWeapon->SetShouldCenterImage(true);
 		m_pKnifeWeapon->SetShouldScaleImage(true);
+		m_pKnifeWeapon->SetShouldCenterImage(true);
 	}
 
 	void ClearWeapons(void)
 	{
-		m_pPrimaryWeapon->SetImage((IImage *)NULL);
-		m_pSecondaryWeapon->SetImage((IImage *)NULL);
-		m_pKnifeWeapon->SetImage((IImage *)NULL);
+		m_pPrimaryWeapon->SetWeapon(nullptr);
+		m_pSecondaryWeapon->SetWeapon(nullptr);
+		m_pKnifeWeapon->SetWeapon(nullptr);
 	}
 
-	void SetPrimaryWeapon(IImage *image)
+	void SetPrimaryWeapon(const char *name)
 	{
-		m_pPrimaryWeapon->SetImage(image);
+		m_pPrimaryWeapon->SetWeapon(name);
 	}
 
-	void SetSecondaryWeapon(IImage *image)
+	void SetSecondaryWeapon(const char *name)
 	{
-		m_pSecondaryWeapon->SetImage(image);
+		m_pSecondaryWeapon->SetWeapon(name);
 	}
 
-	void SetKnifeWeapon(IImage *image)
+	void SetKnifeWeapon(const char *name)
 	{
-		m_pKnifeWeapon->SetImage(image);
+		m_pKnifeWeapon->SetWeapon(name);
 	}
 
 	virtual void PerformLayout() override
@@ -69,14 +76,14 @@ public:
 		GetSize(w, h);
 		float scale = w / 175.0;
 		m_pPrimaryWeapon->SetBounds(25 * scale, 0 * scale, 100 * scale, 38 * scale);
-		m_pSecondaryWeapon->SetBounds(122 * scale, 0 * scale, 50 * scale, 19 * scale);
-		m_pKnifeWeapon->SetBounds(122 * scale, 19 * scale, 50 * scale, 19 * scale);
+		m_pSecondaryWeapon->SetBounds(125 * scale, 0 * scale, 50 * scale, 19 * scale);
+		m_pKnifeWeapon->SetBounds(125 * scale, 19 * scale, 50 * scale, 19 * scale);
 	}
 
 private:
-	ImagePanel *m_pPrimaryWeapon;
-	ImagePanel *m_pSecondaryWeapon;
-	ImagePanel *m_pKnifeWeapon;
+	WeaponImagePanel *m_pPrimaryWeapon;
+	WeaponImagePanel *m_pSecondaryWeapon;
+	WeaponImagePanel *m_pKnifeWeapon;
 };
 
 BuyPresetButton::BuyPresetButton(Panel *parent, const char *panelName) : BaseClass(parent, panelName, "")
@@ -394,30 +401,15 @@ void BuyPresetButton::ClearWeapons(void)
 	m_pImagePanel->ClearWeapons();
 }
 
-void BuyPresetButton::SetPrimaryWeapon(IImage *image)
-{
-	m_pImagePanel->SetPrimaryWeapon(image);
-}
-
-void BuyPresetButton::SetSecondaryWeapon(IImage *image)
-{
-	m_pImagePanel->SetSecondaryWeapon(image);
-}
-
-void BuyPresetButton::SetKnifeWeapon(IImage *image)
-{
-	m_pImagePanel->SetKnifeWeapon(image);
-}
-
 void BuyPresetButton::SetPrimaryWeapon(const char *name)
 {
-	return SetPrimaryWeapon(vgui::scheme()->GetImage((std::string("gfx\\vgui\\")+=name).c_str(), true));
+	return m_pImagePanel->SetPrimaryWeapon(name);
 }
 void BuyPresetButton::SetSecondaryWeapon(const char *name)
 {
-	return SetSecondaryWeapon(vgui::scheme()->GetImage((std::string("gfx\\vgui\\") += name).c_str(), true));
+	return m_pImagePanel->SetSecondaryWeapon(name);
 }
 void BuyPresetButton::SetKnifeWeapon(const char *name)
 {
-	return SetKnifeWeapon(vgui::scheme()->GetImage((std::string("gfx\\vgui\\") += name).c_str(), true));
+	return m_pImagePanel->SetKnifeWeapon(name);
 }

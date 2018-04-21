@@ -36,6 +36,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+#include "cso_controls/ColoredButton.h"
+
 using namespace vgui;
 
 #define SCRIPTS_DIR "gfx/shell"
@@ -306,8 +308,8 @@ COptionsSubKeyboard::COptionsSubKeyboard(vgui::Panel *parent) : PropertyPage(par
 	m_pSetBindingButton = new Button(this, "ChangeKeyButton", "");
 	m_pClearBindingButton = new Button(this, "ClearKeyButton", "");
 
-	m_pSkillKeyButton = new Button(this, "SkillKeyButton", "");
-	m_pSkillKeyButton->SetFgColor(Color(255, 155, 155));
+	m_pSkillKeyButton = new ColoredButton(this, "SkillKeyButton", "");
+	m_pSkillKeyButton->SetTextColor(Color(255, 155, 155, 255));
 
 	LoadControlSettings("Resource/OptionsSubKeyboard.res");
 

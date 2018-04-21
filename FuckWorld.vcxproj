@@ -127,6 +127,7 @@
     <ClCompile Include="client.cpp" />
     <ClCompile Include="Client\com_weapons.cpp" />
     <ClCompile Include="Client\CounterStrikeViewport.cpp" />
+    <ClCompile Include="Client\CubeMapManager.cpp" />
     <ClCompile Include="Client\EButtonManager.cpp" />
     <ClCompile Include="Client\events.cpp" />
     <ClCompile Include="Client\ev_common.cpp" />
@@ -193,7 +194,9 @@
     <ClCompile Include="Client\VGUI\BuyMenu\buypresetbutton.cpp" />
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymenu.cpp" />
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanel.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanelbutton.cpp" />
     <ClCompile Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.cpp" />
+    <ClCompile Include="Client\VGUI\BuyMenu\WeaponImagePanel.cpp" />
     <ClCompile Include="Client\VGUI\CSBackGroundPanel.cpp" />
     <ClCompile Include="Client\VGUI\vgui_int.cpp" />
     <ClCompile Include="Client\ViewPort.cpp" />
@@ -219,6 +222,9 @@
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.cpp" />
+    <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.cpp" />
+    <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameBotPage.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameDialog.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameGameplayPage.cpp" />
@@ -362,6 +368,7 @@
     <ClCompile Include="util\util.cpp" />
     <ClCompile Include="vgui2\Bitmap.cpp" />
     <ClCompile Include="vgui2\Border.cpp" />
+    <ClCompile Include="vgui2\cso_controls\TexturedButton.cpp" />
     <ClCompile Include="vgui2\HtmlWindow.cpp" />
     <ClCompile Include="vgui2\MemoryBitmap.cpp" />
     <ClCompile Include="vgui2\Scheme.cpp" />
@@ -458,6 +465,7 @@
     <ClInclude Include="Client\cl_util.h" />
     <ClInclude Include="Client\com_weapons.h" />
     <ClInclude Include="Client\CounterStrikeViewport.h" />
+    <ClInclude Include="Client\CubeMapManager.h" />
     <ClInclude Include="Client\EButtonManager.h" />
     <ClInclude Include="Client\events.h" />
     <ClInclude Include="Client\eventscripts.h" />
@@ -528,7 +536,9 @@
     <ClInclude Include="Client\VGUI\BuyMenu\buypresetbutton.h" />
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymenu.h" />
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanel.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuymouseoverpanelbutton.h" />
     <ClInclude Include="Client\VGUI\BuyMenu\cstrikebuysubmenu.h" />
+    <ClInclude Include="Client\VGUI\BuyMenu\WeaponImagePanel.h" />
     <ClInclude Include="Client\VGUI\CSBackGroundPanel.h" />
     <ClInclude Include="Client\VGUI\newmouseoverpanelbutton.h" />
     <ClInclude Include="Client\VGUI\vgui_int.h" />
@@ -551,6 +561,9 @@
     <ClInclude Include="GameUI\BasePanel.h" />
     <ClInclude Include="GameUI\BinkPanel.h" />
     <ClInclude Include="GameUI\BitmapImagePanel.h" />
+    <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.h" />
+    <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.h" />
+    <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameBotPage.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameDialog.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameGameplayPage.h" />
@@ -979,12 +992,20 @@
     <ClInclude Include="util\IceKey.h" />
     <ClInclude Include="util\IDA.h" />
     <ClInclude Include="util\iniparser.h" />
+    <ClInclude Include="util\LinearMap.h" />
     <ClInclude Include="util\md5.h" />
     <ClInclude Include="util\perf_counter.h" />
     <ClInclude Include="util\STLHelper.h" />
     <ClInclude Include="util\util.h" />
     <ClInclude Include="vgui2\bitmap.h" />
+    <ClInclude Include="vgui2\cso_controls\BluedPopupDialog.h" />
+    <ClInclude Include="vgui2\cso_controls\ForceColoredLabel.h" />
+    <ClInclude Include="vgui2\cso_controls\CustomFontLabel.h" />
+    <ClInclude Include="vgui2\cso_controls\SelectedImage.h" />
+    <ClInclude Include="vgui2\cso_controls\TexturedButton.h" />
     <ClInclude Include="vgui2\cso_controls\ButtonGlow.h" />
+    <ClInclude Include="vgui2\cso_controls\ColoredButton.h" />
+    <ClInclude Include="vgui2\cso_controls\DarkAlphaTextEntry.h" />
     <ClInclude Include="vgui2\cso_controls\DarkTextEntry.h" />
     <ClInclude Include="vgui2\cso_controls\NewTabButton.h" />
     <ClInclude Include="vgui2\HtmlWindow.h" />
@@ -1082,7 +1103,6 @@
     <ResourceCompile Include="SourceSDK\tier0\assert_dialog.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BugReport\BugReport.aps" />
     <None Include="CSBTE.ico" />
   </ItemGroup>
   <ItemGroup>

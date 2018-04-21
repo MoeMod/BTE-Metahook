@@ -15,6 +15,7 @@
 
 #include "MGUI/mgui.h"
 #include "MGUI/BTEPanel.h"
+#include "MGUI/NormalZombieMenu.h"
 #include "MGUI/TeamMenu.h"
 
 using namespace vgui;
@@ -23,6 +24,10 @@ Panel *g_lastPanel = NULL;
 Button *g_lastButton = NULL;
 
 CViewport *g_pViewPort = NULL;
+
+const Color COL_NONE = { 255, 255, 255, 255 };
+const Color COL_CT = { 192, 205, 224, 255 };
+const Color COL_TR = { 216, 182, 183, 255 };
 
 CViewport::CViewport()
 {
@@ -188,8 +193,23 @@ void CViewport::HideAllVGUIMenu(void)
 	//ShowPanel(m_pTextWindow, false);
 }
 
+extern MGUI_Panel *pTeamSuitPanel;
+extern MGUI_Panel *pBuyMenuPanel;
+void MGUI_CloseAll()
+{
+	if (pTeamSuitPanel)
+		pTeamSuitPanel->m_iClosing = TRUE;
+	if (pBuyMenuPanel)
+		pBuyMenuPanel->m_iClosing = TRUE;
+	g_TeamMenu.Close();
+	g_NormalZombieMenu.Close();
+	//UpdateItems();
+	g_mgui_candraw = 0;
+}
+
 bool CViewport::ShowVGUIMenu(int iMenu)
 {
+	MGUI_CloseAll();
 	CViewPortPanel *panel = NULL;
 
 	switch (iMenu)

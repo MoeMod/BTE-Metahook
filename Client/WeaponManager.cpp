@@ -182,6 +182,15 @@ auto CWeaponManager::Find(const char *szName)->CustomWeapon &
 	return m_NullWeapon;
 }
 
+bool CWeaponManager::FCanBuyWeapon(const char *name)
+{
+	auto it = m_DataMap.find(name);
+	if (it == m_DataMap.end())
+		return false;
+
+	return it->second->bCanBuy;
+}
+
 auto CWeaponManager::LoadWeaponData(const char *szName) -> CustomWeapon
 {
 	CustomWeapon Result;

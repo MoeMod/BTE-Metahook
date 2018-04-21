@@ -12,6 +12,8 @@
 #include "pmtrace.h"
 #include "event_api.h"
 
+#include "CubeMapManager.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <memory.h>
@@ -22,7 +24,6 @@
 
 #include "StudioModelRenderer.h"
 #include "GameStudioModelRenderer.h"
-
 
 engine_studio_api_t IEngineStudio;
 
@@ -1329,11 +1330,11 @@ void CStudioModelRenderer::StudioRenderModel(void)
 
 		if (!IEngineStudio.IsHardware())
 			gEngfuncs.pTriAPI->RenderMode(kRenderNormal);
+		return;
 	}
-	else
-	{
-		StudioRenderFinal();
-	}
+
+	StudioRenderFinal();
+	
 }
 
 void CStudioModelRenderer::StudioRenderFinal_Software(void)

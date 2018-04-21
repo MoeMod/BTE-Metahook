@@ -6,32 +6,14 @@
 
 #include "game_controls\buysubmenu.h"
 #include "BuyPresetButton.h"
-#include "buymouseoverpanelbutton.h"
+#include "cstrikebuymouseoverpanelbutton.h"
 #include "cso_controls/NewTabButton.h"
 #include "WeaponManager.h"
+#include "WeaponImagePanel.h"
 
 #include "util/iniParser.h"
 
 using namespace vgui;
-
-class CSBuyMouseOverPanelButton : public BuyMouseOverPanelButton
-{
-private:
-	typedef BuyMouseOverPanelButton BaseClass;
-public:
-	CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel);
-	
-	virtual void Paint() override;
-
-	using WeaponBuyTeam = CWeaponManager::WeaponBuyTeam;
-	void SetTeam(WeaponBuyTeam team) 
-	{ 
-		m_iTeam = team; 
-	}
-	WeaponBuyTeam m_iTeam;
-	void UpdateWeapon(const char *weapon = "");
-	
-};
 
 class CCSBuySubMenu : public CBuySubMenu
 {
@@ -119,16 +101,16 @@ protected:
 	vgui::Button *m_pQuitButton;  // vguicancel
 
 								  // Lower Weapon Slot
-	vgui::ImagePanel *pwpnBG;
-	vgui::ImagePanel *swpnBG;
-	vgui::ImagePanel *hgrenBG;
+	WeaponImagePanel *pwpnBG;
+	WeaponImagePanel *swpnBG;
+	WeaponImagePanel *hgrenBG;
 	vgui::ImagePanel *sgrenBG;
 	vgui::ImagePanel *fgrenBG;
 	vgui::ImagePanel *fgren2BG;
 	vgui::ImagePanel *dfBG;
 	vgui::ImagePanel *nvBG;
 	vgui::ImagePanel *kevBG;
-	vgui::ImagePanel *newknifeBG;
+	WeaponImagePanel *newknifeBG;
 
 	vgui::ImagePanel *pammoBG;
 	vgui::ImagePanel *sammoBG;
@@ -191,6 +173,8 @@ public:
 	CCSBuySubMenu_ZombieMod(vgui::Panel *parent, const char *name = "BuySubMenu") : CCSBuySubMenu(parent, name) {}
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
 	virtual void OnSelectWeapon(const char *weapon) override;
+	virtual void SetupItems(CWeaponManager::WeaponBuyMenuType type) override;
+	virtual void OnCommand(const char *command) override;
 };
 
 class CCSBuySubMenu_DeathMatch : public CCSBuySubMenu

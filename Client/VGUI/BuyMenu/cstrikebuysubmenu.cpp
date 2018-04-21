@@ -11,11 +11,10 @@
 #include "vgui_controls/RichText.h"
 #include "vgui_controls/CheckButton.h"
 #include "vgui_controls/TextEntry.h"
+#include "vgui_controls/MessageBox.h"
 #include "buymouseoverpanelbutton.h"
 #include "cso_controls/ButtonGlow.h"
 #include "cso_controls/DarkTextEntry.h"
-
-#include "cstrikebuymouseoverpanel.h"
 
 #include "WeaponManager.h"
 
@@ -23,42 +22,8 @@
 
 using namespace vgui;
 
-static const Color COL_NONE = { 255, 255, 255, 255 };
-static const Color COL_CT = { 192, 205, 224, 255 };
-static const Color COL_TR = { 216, 182, 183, 255 };
-
 static const char *EQUIPMENT_BUYLIST[] = { "vest","vesthelm","flash","hegrenade","sgren","defuser","nvgs" };
 static const char *EQUIPMENT_BUYLIST_CMD[] = { "vest","vesthelm","flash","VGUI_BuyMenu_BuyWeapon hegrenade","sgren","defuser","nvgs" };
-
-CSBuyMouseOverPanelButton::CSBuyMouseOverPanelButton(vgui::Panel *parent, const char *panelName, vgui::EditablePanel *panel)
-	: BaseClass(parent, panelName, panel)
-{
-	if (m_pPanel)
-		delete m_pPanel;
-	m_pPanel = new CSBuyMouseOverPanel(parent, "ItemInfo");
-}
-
-void CSBuyMouseOverPanelButton::UpdateWeapon(const char *weapon)
-{
-	CSBuyMouseOverPanel *panel = dynamic_cast<CSBuyMouseOverPanel *>(m_pPanel);
-	if (panel)
-		panel->UpdateWeapon(weapon);
-}
-
-void CSBuyMouseOverPanelButton::Paint()
-{
-	Color col = COL_NONE;
-	if (m_iTeam == WeaponBuyTeam::TR)
-	{
-		col = COL_TR;
-	}
-	else if (m_iTeam == WeaponBuyTeam::CT)
-	{
-		col = COL_CT;
-	}
-	SetFgColor(col);
-	BaseClass::Paint();
-}
 
 CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMenu(parent, name)
 {
@@ -93,18 +58,18 @@ CCSBuySubMenu::CCSBuySubMenu(vgui::Panel *parent, const char *name) : CBuySubMen
 	grenadeBG = new vgui::ImagePanel(this, "grenadeBG");
 	equipBG = new vgui::ImagePanel(this, "equipBG");
 
-	pwpnBG = new vgui::ImagePanel(this, "pwpnBG");
+	pwpnBG = new WeaponImagePanel(this, "pwpnBG");
 	pammoBG = new vgui::ImagePanel(this, "pammoBG");
-	swpnBG = new vgui::ImagePanel(this, "swpnBG");
+	swpnBG = new WeaponImagePanel(this, "swpnBG");
 	sammoBG = new vgui::ImagePanel(this, "sammoBG");
-	hgrenBG = new vgui::ImagePanel(this, "hgrenBG");
+	hgrenBG = new WeaponImagePanel(this, "hgrenBG");
 	sgrenBG = new vgui::ImagePanel(this, "sgrenBG");
 	fgrenBG = new vgui::ImagePanel(this, "fgrenBG");
 	fgren2BG = new vgui::ImagePanel(this, "fgren2BG");
 	dfBG = new vgui::ImagePanel(this, "dfBG");
 	nvBG = new vgui::ImagePanel(this, "nvBG");
 	kevBG = new vgui::ImagePanel(this, "kevBG");
-	newknifeBG = new vgui::ImagePanel(this, "newknifeBG");
+	newknifeBG = new WeaponImagePanel(this, "newknifeBG");
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -246,20 +211,43 @@ void CCSBuySubMenu::OnCommand(const char *command)
 
 void CCSBuySubMenu::PerformLayout()
 {
-	BaseClass::PerformLayout();
-
+	// fix these not in .res
 	int  w, h;
 	GetSize(w, h);
 	int w2, h2;
 	m_pTitleLabel->GetSize(w2, h2);
-	m_pTitleLabel->SetPos(w / 2 - w2 / 2, 12);
+	m_pTitleLabel->SetPos(w / 2 - w2 / 2, vgui::scheme()->GetProportionalScaledValue(12));
+	
+	m_pShowTERWeapon->SetBounds(
+		vgui::scheme()->GetProportionalScaledValue(12), 
+		vgui::scheme()->GetProportionalScaledValue(32), 
+		vgui::scheme()->GetProportionalScaledValue(98), 
+		vgui::scheme()->GetProportionalScaledValue(16)
+	);
+	m_pShowCTWeapon->SetBounds(
+		vgui::scheme()->GetProportionalScaledValue(108), 
+		vgui::scheme()->GetProportionalScaledValue(32), 
+		vgui::scheme()->GetProportionalScaledValue(98), 
+		vgui::scheme()->GetProportionalScaledValue(16)
+	);
+	newknifeBG->SetBounds(
+		vgui::scheme()->GetProportionalScaledValue(505), 
+		vgui::scheme()->GetProportionalScaledValue(327), 
+		vgui::scheme()->GetProportionalScaledValue(75), 
+		vgui::scheme()->GetProportionalScaledValue(50)
+	);
 
-	float scale = h / 420.0;
 	for (int i = 0; i < 10; ++i)
 	{
-		m_pSlotButtons[i]->GetClassPanel()->SetBounds(216 * scale, 60 * scale, 152 * scale, 145 * scale);
+		m_pSlotButtons[i]->GetClassPanel()->SetBounds(
+			vgui::scheme()->GetProportionalScaledValue(216),
+			vgui::scheme()->GetProportionalScaledValue(60),
+			vgui::scheme()->GetProportionalScaledValue(152),
+			vgui::scheme()->GetProportionalScaledValue(145)
+		); 
 	}
-	newknifeBG->SetBounds(505 * scale, 327 * scale, 75 * scale, 50 * scale); // fix that not in .res
+
+	BaseClass::PerformLayout();
 }
 
 void CCSBuySubMenu::OnThink()
@@ -300,8 +288,6 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 	}
 	else
 	{
-		WeaponBuyTeam team = g_iTeam == 1 ? WeaponBuyTeam::CT : WeaponBuyTeam::TR;
-
 		if (type == WeaponBuyMenuType::EQUIP)
 		{
 			for (int i = 0; i < 7; ++i)
@@ -314,7 +300,7 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 		{
 			if (type != x.iMenu)
 				continue;
-			if (x.iTeam != WeaponBuyTeam::ALL && team != x.iTeam)
+			if (x.iTeam != WeaponBuyTeam::ALL && m_iTeam != x.iTeam)
 				continue;
 			const char *name = x.szName;
 
@@ -324,7 +310,7 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 					continue;
 			}
 
-			m_BuyItemList.push_back(ItemInfo{ name, (std::string("VGUI_BuyMenu_BuyWeapon ") += name) });
+			m_BuyItemList.push_back(ItemInfo{ name, MakeString("VGUI_BuyMenu_BuyWeapon ", name) });
 		}
 		SetupPage(0);
 	}
@@ -366,7 +352,7 @@ void CCSBuySubMenu::SetupPage(size_t iPage)
 		}
 	}
 	
-	m_pSlotButtons[9]->SetText("#CSO_Basket_Back");
+	m_pSlotButtons[9]->SetText("#CSO_PrevWpnBuy");
 	m_pSlotButtons[9]->SetCommand("VGUI_BuyMenu_Show");
 	m_pSlotButtons[9]->SetHotkey('0');
 
@@ -428,8 +414,8 @@ void CCSBuySubMenu::ReadFavoriteSets()
 
 	for(int i:xrange(1, 6))
 	{
-		std::string app("QuickBuy");
-		app += std::to_string(i);
+		std::string app = MakeString("QuickBuy", i);
+		
 
 		auto &keyvalue = m_iniFavorite[app];
 		
@@ -449,8 +435,7 @@ void CCSBuySubMenu::SaveFavoriteSets()
 {
 	for (int i : xrange(1, 6))
 	{
-		std::string app("QuickBuy");
-		app += std::to_string(i);
+		std::string app = MakeString("QuickBuy", i);
 		--i;
 
 		auto &keyvalue = m_iniFavorite[app];
@@ -479,10 +464,12 @@ void CCSBuySubMenu::UpdateFavoriteSetsControls()
 		m_pFavButtons[i]->SetKnifeWeapon(m_FavoriteItems[i].Melee.c_str());
 	}
 
-	pwpnBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Primary).c_str());
-	swpnBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Secondary).c_str());
-	hgrenBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.HEGrenade).c_str());
-	newknifeBG->SetImage((std::string("gfx\\vgui\\") += m_SelectedItems.Melee).c_str());
+	pwpnBG->SetWeapon(m_SelectedItems.Primary.c_str());
+	swpnBG->SetWeapon(m_SelectedItems.Secondary.c_str());
+	hgrenBG->SetWeapon(m_SelectedItems.HEGrenade.c_str());
+	newknifeBG->SetWeapon(m_SelectedItems.Melee.c_str());
+
+	
 
 	fgrenBG->SetImage(m_SelectedItems.nFlashBang ? "gfx\\vgui\\flash" : "");
 	sgrenBG->SetImage(m_SelectedItems.nSmokeGrenade ? "gfx\\vgui\\sgren" : "");
@@ -520,7 +507,7 @@ void CCSBuySubMenu::OnClearSelectedItems()
 		"" ,
 		"" ,
 		"" ,
-		0,0,0,0, ArmorType::ARMOR_HELMET
+		0,0,0,0, ArmorType::NONE
 	};
 	UpdateFavoriteSetsControls();
 }
@@ -575,11 +562,26 @@ void CCSBuySubMenu::LoadControlSettings(const char *dialogResourceName, const ch
 		m_pFavButtons[i]->SetHotkey(key[i]);
 	}
 
-	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG, newknifeBG })
+	float scale = vgui::scheme()->GetProportionalScaledValue(4096) / 4096.0f;
+	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, newknifeBG })
 	{
 		pPanel->SetShouldScaleImage(true);
 		pPanel->SetShouldCenterImage(true);
 	}
+	hgrenBG->SetScaleAmount(0.54f * scale);
+	swpnBG->SetScaleAmount(0.375f * scale);
+	newknifeBG->SetScaleAmount(0.375f * scale);
+	for (vgui::ImagePanel * pPanel : { sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG })
+	{
+		pPanel->SetShouldScaleImage(true);
+		pPanel->SetShouldCenterImage(true);
+		pPanel->SetScaleAmount(0.54f * scale);
+	}
+	
+
+	m_pShowCTWeapon->SetCommand("showctwpn");
+	m_pShowTERWeapon->SetCommand("showterwpn");
+
 	UpdateFavoriteSetsControls();
 }
 
@@ -620,7 +622,11 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 		pPanel->SetVisible(false);
 	}
 
-	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG,newknifeBG })
+	for (vgui::ImagePanel * pPanel : { pwpnBG, swpnBG, hgrenBG, newknifeBG })
+	{
+		pPanel->SetVisible(false);
+	}
+	for (vgui::ImagePanel * pPanel : { sgrenBG, fgrenBG, fgren2BG, dfBG, nvBG, kevBG })
 	{
 		pPanel->SetVisible(false);
 	}
@@ -636,19 +642,18 @@ void CCSBuySubMenu_DefaultMode::LoadControlSettings(const char *dialogResourceNa
 void CCSBuySubMenu_DefaultMode::PerformLayout()
 {
 	BaseClass::PerformLayout();
-	int w, h;
-	GetSize(w, h);
-	float scale = h / 420.0;
 	for (int i = 0; i < 10; ++i)
 	{
-		m_pSlotButtons[i]->SetPos(16 * scale, (50 + i * 25) * scale);
+		m_pSlotButtons[i]->SetPos(
+			vgui::scheme()->GetProportionalScaledValue(16),
+			vgui::scheme()->GetProportionalScaledValue(50 + i * 25)
+		);
 	}
 }
 
 void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
-	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu.res", "GAME");
 	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
 
 	// hide zbs
@@ -674,7 +679,6 @@ void CCSBuySubMenu_ZombieMod::LoadControlSettings(const char *dialogResourceName
 void CCSBuySubMenu_DeathMatch::LoadControlSettings(const char *dialogResourceName, const char *pathID, KeyValues *pPreloadedKeyValues)
 {
 	BaseClass::LoadControlSettings(dialogResourceName, pathID, pPreloadedKeyValues);
-	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu.res", "GAME");
 	BaseClass::LoadControlSettings("Resource/UI/cso_buysubmenu_ver5.res", "GAME");
 
 	// hide zbs
@@ -722,7 +726,54 @@ void CCSBuySubMenu_DefaultMode::OnSelectFavoriteWeapons(int iSet)
 	BaseClass::OnSelectFavoriteWeapons(iSet);
 }
 
+void CCSBuySubMenu_ZombieMod::OnCommand(const char *command)
+{
+	if (!Q_strcmp(command, "vest"))
+	{
+		m_SelectedItems.iKelmet = ArmorType::ARMOR;
+		UpdateFavoriteSetsControls();
+		BaseClass::SetupItems(WeaponBuyMenuType::NONE);
+		return;
+	}
+	else if (!Q_strcmp(command, "vesthelm"))
+	{
+		m_SelectedItems.iKelmet = ArmorType::ARMOR_HELMET;
+		UpdateFavoriteSetsControls();
+		BaseClass::SetupItems(WeaponBuyMenuType::NONE);
+		return;
+	}
+	else if (!Q_strcmp(command, "flash") || !Q_strcmp(command, "sgren") || !Q_strcmp(command, "defuser") || !Q_strcmp(command, "nvgs"))
+	{
+		auto msgbox = new vgui::MessageBox("#CSO_MODE_LOCK_H", "#CSO_MODE_LOCK_B", this);
+		msgbox->SetOKButtonText("#CSO_OKl_Btn");
+		msgbox->SetOKButtonVisible(true);
+		msgbox->SetBounds(GetWide() / 2 - 150, GetTall() / 2 - 100, 300, 200);
+		msgbox->DoModal();
+		msgbox->Activate();
+		BaseClass::SetupItems(WeaponBuyMenuType::NONE);
+		return;
+	}
+	BaseClass::OnCommand(command);
+}
+
 void CCSBuySubMenu_ZombieMod::OnSelectWeapon(const char *weapon)
 {
 	BaseClass::OnSelectWeapon(weapon);
+}
+
+void CCSBuySubMenu_ZombieMod::SetupItems(WeaponBuyMenuType type)
+{
+	BaseClass::SetupItems(type);
+
+	if (type == WeaponBuyMenuType::NONE)
+	{
+		for (int i : {5,6})
+		{
+			m_pSlotButtons[i]->SetText("");
+			m_pSlotButtons[i]->SetCommand("VGUI_BuyMenu_Show");
+			m_pSlotButtons[i]->SetVisible(true);
+			m_pSlotButtons[i]->SetHotkey('0' + i + 1);
+		}
+		m_pSlotButtons[9]->SetCommand("VGUI_BuyMenu_Show");
+	}
 }

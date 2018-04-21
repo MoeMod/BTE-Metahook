@@ -1,4 +1,13 @@
 #pragma once
+
+#ifdef ScreenWidth
+#undef ScreenWidth
+#endif
+
+#ifdef ScreenHeight
+#undef ScreenHeight
+#endif
+
 #include "bink/bink.h"
 #include "gl/gl.h"
 

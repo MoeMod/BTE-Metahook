@@ -106,3 +106,7 @@ public:
 };
 
 extern CViewport *g_pViewPort;
+
+extern const Color COL_NONE;
+extern const Color COL_CT;
+extern const Color COL_TR;

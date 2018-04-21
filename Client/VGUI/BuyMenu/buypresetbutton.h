@@ -43,10 +43,6 @@ public:
 
 public:
 	void ClearWeapons(void);
-	void SetPrimaryWeapon(vgui::IImage *image);
-	void SetSecondaryWeapon(vgui::IImage *image);
-	void SetKnifeWeapon(vgui::IImage *image);
-
 	void SetPrimaryWeapon(const char *name);
 	void SetSecondaryWeapon(const char *name);
 	void SetKnifeWeapon(const char *name);
