@@ -41,13 +41,12 @@ void CHudZB4UI::Init()
 	m_Power.Init();
 	m_Icon.Init();
 	m_Tip.Init();
-
-	m_Bink.Init("cstrike//resource//hud//zombie//infection2.bik");
 }
 
 void CHudZB4UI::VidInit()
 {
 	m_Tip.VidInit();
+	m_Bink.Init("cstrike//resource//hud//zombie//infection2.bik");
 	m_Bink.VidInit();
 
 	m_Retina[0].VidInit("cstrike//resource//hud//zombie//zombispeedup.tga", true, true);

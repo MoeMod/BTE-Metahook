@@ -530,9 +530,6 @@
     <ClCompile Include="Client\HUD\Statistics.cpp">
       <Filter>Client\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="Client\HUD\WeaponSelect.cpp">
-      <Filter>Client\HUD</Filter>
-    </ClCompile>
     <ClCompile Include="Client\HUD\zb3ui.cpp">
       <Filter>Client\HUD</Filter>
     </ClCompile>
@@ -1745,9 +1742,6 @@
       <Filter>Client\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Client\HUD\Statistics.h">
-      <Filter>Client\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="Client\HUD\WeaponSelect.h">
       <Filter>Client\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Client\HUD\zb3ui.h">
