@@ -40,7 +40,7 @@ std::vector<std::string> ParseString(const std::string &sz);
 std::vector<std::wstring> ParseString(const std::wstring &sz);
 
 template<class...Args>
-inline std::string MakeString(const Args &...args)
+inline std::string MakeString(Args &&...args)
 {
 	std::ostringstream oss;
 	// (oss << ... << args);
