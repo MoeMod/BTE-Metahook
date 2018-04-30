@@ -53,6 +53,7 @@ CViewport::CViewport()
 
 	m_Panels.RemoveAll();
 
+	m_pBuyMenu = NULL;
 }
 
 CViewport::~CViewport()
@@ -64,7 +65,8 @@ void CViewport::Start(void)
 {
 	CreateBackGround();
 
-	m_pBuyMenu = (CCSBaseBuyMenu *)AddNewPanel(new CCSBaseBuyMenu);
+	if(!m_pBuyMenu)
+		m_pBuyMenu = (CCSBaseBuyMenu *)AddNewPanel(new CCSBaseBuyMenu);
 
 	m_bInitialied = true;
 

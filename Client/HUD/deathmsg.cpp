@@ -351,8 +351,8 @@ int CHudDeathNotice::MsgFunc_DeathMsg(const char *pszName, int iSize, void *pbuf
 				HudBinkPlayer().SetPos(ScreenWidth / 2, ScreenWidth / 2, 1);
 				HudBinkPlayer().SetColor(255, 255, 255);
 
-				HudBinkPlayer().BinkInstance("cstrike\\resource\\hud\\zombie\\infection.bik", 1, 0);
-				HudBinkPlayer().BinkInstance("cstrike\\resource\\hud\\zombie\\infection.bik", 0, 0);
+				HudBinkPlayer().BinkInstance("cstrike\\resource\\zombi\\infection.bik", 1, 0);
+				HudBinkPlayer().BinkInstance("cstrike\\resource\\zombi\\infection.bik", 0, 0);
 			}
 		}
 	}

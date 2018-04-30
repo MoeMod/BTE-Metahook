@@ -45,18 +45,21 @@ void CHudZB4UI::Init()
 
 void CHudZB4UI::VidInit()
 {
+	m_ScoreBoard.VidInit();
+	m_Radar.VidInit();
+	m_Power.VidInit();
+	m_Icon.VidInit();
 	m_Tip.VidInit();
-	m_Bink.Init("cstrike//resource//hud//zombie//infection2.bik");
-	m_Bink.VidInit();
+	m_Bink.Init("cstrike//resource//zombi//infection2.bik");
 
-	m_Retina[0].VidInit("cstrike//resource//hud//zombie//zombispeedup.tga", true, true);
-	m_Retina[1].VidInit("cstrike//resource//hud//zombie//zombicrazy.tga", false, true);
+	m_Retina[0].VidInit("cstrike//resource//zombi//zombispeedup.tga", true, true);
+	m_Retina[1].VidInit("cstrike//resource//zombi//zombicrazy.tga", false, true);
 
-	m_Retina[2].VidInit("cstrike//resource//hud//zombie//zombinight.tga", true, false);
+	m_Retina[2].VidInit("cstrike//resource//zombi//zombinight.tga", true, false);
 
-	m_Retina[3].VidInit("cstrike//resource//hud//zombie//zombidash.tga", true, true);
-	m_Retina[4].VidInit("cstrike//resource//hud//zombie//zombihiding2.tga", true, true);
-	m_Retina[5].VidInit("cstrike//resource//hud//zombie//zombitrap.tga", true, true);	
+	m_Retina[3].VidInit("cstrike//resource//zombi//zombidash.tga", true, true);
+	m_Retina[4].VidInit("cstrike//resource//zombi//zombihiding2.tga", true, true);
+	m_Retina[5].VidInit("cstrike//resource//zombi//zombitrap.tga", true, true);	
 }
 
 void CHudZB4UI::Draw(float flTime)
@@ -220,18 +223,6 @@ void CHudZB4UIBase::BuildNumberRC(wrect_t *rgrc, int w, int h)
 
 void CHudZB4UIPower::Init()
 {
-	int i = Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4number");
-	m_iNumber = g_Texture[i].iTexture;
-	BuildNumberRC(m_rcNumber, 14, 32);
-
-	LoadTexture("resource\\hud\\zombie\\adrenalinebg", m_iPowerBackground, m_rcPowerBackground);
-	LoadTexture("resource\\hud\\zombie\\adrenalinnegauge", m_iPowerLine, m_rcPowerLine);
-	LoadTexture("resource\\hud\\zombie\\adrenalinnegauge2", m_iPowerLine2, m_rcPowerLine2);
-	LoadTexture("resource\\hud\\zombie\\adrenalinneleft", m_iPowerLeft2, m_rcPowerLeft2);
-	LoadTexture("resource\\hud\\zombie\\adrenalinnepoint", m_iPowerPoint, m_rcPowerPoint);
-	LoadTexture("resource\\hud\\zombie\\z4_6key", m_iKey[0], m_rcKey[0]);
-	LoadTexture("resource\\hud\\zombie\\right", m_iKey[1], m_rcKey[1]);
-
 	m_iSkillUsage = 11;
 	m_iText = 0;
 	m_iPower[0] = 0;
@@ -247,6 +238,22 @@ void CHudZB4UIPower::Init()
 	m_flPowerEndRefreshTime[1] = 0.0f;
 
 	m_flFlashTime = 0.0f;
+
+}
+
+void CHudZB4UIPower::VidInit()
+{
+	int i = Hud().m_TGA.FindTexture("resource\\zombi\\z4number");
+	m_iNumber = g_Texture[i].iTexture;
+	BuildNumberRC(m_rcNumber, 14, 32);
+
+	LoadTexture("resource\\zombi\\adrenalinebg", m_iPowerBackground, m_rcPowerBackground);
+	LoadTexture("resource\\zombi\\adrenalinnegauge", m_iPowerLine, m_rcPowerLine);
+	LoadTexture("resource\\zombi\\adrenalinnegauge2", m_iPowerLine2, m_rcPowerLine2);
+	LoadTexture("resource\\zombi\\adrenalinneleft", m_iPowerLeft2, m_rcPowerLeft2);
+	LoadTexture("resource\\zombi\\adrenalinnepoint", m_iPowerPoint, m_rcPowerPoint);
+	LoadTexture("resource\\zombi\\z4_6key", m_iKey[0], m_rcKey[0]);
+	LoadTexture("resource\\shelterteam\\ingame_mouse_right", m_iKey[1], m_rcKey[1]);
 
 
 	wcscpy(m_szDrawText, GetLangUni("CSBTE_ZB4_Skill_Human"));
@@ -504,26 +511,30 @@ void CHudZB4UIPower::SetPower(int power, float flashtime)
 
 void CHudZB4UIIcon::Init()
 {
-	int i = Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4number");
-	m_iNumber = g_Texture[i].iTexture;
-	BuildNumberRC(m_rcNumber, 14, 32);
-
-	LoadTexture("resource\\hud\\zombie\\z4_powerup", m_iIcon[0], m_rcIcon[0]);
-	LoadTexture("resource\\hud\\zombie\\z4_criticalshot", m_iIcon[1], m_rcIcon[1]);
-	LoadTexture("resource\\hud\\zombie\\z4_midnightup", m_iIcon[2], m_rcIcon[2]);
-	LoadTexture("resource\\hud\\zombie\\z4_midnightdown", m_iIcon[3], m_rcIcon[3]);
-	LoadTexture("resource\\hud\\zombie\\z4_speedup", m_iIcon[4], m_rcIcon[4]);
-	LoadTexture("resource\\hud\\zombie\\z4_speeddown", m_iIcon[5], m_rcIcon[5]);
-	LoadTexture("resource\\hud\\zombie\\z4_cannotcontrol", m_iIcon[6], m_rcIcon[6]);
-	LoadTexture("resource\\hud\\zombie\\z4_defenseup", m_iIcon[7], m_rcIcon[7]);
-	LoadTexture("resource\\hud\\zombie\\z4_defensedown", m_iIcon[8], m_rcIcon[8]);
-	LoadTexture("resource\\hud\\zombie\\z4_hpup", m_iIcon[9], m_rcIcon[9]);
-	LoadTexture("resource\\hud\\zombie\\z4_hpdown", m_iIcon[10], m_rcIcon[10]);
-
 	memset(m_iStatus, 0, sizeof(m_iStatus));
 	memset(m_iAlpha, 0, sizeof(m_iAlpha));
 	memset(m_flFlashTime, 0, sizeof(m_flFlashTime));
 	memset(m_iFlash, 0, sizeof(m_iFlash));
+}
+
+void CHudZB4UIIcon::VidInit()
+{
+	int i = Hud().m_TGA.FindTexture("resource\\zombi\\z4number");
+	m_iNumber = g_Texture[i].iTexture;
+	BuildNumberRC(m_rcNumber, 14, 32);
+
+	LoadTexture("resource\\zombi\\z4_powerup", m_iIcon[0], m_rcIcon[0]);
+	LoadTexture("resource\\zombi\\z4_criticalshot", m_iIcon[1], m_rcIcon[1]);
+	LoadTexture("resource\\zombi\\z4_midnightup", m_iIcon[2], m_rcIcon[2]);
+	LoadTexture("resource\\zombi\\z4_midnightdown", m_iIcon[3], m_rcIcon[3]);
+	LoadTexture("resource\\zombi\\z4_speedup", m_iIcon[4], m_rcIcon[4]);
+	LoadTexture("resource\\zombi\\z4_speeddown", m_iIcon[5], m_rcIcon[5]);
+	LoadTexture("resource\\zombi\\z4_cannotcontrol", m_iIcon[6], m_rcIcon[6]);
+	LoadTexture("resource\\zombi\\z4_defenseup", m_iIcon[7], m_rcIcon[7]);
+	LoadTexture("resource\\zombi\\z4_defensedown", m_iIcon[8], m_rcIcon[8]);
+	LoadTexture("resource\\zombi\\z4_hpup", m_iIcon[9], m_rcIcon[9]);
+	LoadTexture("resource\\zombi\\z4_hpdown", m_iIcon[10], m_rcIcon[10]);
+
 }
 
 void CHudZB4UIIcon::Redraw()
@@ -663,10 +674,10 @@ void CHudZB4UIIcon::AddIcon(int slot, int id, int status)
 	}
 }
 
-void CHudZB4UIRadar::Init()
+void CHudZB4UIRadar::VidInit()
 {
-	m_iBackground = g_Texture[Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4_radarbg")].iTexture;
-	m_iCover = g_Texture[Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4_radarline")].iTexture;
+	m_iBackground = g_Texture[Hud().m_TGA.FindTexture("resource\\zombi\\z4_radarbg")].iTexture;
+	m_iCover = g_Texture[Hud().m_TGA.FindTexture("resource\\zombi\\z4_radarline")].iTexture;
 }
 
 void CHudZB4UIRadar::Redraw()
@@ -708,10 +719,10 @@ void CHudZB4UITip::VidInit()
 	if (!m_iBg[0] || !m_iBg[1])
 	{
 		m_iBg[0] = vgui::surface()->CreateNewTextureID();
-		LoadTexture("resource\\hud\\zombie\\z4_hmmsgbg", m_iBg[0], m_rcBg[0]);
+		LoadTexture("resource\\zombi\\z4_hmmsgbg", m_iBg[0], m_rcBg[0]);
 
 		m_iBg[1] = vgui::surface()->CreateNewTextureID();
-		LoadTextureTga("cstrike\\resource\\hud\\zombie\\z4_zbmsgbg.tga", m_iBg[1], m_rcBg[1].right, m_rcBg[1].bottom);
+		LoadTexture("resource\\zombi\\z4_zbmsgbg", m_iBg[1], m_rcBg[1]);
 	}
 
 	//LoadTexture("resource\\hud\\zombie\\z4_hmmsgbg", m_iBg[0], m_rcBg[0]);
@@ -1135,34 +1146,37 @@ void CHudZB4UITip::GetFontColor(int team, int &r, int &g, int &b, int &a)
 
 void CHudZB4UIScoreBoard::Init()
 {
+	m_iTeam = 1;
+	m_iDamage = 0;
+	m_iLastScore = 0;
+}
+
+void CHudZB4UIScoreBoard::VidInit()
+{
 	int i;
-	i = Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4_scoreboard");
+	i = Hud().m_TGA.FindTexture("resource\\zombi\\z4_scoreboard");
 	m_iScroreBorad = g_Texture[i].iTexture;
 	m_rcScroreBorad.right = g_Texture[i].iWidth;
 	m_rcScroreBorad.bottom = g_Texture[i].iHeight;
 
-	i = Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4_scorebg");
+	i = Hud().m_TGA.FindTexture("resource\\zombi\\z4_scorebg");
 	m_iDamageBorad = g_Texture[i].iTexture;
 	m_rcDamageBorad.right = g_Texture[i].iWidth;
 	m_rcDamageBorad.bottom = g_Texture[i].iHeight;
 
-	i = Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4_scorehuman");
+	i = Hud().m_TGA.FindTexture("resource\\zombi\\z4_scorehuman");
 	m_iTeamIcon[0] = g_Texture[i].iTexture;
 	m_rcTeamIcon[0].right = g_Texture[i].iWidth;
 	m_rcTeamIcon[0].bottom = g_Texture[i].iHeight;
 
-	i = Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4_scorezombie");
+	i = Hud().m_TGA.FindTexture("resource\\zombi\\z4_scorezombie");
 	m_iTeamIcon[1] = g_Texture[i].iTexture;
 	m_rcTeamIcon[1].right = g_Texture[i].iWidth;
 	m_rcTeamIcon[1].bottom = g_Texture[i].iHeight;
 
-	i = Hud().m_TGA.FindTexture("resource\\hud\\zombie\\z4number");
+	i = Hud().m_TGA.FindTexture("resource\\zombi\\z4number");
 	m_iNumber = g_Texture[i].iTexture;
 	BuildNumberRC(m_rcNumber, 14, 32);
-
-	m_iTeam = 1;
-	m_iDamage = 0;
-	m_iLastScore = 0;
 }
 
 void CHudZB4UIScoreBoard::Redraw()
