@@ -1867,6 +1867,20 @@ int MsgFunc_TextMsg(const char *pszName, int iSize, void *pbuf)
 		}
 	}
 
+	if (g_iMod == MOD_Z4E)	// MVP board has taken their places
+	{
+		if (!strcmp(text, "#Terrorists_Win"))
+		{
+			gEngfuncs.pfnClientCmd("spk sound/vox/zombi_escape_fail.wav");
+			return 1;
+		}
+		else if (!strcmp(text, "#CTs_Win"))
+		{
+			gEngfuncs.pfnClientCmd("spk sound/vox/zombi_escape_success.wav");
+			return 1;
+		}
+	}
+
 	if (g_bAlive)
 	{
 		if (!strcmp(text, "#Terrorists_Win") || !strcmp(text, "#CTs_Win") || !strcmp(text, "#Round_Draw") || 

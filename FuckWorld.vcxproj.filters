@@ -1133,6 +1133,9 @@
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.cpp">
       <Filter>GameUI\CollectSkinOverdraftLottery</Filter>
     </ClCompile>
+    <ClCompile Include="Client\HUD\TimerTipCountDown.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceSDK\appframework\IAppSystem.h">
@@ -3060,6 +3063,9 @@
     </ClInclude>
     <ClInclude Include="util\LinearMap.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\TimerTipCountDown.h">
+      <Filter>Client\HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

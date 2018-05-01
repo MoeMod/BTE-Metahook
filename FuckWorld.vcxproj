@@ -179,6 +179,7 @@
     <ClCompile Include="Client\HUD\scoreboard.cpp" />
     <ClCompile Include="Client\HUD\sfsniper.cpp" />
     <ClCompile Include="Client\HUD\Statistics.cpp" />
+    <ClCompile Include="Client\HUD\TimerTipCountDown.cpp" />
     <ClCompile Include="Client\HUD\zb3ui.cpp" />
     <ClCompile Include="Client\HUD\zb4ui.cpp" />
     <ClCompile Include="Client\HUD\zbsboard.cpp" />
@@ -516,6 +517,7 @@
     <ClInclude Include="Client\HUD\scoreboard.h" />
     <ClInclude Include="Client\HUD\sfsniper.h" />
     <ClInclude Include="Client\HUD\Statistics.h" />
+    <ClInclude Include="Client\HUD\TimerTipCountDown.h" />
     <ClInclude Include="Client\HUD\zb3ui.h" />
     <ClInclude Include="Client\HUD\zb4ui.h" />
     <ClInclude Include="Client\HUD\zbsboard.h" />
