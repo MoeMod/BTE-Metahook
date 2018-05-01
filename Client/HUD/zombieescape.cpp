@@ -37,6 +37,7 @@ void CHudZombieEscape::ResetUI(void)
 	memset(m_iPlayerLastCount,0,sizeof(m_iPlayerLastCount));
 	memset(m_iPoint,0,sizeof(m_iPoint));
 	m_flZECheck = 0;
+	m_bHasZEPoint = false;
 }
 int CHudZombieEscape::LoadPoint(char *pName)
 {
@@ -50,6 +51,7 @@ int CHudZombieEscape::LoadPoint(char *pName)
 	if(pTgaList == NULL)									
 	{
 		LogToFile( "Open Ze Point Failed[FileName:%s]",szFile);
+		m_bHasZEPoint = false;
 		return 0;
 	}
 	int id = 0;
@@ -72,12 +74,15 @@ int CHudZombieEscape::LoadPoint(char *pName)
 		id++;
 	}
 	fclose(pTgaList);
+	m_bHasZEPoint = true;
 	return 1;
 }
 void CHudZombieEscape::Draw(float time)
 {
 	// Check Mod
-	if(g_iMod != MOD_ZE) return;
+	if(g_iMod != MOD_ZE && g_iMod != MOD_Z4E) return;
+
+	//if (!m_bHasZEPoint) return;
 
 	// First Make Start Pos
 	int iX,iY;

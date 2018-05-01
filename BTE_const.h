@@ -27,8 +27,9 @@
 #define MOD_DM		14
 #define MOD_ZSE		15
 #define MOD_ZB5		16
+#define MOD_Z4E		17
 
-#define IS_ZOMBIE_MODE (g_iMod == MOD_ZB || g_iMod == MOD_ZBU || g_iMod == MOD_ZE || g_iMod == MOD_ZB3 || g_iMod == MOD_ZB4 || g_iMod == MOD_ZB2 || g_iMod == MOD_ZSE || g_iMod == MOD_ZB5)
+#define IS_ZOMBIE_MODE (g_iMod == MOD_ZB || g_iMod == MOD_ZBU || g_iMod == MOD_ZE || g_iMod == MOD_ZB3 || g_iMod == MOD_ZB4 || g_iMod == MOD_ZB2 || g_iMod == MOD_ZSE || g_iMod == MOD_ZB5 || g_iMod == MOD_Z4E)
 
 #define SCOREATTRIB_NONE    0
 #define SCOREATTRIB_HERO	(1<<3)
