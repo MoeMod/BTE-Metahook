@@ -175,7 +175,7 @@ void CCSBaseBuyMenu::SetTeam(int iTeam)
 void CCSBaseBuyMenu::UpdateGameMode()
 {
 	if (m_pMainMenu)
-		delete m_pMainMenu;
+		m_pMainMenu->DeletePanel();
 
 	if (IS_ZOMBIE_MODE && (g_iMod != MOD_ZB4))
 		m_pMainMenu = new CCSBuySubMenu_ZombieMod(this);
