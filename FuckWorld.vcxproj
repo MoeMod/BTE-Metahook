@@ -22,12 +22,12 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -56,9 +56,21 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <ExcludePath>$(ExcludePath)</ExcludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <ExcludePath>$(ExcludePath)</ExcludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,7 +96,7 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(OutDir)$(ProjectName).dll" "D:\CSBTE\cstrike\metahook\plugins\BTE.dll"</Command>
+      <Command>copy "$(OutDir)$(ProjectName).dll" "D:\CSBTE Pro\cstrike\metahook\plugins\BTE.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -92,7 +104,6 @@
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>vgui2;Renderer;Library\freetype;Library;util;Client;.\;common;Interface;..\;HLSDK\cl_dll;HLSDK\common;HLSDK\dlls;HLSDK\engine;HLSDK\pm_shared;HLSDK\public;common\freetype\config;common\freetype\internal;SourceSDK;SourceSDK\public;SourceSDK\common;SourceSDK\tier1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FUCKWORLD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
@@ -102,6 +113,7 @@
       <Optimization>Full</Optimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;imm32.lib;user32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -167,7 +179,7 @@
     <ClCompile Include="Client\HUD\scoreboard.cpp" />
     <ClCompile Include="Client\HUD\sfsniper.cpp" />
     <ClCompile Include="Client\HUD\Statistics.cpp" />
-    <ClCompile Include="Client\HUD\WeaponSelect.cpp" />
+    <ClCompile Include="Client\HUD\TimerTipCountDown.cpp" />
     <ClCompile Include="Client\HUD\zb3ui.cpp" />
     <ClCompile Include="Client\HUD\zb4ui.cpp" />
     <ClCompile Include="Client\HUD\zbsboard.cpp" />
@@ -505,7 +517,7 @@
     <ClInclude Include="Client\HUD\scoreboard.h" />
     <ClInclude Include="Client\HUD\sfsniper.h" />
     <ClInclude Include="Client\HUD\Statistics.h" />
-    <ClInclude Include="Client\HUD\WeaponSelect.h" />
+    <ClInclude Include="Client\HUD\TimerTipCountDown.h" />
     <ClInclude Include="Client\HUD\zb3ui.h" />
     <ClInclude Include="Client\HUD\zb4ui.h" />
     <ClInclude Include="Client\HUD\zbsboard.h" />

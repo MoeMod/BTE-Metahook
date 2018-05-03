@@ -11,8 +11,9 @@
 #include "TriAPI.h"
 #include "DrawTargaImage.h"
 #include "destroyer.h"
-#include "bink/bink.h"
 #include "BaseUI.h"
+
+#include "GL_BinkTexture.h"
 
 #include "Client/HUD/DrawTGA.h"
 
@@ -24,18 +25,15 @@ CHudDestroyerSniperScope &HudDestroyerSniperScope()
 
 void CHudDestroyerSniperScope::Init(void)
 {
-	m_hBink = BinkOpen("cstrike\\sprites\\destroyer_aim01.bik", 135266304);
-	if (m_hBink)
-	{
-		m_pMem = (BYTE *)malloc(m_hBink->Width * m_hBink->Height * 4);
-		m_iBink = vgui::surface()->CreateNewTextureID();
-	}
 	m_bStartBink = FALSE;
 	m_flStartTime = 0.0;
 }
 
 void CHudDestroyerSniperScope::VidInit(void)
 {
+	if (!m_Bink)
+		m_Bink = std::make_unique<CGL_BinkTexture>("sprites\\destroyer_aim01.bik");
+
 	m_iAim01 = Hud().m_TGA.FindTexture("sprites\\destroyer_aim01");
 	m_iAim02 = Hud().m_TGA.FindTexture("sprites\\destroyer_aim02");
 	m_iFrame01 = Hud().m_TGA.FindTexture("sprites\\destroyer_frame01");
@@ -142,12 +140,6 @@ void CHudDestroyerSniperScope::Finish(void)
 	m_bStartBink = FALSE;
 }
 
-CHudDestroyerSniperScope::~CHudDestroyerSniperScope()
-{
-	if (m_pMem)
-		free(m_pMem);
-}
-
 int CHudDestroyerSniperScope::CalculateDistance(void)
 {
 	if (!gEngfuncs.GetLocalPlayer())
@@ -185,7 +177,7 @@ void CHudDestroyerSniperScope::End(void)
 
 void CHudDestroyerSniperScope::Draw(float flTime)
 {
-	if (!m_flStartTime || !m_hBink)
+	if (!m_flStartTime || !m_Bink)
 		return;
 
 	float LENGTH_SCOPE = min(ScreenWidth, ScreenHeight) / 2 / 0.75;
@@ -238,29 +230,10 @@ void CHudDestroyerSniperScope::Draw(float flTime)
 
 	if (m_bStartBink)
 	{
-		if (flTime - m_flStartTime > (float(m_hBink->FrameRateDiv) / float(m_hBink->FrameRate) / 50))
-		{
-			m_iFrame += 3;
-			m_flStartTime = flTime;
-			if (m_iFrame >= m_hBink->Frames)
-			{
-				Finish();
-			}
-			BinkGoto(m_hBink, m_iFrame, 0);
-			BinkDoFrame(m_hBink);
-			BinkCopyToBuffer(m_hBink, m_pMem, m_hBink->Width * 4, m_hBink->Height, 0, 0, BINKSURFACE32RA);
-			vgui::surface()->DrawSetTextureRGBA(m_iBink, m_pMem, m_hBink->Width, m_hBink->Height, 1, true);
-		}
+		iX = ScreenWidth / 2 - m_Bink->w() / 2;
+		iY = ScreenHeight / 2 - m_Bink->h() / 2;
 
-		iX = ScreenWidth / 2 - m_hBink->Width / 2;
-		iY = ScreenHeight / 2 - m_hBink->Height / 2;
-
-		Tri_Enable(GL_TEXTURE_2D);
-		Tri_Enable(GL_BLEND);
-		Tri_BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		vgui::surface()->DrawSetTexture(m_iBink);
-		vgui::surface()->DrawSetColor(255, 255, 255, 255);
-		vgui::surface()->DrawTexturedRect(iX, iY, iX + m_hBink->Width, iY + m_hBink->Height);
+		m_Bink->Draw(iX, iY, m_Bink->w(), m_Bink->h());
 	}
 	else
 	{

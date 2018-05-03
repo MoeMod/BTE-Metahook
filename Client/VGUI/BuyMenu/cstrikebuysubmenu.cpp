@@ -414,7 +414,9 @@ void CCSBuySubMenu::ReadFavoriteSets()
 
 	for(int i:xrange(1, 6))
 	{
-		std::string app = MakeString("QuickBuy", i);
+		std::string app = "QuickBuy";
+		app += std::to_string(i);
+			// = MakeString("QuickBuy", i);
 		
 
 		auto &keyvalue = m_iniFavorite[app];
@@ -435,7 +437,9 @@ void CCSBuySubMenu::SaveFavoriteSets()
 {
 	for (int i : xrange(1, 6))
 	{
-		std::string app = MakeString("QuickBuy", i);
+		std::string app = "QuickBuy";
+		app += std::to_string(i);
+		//	= MakeString("QuickBuy", i);
 		--i;
 
 		auto &keyvalue = m_iniFavorite[app];

@@ -530,9 +530,6 @@
     <ClCompile Include="Client\HUD\Statistics.cpp">
       <Filter>Client\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="Client\HUD\WeaponSelect.cpp">
-      <Filter>Client\HUD</Filter>
-    </ClCompile>
     <ClCompile Include="Client\HUD\zb3ui.cpp">
       <Filter>Client\HUD</Filter>
     </ClCompile>
@@ -1135,6 +1132,9 @@
     </ClCompile>
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.cpp">
       <Filter>GameUI\CollectSkinOverdraftLottery</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\TimerTipCountDown.cpp">
+      <Filter>Client\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1745,9 +1745,6 @@
       <Filter>Client\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Client\HUD\Statistics.h">
-      <Filter>Client\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="Client\HUD\WeaponSelect.h">
       <Filter>Client\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Client\HUD\zb3ui.h">
@@ -3066,6 +3063,9 @@
     </ClInclude>
     <ClInclude Include="util\LinearMap.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\TimerTipCountDown.h">
+      <Filter>Client\HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

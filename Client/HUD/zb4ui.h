@@ -39,6 +39,7 @@ class CHudZB4UIScoreBoard : public CHudZB4UIBase
 {
 public:
 	virtual void Init(void);
+	virtual void VidInit(void);
 	virtual void Redraw(void);
 
 public:
@@ -67,6 +68,7 @@ class CHudZB4UIIcon : public CHudZB4UIBase
 {
 public:
 	virtual void Init(void);
+	virtual void VidInit(void);
 	virtual void Redraw(void);
 public:
 	void SetPower(int power) { m_iPower = power; }
@@ -126,6 +128,7 @@ class CHudZB4UIPower : public CHudZB4UIBase
 {
 public:
 	virtual void Init(void);
+	virtual void VidInit(void);
 	virtual void Redraw(void);
 
 public:
@@ -182,7 +185,7 @@ private:
 class CHudZB4UIRadar : public CHudZB4UIBase
 {
 public:
-	virtual void Init(void);
+	virtual void VidInit(void);
 	virtual void Redraw(void);
 public:
 	void DrawBackground(void);

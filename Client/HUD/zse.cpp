@@ -19,8 +19,8 @@ void CHudZSEUI::Init()
 
 void CHudZSEUI::VidInit()
 {
-	m_Retina[0].VidInit("cstrike//resource//hud//zombie//zombicrazy.tga", false, true);
-	m_Retina[1].VidInit("cstrike//resource//hud//zombie//zombitrap.tga", true, true);
+	m_Retina[0].VidInit("cstrike//resource//zombi//zombicrazy.tga", false, true);
+	m_Retina[1].VidInit("cstrike//resource//zombi//zombitrap.tga", true, true);
 }
 
 void CHudZSEUI::Draw(float flTime)

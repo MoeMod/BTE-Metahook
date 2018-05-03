@@ -189,67 +189,67 @@ void CHud3D_ZB::Think(float flTime)
 {
 	if (flTime < m_flNextCalc || m_flNextCalc == -1)
 		return;
-
-	if (g_iMod == MOD_ZB3)
-		return;
 	
 	m_flNextCalc = flTime + 1.0F;
 	
-	cl_entity_t *entity = NULL;
+	if (g_iMod == MOD_ZB5)
+	{ 
+		cl_entity_t *entity = NULL;
 
-	m_flMax = 1.0F;
-	Vector origin[33];
-	bool vaild[33];
+		m_flMax = 1.0F;
+		Vector origin[33];
+		bool vaild[33];
 
-	for (int id = 1; id <= 32; id++)
-	{
-		entity = gEngfuncs.GetEntityByIndex(id);
-		if (entity->player)
+		for (int id = 1; id <= 32; id++)
 		{
-			m_flMax += 0.1F;
+			entity = gEngfuncs.GetEntityByIndex(id);
+			if (entity->player)
+			{
+				m_flMax += 0.1F;
 
-			if (vPlayer[id].team != TEAM_TERRORIST)
-				vaild[id] = true;
-			else
-				vaild[id] = false;
+				if (vPlayer[id].team != TEAM_TERRORIST)
+					vaild[id] = true;
+				else
+					vaild[id] = false;
 
-			origin[id] = entity->origin;
+				origin[id] = entity->origin;
+			}
 		}
-	}
 
-	int count = 0;
-	for (int id = 1; id <= 32; id++)
-	{
-		if (!vaild[id])
-			continue;
-
-		for (int id2 = id + 1; id2 <= 32; id2++)
+		int count = 0;
+		for (int id = 1; id <= 32; id++)
 		{
-			if (!vaild[id2])
+			if (!vaild[id])
 				continue;
 
-			if ((origin[id] - origin[id2]).Length() < 400.0)
-				count++;
+			for (int id2 = id + 1; id2 <= 32; id2++)
+			{
+				if (!vaild[id2])
+					continue;
+
+				if ((origin[id] - origin[id2]).Length() < 400.0)
+					count++;
+			}
 		}
+
+		if (count >= 2 && count <= 4)
+			m_flAdd[0] = 0.02;
+		else if (count >= 5 && count <= 8)
+			m_flAdd[0] = 0.03;
+		else if (count >= 9 && count <= 12)
+			m_flAdd[0] = 0.04;
+		else if (count >= 13)
+			m_flAdd[0] = 0.06;
+
+		m_flAtk[0] += m_flAdd[0];
+		m_flAtk[1] += m_flAdd[1];
+
+		m_flAtk[0] = m_flAtk[0] > (m_flMax * 1.3) ? (m_flMax * 1.3) : m_flAtk[0];
+		m_flAtk[1] = m_flAtk[1] > m_flMax ? m_flMax : m_flAtk[1];
+
+		m_flPrecent[0] = (m_flAtk[0] - 1) / (m_flMax * 1.3 - 1);
+		m_flPrecent[1] = (m_flAtk[1] - 1) / (m_flMax - 1);
 	}
-
-	if (count >= 2 && count <= 4)
-		m_flAdd[0] = 0.02;
-	else if (count >= 5 && count <= 8)
-		m_flAdd[0] = 0.03;
-	else if (count >= 9 && count <= 12)
-		m_flAdd[0] = 0.04;
-	else if (count >= 13)
-		m_flAdd[0] = 0.06;
-
-	m_flAtk[0] += m_flAdd[0];
-	m_flAtk[1] += m_flAdd[1];
-
-	m_flAtk[0] = m_flAtk[0] > (m_flMax * 1.3) ? (m_flMax * 1.3) : m_flAtk[0];
-	m_flAtk[1] = m_flAtk[1] > m_flMax ? m_flMax : m_flAtk[1];
-
-	m_flPrecent[0] = (m_flAtk[0] - 1) / (m_flMax * 1.3 - 1);
-	m_flPrecent[1] = (m_flAtk[1] - 1) / (m_flMax - 1);
 }
 
 void CHud3D_ZB::Redraw(float flTime)

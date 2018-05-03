@@ -1,6 +1,8 @@
 #pragma once
 
-#include "bink/bink.h"
+#include <memory>
+
+class CGL_BinkTexture; // GL_BinkTexture.cpp
 
 class CHudDestroyerSniperScope : public CHudBase
 {
@@ -10,7 +12,6 @@ public:
 	void Draw(float flTime);
 	void Run(void);
 	void End(void);
-	~CHudDestroyerSniperScope();
 
 private:
 	int DrawDestroyerSniperScopeNumbers(int x, int y, int iFlags, int iNumber, int r, int g, int b);
@@ -25,9 +26,7 @@ private:
 	BOOL m_bStartBink;
 
 private:
-	HBINK m_hBink;
-	BYTE *m_pMem;
-	int m_iBink;
+	std::unique_ptr<CGL_BinkTexture> m_Bink;
 	int m_iAim01, m_iAim02;
 	int m_iFrame01, m_iFrame02;
 	int m_iRange;

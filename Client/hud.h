@@ -45,6 +45,13 @@ public:
 	virtual void Think(void) { return; }
 	virtual void Reset(void) { return; }
 	virtual void InitHUDData(void) {}		// called every time a server is connected to
+
+	CHudBase(const CHudBase &other) = delete;
+	CHudBase(CHudBase &&other) = delete;
+	bool operator<(const CHudBase &other) const // for sorting
+	{
+		return m_type < other.m_type;
+	}
 };
 /*
 struct HUDLIST {
@@ -62,7 +69,7 @@ class CHud
 {
 private:
 	//HUDLIST *m_pHudList;
-	std::vector<CHudBase *> m_List;
+	std::vector<std::reference_wrapper<CHudBase>> m_List;
 	HSPRITE *m_rghSprites;
 	wrect_t *m_rgrcRects;
 	char *m_rgszSpriteNames;
@@ -84,18 +91,18 @@ public:
 	void AddHudElem(CHudBase *phudelem);
 	int MsgFunc_InitHUD(const char *pszName, int iSize, void *pbuf)
 	{
-		for (CHudBase *p : m_List)
+		for (CHudBase &p : m_List)
 		{
-			p->InitHUDData();
+			p.InitHUDData();
 		}
 
 		return pmInitHUD(pszName, iSize, pbuf);
 	}
 	int MsgFunc_ResetHUD(const char *pszName, int iSize, void *pbuf)
 	{
-		for (CHudBase *p : m_List)
+		for (CHudBase &p : m_List)
 		{
-			p->Reset();
+			p.Reset();
 		}
 
 		return pmResetHUD(pszName, iSize, pbuf);

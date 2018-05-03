@@ -9903,7 +9903,8 @@ void EV_FireGunkata(struct event_args_s *args)
 				//g_flBloodhunterAnimTime = cl.time;
 				//g_iBloodhunterSecAnim = args->iparam1;
 				//gEngfuncs.pEventAPI->EV_WeaponAnimation(args->iparam1 + 1, 2);
-				R_AddExtraViewModel({ cl.time, cl.time + args->fparam1, args->iparam1, kRenderNormal, 255 });
+				float time = cl.time;
+				R_AddExtraViewModel({ time, time + args->fparam1, args->iparam1, kRenderNormal, 255 });
 				//R_AddExtraViewModel({ cl.time + 0.2f, cl.time + args->fparam1 + 0.2f, args->iparam1, kRenderNormal, 255 });
 
 				//gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, WeaponData.szSound, 1.0, 0.6, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
