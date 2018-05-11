@@ -69,7 +69,7 @@ public:
 public:
 	void CheckTeam(int team);
 	void ParseData(int DataType, int iData);
-	void ParseIcon(char *pszName, int iSlot, int iType, int iData);
+	void ParseIcon(char *pszName, int iSlot, int iType, int iData = 0);
 	void AddHeadIcon(int idx, char *szSprite, float time, float flOffsetZ);
 
 public:

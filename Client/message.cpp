@@ -1363,9 +1363,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 			if (g_iMod == MOD_ZB5)
 			{ 
 				gHud3D_ZB.Reset();
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_2", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_3", 3, 2, 3);
+				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, 20);
 				if (g_bAlive)
 					UTIL_TutorText("#CSBTE_Totur_ZB5_RoundStart", 1 << 0, 5.0);
 			}
@@ -1442,38 +1440,28 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 15: // z5 hm skill 1 use
 		{
-			gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 1, 3, 20.0F);
+			HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 1, 3, 20.0F);
 
 			break;
 		}
 
 		case 16: // z5 hm skill 2 use
 		{
-			gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_2", 2, 4);
+			HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_2", 2, 4);
 
 			break;
 		}
 
 		case 17: // z5 hm skill 3 use
 		{
-			gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_3", 3, 4);
+			HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_3", 3, 4);
 
 			break;
 		}
 
 		case 18: // tank zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombicrazy", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 3, -1);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, TANK_ZB);
-			}
-
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, TANK_ZB);
 			break;
 		}
 
@@ -1482,11 +1470,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 			float cd = READ_BYTE();
 			float time = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombicrazy", 1, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombicrazy", 1, 3, cd);
-
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombicrazy", 1, 3, cd);
 			HudRetina().ParseData("resource\\zombi\\zombicrazy", 1, 1, 1, 1, time + Hud().m_flTime);
 
 			break;
@@ -1494,17 +1478,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 20: // speed zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombihiding", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 3, -1);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, SPEED_ZB);
-			}
-
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, SPEED_ZB);
 			break;
 		}
 
@@ -1513,10 +1487,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 			float cd = READ_BYTE();
 			float time = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombihiding", 1, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombihiding", 1, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombihiding", 1, 3, cd);
 
 			HudRetina().ParseData("resource\\zombi\\zombihiding", 1, 0, 1, 1, time + Hud().m_flTime);
 
@@ -1525,17 +1496,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 22: // heavy zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombitrap", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1.tga", 3, -1);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, HEAVY_ZB);
-			}
-
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, HEAVY_ZB);
 			break;
 		}
 
@@ -1543,10 +1504,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		{
 			float cd = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombitrap", 1, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombitrap", 1, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombitrap", 1, 3, cd);
 
 			//HudRetina().ParseData(Hud().m_TGA.GetTGA(resource\\zombi\\zombitrap"), 1, 0, 1, 1, 1.0 + Hud().m_flTime);
 			HudRetina().ParseData("resource\\zombi\\stone", 1, 1, 1, 1, 1.0 + Hud().m_flTime);
@@ -1555,16 +1513,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 24: // heal zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombiheal", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1.tga", 3, -1);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, HEAL_ZB);
-			}
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, HEAL_ZB);
 
 			break;
 		}
@@ -1573,10 +1522,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		{
 			float cd = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombiheal", 1, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombiheal", 1, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombiheal", 1, 3, cd);
 
 			//HudRetina().ParseData(Hud().m_TGA.GetTGA("resource\\zombi\\zombiheal"), 1, 1, 0, 2, time);
 
@@ -1585,16 +1531,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 26: // deimos zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_tentacle", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1.tga", 3, -1);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, DEIMOS_ZB);
-			}
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, DEIMOS_ZB);
 
 			break;
 		}
@@ -1603,10 +1540,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		{
 			float cd = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_tentacle", 1, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_tentacle", 1, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_tentacle", 1, 3, cd);
 
 			HudRetina().ParseData("resource\\zombi\\zombitentacle", 1, 0, 0, 1, 1.5 + Hud().m_flTime);
 
@@ -1615,16 +1549,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 28: // china zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombistiffen", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1.tga", 3, -1);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, CHINA_ZB);
-			}
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, CHINA_ZB);
 
 			break;
 		}
@@ -1634,10 +1559,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 			float cd = READ_BYTE();
 			float time = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombistiffen", 1, 1, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombistiffen", 1, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombistiffen", 1, 3, cd);
 
 			HudRetina().ParseData("resource\\zombi\\zombicrazy", 1, 1, 1, 1, time + Hud().m_flTime);
 
@@ -1646,16 +1568,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 30: // boomer zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombiheal", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1.tga", 3, 2);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, BOMMER_ZB);
-			}
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, BOMMER_ZB);
 
 			break;
 		}
@@ -1664,10 +1577,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		{
 			float cd = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombiheal", 1, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_recoverylast", 1, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_recoverylast", 1, 3, cd);
 
 			HudRetina().ParseData("resource\\zombi\\zombiheal", 1, 1, 0, 2, 1.5 + Hud().m_flTime);
 
@@ -1679,10 +1589,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 			float cd = READ_BYTE();
 			float time = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombiguard", 2, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombiguard", 2, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombiguard", 2, 3, cd);
 
 			HudRetina().ParseData("resource\\zombi\\zombitrap", 1, 0, 1, 1, time + Hud().m_flTime);
 
@@ -1691,32 +1598,14 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 33: // boomer zb respawn
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombiheal", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\HM_SKILL_1.tga", 3, 2);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_RESETSKILL, BOMMER_ZB);
-			}
+			HudZombieMod3().ParseData(ZB3DATA_RESETSKILL, BOMMER_ZB);
 
 			break;
 		}
 
 		case 34: // resident zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombijumpup", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\zombieskill_zombipenetration.tga", 3, 2, 3);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, RESIDENT_ZB);
-			}
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, RESIDENT_ZB);
 
 			break;
 		}
@@ -1726,10 +1615,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 			float cd = READ_BYTE();
 			float time = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_jumpupm", 2, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_jumpupm", 2, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_jumpupm", 2, 3, cd);
 
 			HudRetina().ParseData("resource\\zombi\\zombijumpup", 1, 0, 1, 1, time + Hud().m_flTime);
 
@@ -1740,10 +1626,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		{
 			float cd = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombipenetration", 1, 5, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombipenetration", 1, 5, 0);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombipenetration", 1, 5, 0);
 
 			HudRetina().ParseData("resource\\zombi\\zombitentacle", 1, 0, 1, 1, 2.0 + Hud().m_flTime);
 
@@ -1753,15 +1636,8 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		case 37: // resident zb respawn
 		{
 			int iCanUseSkill2 = READ_BYTE();
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombipenetration", 3, 1);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_RESETSKILL, RESIDENT_ZB);
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombietype_resident_zombi", 0, iCanUseSkill2 ? 2:5, 3);
-			}
+			HudZombieMod3().ParseData(ZB3DATA_RESETSKILL, RESIDENT_ZB);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombietype_resident_zombi", 0, iCanUseSkill2 ? 2 : 5, 3);
 
 			break;
 		}
@@ -1790,7 +1666,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		{
 			HudBinkPlayer().SetPos(0.5 * ScreenWidth, 0.5 * ScreenWidth, 1);
 			HudBinkPlayer().SetColor(255, 255, 255);
-			HudBinkPlayer().BinkInstance("cstrike\\resource\\hud\\zombie\\origin.bik", 0, 0);
+			HudBinkPlayer().BinkInstance("cstrike\\resource\\zombi\\origin.bik", 0, 0);
 			UTIL_TutorText("#CSBTE_Totur_ZB5_FirstZombie", 1 << 1, 5.0, true);
 			break;
 		}
@@ -1799,7 +1675,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		{
 			HudBinkPlayer().SetPos(0.5 * ScreenWidth, 0.5 * ScreenWidth, 1);
 			HudBinkPlayer().SetColor(255, 255, 255);
-			HudBinkPlayer().BinkInstance("cstrike\\resource\\hud\\zombie\\infection.bik", 0, 0);
+			HudBinkPlayer().BinkInstance("cstrike\\resource\\zombi\\infection.bik", 0, 0);
 			UTIL_TutorText("#CSBTE_Totur_ZB5_Infected", 1 << 1, 5.0, true);
 
 			break;
@@ -1819,16 +1695,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 
 		case 44:	// undertaker zb skill init
 		{
-			if (g_iMod == MOD_ZB5)
-			{
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombipile", 1, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 2, 2, 3);
-				gHud3D_ZB.SetSkill("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, -1);
-			}
-			else if (g_iMod == MOD_ZB3)
-			{
-				HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, UNDERTAKER_ZB);
-			}
+			HudZombieMod3().ParseData(ZB3DATA_BECOME_ZB, UNDERTAKER_ZB);
 
 			break;
 		}
@@ -1837,10 +1704,7 @@ int MsgFunc_MetaHook2(const char *pszName, int iSize, void *pbuf)
 		{
 			float cd = READ_BYTE();
 
-			if (g_iMod == MOD_ZB5)
-				gHud3D_ZB.SetSkill("resource\\zombi\\zombieskill_zombipile", 1, 3, cd);
-			else if (g_iMod == MOD_ZB3)
-				HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombipile", 1, 3, cd);
+			HudZombieMod3().ParseIcon("resource\\zombi\\zombieskill_zombipile", 1, 3, cd);
 
 			//HudRetina().ParseData(Hud().m_TGA.GetTGA("resource\\zombi\\zombitrap"), 1, 0, 1, 1, 1.0 + Hud().m_flTime);
 			HudRetina().ParseData("resource\\zombi\\stone", 1, 1, 1, 1, 1.0 + Hud().m_flTime);
@@ -2000,6 +1864,20 @@ int MsgFunc_TextMsg(const char *pszName, int iSize, void *pbuf)
 			HudBinkPlayer().BinkInstance("cstrike\\resource\\hud\\zombie\\humanwin.bik", 0, 0);
 			*/
 			return 0;
+		}
+	}
+
+	if (g_iMod == MOD_Z4E)	// MVP board has taken their places
+	{
+		if (!strcmp(text, "#Terrorists_Win"))
+		{
+			gEngfuncs.pfnClientCmd("spk sound/vox/zombi_escape_fail.wav");
+			return 1;
+		}
+		else if (!strcmp(text, "#CTs_Win"))
+		{
+			gEngfuncs.pfnClientCmd("spk sound/vox/zombi_escape_success.wav");
+			return 1;
 		}
 	}
 

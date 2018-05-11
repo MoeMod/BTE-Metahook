@@ -22,12 +22,12 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -56,9 +56,21 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <ExcludePath>$(ExcludePath)</ExcludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <ExcludePath>$(ExcludePath)</ExcludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,7 +96,7 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(OutDir)$(ProjectName).dll" "D:\CSBTE\cstrike\metahook\plugins\BTE.dll"</Command>
+      <Command>copy "$(OutDir)$(ProjectName).dll" "D:\CSBTE Pro\cstrike\metahook\plugins\BTE.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -92,7 +104,6 @@
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>vgui2;Renderer;Library\freetype;Library;util;Client;.\;common;Interface;..\;HLSDK\cl_dll;HLSDK\common;HLSDK\dlls;HLSDK\engine;HLSDK\pm_shared;HLSDK\public;common\freetype\config;common\freetype\internal;SourceSDK;SourceSDK\public;SourceSDK\common;SourceSDK\tier1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FUCKWORLD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
@@ -102,6 +113,7 @@
       <Optimization>Full</Optimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;imm32.lib;user32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -127,6 +139,7 @@
     <ClCompile Include="client.cpp" />
     <ClCompile Include="Client\com_weapons.cpp" />
     <ClCompile Include="Client\CounterStrikeViewport.cpp" />
+    <ClCompile Include="Client\CubeMapManager.cpp" />
     <ClCompile Include="Client\EButtonManager.cpp" />
     <ClCompile Include="Client\events.cpp" />
     <ClCompile Include="Client\ev_common.cpp" />
@@ -166,7 +179,7 @@
     <ClCompile Include="Client\HUD\scoreboard.cpp" />
     <ClCompile Include="Client\HUD\sfsniper.cpp" />
     <ClCompile Include="Client\HUD\Statistics.cpp" />
-    <ClCompile Include="Client\HUD\WeaponSelect.cpp" />
+    <ClCompile Include="Client\HUD\TimerTipCountDown.cpp" />
     <ClCompile Include="Client\HUD\zb3ui.cpp" />
     <ClCompile Include="Client\HUD\zb4ui.cpp" />
     <ClCompile Include="Client\HUD\zbsboard.cpp" />
@@ -223,6 +236,7 @@
     </ClCompile>
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.cpp" />
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.cpp" />
+    <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameBotPage.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameDialog.cpp" />
     <ClCompile Include="GameUI\CreateMultiplayerGameGameplayPage.cpp" />
@@ -463,6 +477,7 @@
     <ClInclude Include="Client\cl_util.h" />
     <ClInclude Include="Client\com_weapons.h" />
     <ClInclude Include="Client\CounterStrikeViewport.h" />
+    <ClInclude Include="Client\CubeMapManager.h" />
     <ClInclude Include="Client\EButtonManager.h" />
     <ClInclude Include="Client\events.h" />
     <ClInclude Include="Client\eventscripts.h" />
@@ -502,7 +517,7 @@
     <ClInclude Include="Client\HUD\scoreboard.h" />
     <ClInclude Include="Client\HUD\sfsniper.h" />
     <ClInclude Include="Client\HUD\Statistics.h" />
-    <ClInclude Include="Client\HUD\WeaponSelect.h" />
+    <ClInclude Include="Client\HUD\TimerTipCountDown.h" />
     <ClInclude Include="Client\HUD\zb3ui.h" />
     <ClInclude Include="Client\HUD\zb4ui.h" />
     <ClInclude Include="Client\HUD\zbsboard.h" />
@@ -560,6 +575,7 @@
     <ClInclude Include="GameUI\BitmapImagePanel.h" />
     <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemPopupDialog.h" />
     <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLLuckyItemResultDialog.h" />
+    <ClInclude Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameBotPage.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameDialog.h" />
     <ClInclude Include="GameUI\CreateMultiplayerGameGameplayPage.h" />
@@ -988,6 +1004,7 @@
     <ClInclude Include="util\IceKey.h" />
     <ClInclude Include="util\IDA.h" />
     <ClInclude Include="util\iniparser.h" />
+    <ClInclude Include="util\LinearMap.h" />
     <ClInclude Include="util\md5.h" />
     <ClInclude Include="util\perf_counter.h" />
     <ClInclude Include="util\STLHelper.h" />
@@ -995,6 +1012,8 @@
     <ClInclude Include="vgui2\bitmap.h" />
     <ClInclude Include="vgui2\cso_controls\BluedPopupDialog.h" />
     <ClInclude Include="vgui2\cso_controls\ForceColoredLabel.h" />
+    <ClInclude Include="vgui2\cso_controls\CustomFontLabel.h" />
+    <ClInclude Include="vgui2\cso_controls\SelectedImage.h" />
     <ClInclude Include="vgui2\cso_controls\TexturedButton.h" />
     <ClInclude Include="vgui2\cso_controls\ButtonGlow.h" />
     <ClInclude Include="vgui2\cso_controls\ColoredButton.h" />

@@ -75,8 +75,9 @@ void CBasicIniParser<MapType>::OpenFile(const std::string &filename)
 	std::string line, strAppName;
 	KeyListType KeyList;
 
-	while (!std::getline(fs, line, '\n').eof())
+	while (!fs.eof())
 	{
+		std::getline(fs, line);
 		if (line.empty())
 			continue;
 		if (line.front() == '[' && line.back() == ']')

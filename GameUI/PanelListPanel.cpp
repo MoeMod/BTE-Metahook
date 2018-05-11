@@ -190,7 +190,7 @@ void CPanelListPanel::PerformLayout(void)
 			continue;
 
 		h = item->panel->GetTall();
-		item->panel->SetBounds(8, y, wide - 36, h);
+		item->panel->SetBounds(0, y, wide - 36, h);
 	}
 }
 

@@ -1,8 +1,5 @@
 
 #include "hud.h"
-#include "DrawTargaImage.h"
-#include "texdraw.h"
-#include "BaseUI.h"
 #include "BuffClassDamage.h"
 
 #include "VGUI/IEngineVGUI.h"
@@ -10,6 +7,8 @@
 #include "vgui_controls/Label.h"
 #include "vgui_controls/ImagePanel.h"
 #include "vgui_controls/EditablePanel.h"
+
+using namespace vgui;
 
 class HudBuffClassDamagePanel : public vgui::EditablePanel
 {

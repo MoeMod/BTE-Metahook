@@ -11,6 +11,7 @@
 #include "WeaponManager.h"
 #include "WeaponImagePanel.h"
 
+#include "STLHelper.h"
 #include "util/iniParser.h"
 
 using namespace vgui;
@@ -174,6 +175,7 @@ public:
 	virtual void LoadControlSettings(const char *dialogResourceName, const char *pathID = NULL, KeyValues *pPreloadedKeyValues = NULL) override;
 	virtual void OnSelectWeapon(const char *weapon) override;
 	virtual void SetupItems(CWeaponManager::WeaponBuyMenuType type) override;
+	virtual void OnCommand(const char *command) override;
 };
 
 class CCSBuySubMenu_DeathMatch : public CCSBuySubMenu

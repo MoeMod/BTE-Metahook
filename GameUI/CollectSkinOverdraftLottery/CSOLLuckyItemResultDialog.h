@@ -3,7 +3,7 @@
 #include "cso_controls/BluedPopupDialog.h"
 #include <memory>
 
-using namespace vgui;
+class vgui::IImage;
 
 class CCSOLLuckyItemResultDialog : public BluedPopupDialog
 {
@@ -17,6 +17,14 @@ public:
 	virtual vgui::Panel *CreateControlByName(const char *controlName) override;
 	virtual void Activate(void) override;
 	virtual void OnClose(void) override;
+
+	void SetAssociatedItem(const char *name, const char *info, const char *image);
+	void SetAssociatedItem(const char *name, const char *info, vgui::IImage *image);
+
+	void SetItemName(const char *name);
+	void SetItemName(const wchar_t *name);
+
+	void ActivateAnimation(int type);
 
 private:
 	struct impl_t;

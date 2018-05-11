@@ -189,8 +189,8 @@ void CCSBTEAboutDialog::OnCommand(const char *command)
 
 				msgbox->Activate();
 
-				SetKeyBoardInputEnabled(false);
-				SetMouseInputEnabled(false);
+				//SetKeyBoardInputEnabled(false);
+				//SetMouseInputEnabled(false);
 			}
 		}
 

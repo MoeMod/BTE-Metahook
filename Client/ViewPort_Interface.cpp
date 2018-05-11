@@ -45,7 +45,8 @@ void CClientVGUI::Initialize(CreateInterfaceFn *factories, int count)
 void CClientVGUI::Start(void)
 {
 	g_pfnCClientVGUI_Start(this, 0);
-	g_pViewPort = new CViewport();
+	if(!g_pViewPort)
+		g_pViewPort = new CViewport();
 	g_pViewPort->Start();
 }
 
