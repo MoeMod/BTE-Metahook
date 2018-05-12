@@ -6,17 +6,17 @@
 
 using namespace vgui;
 
-class CCSBTEUpdateDialog : public Frame
+class CCSBTECreatorDialog : public Frame
 {
-	DECLARE_CLASS_SIMPLE(CCSBTEUpdateDialog, Frame);
+	DECLARE_CLASS_SIMPLE(CCSBTECreatorDialog, Frame);
 
 public:
-	CCSBTEUpdateDialog(Panel *parent, const char *panelName, bool showTaskbarIcon = true);
+	CCSBTECreatorDialog(Panel *parent, const char *panelName, bool showTaskbarIcon = true);
 
 protected:
 	void OnCommand(const char *command);
 
 private:
-	RichText *m_pUpdateNews;
+	RichText *m_pCreatorList;
 	Button *m_pCancelButton;
 };
