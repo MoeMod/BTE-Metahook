@@ -692,9 +692,6 @@
     <ClCompile Include="IMEInput.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameUI\CSBTEUpdateDialog.cpp">
-      <Filter>GameUI</Filter>
-    </ClCompile>
     <ClCompile Include="GameUI\CSBTEWpnDataEditor.cpp">
       <Filter>GameUI\WpnDataEditor</Filter>
     </ClCompile>
@@ -1135,6 +1132,12 @@
     </ClCompile>
     <ClCompile Include="Client\HUD\TimerTipCountDown.cpp">
       <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTECreatorDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEBulletin.cpp">
+      <Filter>GameUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2428,9 +2431,6 @@
     <ClInclude Include="IMEInput.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameUI\CSBTEUpdateDialog.h">
-      <Filter>GameUI</Filter>
-    </ClInclude>
     <ClInclude Include="GameUI\CSBTEWpnDataEditor.h">
       <Filter>GameUI\WpnDataEditor</Filter>
     </ClInclude>
@@ -3066,6 +3066,12 @@
     </ClInclude>
     <ClInclude Include="Client\HUD\TimerTipCountDown.h">
       <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTECreatorDialog.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEBulletin.h">
+      <Filter>GameUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
