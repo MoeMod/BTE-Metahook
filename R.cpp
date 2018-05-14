@@ -479,7 +479,7 @@ int R_StudioCheckBBox(void)
 float g_flBloodhunterAnimTime = 0.0;
 int g_iBloodhunterSecAnim = 0;
 
-std::list<ExtraViewModel> m_vecExtraViewModels;
+std::vector<ExtraViewModel> m_vecExtraViewModels;
 void R_AddExtraViewModel(const ExtraViewModel &item)
 {
 	m_vecExtraViewModels.push_back(item);
