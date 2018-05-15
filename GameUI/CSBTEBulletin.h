@@ -1,12 +1,11 @@
 #pragma once
 
-#include "cso_controls/BluedPopupDialog.h"
+#include "vgui_controls/Frame.h"
+#include <memory>
 
-using namespace vgui;
-
-class CCSBTEBulletin : public BluedPopupDialog
+class CCSBTEBulletin : public vgui::Frame
 {
-	DECLARE_CLASS_SIMPLE(CCSBTEBulletin, BluedPopupDialog);
+	DECLARE_CLASS_SIMPLE(CCSBTEBulletin, vgui::Frame);
 
 public:
 	CCSBTEBulletin(Panel *parent, const char *panelName = "BulletinDlg", bool showTaskbarIcon = true);

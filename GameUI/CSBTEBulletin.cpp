@@ -11,12 +11,14 @@
 
 #include "cso_controls/DarkTextEntry.h"
 
+using namespace vgui;
+
 struct CCSBTEBulletin::impl_t 
 {
 	vgui::Button *Close;
 	vgui::Button *Next;
 
-	DarkTextEntry *Title;
+	ImagePanel *Title;
 	PanelListPanel *m_pNoticeList;
 
 };
@@ -24,13 +26,13 @@ struct CCSBTEBulletin::impl_t
 CCSBTEBulletin::CCSBTEBulletin(Panel *parent, const char *panelName, bool showTaskbarIcon)
 	: BaseClass(parent, panelName, showTaskbarIcon), pimpl(std::make_unique<impl_t>()) 
 {
-	pimpl->Title = new DarkTextEntry(this, "Title");
+	pimpl->Title = new ImagePanel(this, "Title");
 	pimpl->m_pNoticeList = new PanelListPanel(this, "TitleContainerClipPanelName");
 
 	pimpl->Next = new vgui::Button(this, "Next", "#CSO_Bulletin_Next", this, "Next");
 	pimpl->Close = new vgui::Button(this, "Close", "#CSO_Bulletin_Close", this, "vguicancel");
 
-	LoadControlSettings("resource\bulletin\popup_bulletin.res");
+	LoadControlSettings("resource\\bulletin\\popup_bulletin.res");
 
 	this->SetMenuButtonVisible(false);
 	this->SetCloseButtonVisible(false);
@@ -56,6 +58,10 @@ vgui::Panel *CCSBTEBulletin::CreateControlByName(const char *controlName)
 	if (!Q_stricmp(controlName, "CTempFrame"))
 	{
 		return this;
+	}
+	else if (!Q_stricmp(controlName, "IMETextEntry"))
+	{
+		return new DarkTextEntry(this, controlName);
 	}
 	return BaseClass::CreateControlByName(controlName);
 }
