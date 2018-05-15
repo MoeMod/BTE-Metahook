@@ -23,6 +23,8 @@
 #include "Client/TextureManager.h"
 #include "Client/CubemapManager.h"
 
+#include "Client/hud/ammo.h"
+
 #include "R.h"
 
 #define GetEngfuncsAddress(addr) (g_dwEngineBase+addr-0x1D01000)
@@ -539,9 +541,54 @@ int Hook_R_StudioDrawModel(int flags)
 			*curent = saveent;
 		}
 
-		if (g_iBTEWeapon == WPN_GUNKATA)
+		if (g_iBTEWeapon == WPN_SGMISSILE)
 		{
-			
+			int iExtraAmmo = HudAmmo().m_iExtraAmmo;
+			curent->curstate.skin = iExtraAmmo;
+			curent->curstate.controller[0] = 127 - iExtraAmmo * 12;
+
+			static BodyEnumInfo_t info[11] =
+			{
+				{ 0, 1 },	// LED
+				{ 0, 1 },	// weapon
+
+				{ 0, 1 },	// fx1
+				{ 0, 1 },
+				{ 0, 1 },
+				{ 0, 1 },
+				{ 0, 1 },	// fx5
+
+				{ 0, 2 },	// skingroup
+				{ 0, 2 },
+
+				{ 0, 2 },	// hands
+				{ 0, 1 }	// fx6
+			};
+
+			enum
+			{
+				LED = 0,
+				// ...
+				skingroup = 7,
+				skingroup2 = 8,
+				hands = 9
+			};
+
+			info[hands].body = g_iViewEntityBody;
+			info[skingroup].body = !iExtraAmmo;
+			info[skingroup2].body = !iExtraAmmo;
+
+			int iBackupBody = curent->curstate.body;
+
+			curent->curstate.body = CalcBody(info, 11);
+
+			int iReturn = gStudioInterface.StudioDrawModel(flags);
+
+			curent->curstate.body = iBackupBody;
+
+			gCubeMapManager.UnloadTexture();
+			gCubeMapManager.SetEnabled(false);
+			return iReturn;
 		}
 
 		if (g_iBTEWeapon == WPN_STORMGIANT)

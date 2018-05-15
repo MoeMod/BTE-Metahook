@@ -657,7 +657,7 @@ void HUD_ProcessPlayerState(struct entity_state_s *dst, const struct entity_stat
 			char name[64];
 			strcpy(name, pweaponmodel->name);
 
-			if (strstr(name, "_2.mdl")|| strstr(name, "_a.mdl")|| strstr(name, "_a.mdl"))
+			if (strstr(name, "_2.mdl")|| strstr(name, "_a.mdl")|| strstr(name, "_b.mdl"))
 				name[strlen(name) - 6] = 0;
 			else
 				name[strlen(name) - 4] = 0;

@@ -9983,17 +9983,10 @@ void EV_FireGunkata(struct event_args_s *args)
 
 void EV_FireSgmissile(struct event_args_s *args)
 {
-	if (!args->bparam2)
-	{
-		EV_FireXM1014(args);
-		return;
-	}
-
 	int idx;
 	vec3_t origin;
 	vec3_t up, right, forward;
 	cl_entity_t *ent;
-
 
 	ent = GetViewEntity();
 	idx = args->entindex;
@@ -10042,7 +10035,12 @@ void EV_FireSgmissile(struct event_args_s *args)
 		//VectorScale(ShellVelocity, 1.25, ShellVelocity);
 		ShellVelocity[2] -= 50;
 
-		gEngfuncs.pEventAPI->EV_WeaponAnimation(iSpecialAmmo ? WeaponData.iAnimStart2 : WeaponData.iAnimEnd2, 2);
+		if (args->bparam2)
+			gEngfuncs.pEventAPI->EV_WeaponAnimation(iSpecialAmmo ? WeaponData.iAnimStart2 : WeaponData.iAnimEnd2, 2);
+		else if(iSpecialAmmo)
+			gEngfuncs.pEventAPI->EV_WeaponAnimation(iSpecialAmmo ? WeaponData.iAnimStart : WeaponData.iAnimEnd, 2);
+		else
+			gEngfuncs.pEventAPI->EV_WeaponAnimation(WeaponData.iAnimEmpty, 2);
 	}
 	else
 		EV_GetDefaultShellInfo(args, origin, velocity, ShellVelocity, ShellOrigin, forward, right, up, 20.0, -12.0, -4.0, false);
@@ -10059,59 +10057,63 @@ void EV_FireSgmissile(struct event_args_s *args)
 	}
 	args->fparam2 = 25;
 
-	float v_angle1 = v_angles[1];
-
-	for (int j = 2; j <= 8; j++)
+	if (args->bparam2)
 	{
+		float v_angle1 = v_angles[1];
 
-		//v_angles[1] = v_angle1;
-		//v_angles[1] -= args->fparam2 / 2.0f;
-
-		for (int i = -4; i <= 4; i++)
+		for (int j = 2; j <= 8; j++)
 		{
-			//v_angles[1] += args->fparam2 / 5.0f;
 
-			v_angles[1] = v_angle1 + 6.0 * i;
+			//v_angles[1] = v_angle1;
+			//v_angles[1] -= args->fparam2 / 2.0f;
 
-			gEngfuncs.pfnAngleVectors(v_angles, forward, right, up);
+			for (int i = -4; i <= 4; i++)
+			{
+				//v_angles[1] += args->fparam2 / 5.0f;
 
-			struct model_s *pModel;
-			TEMPENTITY *pEnt;
+				v_angles[1] = v_angle1 + 6.0 * i;
 
-			pModel = IEngineStudio.Mod_ForName("sprites/ef_sgmissile_line.spr", 0);
+				gEngfuncs.pfnAngleVectors(v_angles, forward, right, up);
 
-			if (EV_IsLocal(idx))
-				pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(ent->attachment[0], pModel);
-			else
-				pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(origin, pModel);
+				struct model_s *pModel;
+				TEMPENTITY *pEnt;
 
-			pEnt->entity.curstate.rendermode = kRenderTransAdd;
-			pEnt->entity.curstate.renderamt = 5 + j * 3;
-			pEnt->entity.curstate.rendercolor.b = 200;
-			pEnt->entity.curstate.rendercolor.r = pEnt->entity.curstate.rendercolor.g = 255;
-			pEnt->entity.curstate.scale = 0.1 - j * 0.005;
-			pEnt->entity.curstate.fuser2 = 0.1 - j * 0.012;
-			pEnt->entity.curstate.fuser4 = (/*args->fparam1*/600 - distance) * (j + 1) / 8;
-			pEnt->entity.curstate.vuser3[0] = 0.2 - j * 0.24;
-			pEnt->entity.curstate.vuser4[0] = 0.005;
-			pEnt->entity.curstate.vuser4[1] = 0.05;
-			pEnt->entity.angles[2] = gEngfuncs.pfnRandomLong(0, 1) ? 359.9 - gEngfuncs.pfnRandomLong(0, 15) : gEngfuncs.pfnRandomLong(0, 15);
-			pEnt->flags |= FTENT_CLIENTCUSTOM | FTENT_COLLIDEALL | FTENT_SPRANIMATE;
-			pEnt->frameMax = ModelFrameCount(pModel) - 1;
-			pEnt->entity.curstate.vuser4[2] = pEnt->frameMax / 0.55 * 3.0;
-			pEnt->entity.curstate.framerate = pEnt->frameMax / 0.55;
-			pEnt->entity.curstate.fuser3 = cl.time;
+				pModel = IEngineStudio.Mod_ForName("sprites/ef_sgmissile_line.spr", 0);
 
-			pEnt->die = cl.time + 60.0f;
+				if (EV_IsLocal(idx))
+					pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(ent->attachment[0], pModel);
+				else
+					pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(origin, pModel);
 
-			VectorCopy(pEnt->entity.origin, pEnt->entity.curstate.vuser1);
+				pEnt->entity.curstate.rendermode = kRenderTransAdd;
+				pEnt->entity.curstate.renderamt = 5 + j * 3;
+				pEnt->entity.curstate.rendercolor.b = 200;
+				pEnt->entity.curstate.rendercolor.r = pEnt->entity.curstate.rendercolor.g = 255;
+				pEnt->entity.curstate.scale = 0.1 - j * 0.005;
+				pEnt->entity.curstate.fuser2 = 0.1 - j * 0.012;
+				pEnt->entity.curstate.fuser4 = (/*args->fparam1*/600 - distance) * (j + 1) / 8;
+				pEnt->entity.curstate.vuser3[0] = 0.2 - j * 0.24;
+				pEnt->entity.curstate.vuser4[0] = 0.005;
+				pEnt->entity.curstate.vuser4[1] = 0.05;
+				pEnt->entity.angles[2] = gEngfuncs.pfnRandomLong(0, 1) ? 359.9 - gEngfuncs.pfnRandomLong(0, 15) : gEngfuncs.pfnRandomLong(0, 15);
+				pEnt->flags |= FTENT_CLIENTCUSTOM | FTENT_COLLIDEALL | FTENT_SPRANIMATE;
+				pEnt->frameMax = ModelFrameCount(pModel) - 1;
+				pEnt->entity.curstate.vuser4[2] = pEnt->frameMax / 0.55 * 3.0;
+				pEnt->entity.curstate.framerate = pEnt->frameMax / 0.55;
+				pEnt->entity.curstate.fuser3 = cl.time;
+
+				pEnt->die = cl.time + 60.0f;
+
+				VectorCopy(pEnt->entity.origin, pEnt->entity.curstate.vuser1);
 
 
-			VectorCopy(forward, pEnt->entity.curstate.velocity);
+				VectorCopy(forward, pEnt->entity.curstate.velocity);
 
-			pEnt->callback = EV_FlameCallback;
-			pEnt->hitcallback = EV_FlameHitCallback;
+				pEnt->callback = EV_FlameCallback;
+				pEnt->hitcallback = EV_FlameHitCallback;
+			}
 		}
 	}
-	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, WeaponData.szSound2, 1.0, 0.52, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
+	
+	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, args->bparam2 ? WeaponData.szSound2 : WeaponData.szSound, 1.0, 0.52, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
 }
