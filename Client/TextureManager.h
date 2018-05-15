@@ -1,6 +1,8 @@
 #pragma once
 
 #include <map>
+#include <vector>
+#include <functional>
 #include <memory>
 #include <unordered_map>
 #include <Color.h>
@@ -28,7 +30,6 @@ public:
 		inline const std::string &name() const { return m_szName; }
 		void Draw(int x, int y, Color rgba = Color(255, 255, 255, 255), int w = 0, int h = 0) const;
 
-		virtual void Update() const {}
 		virtual ~CTextureDetail();
 
 	protected:
@@ -55,7 +56,7 @@ public:
 	{
 		friend CTextureManager;
 	public:
-		virtual void Update() const override
+		void Update() const
 		{
 			BinkTexture.UpdateFrame();
 		}
@@ -65,6 +66,7 @@ public:
 			m_idx = BinkTexture.GetTextureId();
 			m_width = BinkTexture.w();
 			m_height = BinkTexture.h();
+			TextureManager().AddUpdateFunc(std::bind(&CBinkDetail::Update, this));
 		}
 		mutable CGL_BinkTexture BinkTexture;
 	};
@@ -97,18 +99,24 @@ public:
 	}
 	void UpdateAll() const
 	{
-		for (auto &i : m_TexturesIdList)
-			i.second->Update();
+		for (auto &f : m_UpdateFuncs)
+			f();
+	}
+	void AddUpdateFunc(std::function<void()> f)
+	{
+		m_UpdateFuncs.emplace_back(f);
 	}
 
 private:
 	std::shared_ptr<CTextureDetail> FactoryTexture(const std::string &szPath);
 	std::shared_ptr<CTextureDetail> GetTexturePtrByName(const std::string &szPath);
 	std::shared_ptr<CTextureDetail> GetTexturePtrById(int id);
+
 	std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<CTextureDetail>>> m_TexturesReplaceList;
 	std::unordered_map<std::string, std::shared_ptr<CTextureDetail>> m_TexturesNameList;
 	std::unordered_map<int, std::shared_ptr<CTextureDetail>> m_TexturesIdList;
 	std::unique_ptr<CTextureDetail> m_pErrorTexture;
+	std::vector<std::function<void()>> m_UpdateFuncs;
 };
 
 CTextureManager &TextureManager(void);

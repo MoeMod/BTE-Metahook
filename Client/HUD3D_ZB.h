@@ -9,6 +9,7 @@ struct SkillIcon
 
 class CHud3D_ZB
 {
+	friend class CHudZombieMod3;
 public:
 	void Init(void);
 	void VidInit(void);

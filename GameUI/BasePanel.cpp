@@ -31,7 +31,18 @@
 #include "BackgroundMenuButton.h"
 #include "OptionsDialog.h"
 #include "CreateMultiplayerGameDialog.h"
-#include "CSBTEWpnDataEditor.h"
+
+#include "GameUI/CSBTEAboutDialog.h"
+#include "GameUI/CSBTEBulletin.h"
+#include "GameUI/CSBTECreatorDialog.h"
+#include "GameUI/CSBTEMyWpnEditor.h"
+#include "GameUI/CSBTEMapLoading.h"
+#include "GameUI/CSBTEEscPanel.h"
+#include "GameUI/CSBTEGameMenu.h"
+#include "GameUI/CSBTEZombieDNA.h"
+#include "GameUI/CSBTEWelcomeDialog.h"
+#include "GameUI/CSBTEWpnDataEditor.h"
+#include "GameUI/CollectSkinOverdraftLottery/CSOLLuckyItemPopupDialog.h"
 
 #include "ToolBar.h"
 #include "plugins.h"
@@ -486,7 +497,6 @@ void CBasePanel::OnWelcomeNewbie(void)
 	enginesurfacefuncs->RestrictPaintToSinglePanel(m_hCSBTEWelcomeDialog->GetVPanel());
 	enginesurfacefuncs->SetModalPanel(m_hCSBTEWelcomeDialog->GetVPanel());
 }
-
 KeyValues *CBasePanel::GetConsoleControlSettings(void)
 {
 	return m_pConsoleControlSettings;
@@ -1083,7 +1093,6 @@ void CBasePanel::OnGameUIActivated(void)
 		}
 		m_hCSBTEEscPanel->SetVisible(true);
 		m_hCSBTEEscPanel->Activate();
-
 		//OnCommand("OpenPauseMenu");
 		m_pGameMenu->SetVisible(false);
 	}
@@ -1094,10 +1103,6 @@ void CBasePanel::RunMenuCommand(const char *command)
 	if (!Q_stricmp(command, "OpenServerBrowser"))
 	{
 		OnOpenServerBrowser();
-	}
-	else if (!Q_stricmp(command, "OpenCSBTEWpnDataEditor"))
-	{
-		OnOpenCSBTEWpnDataEditor();
 	}
 	else if (!Q_stricmp(command, "OpenCreateMultiplayerGameDialog"))
 	{
@@ -1121,19 +1126,31 @@ void CBasePanel::RunMenuCommand(const char *command)
 	}
 	else if (!Q_stricmp(command, "OpenCSBTEAboutDialog"))
 	{
-		OnOpenCSBTEAboutDialog();
-	}
-	else if (!Q_stricmp(command, "OpenCSBTEUpdateDialog"))
-	{
-		OnOpenCSBTEUpdateDialog();
+		OnOpenSubDialog<CCSBTEAboutDialog>();
 	}
 	else if (!Q_stricmp(command, "OpenCSBTEMyWpnEditor"))
 	{
-		OnOpenCSBTEMyWpnEditor();
+		OnOpenSubDialog<CCSBTEMyWpnEditor>();
 	}
 	else if (!Q_stricmp(command, "OpenCSBTEZombieDNA"))
 	{
-		OnOpenCSBTEZombieDNA();
+		OnOpenSubDialog<CCSBTEZombieDNA>();
+	}
+	else if (!Q_stricmp(command, "OpenCSBTEBulletin"))
+	{
+		OnOpenSubDialog<CCSBTEBulletin>();
+	}
+	else if (!Q_stricmp(command, "OpenCSBTECreatorDialog"))
+	{
+		OnOpenSubDialog<CCSBTECreatorDialog>();
+	}
+	else if (!Q_stricmp(command, "OpenCSBTEWpnDataEditor"))
+	{
+		OnOpenSubDialog<CCSBTEWpnDataEditor>();
+	}
+	else if (!Q_stricmp(command, "OpenLuckyItemPopupDialog"))
+	{
+		OnOpenSubDialog<CCSOLLuckyItemPopupDialog>("LuckyItemDlg");
 	}
 	else if (!Q_stricmp(command, "QuitNoConfirm"))
 	{
@@ -1239,17 +1256,6 @@ void CBasePanel::OnOpenOptionsDialog(void)
 	m_hOptionsDialog->Activate();
 }
 
-void CBasePanel::OnOpenCSBTEWpnDataEditor(void)
-{
-	if (!m_hCSBTEWpnDataEditor.Get())
-	{
-		m_hCSBTEWpnDataEditor = new CCSBTEWpnDataEditor(this, "CSBTEWpnDataEditor");
-		PositionDialog(m_hCSBTEWpnDataEditor);
-	}
-
-	m_hCSBTEWpnDataEditor->Activate();
-}
-
 void CBasePanel::OnOpenCreateMultiplayerGameDialog(void)
 {
 	if (!m_hCreateMultiplayerGameDialog.Get())
@@ -1259,6 +1265,17 @@ void CBasePanel::OnOpenCreateMultiplayerGameDialog(void)
 	}
 
 	m_hCreateMultiplayerGameDialog->Activate();
+}
+/*
+void CBasePanel::OnOpenCSBTEWpnDataEditor(void)
+{
+	if (!m_hCSBTEWpnDataEditor.Get())
+	{
+		m_hCSBTEWpnDataEditor = new CCSBTEWpnDataEditor(this, "CSBTEWpnDataEditor");
+		PositionDialog(m_hCSBTEWpnDataEditor);
+	}
+
+	m_hCSBTEWpnDataEditor->Activate();
 }
 
 void CBasePanel::OnOpenCSBTEAboutDialog(void)
@@ -1305,7 +1322,7 @@ void CBasePanel::OnOpenCSBTEZombieDNA(void)
 
 	m_hCSBTEZombieDNA->Activate();
 }
-
+*/
 void CBasePanel::PositionDialog(vgui::PHandle dlg)
 {
 	if (!dlg.Get())

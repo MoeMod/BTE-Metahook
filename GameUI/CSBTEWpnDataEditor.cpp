@@ -282,7 +282,7 @@ CCSBTEWpnDataEditor::CCSBTEWpnDataEditor(Panel *parent, const char *panelName, b
 	SetVisible(true);
 
 	m_iniDataIterator = m_iniData.begin();
-	for (auto app : m_iniData)
+	for (auto &app : m_iniData)
 	{
 		auto &&name = app.first.c_str();
 		m_wpnNames.emplace_back(name, GetWeaponNameFormat(name));

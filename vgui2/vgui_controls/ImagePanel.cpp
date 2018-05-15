@@ -11,19 +11,18 @@
 #include <vgui/ISurface.h>
 #include <vgui/IScheme.h>
 #include <vgui/IBorder.h>
+#include <KeyValues.h>
 
-#include <tier1/KeyValues.h>
-
-#include "ImagePanel.h"
-#include "Image.h"
-#include "Controls.h"
+#include <vgui_controls/ImagePanel.h>
+#include <vgui_controls/Image.h>
+#include <vgui_controls/Controls.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
 
 using namespace vgui;
 
-DECLARE_BUILD_FACTORY( ImagePanel );
+DECLARE_BUILD_FACTORY(ImagePanel);
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -34,8 +33,13 @@ ImagePanel::ImagePanel(Panel *parent, const char *name) : Panel(parent, name)
 	m_pszImageName = NULL;
 	m_pszColorName = NULL;
 	m_bScaleImage = false;
+	m_bCenterImage = false;
+	m_bTileImage = false;
+	m_bTileHorizontally = false;
+	m_bTileVertically = false;
 	m_fScaleAmount = 0.0f;
 	m_FillColor = Color(0, 0, 0, 0);
+	m_DrawColor = Color(255, 255, 255, 255);
 
 	SetImage(m_pImage);
 }
@@ -45,8 +49,8 @@ ImagePanel::ImagePanel(Panel *parent, const char *name) : Panel(parent, name)
 //-----------------------------------------------------------------------------
 ImagePanel::~ImagePanel()
 {
-	delete [] m_pszImageName;
-	delete [] m_pszColorName;
+	delete[] m_pszImageName;
+	delete[] m_pszColorName;
 }
 
 //-----------------------------------------------------------------------------
@@ -72,10 +76,10 @@ void ImagePanel::SetImage(IImage *image)
 void ImagePanel::SetImage(const char *imageName)
 {
 	int len = Q_strlen(imageName) + 1;
-	delete [] m_pszImageName;
-	m_pszImageName = new char[ len ];
-	Q_strncpy(m_pszImageName, imageName, len );
-	InvalidateLayout(false, true); // forrce applyschemesettings to run
+	delete[] m_pszImageName;
+	m_pszImageName = new char[len];
+	Q_strncpy(m_pszImageName, imageName, len);
+	m_pImage = NULL;
 }
 
 //-----------------------------------------------------------------------------
@@ -89,9 +93,17 @@ IImage *ImagePanel::GetImage()
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-Color ImagePanel::GetDrawColor( void )
+Color ImagePanel::GetDrawColor(void)
 {
-	return Color(255,255,255,255);
+	return m_DrawColor;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void ImagePanel::SetDrawColor(Color drawColor)
+{
+	m_DrawColor = drawColor;
 }
 
 //-----------------------------------------------------------------------------
@@ -109,7 +121,7 @@ void ImagePanel::PaintBackground()
 	}
 	if (m_pImage)
 	{
-		surface()->DrawSetColor( 255, 255, 255, 255 );
+		surface()->DrawSetColor(m_DrawColor);
 		m_pImage->SetPos(0, 0);
 
 		if (m_bScaleImage)
@@ -118,30 +130,108 @@ void ImagePanel::PaintBackground()
 			// to our panel size and then restore after we draw it.
 
 			int imageWide, imageTall;
-			m_pImage->GetSize( imageWide, imageTall );
+			m_pImage->GetSize(imageWide, imageTall);
 
-			if ( m_fScaleAmount > 0.0f )
+			int wide, tall;
+			GetSize(wide, tall);
+
+			int newWide = imageWide;
+			int newTall = imageTall;
+
+			if (m_fScaleAmount > 0.0f)
 			{
-				float wide, tall;
-				wide = static_cast<float>(imageWide) * m_fScaleAmount;
-				tall = static_cast<float>(imageTall) * m_fScaleAmount;
-				m_pImage->SetSize( static_cast<int>(wide), static_cast<int>(tall) );
+				newWide = static_cast<int>(static_cast<float>(imageWide) * m_fScaleAmount);
+				newTall = static_cast<int>(static_cast<float>(imageTall) * m_fScaleAmount);
 			}
 			else
 			{
-				int wide, tall;
-				GetSize( wide, tall );
-				m_pImage->SetSize( wide, tall );
+				if (m_bCenterImage)
+				{
+					float wideRate = static_cast<float>(wide) / newWide;
+					float tallRate = static_cast<float>(tall) / newTall;
+					float scaleAmout = min(wideRate, tallRate);
+
+					newWide = static_cast<int>(newWide * scaleAmout);
+					newTall = static_cast<int>(newTall * scaleAmout);
+				}
+				else
+				{
+					newWide = wide;
+					newTall = tall;
+				}
 			}
 
-			m_pImage->SetColor( GetDrawColor() );
+			if (m_bCenterImage)
+			{
+				int x = (wide - newWide) / 2;
+				int y = (tall - newTall) / 2;
+
+				m_pImage->SetPos(x, y);
+			}
+
+			m_pImage->SetSize(newWide, newTall);
+
+			m_pImage->SetColor(GetDrawColor());
 			m_pImage->Paint();
 
-			m_pImage->SetSize( imageWide, imageTall );
+			m_pImage->SetSize(imageWide, imageTall);
+		}
+		else if (m_bCenterImage)
+		{
+			int imageWide, imageTall;
+			m_pImage->GetSize(imageWide, imageTall);
+
+			int wide, tall;
+			GetSize(wide, tall);
+
+			int x = (wide - imageWide) / 2;
+			int y = (tall - imageTall) / 2;
+
+			m_pImage->SetPos(x, y);
+			m_pImage->SetColor(GetDrawColor());
+			m_pImage->Paint();
+
+			m_pImage->SetSize(imageWide, imageTall);
+		}
+		else if (m_bTileImage || m_bTileHorizontally || m_bTileVertically)
+		{
+			int wide, tall;
+			GetSize(wide, tall);
+			int imageWide, imageTall;
+			m_pImage->GetSize(imageWide, imageTall);
+
+			int y = 0;
+			while (y < tall)
+			{
+				int x = 0;
+				while (x < wide)
+				{
+					m_pImage->SetPos(x, y);
+					m_pImage->Paint();
+
+					x += imageWide;
+
+					if (!m_bTileHorizontally)
+						break;
+				}
+
+				y += imageTall;
+
+				if (!m_bTileVertically)
+					break;
+			}
+			m_pImage->SetPos(0, 0);
 		}
 		else
 		{
 			m_pImage->Paint();
+		}
+	}
+	else
+	{
+		if (m_pszImageName && strlen(m_pszImageName) > 0)
+		{
+			SetImage(scheme()->GetImage(m_pszImageName, m_bScaleImage));
 		}
 	}
 }
@@ -166,7 +256,11 @@ void ImagePanel::GetSettings(KeyValues *outResourceData)
 	}
 
 	outResourceData->SetInt("scaleImage", m_bScaleImage);
+	outResourceData->SetInt("centerImage", m_bCenterImage);
 	outResourceData->SetFloat("scaleAmount", m_fScaleAmount);
+	outResourceData->SetInt("tileImage", m_bTileImage);
+	outResourceData->SetInt("tileHorizontally", m_bTileHorizontally);
+	outResourceData->SetInt("tileVertically", m_bTileVertically);
 }
 
 //-----------------------------------------------------------------------------
@@ -174,17 +268,21 @@ void ImagePanel::GetSettings(KeyValues *outResourceData)
 //-----------------------------------------------------------------------------
 void ImagePanel::ApplySettings(KeyValues *inResourceData)
 {
-	delete [] m_pszImageName;
-	delete [] m_pszColorName;
+	delete[] m_pszImageName;
+	delete[] m_pszColorName;
 	m_pszImageName = NULL;
 	m_pszColorName = NULL;
 
-	m_bScaleImage = inResourceData->GetInt("scaleImage", 0);
-	m_fScaleAmount = inResourceData->GetFloat("scaleAmount", 0.0f);
+	m_bScaleImage = inResourceData->GetInt("scaleImage", m_bScaleImage);
+	m_bCenterImage = inResourceData->GetInt("centerImage", m_bCenterImage);
+	m_fScaleAmount = inResourceData->GetFloat("scaleAmount", 0.0);
+	m_bTileImage = inResourceData->GetInt("tileImage", 0);
+	m_bTileHorizontally = inResourceData->GetInt("tileHorizontally", m_bTileImage);
+	m_bTileVertically = inResourceData->GetInt("tileVertically", m_bTileImage);
 	const char *imageName = inResourceData->GetString("image", "");
 	if (*imageName)
 	{
-		SetImage( imageName );
+		SetImage(imageName);
 	}
 
 	const char *pszFillColor = inResourceData->GetString("fillcolor", "");
@@ -192,8 +290,8 @@ void ImagePanel::ApplySettings(KeyValues *inResourceData)
 	{
 		int r = 0, g = 0, b = 0, a = 255;
 		int len = Q_strlen(pszFillColor) + 1;
-		m_pszColorName = new char[ len ];
-		Q_strncpy( m_pszColorName, pszFillColor, len );
+		m_pszColorName = new char[len];
+		Q_strncpy(m_pszColorName, pszFillColor, len);
 
 		if (sscanf(pszFillColor, "%d %d %d %d", &r, &g, &b, &a) >= 3)
 		{
@@ -202,7 +300,7 @@ void ImagePanel::ApplySettings(KeyValues *inResourceData)
 		}
 		else
 		{
-			IScheme *pScheme = scheme()->GetIScheme( GetScheme() );
+			IScheme *pScheme = scheme()->GetIScheme(GetScheme());
 			m_FillColor = pScheme->GetColor(pszFillColor, Color(0, 0, 0, 0));
 		}
 	}
@@ -210,7 +308,7 @@ void ImagePanel::ApplySettings(KeyValues *inResourceData)
 	const char *pszBorder = inResourceData->GetString("border", "");
 	if (*pszBorder)
 	{
-		IScheme *pScheme = scheme()->GetIScheme( GetScheme() );
+		IScheme *pScheme = scheme()->GetIScheme(GetScheme());
 		SetBorder(pScheme->GetBorder(pszBorder));
 	}
 
@@ -220,10 +318,10 @@ void ImagePanel::ApplySettings(KeyValues *inResourceData)
 //-----------------------------------------------------------------------------
 // Purpose:  load the image, this is done just before this control is displayed
 //-----------------------------------------------------------------------------
-void ImagePanel::ApplySchemeSettings( IScheme *pScheme )
+void ImagePanel::ApplySchemeSettings(IScheme *pScheme)
 {
 	BaseClass::ApplySchemeSettings(pScheme);
-	if ( m_pszImageName && strlen( m_pszImageName ) > 0 )
+	if (m_pszImageName && strlen(m_pszImageName) > 0)
 	{
 		SetImage(scheme()->GetImage(m_pszImageName, m_bScaleImage));
 	}
@@ -242,20 +340,44 @@ const char *ImagePanel::GetDescription()
 //-----------------------------------------------------------------------------
 // Purpose: sets whether or not the image should scale to fit the size of the ImagePanel (defaults to false)
 //-----------------------------------------------------------------------------
-void ImagePanel::SetShouldScaleImage( bool state )
+void ImagePanel::SetShouldScaleImage(bool state)
 {
 	m_bScaleImage = state;
 }
 
 //-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void ImagePanel::SetShouldCenterImage(bool state)
+{
+	m_bCenterImage = state;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+bool ImagePanel::IsShouldScaleImage(void)
+{
+	return m_bScaleImage;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+bool ImagePanel::IsShouldCenterImage(void)
+{
+	return m_bCenterImage;
+}
+
+//-----------------------------------------------------------------------------
 // Purpose: used in conjunction with setting that the image should scale and defines an absolute scale amount
 //-----------------------------------------------------------------------------
-void ImagePanel::SetScaleAmount( float scale )
+void ImagePanel::SetScaleAmount(float scale)
 {
 	m_fScaleAmount = scale;
 }
 
-float ImagePanel::GetScaleAmount( void )
+float ImagePanel::GetScaleAmount(void)
 {
 	return m_fScaleAmount;
 }
@@ -263,7 +385,7 @@ float ImagePanel::GetScaleAmount( void )
 //-----------------------------------------------------------------------------
 // Purpose: set the color to fill with, if no Image is specified
 //-----------------------------------------------------------------------------
-void ImagePanel::SetFillColor( Color col )
+void ImagePanel::SetFillColor(Color col)
 {
 	m_FillColor = col;
 }

@@ -15,7 +15,7 @@ CWeaponManager &WeaponManager()
 	return x;
 }
 
-char *AliasWeaponName(char *name)
+const char *AliasWeaponName(const char *name)
 {
 	if (!stricmp(name, "vest"))
 		return "kevlar";
@@ -42,9 +42,9 @@ char *AliasWeaponName(char *name)
 	return name;
 }
 
-wchar_t *GetWeaponNameFormat(char *name)
+wchar_t *GetWeaponNameFormat(const char *name)
 {
-	char *pTemp = name;
+	const char *pTemp = name;
 	if (!stricmp(name, "vest"))
 		pTemp = "Kevlar";
 	else if (!stricmp(name, "vesthelm"))
@@ -102,9 +102,9 @@ wchar_t *GetWeaponNameFormat(const std::string &name)
 	return GetWeaponNameFormat(buffer);
 }
 
-wchar_t *GetWeaponDescription(char *pItem)
+wchar_t *GetWeaponDescription(const char *pItem)
 {
-	char *pName = AliasWeaponName(pItem);
+	const char *pName = AliasWeaponName(pItem);
 	if (!stricmp(pName, "fgrenade"))
 		pName = "FireBomb";
 	return GetLangUni(va("#CStrike_%sDescription", pName));
@@ -182,6 +182,15 @@ auto CWeaponManager::Find(const char *szName)->CustomWeapon &
 	return m_NullWeapon;
 }
 
+bool CWeaponManager::FCanBuyWeapon(const char *name)
+{
+	auto it = m_DataMap.find(name);
+	if (it == m_DataMap.end())
+		return false;
+
+	return it->second->bCanBuy;
+}
+
 auto CWeaponManager::LoadWeaponData(const char *szName) -> CustomWeapon
 {
 	CustomWeapon Result;
@@ -214,11 +223,11 @@ auto CWeaponManager::LoadWeaponData(const char *szName) -> CustomWeapon
 
 	GetPrivateProfileStringA(szName, "Team", "ALL", szValue, sizeof(szValue), "cstrike/weapons.ini");
 	if (!strcmp(szValue, "TR"))
-		Result.iTeam = TR;
+		Result.iTeam = WeaponBuyTeam::TR;
 	else if (!strcmp(szValue, "CT"))
-		Result.iTeam = CT;
+		Result.iTeam = WeaponBuyTeam::CT;
 	else
-		Result.iTeam = ALL;
+		Result.iTeam = WeaponBuyTeam::ALL;
 
 	GetPrivateProfileStringA(szName, "GameModeLimit", "0", szValue, sizeof(szValue), "cstrike/weapons.ini");
 	Result.iModeLimit = atoi(szValue);
@@ -445,27 +454,27 @@ auto CWeaponManager::GetWeaponBuyMenuType(const char *szName) -> WeaponBuyMenuTy
 
 	if (!strcmp(szValue, "PISTOL"))
 	{
-		return PISTOL;
+		return WeaponBuyMenuType::PISTOL;
 	}
 	else if (!strcmp(szValue, "SHOTGUN"))
 	{
-		return SHOTGUN;
+		return WeaponBuyMenuType::SHOTGUN;
 	}
 	else if (!strcmp(szValue, "SMG"))
 	{
-		return SMG;
+		return WeaponBuyMenuType::SMG;
 	}
 	else if (!strcmp(szValue, "RIFLE"))
 	{
-		return RIFLE;
+		return WeaponBuyMenuType::RIFLE;
 	}
 	else if (!strcmp(szValue, "MG"))
 	{
-		return MG;
+		return WeaponBuyMenuType::MG;
 	}
 	else if (!strcmp(szValue, "EQUIP"))
 	{
-		return EQUIP;
+		return WeaponBuyMenuType::EQUIP;
 		char szValue2[32];
 		GetPrivateProfileStringA(szName, "WeaponID", "", szValue2, sizeof(szValue2), "cstrike/weapons.ini");
 
@@ -475,8 +484,8 @@ auto CWeaponManager::GetWeaponBuyMenuType(const char *szName) -> WeaponBuyMenuTy
 	}
 	else if (!strcmp(szValue, "KNIFE"))
 	{
-		return KNIFE;
+		return WeaponBuyMenuType::KNIFE;
 	}
 	
-	return NONE;
+	return WeaponBuyMenuType::NONE;
 }

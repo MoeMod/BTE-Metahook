@@ -14,6 +14,7 @@
 #include "Hook_LoadTGA.h"
 #include "Hook_GL.h"
 #include "UnicodeVoice.h"
+#include "StartupGraphic.h"
 
 #include "Renderer/qgl.h"
 
@@ -141,7 +142,6 @@ void IPlugins::Init(metahook_api_t *pAPI, mh_interface_t *pInterface, mh_engines
 	Window_Init();
 	Console_Init();
 
-
 	/*
 	auto registry = pInterface->Registry;
 	registry->WriteInt("ScreenWidth", 1920);
@@ -207,6 +207,7 @@ void IPlugins::LoadEngine(void)
 	Module_InstallHook();
 	R_InstallHook();
 	LoadTGA_InstallHook(); // must after QGL_Init
+	StartupGraphic_Init();
 
 						   // Unknown function name
 	g_pMetaHookAPI->InlineHook((void *)0x1D0E720, CL_Frame, (void *&)g_pfnCL_Frame);

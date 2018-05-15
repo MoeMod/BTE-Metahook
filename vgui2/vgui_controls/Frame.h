@@ -242,6 +242,7 @@ private:
 	bool	m_bPrimed;
 	VPANEL	m_hPreviousModal;
 
+protected:
 	bool m_bImageBackground;
 	IImage *m_pTopBackground[3];
 	IImage *m_pCenterBackground[3];

@@ -119,7 +119,7 @@ void GL_BuildLightmaps(void)
 	if (!gl_monolight->value)
 		*(int *)0x280E5D4 = 3;	// lightmap_used
 
-	for (int i = 1; i < 2048; i++)
+	for (int i = 1; i < 512; i++)
 	{
 		model_t *m = IEngineStudio.GetModelByIndex(i);
 

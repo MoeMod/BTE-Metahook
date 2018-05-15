@@ -46,8 +46,6 @@ void CHudOverview::Init(void)
 
 	iTag[0] = vgui::surface()->CreateNewTextureID();
 	iTag[1] = vgui::surface()->CreateNewTextureID();
-	vgui::surface()->DrawSetTextureFile(iTag[0], "resource\\hud\\other\\cttag", true, false);
-	vgui::surface()->DrawSetTextureFile(iTag[1], "resource\\hud\\other\\trtag", true, false);
 
 	m_iBombEntity = 0;
 	m_fBombEntityTime = 0.0f;
@@ -60,6 +58,8 @@ void CHudOverview::VidInit()
 	memset(flNextTraceCheck, 0, sizeof(flNextTraceCheck));
 	memset(m_bCanSee, 0, sizeof(m_bCanSee));
 
+	vgui::surface()->DrawSetTextureFile(iTag[0], "resource\\hud\\other\\cttag", true, false);
+	vgui::surface()->DrawSetTextureFile(iTag[1], "resource\\hud\\other\\trtag", true, false);
 }
 void CHudOverview::CalcRefdef(struct ref_params_s *pParams)
 {

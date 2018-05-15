@@ -22,7 +22,7 @@ class CBinkPanel : public vgui::Panel
 	typedef vgui::Panel BaseClass;
 
 public:
-	CBinkPanel(vgui::Panel *parent, char const *filename = NULL);
+	CBinkPanel(vgui::Panel *parent, char const *panelName);
 	~CBinkPanel(void);
 
 public:

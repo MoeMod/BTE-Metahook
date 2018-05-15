@@ -8,6 +8,7 @@ using namespace vgui;
 
 CBinkPanel::CBinkPanel(Panel *parent, char const *panelName) : Panel(parent, panelName)
 {
+	m_hBink = NULL;
 	m_pPixelBuffer = NULL;
 	m_iTextureId = surface()->CreateNewTextureID();
 	m_color = Color(255, 255, 255, 255);
@@ -73,7 +74,7 @@ void CBinkPanel::OnThink(void)
 				if (m_bLoop)
 					Play();
 				else
-					Stop();
+					Pause();
 			}
 		}
 	}

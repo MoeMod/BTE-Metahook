@@ -1,6 +1,7 @@
 #include "metahook.h"
 #include "exportfuncs.h"
 #include "plugins.h"
+#include "message.h"
 #include "demo_api.h"
 #include "cdll_dll.h"
 
@@ -10,10 +11,11 @@
 #include "VGUI/CSBackGroundPanel.h"
 #include "Screen.h"
 
-#include "vgui/cstrikebuymenu.h"
+#include "vgui/BuyMenu/cstrikebuymenu.h"
 
 #include "MGUI/mgui.h"
 #include "MGUI/BTEPanel.h"
+#include "MGUI/NormalZombieMenu.h"
 #include "MGUI/TeamMenu.h"
 
 using namespace vgui;
@@ -22,6 +24,10 @@ Panel *g_lastPanel = NULL;
 Button *g_lastButton = NULL;
 
 CViewport *g_pViewPort = NULL;
+
+const Color COL_NONE = { 255, 255, 255, 255 };
+const Color COL_CT = { 192, 205, 224, 255 };
+const Color COL_TR = { 216, 182, 183, 255 };
 
 CViewport::CViewport()
 {
@@ -47,6 +53,7 @@ CViewport::CViewport()
 
 	m_Panels.RemoveAll();
 
+	m_pBuyMenu = NULL;
 }
 
 CViewport::~CViewport()
@@ -58,8 +65,8 @@ void CViewport::Start(void)
 {
 	CreateBackGround();
 
-	m_pBuyMenu_TER = (CCSBuyMenu_TER *)AddNewPanel(new CCSBuyMenu_TER);
-	m_pBuyMenu_CT = (CCSBuyMenu_CT *)AddNewPanel(new CCSBuyMenu_CT);
+	if(!m_pBuyMenu)
+		m_pBuyMenu = (CCSBaseBuyMenu *)AddNewPanel(new CCSBaseBuyMenu);
 
 	m_bInitialied = true;
 
@@ -188,8 +195,23 @@ void CViewport::HideAllVGUIMenu(void)
 	//ShowPanel(m_pTextWindow, false);
 }
 
+extern MGUI_Panel *pTeamSuitPanel;
+extern MGUI_Panel *pBuyMenuPanel;
+void MGUI_CloseAll()
+{
+	if (pTeamSuitPanel)
+		pTeamSuitPanel->m_iClosing = TRUE;
+	if (pBuyMenuPanel)
+		pBuyMenuPanel->m_iClosing = TRUE;
+	g_TeamMenu.Close();
+	g_NormalZombieMenu.Close();
+	//UpdateItems();
+	g_mgui_candraw = 0;
+}
+
 bool CViewport::ShowVGUIMenu(int iMenu)
 {
+	MGUI_CloseAll();
 	CViewPortPanel *panel = NULL;
 
 	switch (iMenu)
@@ -207,7 +229,6 @@ bool CViewport::ShowVGUIMenu(int iMenu)
 		g_TeamMenu.SwitchTeam(2);
 		return true;
 	}
-
 	case MENU_BUY:
 	case MENU_BUY_PISTOL:
 	case MENU_BUY_SHOTGUN:
@@ -218,12 +239,12 @@ bool CViewport::ShowVGUIMenu(int iMenu)
 	{
 		CCSBaseBuyMenu *buyMenu = NULL;
 
-		if (g_iTeamNumber == TEAM_CT)
-			buyMenu = m_pBuyMenu_CT;
+		if (g_iTeam == 1)
+			m_pBuyMenu->SetTeam(TEAM_CT);
 		else
-			buyMenu = m_pBuyMenu_TER;
+			m_pBuyMenu->SetTeam(TEAM_TERRORIST);
 
-		buyMenu->ActivateMenu(iMenu);
+		m_pBuyMenu->ActivateMenu(iMenu);
 		return true;
 	}
 	}
@@ -259,10 +280,7 @@ bool CViewport::HideVGUIMenu(int iMenu)
 	case MENU_BUY_MACHINEGUN:
 	case MENU_BUY_ITEM:
 	{
-		if (g_iTeamNumber == TEAM_CT)
-			panel = m_pBuyMenu_CT;
-		else
-			panel = m_pBuyMenu_TER;
+		panel = m_pBuyMenu;
 	}
 	}
 
@@ -517,4 +535,20 @@ bool CViewport::AllowedToPrintText(void)
 	}
 
 	return true;
+}
+
+void CViewport::UpdateGameMode()
+{
+	for (int i = 0; i < m_Panels.Count(); i++)
+	{
+		if (m_Panels[i] != m_pBuyMenu)
+			continue;
+
+		VPANEL vPanel = m_Panels[i]->GetVPanel();
+		ipanel()->DeletePanel(vPanel);
+
+		m_Panels[i] = m_pBuyMenu = new CCSBaseBuyMenu;
+	}
+
+	m_pBuyMenu->UpdateGameMode();
 }

@@ -19,6 +19,7 @@
 #include "SkillKeyPopupDlg.h"
 
 class VControlsListPanel;
+class ColoredButton;
 
 //-----------------------------------------------------------------------------
 // Purpose: Keyboard Details, Part of OptionsDialog
@@ -97,7 +98,7 @@ private:
 
 	vgui::Button *m_pSetBindingButton;
 	vgui::Button *m_pClearBindingButton;
-	vgui::Button *m_pSkillKeyButton;
+	ColoredButton *m_pSkillKeyButton;
 
 	// List of saved bindings for the keys
 	KeyBinding m_Bindings[ 256 ];

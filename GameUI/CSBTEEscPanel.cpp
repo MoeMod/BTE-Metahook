@@ -2,61 +2,7 @@
 #include "CSBTEEscPanel.h"
 #include "BasePanel.h"
 
-CCSBTEEscPanelButton::~CCSBTEEscPanelButton()
-{
-	for (int i = 0; i < 3; i++)
-	{
-		delete[] m_pszImageName[i];
-	}
-}
-
-void CCSBTEEscPanelButton::Paint(void)
-{
-	if (!ShouldPaint())
-		return;
-	//BaseClass::Paint();
-	return;
-}
-
-void CCSBTEEscPanelButton::PaintBackground(void)
-{
-	//Panel::PaintBackground();
-
-	int iState = 1;
-	if (IsDepressed()) iState = 0;
-	else if (IsArmed()) iState = 2;
-	
-	if (m_pImage[iState])
-	{
-		surface()->DrawSetColor(255, 255, 255, 255);
-		m_pImage[iState]->SetPos(0, 0);
-
-		// Image size is stored in the bitmap, so temporarily set its size
-		// to our panel size and then restore after we draw it.
-
-		int imageWide, imageTall;
-		m_pImage[iState]->GetSize(imageWide, imageTall);
-		int wide, tall;
-		GetSize(wide, tall);
-		m_pImage[iState]->SetSize(wide, tall);
-		m_pImage[iState]->Paint();
-		m_pImage[iState]->SetSize(imageWide, imageTall);
-
-	}
-}
-
-void CCSBTEEscPanelButton::SetImage(char *c, char *n, char *o)
-{
-	char *psz[3] = { c, n, o };
-	for (int i = 0; i < 3; i++)
-	{
-		delete[] m_pszImageName[i];
-
-		m_pszImageName[i] = new char[strlen(psz[i]) + 1];
-		strcpy(m_pszImageName[i], psz[i]);
-		m_pImage[i] = scheme()->GetImage(psz[i], false);
-	}
-}
+#include "cso_controls/TexturedButton.h"
 
 CCSBTEEscPanel::CCSBTEEscPanel(Panel *parent, const char *panelName, bool showTaskbarIcon) : Frame(parent, panelName, showTaskbarIcon)
 {

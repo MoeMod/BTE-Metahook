@@ -92,7 +92,7 @@ void EngFunc_SPR_DrawAdditive(int frame, int x, int y, const wrect_t *prc)
 
 	if (prc)
 	{
-		if (g_iMod == MOD_NONE || g_iMod == MOD_ZBS || g_iMod == MOD_GHOST || !g_iMod)
+		if (g_iMod == MOD_NONE || g_iMod == MOD_ZBS || g_iMod == MOD_ZB5 || g_iMod == MOD_GHOST || !g_iMod)
 		{
 			if((prc->right - prc->left) == 18) //MONEY
 			{

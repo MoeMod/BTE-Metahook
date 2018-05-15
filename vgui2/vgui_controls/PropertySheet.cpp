@@ -346,6 +346,22 @@ public:
 		{
 			SetTextInset( 12, 0 );
 		}
+
+		const char *enableImage = pScheme->GetResourceString("PropertyTab.LeftC");
+
+		if (enableImage[0])
+		{
+			_imageBackground = true;
+			_depressedImage[0] = scheme()->GetImage(enableImage, true);
+			_depressedImage[1] = scheme()->GetImage(pScheme->GetResourceString("PropertyTab.CenterC"), true);
+			_depressedImage[2] = scheme()->GetImage(pScheme->GetResourceString("PropertyTab.RightC"), true);
+			_defaultImage[0] = scheme()->GetImage(pScheme->GetResourceString("PropertyTab.LeftN"), true);
+			_defaultImage[1] = scheme()->GetImage(pScheme->GetResourceString("PropertyTab.CenterN"), true);
+			_defaultImage[2] = scheme()->GetImage(pScheme->GetResourceString("PropertyTab.RightN"), true);
+			_armedImage[0] = scheme()->GetImage(pScheme->GetResourceString("PropertyTab.LeftO"), true);
+			_armedImage[1] = scheme()->GetImage(pScheme->GetResourceString("PropertyTab.CenterO"), true);
+			_armedImage[2] = scheme()->GetImage(pScheme->GetResourceString("PropertyTab.RightO"), true);
+		}
 	}
 
 	virtual void OnCommand( char const *cmd )

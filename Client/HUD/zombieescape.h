@@ -12,6 +12,7 @@ public:
 	void ResetUI(void);
 
 private:
+	bool m_bHasZEPoint;
 	int m_iPoint[20][3], m_iPlayerLastCount[33];
 	float m_flZEPoint[20][3], m_flZECheck;
 

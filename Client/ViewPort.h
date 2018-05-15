@@ -24,8 +24,7 @@
 #define PANEL_ACTIVE "active"
 
 class CCSBackGroundPanel;
-class CCSBuyMenu_CT;
-class CCSBuyMenu_TER;
+class CCSBaseBuyMenu;
 
 #ifdef GetCurrentTime
 #undef GetCurrentTime
@@ -85,6 +84,8 @@ public:
 
 	bool AllowedToPrintText(void);
 
+	void UpdateGameMode();
+
 private:
 	float m_flCurrentTime;
 	bool m_bInitialied;
@@ -97,8 +98,7 @@ private:
 	char m_szServerName[MAX_SERVERNAME_LENGTH];
 
 private:
-	CCSBuyMenu_CT * m_pBuyMenu_CT;
-	CCSBuyMenu_TER *m_pBuyMenu_TER;
+	CCSBaseBuyMenu *m_pBuyMenu;
 
 public:
 	friend int MsgFunc_ServerName(const char *pszName, int iSize, void *pbuf); //message.cpp
@@ -106,3 +106,7 @@ public:
 };
 
 extern CViewport *g_pViewPort;
+
+extern const Color COL_NONE;
+extern const Color COL_CT;
+extern const Color COL_TR;

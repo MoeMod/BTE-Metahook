@@ -127,9 +127,9 @@ void MakeWeaponList();
 int iMonthWeaponBG, iMonthWeaponBG2;
 Tga iMonthWeaponBGLabel;
 
-wchar_t *GetWeaponInfoFormat(int iSlot, char *pItem)
+wchar_t *GetWeaponInfoFormat(int iSlot, const char *pItem)
 {
-	char *pTemp = AliasWeaponName(pItem);
+	const char *pTemp = AliasWeaponName(pItem);
 	auto &Item = WeaponManager()[pItem];
 	if (!iSlot)
 	{
@@ -500,7 +500,7 @@ void ShowBuyMenu(int type, int page)
 
 			int bHaveNextPage = FALSE;
 
-			if (!g_WeaponList[5].empty() && g_WeaponList[5][0] && (g_WeaponList[5][0]->iTeam == g_iTeam || !g_WeaponList[5][0]->iTeam || g_iMod != MOD_NONE))
+			if (!g_WeaponList[5].empty() && g_WeaponList[5][0] && ((int)g_WeaponList[5][0]->iTeam == g_iTeam || !(int)g_WeaponList[5][0]->iTeam || g_iMod != MOD_NONE))
 				bHaveNextPage = TRUE;
 
 			BTEPanel_BuyMenu_SetHaveNextPage(0, bHaveNextPage);
@@ -537,7 +537,7 @@ void ShowBuyMenu(int type, int page)
 		if (!x || !*x)
 			break;
 
-		if ((x->iTeam == g_iTeam || !x->iTeam || g_iMod != MOD_NONE))
+		if (((int)x->iTeam == g_iTeam || !(int)x->iTeam || g_iMod != MOD_NONE))
 		{
 			if (total >= page * 9)
 			{
@@ -754,7 +754,7 @@ void MakeWeaponList()
 		{
 			if (!x.szName)
 				break;
-			if (x.bCanBuy && x.iMenu == type && x.iMenu >= 0 && strcmp(x.szName, "hegrenade"))
+			if (x.bCanBuy && static_cast<int>(x.iMenu) == type && static_cast<int>(x.iMenu) >= 0 && strcmp(x.szName, "hegrenade"))
 			{
 				g_WeaponList[type].push_back(&x);
 			}
@@ -804,7 +804,7 @@ void Cmd_BuyEquip_Advanced(void)
 
 	int bHaveNextPage = FALSE;
 
-	if (!g_WeaponList[5].empty() && g_WeaponList[5][0] && (g_WeaponList[5][0]->iTeam == g_iTeam || !g_WeaponList[5][0]->iTeam || g_iMod != MOD_NONE))
+	if (!g_WeaponList[5].empty() && g_WeaponList[5][0] && ((int)g_WeaponList[5][0]->iTeam == g_iTeam || !(int)g_WeaponList[5][0]->iTeam || g_iMod != MOD_NONE))
 		bHaveNextPage = TRUE;
 
 	BTEPanel_BuyMenu_SetHaveNextPage(0, bHaveNextPage);
@@ -840,7 +840,7 @@ void Cmd_TeamSuit()
 void BTEBuyMenu_Init(void)
 {
 	//gEngfuncs.pfnAddCommand("buy", Cmd_Buy);
-	gEngfuncs.pfnAddCommand("buyequip", Cmd_BuyEquip);
+	//gEngfuncs.pfnAddCommand("buyequip", Cmd_BuyEquip);
 	gEngfuncs.pfnAddCommand("teamsuit", Cmd_TeamSuit);
 
 	memset(szFavWpn, 0, sizeof(szFavWpn));
@@ -1325,7 +1325,7 @@ void BTEPanel_BuyMenu_UpdateItems(int iSlot, char *pItems)
 		auto &MonthWeapon = WeaponManager()[szMonthWpn];
 		if (MonthWeapon)
 		{
-			int iMenu = MonthWeapon.iMenu;
+			int iMenu = static_cast<int>(MonthWeapon.iMenu);
 			if (iMenu != -1)
 				pBuyMenuButton[iMenu]->pfnPrePaint = BuyMenuButton_PrePaint;
 		}

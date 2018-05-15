@@ -217,7 +217,7 @@ void CCSBTEMapLoading::AddOrigin(int iType, int x, int y)
 	if (!m_szOriginIcon[iType])
 		return;
 
-	if ((m_iGameMode == MOD_ZB) || (m_iGameMode == MOD_ZB2) || (m_iGameMode == MOD_ZB3) || (m_iGameMode == MOD_ZB4) || (m_iGameMode == MOD_ZE) || (m_iGameMode == MOD_ZSE) || (m_iGameMode == MOD_ZB5) || (m_iGameMode == MOD_DM) || (m_iGameMode == MOD_ZBS) || (m_iGameMode == MOD_ZB))
+	if ((m_iGameMode == MOD_ZB) || (m_iGameMode == MOD_ZB2) || (m_iGameMode == MOD_ZB3) || (m_iGameMode == MOD_ZB4) || (m_iGameMode == MOD_ZE) || (m_iGameMode == MOD_ZSE) || (m_iGameMode == MOD_ZB5) || (m_iGameMode == MOD_DM) || (m_iGameMode == MOD_ZBS) || (m_iGameMode == MOD_ZB) || (m_iGameMode == MOD_Z4E))
 	{
 		if (!stricmp(m_szOriginIcon[iType], "CT") || !stricmp(m_szOriginIcon[iType], "TR"))
 			return;
@@ -327,7 +327,7 @@ bool CCSBTEMapLoading::UpdateGameMode(int iGameMode)
 		pImage = scheme()->GetImage(va("resource/maploading/tip/tooltip_zombie4_0%d", RANDOM_LONG(1, 7)), false);
 		pszText = "#CSO_MaploadingTip_ZM4";
 	}
-	else if (iGameMode == MOD_ZE)
+	else if (iGameMode == MOD_ZE || iGameMode == MOD_Z4E)
 	{
 		pImage = scheme()->GetImage(va("resource/maploading/tip/tooltip_zombieescape_0%d", RANDOM_LONG(1, 3)), false);
 		pszText = "#CSO_MaploadingTip_ZE";

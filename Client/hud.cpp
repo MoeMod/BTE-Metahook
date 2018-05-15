@@ -20,6 +20,8 @@
 #include "HUD/fonttext.h"
 #include "HUD/drawtga.h"
 
+#include <algorithm>
+
 //CHud gHUD;
 CHud &Hud()
 {
@@ -43,7 +45,8 @@ int MsgFunc_PlayerSpawn(const char *pszName, int iSize, void *pbuf)
 {
 	if (IS_ZOMBIE_MODE)
 	{
-		Cmd_Buy_Advanced();
+		g_pViewPort->ShowVGUIMenu(MENU_BUY);
+		//Cmd_Buy_Advanced();
 	}
 	if (g_iMod == MOD_ZB3)
 	{
@@ -126,11 +129,11 @@ void CHud::Init()
 	m_BuffAWPSniperScope.Init();
 	HudBuffClassDamage().Init();
 	HudDeathInfo().Init();*/
-	for (CHudBase * const p : m_List)
+	for (CHudBase &p : m_List)
 	{
-		p->Init();
+		p.Init();
 	}
-
+		
 	gEngfuncs.pfnHookUserMsg("PlayerSpawn", MsgFunc_PlayerSpawn);
 	gEngfuncs.pfnHookUserMsg("RoundStart", MsgFunc_RoundStart);
 	gEngfuncs.pfnHookUserMsg("EButton", MsgFunc_EButton);
@@ -241,10 +244,13 @@ int CHud::VidInit()
 	m_DestroyerSniperScope.VidInit();
 	m_BuffAWPSniperScope.VidInit();
 	m_BuffClassDamage.VidInit();*/
-	for (CHudBase *p : m_List)
+	for (CHudBase &p : m_List)
 	{
-		p->VidInit();
+		p.VidInit();
 	}
+
+	// resort hud layers
+	std::sort(m_List.begin(), m_List.end(), std::less<CHudBase>());
 
 	TheEButtons.Init();
 	g_pViewPort->VidInit();
@@ -290,10 +296,10 @@ int CHud::Redraw(float time, int intermission)
 
 	if (hud_draw->value)
 	{
-		for (CHudBase *p : m_List)
+		for (CHudBase &p : m_List)
 		{
-			if (p->m_iFlags & HUD_ACTIVE)
-				p->Draw(time);
+			if (p.m_iFlags & HUD_ACTIVE)
+				p.Draw(time);
 		}
 	}
 	g_pViewPort->SetPaintEnabled(hud_draw->value);
@@ -325,26 +331,21 @@ int CHud::UpdateClientData(client_data_t *cdata, float time)
 
 void CHud::Think(void)
 {
-	for (CHudBase *p : m_List)
+	for (CHudBase &p : m_List)
 	{
-		if (p->m_iFlags & HUD_ACTIVE)
-			p->Think();
+		if (p.m_iFlags & HUD_ACTIVE)
+			p.Think();
 	}
 }
 
 void CHud::ShutDown(void)
 {
-	/*for (CHudBase *p : m_List)
-	{
-		delete p;
-	}*/
 
-	
 }
 
 void CHud::AddHudElem(CHudBase *phudelem)
 {
-	m_List.push_back(phudelem);
+	m_List.push_back(*phudelem);
 }
 
 int CHud::DrawHudString(int xpos, int ypos, int iMaxX, char *szIt, int r, int g, int b)

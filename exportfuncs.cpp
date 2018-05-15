@@ -51,6 +51,7 @@
 #include "Client/PlayerClassManager.h"
 #include "Client/WeaponManager.h"
 #include "Client/TextureManager.h"
+#include "Client/CubeMapManager.h"
 
 #include "Client/HUD/health.h"
 #include "Client/HUD/DrawTABPanel.h"
@@ -589,6 +590,7 @@ int HUD_VidInit(void)
 	gEngfuncs.pfnClientCmd("-duck;");
 
 	Weapon_VidInit();
+	gCubeMapManager.Reset();
 
 	return gExportfuncs.HUD_VidInit();
 }
@@ -655,7 +657,7 @@ void HUD_ProcessPlayerState(struct entity_state_s *dst, const struct entity_stat
 			char name[64];
 			strcpy(name, pweaponmodel->name);
 
-			if (strstr(name, "_2.mdl"))
+			if (strstr(name, "_2.mdl")|| strstr(name, "_a.mdl")|| strstr(name, "_a.mdl"))
 				name[strlen(name) - 6] = 0;
 			else
 				name[strlen(name) - 4] = 0;
@@ -1771,6 +1773,12 @@ void HUD_StudioEvent(const struct mstudioevent_s *pEvent, const struct cl_entity
 			}
 			struct model_s *pModel;
 			TEMPENTITY *pEnt;
+
+			if (iAttachment < 0 || iAttachment > 3)
+			{
+				gEngfuncs.pfnConsolePrint(va("[BTE] MuzzleFlash: INVALID ATTACHMENT %d", iAttachment));
+				return;
+			}
 
 			char muzz[32];
 			sprintf(muzz, "sprites/muzzleflash%d.spr", iMuzz);

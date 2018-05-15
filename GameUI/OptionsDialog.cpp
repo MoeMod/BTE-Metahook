@@ -31,6 +31,7 @@ COptionsDialog::COptionsDialog(vgui::Panel *parent) : PropertyDialog(parent, "Op
 	SetSizeable(false);
 	SetTitle("#GameUI_Options", true);
 
+
 	m_pOptionsSubMultiplayer = NULL;
 	m_pOptionsSubKeyboard = NULL;
 	m_pOptionsSubMouse = NULL;

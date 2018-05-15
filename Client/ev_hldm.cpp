@@ -14,6 +14,7 @@
 #include "weapons.h"
 #include "util.h"
 #include "common.h"
+#include "R.h"
 #include "Client/WeaponManager.h"
 #include "Client/PlayerClassManager.h"
 
@@ -99,6 +100,8 @@ extern "C"
 	void EV_FireDesperado(struct event_args_s *args);
 	void EV_FireDualSword(struct event_args_s *args);
 	void EV_FireJanus11(struct event_args_s *args);
+	void EV_FireGunkata(struct event_args_s *args);
+	void EV_FireSgmissile(struct event_args_s *args);
 
 	void EV_Explosion(struct event_args_s *args);
 	void EV_TE(struct event_args_s *args);
@@ -201,6 +204,8 @@ void Game_HookEvents(void)
 	gEngfuncs.pfnHookEvent("events/desperado.sc", EV_FireDesperado);
 	gEngfuncs.pfnHookEvent("events/dualsword.sc", EV_FireDualSword);
 	gEngfuncs.pfnHookEvent("events/janus11.sc", EV_FireJanus11);
+	gEngfuncs.pfnHookEvent("events/gunkata.sc", EV_FireGunkata);
+	gEngfuncs.pfnHookEvent("events/sgmissile.sc", EV_FireSgmissile);
 	
 	cl_gunbubbles = gEngfuncs.pfnRegisterVariable("cl_gunbubbles", "2", FCVAR_ARCHIVE);
 	cl_tracereffect = gEngfuncs.pfnRegisterVariable("cl_tracereffect", "0", FCVAR_ARCHIVE);
@@ -9807,4 +9812,306 @@ void EV_FireJanus11(struct event_args_s *args)
 	shots = 8;
 	flDistance = 8192.0;
 	EV_HLDM_FireBullets(idx, forward, right, up, shots, vecSrc, forward, vSpread, flDistance, BULLET_PLAYER_JANUS11, 0, 0, 1);
+}
+
+void EV_FireGunkata(struct event_args_s *args)
+{
+	int idx;
+	vec3_t origin;
+	vec3_t angles;
+	vec3_t velocity;
+	int empty;
+	vec3_t ShellVelocity;
+	vec3_t ShellOrigin;
+	int shell;
+	vec3_t vecSrc, vecAiming;
+	vec3_t up, right, forward;
+	cl_entity_t *ent;
+	vec3_t vSpread;
+
+
+	ent = GetViewEntity();
+	idx = args->entindex;
+	empty = args->bparam1 != false;
+	auto &WeaponData = WeaponManager().GetPlayerWeapon(idx, 2);
+
+	VectorCopy(args->origin, origin);
+	VectorCopy(args->angles, angles);
+	VectorCopy(args->velocity, velocity);
+
+	angles[0] += args->iparam1 / 100.0;
+	angles[1] += args->iparam2 / 100.0;
+
+	gEngfuncs.pfnAngleVectors(angles, forward, right, up);
+	if (!args->bparam2)
+	{
+		if (WeaponData.bHaveShellModel)
+			shell = gEngfuncs.pEventAPI->EV_FindModelIndex(WeaponData.szShell);
+		else
+			shell = gEngfuncs.pEventAPI->EV_FindModelIndex("models/pshell.mdl");
+
+		if (EV_IsLocal(idx))
+		{
+			g_iShotsFired++;
+
+			EV_CustomEffect(args, WeaponData.iEffect);
+			EV_MuzzleFlash();
+
+
+			//gEngfuncs.pEventAPI->EV_WeaponAnimation(args->bparam1, 2);
+
+			if (Hud().m_bCreateSmoke)
+			{
+				EV_HLDM_CreateSmoke(ent->attachment[0], forward, 0, 0.25, 10, 10, 10, 3, velocity, false, 35);
+				EV_HLDM_CreateSmoke(ent->attachment[0], forward, 25, 0.3, 15, 15, 15, 2, velocity, false, 35);
+				EV_HLDM_CreateSmoke(ent->attachment[0], forward, 50, 0.2, 25, 25, 25, 2, velocity, false, 35);
+			}
+
+		}
+
+		if (EV_IsLocal(idx))
+		{
+			float vecScale[3] = { 35.0, -11.0, -16.0 };
+
+			EV_GetDefaultShellInfo(args, origin, velocity, ShellVelocity, ShellOrigin, forward, right, up, vecScale[0], vecScale[1], vecScale[2], true);
+
+			VectorCopy(ent->attachment[1], ShellOrigin);
+			VectorScale(ShellVelocity, 0.75, ShellVelocity);
+			ShellVelocity[2] += 25;
+		}
+		else
+			EV_GetDefaultShellInfo(args, origin, velocity, ShellVelocity, ShellOrigin, forward, right, up, 20.0, -12.0, -4.0, false);
+
+		EV_EjectBrass(ShellOrigin, ShellVelocity, angles[YAW], shell, TE_BOUNCE_SHELL, idx, 5);
+
+		gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, WeaponData.szSound, 1.0, 0.6, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
+
+		EV_GetGunPosition(args, vecSrc, origin);
+
+		VectorCopy(forward, vecAiming);
+
+		vSpread[0] = args->fparam1;
+		vSpread[1] = args->fparam2;
+		vSpread[2] = 0;
+
+		EV_HLDM_FireBullets(idx, forward, right, up, 1, vecSrc, vecAiming, vSpread, 8192, BULLET_PLAYER_50AE, 0, 0, 2);
+	}
+	else
+	{
+		if (args->iparam1 && args->iparam1<=15 && args->fparam2 == 0.0f)
+		{
+			if (EV_IsLocal(idx))
+			{
+				//g_flBloodhunterAnimTime = cl.time;
+				//g_iBloodhunterSecAnim = args->iparam1;
+				//gEngfuncs.pEventAPI->EV_WeaponAnimation(args->iparam1 + 1, 2);
+				float time = cl.time;
+				R_AddExtraViewModel({ time, time + args->fparam1, args->iparam1, kRenderNormal, 255 });
+				//R_AddExtraViewModel({ cl.time + 0.2f, cl.time + args->fparam1 + 0.2f, args->iparam1, kRenderNormal, 255 });
+
+				//gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, WeaponData.szSound, 1.0, 0.6, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
+			}
+
+			struct model_s *pModel = IEngineStudio.Mod_ForName("models/ef_gunkata.mdl", false);
+			if(pModel)
+			{ 
+				TEMPENTITY *pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(origin, pModel);
+				pEnt->entity.curstate.frame = 0;
+				pEnt->entity.curstate.framerate = 1;
+				pEnt->tentOffset = Vector(0, 0, 0);
+				pEnt->die = cl.time + 0.9;
+				pEnt->clientIndex = idx;
+				pEnt->flags |= FTENT_PLYRATTACHMENT;
+			}
+
+		}
+		else if(args->fparam1 == 1.0f && args->fparam2 > 0.2f && args->fparam2 < 0.23f) // end
+		{
+			struct model_s *pModel = IEngineStudio.Mod_ForName("models/ef_scorpion_hole.mdl", false);
+			if (pModel)
+			{
+				TEMPENTITY *pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(origin, pModel);
+				pEnt->entity.curstate.sequence = 1;
+				pEnt->entity.curstate.frame = 0;
+				pEnt->entity.curstate.framerate = 1.0;
+				pEnt->tentOffset = Vector(0, 0, -32);
+				pEnt->die = cl.time + 0.9;
+				pEnt->clientIndex = idx;
+				pEnt->flags |= FTENT_PLYRATTACHMENT;
+			}
+			gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_AUTO, "weapons/gunkata_skill_last_exp.wav", 1.0, 0.6, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
+		}
+		else if (args->fparam1 == 10.0f && args->fparam2 == 2.0f) // playermodel
+		{
+			struct model_s *pModel = IEngineStudio.Mod_ForName("models/ef_gunkata_man.mdl", false);
+			if (PlayerClassManager().GetPlayerClass(idx).sex == CPlayerClassManager::SEX_FEMALE)
+			{
+				pModel = IEngineStudio.Mod_ForName("models/ef_gunkata_woman.mdl", false);
+			}
+			
+			if (pModel)
+			{
+				TEMPENTITY *pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(origin, pModel);
+				pEnt->entity.curstate.sequence = args->iparam1;
+				pEnt->entity.curstate.frame = 0;
+				pEnt->entity.curstate.framerate = 1.0;
+				pEnt->entity.angles = angles;
+
+				pEnt->die = cl.time + args->fparam2;
+				pEnt->entity.curstate.fuser1 = cl.time;
+				pEnt->clientIndex = idx;
+				pEnt->flags |= FTENT_FADEOUT | FTENT_CLIENTCUSTOM;
+
+				pEnt->entity.curstate.rendermode = kRenderTransTexture;
+				pEnt->entity.curstate.renderamt = 100;
+
+				pEnt->callback = [](tempent_s *pEnt, float frametime, float currenttime) {
+					float delta = currenttime - pEnt->entity.curstate.fuser1;
+					if (delta > 1.0)
+						pEnt->entity.curstate.renderamt = 100 - (delta - 1.0) * 100.0f;
+				};
+
+				int i = args->iparam1 % 6;
+				if(i)
+					gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_AUTO, va("weapons/gunkata_skill_0%d.wav", i), 1.0, 0.6, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
+			}
+		}
+	}
+
+	
+}
+
+void EV_FireSgmissile(struct event_args_s *args)
+{
+	if (!args->bparam2)
+	{
+		EV_FireXM1014(args);
+		return;
+	}
+
+	int idx;
+	vec3_t origin;
+	vec3_t up, right, forward;
+	cl_entity_t *ent;
+
+
+	ent = GetViewEntity();
+	idx = args->entindex;
+	auto &WeaponData = WeaponManager().GetPlayerWeapon(idx, 0);
+
+	vec3_t angles;
+	vec3_t velocity;
+	vec3_t ShellVelocity;
+	vec3_t ShellOrigin;
+	int shell;
+	int lefthand;
+	int iSpecialAmmo = args->iparam2;
+
+	lefthand = cl_righthand->value;
+
+	VectorCopy(args->origin, origin);
+	VectorCopy(args->angles, angles);
+	VectorCopy(args->velocity, velocity);
+
+	gEngfuncs.pfnAngleVectors(angles, forward, right, up);
+
+	shell = gEngfuncs.pEventAPI->EV_FindModelIndex("models/shell_sgdrill.mdl");
+
+	if (EV_IsLocal(idx))
+	{
+		g_iShotsFired++;
+
+		if (Hud().m_bCreateSmoke)
+		{
+			EV_HLDM_CreateSmoke(ent->attachment[0], forward, 3, 0.45, 25, 25, 25, 3, velocity, false, 35);
+			EV_HLDM_CreateSmoke(ent->attachment[0], forward, 40, 0.35, 20, 20, 20, 3, velocity, false, 35);
+			EV_HLDM_CreateSmoke(ent->attachment[0], forward, 80, 0.5, 15, 15, 15, 3, velocity, false, 35);
+		}
+	}
+
+	if (EV_IsLocal(idx))
+	{
+		float vecScale[3] = { 22.0, -9.0, -11.0 };
+
+		if (lefthand == 0)
+			vecScale[2] = 0 - vecScale[2];
+
+		EV_GetDefaultShellInfo(args, origin, velocity, ShellVelocity, ShellOrigin, forward, right, up, vecScale[0], vecScale[1], vecScale[2], true);
+
+		VectorCopy(ent->attachment[2], ShellOrigin);
+		//VectorScale(ShellVelocity, 1.25, ShellVelocity);
+		ShellVelocity[2] -= 50;
+
+		gEngfuncs.pEventAPI->EV_WeaponAnimation(iSpecialAmmo ? WeaponData.iAnimStart2 : WeaponData.iAnimEnd2, 2);
+	}
+	else
+		EV_GetDefaultShellInfo(args, origin, velocity, ShellVelocity, ShellOrigin, forward, right, up, 20.0, -12.0, -4.0, false);
+
+	EV_EjectBrass(ShellOrigin, ShellVelocity, angles[YAW], shell, TE_BOUNCE_SHOTSHELL, idx, 3);
+
+	vec3_t sub;
+	float distance = 0;
+
+	if (EV_IsLocal(idx))
+	{
+		VectorSubtract(ent->attachment[0], origin, sub);
+		distance = VectorLength(sub);
+	}
+	args->fparam2 = 25;
+
+	float v_angle1 = v_angles[1];
+
+	for (int j = 2; j <= 8; j++)
+	{
+
+		//v_angles[1] = v_angle1;
+		//v_angles[1] -= args->fparam2 / 2.0f;
+
+		for (int i = -4; i <= 4; i++)
+		{
+			//v_angles[1] += args->fparam2 / 5.0f;
+
+			v_angles[1] = v_angle1 + 6.0 * i;
+
+			gEngfuncs.pfnAngleVectors(v_angles, forward, right, up);
+
+			struct model_s *pModel;
+			TEMPENTITY *pEnt;
+
+			pModel = IEngineStudio.Mod_ForName("sprites/ef_sgmissile_line.spr", 0);
+
+			if (EV_IsLocal(idx))
+				pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(ent->attachment[0], pModel);
+			else
+				pEnt = gEngfuncs.pEfxAPI->CL_TempEntAllocHigh(origin, pModel);
+
+			pEnt->entity.curstate.rendermode = kRenderTransAdd;
+			pEnt->entity.curstate.renderamt = 5 + j * 3;
+			pEnt->entity.curstate.rendercolor.b = 200;
+			pEnt->entity.curstate.rendercolor.r = pEnt->entity.curstate.rendercolor.g = 255;
+			pEnt->entity.curstate.scale = 0.1 - j * 0.005;
+			pEnt->entity.curstate.fuser2 = 0.1 - j * 0.012;
+			pEnt->entity.curstate.fuser4 = (/*args->fparam1*/600 - distance) * (j + 1) / 8;
+			pEnt->entity.curstate.vuser3[0] = 0.2 - j * 0.24;
+			pEnt->entity.curstate.vuser4[0] = 0.005;
+			pEnt->entity.curstate.vuser4[1] = 0.05;
+			pEnt->entity.angles[2] = gEngfuncs.pfnRandomLong(0, 1) ? 359.9 - gEngfuncs.pfnRandomLong(0, 15) : gEngfuncs.pfnRandomLong(0, 15);
+			pEnt->flags |= FTENT_CLIENTCUSTOM | FTENT_COLLIDEALL | FTENT_SPRANIMATE;
+			pEnt->frameMax = ModelFrameCount(pModel) - 1;
+			pEnt->entity.curstate.vuser4[2] = pEnt->frameMax / 0.55 * 3.0;
+			pEnt->entity.curstate.framerate = pEnt->frameMax / 0.55;
+			pEnt->entity.curstate.fuser3 = cl.time;
+
+			pEnt->die = cl.time + 60.0f;
+
+			VectorCopy(pEnt->entity.origin, pEnt->entity.curstate.vuser1);
+
+
+			VectorCopy(forward, pEnt->entity.curstate.velocity);
+
+			pEnt->callback = EV_FlameCallback;
+			pEnt->hitcallback = EV_FlameHitCallback;
+		}
+	}
+	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, WeaponData.szSound2, 1.0, 0.52, 0, 94 + gEngfuncs.pfnRandomLong(0, 0xf));
 }

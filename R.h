@@ -26,3 +26,14 @@ int R_StudioCheckBBox(void);
 int Hook_R_StudioDrawModel(int flags);
 
 void StudioFuncs_InstallHook(void);
+
+struct ExtraViewModel
+{
+	float m_flTimeStart;
+	float m_flTimeEnd;
+	int m_iSequence;
+	int rendermode;
+	int renderamt;
+};
+
+void R_AddExtraViewModel(const ExtraViewModel &);

@@ -1,4 +1,13 @@
 #pragma once
+
+#ifdef ScreenWidth
+#undef ScreenWidth
+#endif
+
+#ifdef ScreenHeight
+#undef ScreenHeight
+#endif
+
 #include "bink/bink.h"
 #include "gl/gl.h"
 
@@ -7,7 +16,7 @@ class CGL_BinkTexture
 public:
 	CGL_BinkTexture(const char *szPath);
 	~CGL_BinkTexture();
-	void Draw(int x, int y, int w = 0, int h = 0);
+	void Draw(int x, int y, int w, int h);
 	void UpdateFrame();
 	void GetTextureCoords(float *coords);
 	bool hasAlphaChannel();
