@@ -289,7 +289,7 @@ void CHudScoreBoard::Draw(float time)
 		gEngfuncs.pfnSPR_Set(Hud().GetSprite(m_iTextKill), 120,120,120);
 		gEngfuncs.pfnSPR_DrawAdditive(0, x, y, &Hud().GetSpriteRect(m_iTextKill));
 	}
-	else if (g_iMod == MOD_ZE || g_iMod == MOD_ZB || g_iMod == MOD_ZB2 || g_iMod == MOD_ZB3 || g_iMod == MOD_ZB4 || g_iMod == MOD_ZB5 || g_iMod == MOD_ZSE)
+	else if (g_iMod == MOD_ZE || g_iMod == MOD_ZB || g_iMod == MOD_ZB2 || g_iMod == MOD_ZB3 || g_iMod == MOD_ZB4 || g_iMod == MOD_ZB5 || g_iMod == MOD_ZSE || g_iMod == MOD_Z4E)
 	{
 		//========None Mod========
 		//=====Bg

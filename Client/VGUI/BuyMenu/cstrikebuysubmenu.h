@@ -11,6 +11,7 @@
 #include "WeaponManager.h"
 #include "WeaponImagePanel.h"
 
+#include "STLHelper.h"
 #include "util/iniParser.h"
 
 using namespace vgui;

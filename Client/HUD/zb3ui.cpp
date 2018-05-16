@@ -244,8 +244,17 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					m_iClass = CLASS_HM;
 					ParseData(7, 0);
 					ParseData(8, 0);
-					ParseIcon("resource\\zombi\\humanskill_hm_spd",1,2,3);
-					ParseIcon("resource\\zombi\\humanskill_hm_hd",2,2,3);
+					if (g_iMod == MOD_ZB5)
+					{
+						HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 1, 2, 3);
+						HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_2", 2, 2, 3);
+						HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_3", 3, 2, 3);
+					}
+					else
+					{
+						ParseIcon("resource\\zombi\\humanskill_hm_spd", 1, 2, 3);
+						ParseIcon("resource\\zombi\\humanskill_hm_hd", 2, 2, 3);
+					}
 					break;
 				}
 				case HUMAN_SKILL_ORIGIN:
@@ -253,8 +262,17 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					m_iSkillType = 0;
 					m_iClass = CLASS_SELECTEDORIGIN;
 					ParseIcon("resource\\zombi\\zombietype_defaultzb", 0, 2, 3);
-					ParseIcon("resource\\zombi\\humanskill_hm_spd", 1, 2, 3);
-					ParseIcon("resource\\zombi\\humanskill_hm_hd", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 1, 2, 3);
+						HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_2", 2, 2, 3);
+						HudZombieMod3().ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_3", 3, 2, 3);
+					}
+					else
+					{
+						ParseIcon("resource\\zombi\\humanskill_hm_spd", 1, 2, 3);
+						ParseIcon("resource\\zombi\\humanskill_hm_hd", 2, 2, 3);
+					}
 					
 					break;
 				}
@@ -265,6 +283,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_defaultzb",0,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_zombicrazy",1,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_strengthrecovery", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case SPEED_ZB:
@@ -274,6 +297,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_lightzb",0,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_zombihiding", 1, 2, 3); 
 					ParseIcon("resource\\zombi\\zombieskill_jumpupm", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case HEAVY_ZB:
@@ -283,6 +311,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_heavyzb",0,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_zombitrap",1,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_armorrecovery", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case HEAL_ZB:
@@ -292,6 +325,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_doctorzb", 0, 2, 3);
 					ParseIcon("resource\\zombi\\zombieskill_zombiheal", 1, 2, 3);
 					ParseIcon("resource\\zombi\\zombieskill_strengthrecovery", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case PC_ZB:
@@ -301,6 +339,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_pczb",0,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_zombismoke",1,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_strengthrecovery", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case DEIMOS_ZB:
@@ -310,6 +353,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_deimoszb",0,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_tentacle",1,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_strengthrecovery", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case DEIMOS2_ZB:
@@ -319,6 +367,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_deimos2zb", 0, 2, 3);
 					ParseIcon("resource\\zombi\\zombieskill_zombicrazy2", 1, 2, 3);
 					ParseIcon("resource\\zombi\\zombieskill_armorrecovery", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case WITCH_ZB:
@@ -328,6 +381,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_witchzb", 0, 2, 3);
 					ParseIcon("resource\\zombi\\zombieskill_zombihook", 1, 2, 3);
 					ParseIcon("resource\\zombi\\zombieskill_jumpupm", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case UNDERTAKER_ZB:
@@ -337,6 +395,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_undertakerzb", 0, 2, 3);
 					ParseIcon("resource\\zombi\\zombieskill_zombipile", 1, 2, 3);
 					ParseIcon("resource\\zombi\\zombieskill_armorrecovery", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case CHINA_ZB:
@@ -346,6 +409,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_chinazb",0,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_zombistiffen",1,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_strengthrecovery", 2, 2, 3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case BOMMER_ZB:
@@ -355,6 +423,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_boomerzb",0,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_recoverylast",1,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_armorrecovery",2,2,3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				case RESIDENT_ZB:
@@ -364,6 +437,11 @@ void CHudZombieMod3::ParseData(int DataType, int iData)
 					ParseIcon("resource\\zombi\\zombietype_residentzb",0,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_zombipenetration",1,2,3);
 					ParseIcon("resource\\zombi\\zombieskill_jumpupm",2,2,3);
+					if (g_iMod == MOD_ZB5)
+					{
+						ParseIcon("resource\\hud3d_v2\\zombie\\ZB_SKILL_1", 3, 2, 3);
+						ParseIcon("resource\\hud3d_v2\\zombie\\HM_SKILL_1", 4, -1);
+					}
 					break;
 				}
 				break;
@@ -686,7 +764,7 @@ void CHudZombieMod3::DrawRetina(float time)
 #endif
 void CHudZombieMod3::Draw(float time)
 {
-	if(g_iMod != MOD_ZB3)
+	if(g_iMod != MOD_ZB3 && g_iMod != MOD_ZB5)
 		return;
 	if(!g_bAlive)
 		return;
@@ -997,7 +1075,8 @@ void CHudZombieMod3::DrawHumanMorale(float time)
 
 	float flMorale = m_flMorale + iRealMorale / 130.0f;
 
-	gHud3D_ZB.SetAtk(1, (m_iMoraleInt - 30 + iMorale) / 100.0f);
+	gHud3D_ZB.m_flPrecent[1] = (m_iMoraleInt - 30 + iMorale) / 100.0f;
+	
 
 	if (flMorale < 0.4)
 	{
@@ -1129,5 +1208,5 @@ void CHudZombieMod3::DrawZombieRage(float time)
 		gEngfuncs.pfnSPR_DrawAdditive(0, iX, iY, &ModifyRect);
 	}
 
-	gHud3D_ZB.SetAtk(0, m_flRagePercent);
+	gHud3D_ZB.m_flPrecent[0] = m_flRagePercent; 
 }

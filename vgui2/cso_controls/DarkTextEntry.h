@@ -35,13 +35,13 @@ public:
 		m_pBottomBackground[1] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_bottom_center@n", true);
 		m_pBottomBackground[2] = vgui::scheme()->GetImage("resource/control/textentry/Output_default_bottom_Right@n", true);
 	}
-	virtual Color GetSchemeColor(const char *keyName, IScheme *pScheme) override
+	virtual Color GetSchemeColor(const char *keyName, vgui::IScheme *pScheme) override
 	{
 		if (!stricmp(keyName, "TextEntryFgColor"))
 			return BaseClass::GetSchemeColor("LabelDimText", pScheme);
 		return BaseClass::GetSchemeColor(keyName, pScheme);
 	}
-	virtual Color GetSchemeColor(const char *keyName, Color defaultColor, IScheme *pScheme) override
+	virtual Color GetSchemeColor(const char *keyName, Color defaultColor, vgui::IScheme *pScheme) override
 	{
 		if (!stricmp(keyName, "TextEntryFgColor"))
 			return BaseClass::GetSchemeColor("LabelDimText", defaultColor, pScheme);

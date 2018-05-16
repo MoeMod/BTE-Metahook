@@ -42,6 +42,7 @@ void CHudTABBoard::Init()
 {
 	m_iFlags |= HUD_ACTIVE;
 	m_bCanDraw = false;
+	m_type = 2333;
 }
 
 void CHudTABBoard::VidInit()

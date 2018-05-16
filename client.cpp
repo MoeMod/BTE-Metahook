@@ -330,7 +330,7 @@ void CheckViewEntity(void)
 					{
 						HudBinkPlayer().SetPos(0.5 * ScreenWidth, 0.4 * ScreenHeight, 1);
 						HudBinkPlayer().SetColor(255, 255, 255);
-						HudBinkPlayer().BinkInstance("cstrike\\resource\\hud\\zombie\\origin.bik", 0, 0);
+						HudBinkPlayer().BinkInstance("cstrike\\resource\\zombi\\origin.bik", 0, 0);
 						
 						g_iZBNvg = 1;
 						g_isZombie = 1;
@@ -421,6 +421,10 @@ void CheckViewEntity(void)
 			else if (strstr(viewent->model->name, "gunkata"))
 			{
 				g_iBTEWeapon = WPN_GUNKATA;
+			}
+			else if (strstr(viewent->model->name, "sgmissile"))
+			{
+				g_iBTEWeapon = WPN_SGMISSILE;
 			}
 			else if (strstr(viewent->model->name, "v_foot"))
 			{

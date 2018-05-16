@@ -30,10 +30,7 @@ void CHudMVPBoard::Init(void)
 	gEngfuncs.pfnHookUserMsg("MVP", [](const char *pszName, int iSize, void *pbuf){ return HudMVPBoard().MsgFunc_MVP(pszName, iSize, pbuf); });
 
 	m_iFlags |= HUD_ACTIVE;
-
-	m_hBoard_Blue = Hud().m_TGA.FindTexture("resource\\pvp2nd\\pvp2_combatpopup_top_blue");
-	m_hBoard_Red = Hud().m_TGA.FindTexture("resource\\pvp2nd\\pvp2_combatpopup_top_red");
-	m_hBoard_BG = Hud().m_TGA.FindTexture("resource\\pvp2nd\\pvp2_combatpopup_board");
+	m_type = 2332;
 }
 
 void CHudMVPBoard::VidInit(void)
@@ -54,9 +51,12 @@ void CHudMVPBoard::VidInit(void)
 		}
 	}
 
+	m_hBoard_Blue = Hud().m_TGA.FindTexture("resource\\pvp2nd\\pvp2_combatpopup_top_blue");
+	m_hBoard_Red = Hud().m_TGA.FindTexture("resource\\pvp2nd\\pvp2_combatpopup_top_red");
+	m_hBoard_BG = Hud().m_TGA.FindTexture("resource\\pvp2nd\\pvp2_combatpopup_board");
+
 	m_pos.x = ScreenWidth / 2 - g_Texture[m_hBoard_Blue].iWidth / 2 - 4;
 	m_pos.y = g_Texture[m_hBoard_Blue].iHeight / 4 * 3;
-
 }
 
 int CHudMVPBoard::CheckWinTeam(int iTeam, int iPlayer)

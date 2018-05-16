@@ -22,6 +22,7 @@
 #define WPN_ZOMBIBOMB 14
 #define WPN_DUALSWORD 15
 #define WPN_GUNKATA 16
+#define WPN_SGMISSILE 17
 
 extern int g_iBTEWeapon;
 extern int g_iButton;

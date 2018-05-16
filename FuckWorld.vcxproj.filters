@@ -93,9 +93,6 @@
     <Filter Include="GameUI\WpnDataEditor">
       <UniqueIdentifier>{a29e38b5-12a5-473f-9cd5-9078365955be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vgui2\vgui_surfacelib">
-      <UniqueIdentifier>{7cce8312-bc21-4ec9-95db-547f4b3d5682}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vguimatsurface">
       <UniqueIdentifier>{a2c85657-ae33-4304-b1f9-30ad3ff0da4c}</UniqueIdentifier>
     </Filter>
@@ -161,6 +158,9 @@
     </Filter>
     <Filter Include="GameUI\CollectSkinOverdraftLottery">
       <UniqueIdentifier>{ebe2771e-5d94-40fe-8434-f39faae9e1f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vgui2\vgui_controls\vgui_surfacelib">
+      <UniqueIdentifier>{7cce8312-bc21-4ec9-95db-547f4b3d5682}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -530,9 +530,6 @@
     <ClCompile Include="Client\HUD\Statistics.cpp">
       <Filter>Client\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="Client\HUD\WeaponSelect.cpp">
-      <Filter>Client\HUD</Filter>
-    </ClCompile>
     <ClCompile Include="Client\HUD\zb3ui.cpp">
       <Filter>Client\HUD</Filter>
     </ClCompile>
@@ -695,9 +692,6 @@
     <ClCompile Include="IMEInput.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameUI\CSBTEUpdateDialog.cpp">
-      <Filter>GameUI</Filter>
-    </ClCompile>
     <ClCompile Include="GameUI\CSBTEWpnDataEditor.cpp">
       <Filter>GameUI\WpnDataEditor</Filter>
     </ClCompile>
@@ -726,13 +720,13 @@
       <Filter>vgui2</Filter>
     </ClCompile>
     <ClCompile Include="vgui2\vgui_surfacelib\FontManager.cpp">
-      <Filter>vgui2\vgui_surfacelib</Filter>
+      <Filter>vgui2\vgui_controls\vgui_surfacelib</Filter>
     </ClCompile>
     <ClCompile Include="vgui2\vgui_surfacelib\Win32Font.cpp">
-      <Filter>vgui2\vgui_surfacelib</Filter>
+      <Filter>vgui2\vgui_controls\vgui_surfacelib</Filter>
     </ClCompile>
     <ClCompile Include="vgui2\vgui_surfacelib\FontAmalgam.cpp">
-      <Filter>vgui2\vgui_surfacelib</Filter>
+      <Filter>vgui2\vgui_controls\vgui_surfacelib</Filter>
     </ClCompile>
     <ClCompile Include="vgui2\Surface.cpp">
       <Filter>vgui2</Filter>
@@ -1135,6 +1129,15 @@
     </ClCompile>
     <ClCompile Include="GameUI\CollectSkinOverdraftLottery\CSOLMileageBingoDialog.cpp">
       <Filter>GameUI\CollectSkinOverdraftLottery</Filter>
+    </ClCompile>
+    <ClCompile Include="Client\HUD\TimerTipCountDown.cpp">
+      <Filter>Client\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTECreatorDialog.cpp">
+      <Filter>GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\CSBTEBulletin.cpp">
+      <Filter>GameUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1745,9 +1748,6 @@
       <Filter>Client\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Client\HUD\Statistics.h">
-      <Filter>Client\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="Client\HUD\WeaponSelect.h">
       <Filter>Client\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Client\HUD\zb3ui.h">
@@ -2431,9 +2431,6 @@
     <ClInclude Include="IMEInput.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameUI\CSBTEUpdateDialog.h">
-      <Filter>GameUI</Filter>
-    </ClInclude>
     <ClInclude Include="GameUI\CSBTEWpnDataEditor.h">
       <Filter>GameUI\WpnDataEditor</Filter>
     </ClInclude>
@@ -2459,13 +2456,13 @@
       <Filter>vgui2</Filter>
     </ClInclude>
     <ClInclude Include="vgui2\vgui_surfacelib\FontAmalgam.h">
-      <Filter>vgui2\vgui_surfacelib</Filter>
+      <Filter>vgui2\vgui_controls\vgui_surfacelib</Filter>
     </ClInclude>
     <ClInclude Include="vgui2\vgui_surfacelib\FontManager.h">
-      <Filter>vgui2\vgui_surfacelib</Filter>
+      <Filter>vgui2\vgui_controls\vgui_surfacelib</Filter>
     </ClInclude>
     <ClInclude Include="vgui2\vgui_surfacelib\Win32Font.h">
-      <Filter>vgui2\vgui_surfacelib</Filter>
+      <Filter>vgui2\vgui_controls\vgui_surfacelib</Filter>
     </ClInclude>
     <ClInclude Include="vgui2\HtmlWindow.h">
       <Filter>vgui2</Filter>
@@ -3066,6 +3063,15 @@
     </ClInclude>
     <ClInclude Include="util\LinearMap.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Client\HUD\TimerTipCountDown.h">
+      <Filter>Client\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTECreatorDialog.h">
+      <Filter>GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\CSBTEBulletin.h">
+      <Filter>GameUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

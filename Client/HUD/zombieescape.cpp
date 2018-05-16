@@ -12,6 +12,9 @@
 #include "DrawTabPanel.h"
 #include "Client/HUD/DrawTGA.h"
 
+#include <iterator>
+#include <algorithm>
+
 static CHudZombieEscape g_HudZombieEscape;
 CHudZombieEscape &HudZombieEscape()
 {
@@ -25,18 +28,19 @@ void CHudZombieEscape::Init(void)
 
 void CHudZombieEscape::VidInit(void)
 {
-	m_iHM = Hud().m_TGA.FindTexture("resource\\hud\\zombieescape\\ze_hm");
-	m_iZB = Hud().m_TGA.FindTexture("resource\\hud\\zombieescape\\ze_zb");
-	m_iFlag = Hud().m_TGA.FindTexture("resource\\hud\\zombieescape\\ze_flag");
-	m_iSelf = Hud().m_TGA.FindTexture("resource\\hud\\zombieescape\\ze_self");
-	m_iBar = Hud().m_TGA.FindTexture("resource\\hud\\zombieescape\\ze_bar");
+	m_iHM = Hud().m_TGA.FindTexture("resource\\fun\\zbescape\\human");
+	m_iZB = Hud().m_TGA.FindTexture("resource\\fun\\zbescape\\zombie");
+	m_iFlag = Hud().m_TGA.FindTexture("resource\\fun\\zbescape\\flag");
+	m_iSelf = Hud().m_TGA.FindTexture("resource\\fun\\zbescape\\me");
+	m_iBar = Hud().m_TGA.FindTexture("resource\\fun\\zbescape\\progressbar");
 }
 
 void CHudZombieEscape::ResetUI(void)
 {
-	memset(m_iPlayerLastCount,0,sizeof(m_iPlayerLastCount));
-	memset(m_iPoint,0,sizeof(m_iPoint));
+	std::fill(std::begin(m_iPlayerLastCount), std::end(m_iPlayerLastCount), 0);
+	memset(m_iPoint, 0, sizeof(m_iPoint));
 	m_flZECheck = 0;
+	m_bHasZEPoint = false;
 }
 int CHudZombieEscape::LoadPoint(char *pName)
 {
@@ -50,6 +54,7 @@ int CHudZombieEscape::LoadPoint(char *pName)
 	if(pTgaList == NULL)									
 	{
 		LogToFile( "Open Ze Point Failed[FileName:%s]",szFile);
+		m_bHasZEPoint = false;
 		return 0;
 	}
 	int id = 0;
@@ -72,12 +77,15 @@ int CHudZombieEscape::LoadPoint(char *pName)
 		id++;
 	}
 	fclose(pTgaList);
+	m_bHasZEPoint = true;
 	return 1;
 }
 void CHudZombieEscape::Draw(float time)
 {
 	// Check Mod
-	if(g_iMod != MOD_ZE) return;
+	if(g_iMod != MOD_ZE && g_iMod != MOD_Z4E) return;
+
+	//if (!m_bHasZEPoint) return;
 
 	// First Make Start Pos
 	int iX,iY;

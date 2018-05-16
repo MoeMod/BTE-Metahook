@@ -43,8 +43,6 @@ CTextureManager::CTextureManager(void)
 	m_TexturesIdList.clear();
 	m_TexturesReplaceList.clear();
 	m_UpdateFuncs.clear();
-
-	LoadTextureReplaceList();
 	
 	m_pErrorTexture = std::make_unique<CErrorTexture>();
 }
@@ -181,6 +179,13 @@ auto CTextureManager::GetReplacedTexture(char *key, char *name) -> const CTextur
 
 auto CTextureManager::ReplaceTexture(char *modelname, mstudiotexture_t *p) -> bool
 {
+	static bool bInitalized = false;
+	if (!bInitalized)
+	{
+		bInitalized = true;
+		TextureManager().LoadTextureReplaceList();
+	}
+
 	if (!p)
 		return 0;
 	
