@@ -14,6 +14,7 @@ public:
 protected:
 	virtual void OnCommand(const char *command) override;
 	virtual vgui::Panel *CreateControlByName(const char *controlName) override;
+	int AddNotice(const char *name);
 
 private:
 	struct impl_t;
