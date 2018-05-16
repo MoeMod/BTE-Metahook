@@ -33,7 +33,8 @@
 #include "CreateMultiplayerGameDialog.h"
 
 #include "GameUI/CSBTEAboutDialog.h"
-#include "GameUI/CSBTEUpdateDialog.h"
+#include "GameUI/CSBTEBulletin.h"
+#include "GameUI/CSBTECreatorDialog.h"
 #include "GameUI/CSBTEMyWpnEditor.h"
 #include "GameUI/CSBTEMapLoading.h"
 #include "GameUI/CSBTEEscPanel.h"
@@ -1135,9 +1136,13 @@ void CBasePanel::RunMenuCommand(const char *command)
 	{
 		OnOpenSubDialog<CCSBTEZombieDNA>();
 	}
-	else if (!Q_stricmp(command, "OpenCSBTEUpdateDialog"))
+	else if (!Q_stricmp(command, "OpenCSBTEBulletin"))
 	{
-		OnOpenSubDialog<CCSBTEUpdateDialog>();
+		OnOpenSubDialog<CCSBTEBulletin>();
+	}
+	else if (!Q_stricmp(command, "OpenCSBTECreatorDialog"))
+	{
+		OnOpenSubDialog<CCSBTECreatorDialog>();
 	}
 	else if (!Q_stricmp(command, "OpenCSBTEWpnDataEditor"))
 	{

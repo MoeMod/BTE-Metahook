@@ -312,6 +312,9 @@ void CCSBuySubMenu::SetupItems(WeaponBuyMenuType type)
 
 			m_BuyItemList.push_back(ItemInfo{ name, MakeString("VGUI_BuyMenu_BuyWeapon ", name) });
 		}
+
+		m_pPrevBtn->SetHotkey(L'-');
+		m_pNextBtn->SetHotkey(L'=');
 		SetupPage(0);
 	}
 }

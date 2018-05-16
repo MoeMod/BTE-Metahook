@@ -539,5 +539,16 @@ bool CViewport::AllowedToPrintText(void)
 
 void CViewport::UpdateGameMode()
 {
+	for (int i = 0; i < m_Panels.Count(); i++)
+	{
+		if (m_Panels[i] != m_pBuyMenu)
+			continue;
+
+		VPANEL vPanel = m_Panels[i]->GetVPanel();
+		ipanel()->DeletePanel(vPanel);
+
+		m_Panels[i] = m_pBuyMenu = new CCSBaseBuyMenu;
+	}
+
 	m_pBuyMenu->UpdateGameMode();
 }

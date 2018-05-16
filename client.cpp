@@ -422,6 +422,10 @@ void CheckViewEntity(void)
 			{
 				g_iBTEWeapon = WPN_GUNKATA;
 			}
+			else if (strstr(viewent->model->name, "sgmissile"))
+			{
+				g_iBTEWeapon = WPN_SGMISSILE;
+			}
 			else if (strstr(viewent->model->name, "v_foot"))
 			{
 				g_iszb4kicking = true;
