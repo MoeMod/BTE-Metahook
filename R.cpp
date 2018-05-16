@@ -27,6 +27,9 @@
 
 #include "R.h"
 
+#include <array>
+#include <tuple>
+
 #define GetEngfuncsAddress(addr) (g_dwEngineBase+addr-0x1D01000)
 
 #define R_LIGHTLAMBERT_SIG "\x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x2C\x8B\x0D\x2A\x2A\x2A\x2A\x53\x56\x57\x33\xFF\x3B\xCF\x75\x2A\x8B\x45\x10\x8B\x4D\x14\x8B\x10"
@@ -544,8 +547,6 @@ int Hook_R_StudioDrawModel(int flags)
 		if (g_iBTEWeapon == WPN_SGMISSILE)
 		{
 			int iExtraAmmo = HudAmmo().m_iExtraAmmo;
-			curent->curstate.skin = iExtraAmmo;
-			curent->curstate.controller[0] = 127 - iExtraAmmo * 12;
 
 			static BodyEnumInfo_t info[11] =
 			{
@@ -578,13 +579,24 @@ int Hook_R_StudioDrawModel(int flags)
 			info[skingroup].body = !iExtraAmmo;
 			info[skingroup2].body = !iExtraAmmo;
 
+			auto vars_ref = std::tie(curent->curstate.body, curent->curstate.skin, curent->curstate.controller[0]);
+			std::tuple<int, short, byte> backup_values = vars_ref; // 把保存引用的tuple复制给保存值的tuple
+			vars_ref = std::make_tuple(CalcBody(info, 11), iExtraAmmo, 127 - iExtraAmmo * 12);
+			/*
 			int iBackupBody = curent->curstate.body;
-
+			int iBackupSkin=curent->curstate.skin;
+			byte iBackupController0 = curent->curstate.controller[0];
 			curent->curstate.body = CalcBody(info, 11);
-
+			curent->curstate.skin = iExtraAmmo;
+			curent->curstate.controller[0] = 127 - iExtraAmmo * 12;
+			*/
 			int iReturn = gStudioInterface.StudioDrawModel(flags);
-
+			vars_ref = backup_values;
+			/*
 			curent->curstate.body = iBackupBody;
+			curent->curstate.skin = iBackupSkin;
+			curent->curstate.controller[0] = iBackupController0;
+			*/
 
 			gCubeMapManager.UnloadTexture();
 			gCubeMapManager.SetEnabled(false);
