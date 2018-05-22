@@ -26,8 +26,6 @@ struct CCSBTEBulletin::impl_t
 	Label *TitleLabel, *Bulletin, *EventProgress;
 	PanelListPanel *m_pNoticeList;
 	TextEntry *NoticeText;
-
-	CBasicIniParser< LinearMap<std::string, std::unordered_map<std::string, std::string>> > m_iniData;
 };
 
 class NoticePanel : public Button
@@ -56,17 +54,6 @@ public:
 		SetPaintBackgroundEnabled(false);
 	}
 
-	virtual void PerformLayout() override
-	{
-		m_pSelectedBackground->SetVisible(!IsSelected() && IsDepressed());
-		return Panel::PerformLayout();
-	}
-
-	MESSAGE_FUNC_INT(OnPanelSelected, "PanelSelected", state)
-	{
-		ForceDepressed(state);
-	}
-
 private:
 	Label *m_pText;
 	ImagePanel *m_pNoticeImage;
@@ -77,7 +64,6 @@ private:
 CCSBTEBulletin::CCSBTEBulletin(Panel *parent, const char *panelName, bool showTaskbarIcon)
 	: BaseClass(parent, panelName, showTaskbarIcon), pimpl(std::make_unique<impl_t>()) 
 {
-	pimpl->m_iniData.OpenFile("Bulletin.ini");
 
 	pimpl->Title = new ImagePanel(this, "Title");
 	pimpl->m_pNoticeList = new PanelListPanel(this, "TitleContainerClipPanelName");
@@ -97,16 +83,6 @@ CCSBTEBulletin::CCSBTEBulletin(Panel *parent, const char *panelName, bool showTa
 	this->SetCloseButtonVisible(false);
 	this->SetSizeable(false);
 	this->SetTitle("", false);
-
-	pimpl->m_pNoticeList->SetWide(pimpl->m_pNoticeList->GetWide() + 15);
-	pimpl->m_pNoticeList->SetFirstColumnWidth(0);
-}
-
-int CCSBTEBulletin::AddNotice(const char *name)
-{
-	int a = 0;
-	auto pPanel = new NoticePanel(pimpl->m_pNoticeList, name, name);
-	return a;
 }
 
 void CCSBTEBulletin::OnCommand(const char *command)
