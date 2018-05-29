@@ -547,7 +547,12 @@ void CViewport::UpdateGameMode()
 		VPANEL vPanel = m_Panels[i]->GetVPanel();
 		ipanel()->DeletePanel(vPanel);
 
-		m_Panels[i] = m_pBuyMenu = new CCSBaseBuyMenu;
+		CCSBaseBuyMenu *pPanel = new CCSBaseBuyMenu;
+		ipanel()->SetVisible(pPanel->GetVPanel(), false);
+		pPanel->SetParent(this);
+
+		m_Panels[i] = m_pBuyMenu = pPanel;
+		
 	}
 
 	m_pBuyMenu->UpdateGameMode();

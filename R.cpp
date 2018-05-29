@@ -23,7 +23,12 @@
 #include "Client/TextureManager.h"
 #include "Client/CubemapManager.h"
 
+#include "Client/hud/ammo.h"
+
 #include "R.h"
+
+#include <array>
+#include <tuple>
 
 #define GetEngfuncsAddress(addr) (g_dwEngineBase+addr-0x1D01000)
 
@@ -539,9 +544,63 @@ int Hook_R_StudioDrawModel(int flags)
 			*curent = saveent;
 		}
 
-		if (g_iBTEWeapon == WPN_GUNKATA)
+		if (g_iBTEWeapon == WPN_SGMISSILE)
 		{
-			
+			int iExtraAmmo = HudAmmo().m_iExtraAmmo;
+
+			static BodyEnumInfo_t info[11] =
+			{
+				{ 0, 1 },	// LED
+				{ 0, 1 },	// weapon
+
+				{ 0, 1 },	// fx1
+				{ 0, 1 },
+				{ 0, 1 },
+				{ 0, 1 },
+				{ 0, 1 },	// fx5
+
+				{ 0, 2 },	// skingroup
+				{ 0, 2 },
+
+				{ 0, 2 },	// hands
+				{ 0, 1 }	// fx6
+			};
+
+			enum
+			{
+				LED = 0,
+				// ...
+				skingroup = 7,
+				skingroup2 = 8,
+				hands = 9
+			};
+
+			info[hands].body = g_iViewEntityBody;
+			info[skingroup].body = !iExtraAmmo;
+			info[skingroup2].body = !iExtraAmmo;
+
+			auto vars_ref = std::tie(curent->curstate.body, curent->curstate.skin, curent->curstate.controller[0]);
+			std::tuple<int, short, byte> backup_values = vars_ref; // 把保存引用的tuple复制给保存值的tuple
+			vars_ref = std::make_tuple(CalcBody(info, 11), iExtraAmmo, 127 - iExtraAmmo * 12);
+			/*
+			int iBackupBody = curent->curstate.body;
+			int iBackupSkin=curent->curstate.skin;
+			byte iBackupController0 = curent->curstate.controller[0];
+			curent->curstate.body = CalcBody(info, 11);
+			curent->curstate.skin = iExtraAmmo;
+			curent->curstate.controller[0] = 127 - iExtraAmmo * 12;
+			*/
+			int iReturn = gStudioInterface.StudioDrawModel(flags);
+			vars_ref = backup_values;
+			/*
+			curent->curstate.body = iBackupBody;
+			curent->curstate.skin = iBackupSkin;
+			curent->curstate.controller[0] = iBackupController0;
+			*/
+
+			gCubeMapManager.UnloadTexture();
+			gCubeMapManager.SetEnabled(false);
+			return iReturn;
 		}
 
 		if (g_iBTEWeapon == WPN_STORMGIANT)
